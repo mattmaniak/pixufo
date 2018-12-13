@@ -2,4 +2,5 @@
 ## Requirements:
 - GNU/Linux,
 - g++ (gcc with stdc++),
-- SDL2.
+- SDL2,
+- make.
