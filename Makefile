@@ -1,7 +1,7 @@
 TARGET = pixufo
 
 CC = g++
-CXXFLAGS = -Wall -Wextra -lsfml-graphics -lsfml-system -lsfml-window
+CXXFLAGS = -Wall -Wextra -lSDL2
 
 SRC_DIR = game/src
 

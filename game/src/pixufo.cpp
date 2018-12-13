@@ -2,27 +2,31 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "PixUfo");
-    sf::Texture texture;
+	SDL_Window* window;
 
-    if(!texture.loadFromFile("game/gfx/ufo.png"))
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		exit(1);
+		std::cerr << "Can't init the SDL: " << SDL_GetError() << std::endl;
+		return 1;
 	}
-	sf::Sprite ufo(texture);
 
-	while(window.isOpen())
+	window = SDL_CreateWindow
+	(
+		"PixUfo",
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		1280,
+		720,
+		SDL_WINDOW_OPENGL
+	);
+	if(window == NULL)
 	{
-		sf::Event event;
-		while(window.pollEvent(event))
-		{
-			if(event.type == sf::Event::Closed)
-			{
-				window.close();
-			}
-		}
-		window.clear();
-		window.draw(ufo);
-		window.display();
+		std::cerr << "Could not create window: " << SDL_GetError() << std::endl;
+		return 1;
 	}
+	SDL_Delay(3000);
+
+	SDL_DestroyWindow(window);
+	window = NULL;
+	SDL_Quit();
 }
