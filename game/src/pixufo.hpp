@@ -4,8 +4,13 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-void init_sdl();
-SDL_Window* create_window();
+namespace sdl_wrapper
+{
+	void         init();
+	SDL_Window*  create_window();
+	SDL_Surface* load_bitmap(const char* path);
+}
+
 int main();
 
 #endif
