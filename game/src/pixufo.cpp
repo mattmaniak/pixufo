@@ -1,32 +1,51 @@
 #include "pixufo.hpp"
 
-int main()
+void init_sdl()
 {
-	SDL_Window* window;
+	const bool success = 0;
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if(SDL_Init(SDL_INIT_VIDEO) != success)
 	{
 		std::cerr << "Can't init the SDL: " << SDL_GetError() << std::endl;
-		return 1;
+		exit(1);
 	}
+}
 
-	window = SDL_CreateWindow
+SDL_Window* create_window()
+{
+	const char* title = "PixUfo\0";
+
+	const unsigned int width = 1280;
+	const unsigned int height = 720;
+
+	SDL_Window* new_window;
+
+	new_window = SDL_CreateWindow
 	(
-		"PixUfo",
+		title,
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		1280,
-		720,
+		width,
+		height,
 		SDL_WINDOW_OPENGL
 	);
-	if(window == NULL)
+
+	if(new_window == NULL)
 	{
 		std::cerr << "Could not create window: " << SDL_GetError() << std::endl;
-		return 1;
+		exit(1);
 	}
+	return new_window;
+}
+
+int main()
+{
+	init_sdl();
+
+	SDL_Window* window = create_window();
+
 	SDL_Delay(3000);
 
 	SDL_DestroyWindow(window);
-	window = NULL;
 	SDL_Quit();
 }

@@ -1,2 +1,5 @@
 # PixUfo
-## test
+## Requirements:
+- GNU/Linux,
+- g++ (gcc with stdc++),
+- SDL2.
