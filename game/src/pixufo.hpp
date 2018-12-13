@@ -1,7 +1,8 @@
 #ifndef PIXUFO_HPP
 #define PIXUFO_HPP
 
-#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <SDL2/SDL.h>
 
 int main();
 
