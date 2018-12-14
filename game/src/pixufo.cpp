@@ -59,15 +59,16 @@ int main()
 
 	SDL_Event     event;
 	SDL_Window*   window   = sdl_wrapper::create_window();
-	SDL_Surface*  icon     = sdl_wrapper::load_bitmap("game/ingame_icon.bmp");
+	SDL_Surface*  icon     = sdl_wrapper::load_bitmap("game/icon.bmp");
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	SDL_SetWindowIcon(window, icon);
 	SDL_FreeSurface(icon);
 
 	// Converts the surface to the texture.
-	SDL_Surface* ufo     = sdl_wrapper::load_bitmap("game/ingame_icon.bmp");
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, ufo);
+	SDL_Surface* ufo         = sdl_wrapper::load_bitmap("game/icon.bmp");
+	SDL_Texture* texture     = SDL_CreateTextureFromSurface(renderer, ufo);
+	SDL_Rect     ufo_pos_sz  = {300, 0, 480, 480};
 	SDL_FreeSurface(ufo);
 
 	if(texture == NULL)
@@ -78,12 +79,13 @@ int main()
 
 	// Copies and displays the beautiful ufo.
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_RenderCopy(renderer, texture, NULL, &ufo_pos_sz);
 	SDL_RenderPresent(renderer);
 
 	// Close app after the user's event.
 	for(; event.type != SDL_QUIT; SDL_PollEvent(&event));
 
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
