@@ -1,14 +1,19 @@
 TARGET = pixufo
 
 CC = g++
-CXXFLAGS = -Wall -Wextra -lSDL2
+
+WARNINGS = -Wall -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align \
+-Wwrite-strings -Wmissing-declarations -Wredundant-decls -Winline \
+-Wno-long-long -Wconversion
+
+CXXFLAGS = -lSDL2 $(WARNINGS)
 
 SRC_DIR = src
 
 RM = rm -rf
 
 all:
-	g++ $(SRC_DIR)/$(TARGET).cpp -o $(TARGET) \
+	$(CC) $(SRC_DIR)/$(TARGET).cpp -o $(TARGET) \
 	$(CXXFLAGS)
 
 .PHONY: clean
