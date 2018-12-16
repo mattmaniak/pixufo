@@ -17,7 +17,7 @@ namespace sdl_wrapper
 	{
 		std::string title = "PixUfo";
 
-		const unsigned int width  = 1280;
+		const unsigned int width = 1280;
 		const unsigned int height = 720;
 
 		SDL_Window* new_window;
@@ -69,16 +69,17 @@ int main()
 {
 	sdl_wrapper::init();
 
-	SDL_Event     event;
-	SDL_Window*   window   = sdl_wrapper::create_window();
+	SDL_Event event;
+	SDL_Window* window = sdl_wrapper::create_window();
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	sdl_wrapper::set_icon(window, "icon.bmp");
 
 	// Converts the surface to the texture.
-	SDL_Surface* logo         = sdl_wrapper::load_bitmap("gfx/superscription.bmp");
-	SDL_Texture* texture      = SDL_CreateTextureFromSurface(renderer, logo);
-	SDL_Rect     logo_pos_sz  = {300, 100, 860, 380};
+	SDL_Surface* logo = sdl_wrapper::load_bitmap("gfx/superscription.bmp");
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, logo);
+	SDL_Rect logo_pos_sz = {300, 100, 860, 380};
+
 	SDL_FreeSurface(logo);
 
 	if(texture == NULL)
