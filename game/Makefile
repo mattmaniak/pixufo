@@ -12,7 +12,7 @@ CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
 CXXFLAGS = -lSDL2 $(CXXWARNINGS)
 
 # All in the ./obj depending on the ./src.
-OBJ = $(patsubst src/%.cpp, obj/%.o, $(wildcard src/*.cpp))
+OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
 
 # Compilation of object files depends on source files wnich depends on headers.
 # "$@" - alias to name on the left of ':', "$^" - on the right.

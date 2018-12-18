@@ -71,12 +71,14 @@ int main()
 
 	SDL_Event event;
 	SDL_Window* window = sdl_wrapper::create_window();
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	sdl_wrapper::set_icon(window, "icon.bmp");
+	SDL_Renderer* renderer =
+	SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	sdl_wrapper::set_icon(window, "gfx/icon.bmp");
 
 	// Converts the surface to the texture.
-	SDL_Surface* logo = sdl_wrapper::load_bitmap("gfx/superscription.bmp");
+	SDL_Surface* logo = sdl_wrapper::load_bitmap("gfx/title.bmp");
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, logo);
 	SDL_Rect logo_pos_sz = {300, 100, 860, 380};
 
@@ -93,8 +95,16 @@ int main()
 	SDL_RenderCopy(renderer, texture, NULL, &logo_pos_sz);
 	SDL_RenderPresent(renderer);
 
-	// Close app after the user's event.
-	for(; event.type != SDL_QUIT; SDL_PollEvent(&event));
+	while(true) // Close the game after the user's event.
+	{
+		SDL_PollEvent(&event);
+		if(event.type == SDL_QUIT)
+		{
+			break;
+		}
+		SDL_RenderPresent(renderer);
+		SDL_UpdateWindowSurface(window);
+	}
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
