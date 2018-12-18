@@ -1,25 +1,34 @@
 TARGET = pixufo
+SRC_DIR = src
+OBJ_DIR = obj
 
 CC = g++
+CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
+-Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Werror \
+-Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wundef \
+-Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wno-unused \
+-Wsign-conversion -Wswitch-default -Wstrict-null-sentinel -Wstrict-overflow=5
 
-WARNINGS = -pedantic -Wall -Wextra -Wcast-align -Wcast-qual \
--Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self \
--Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept \
--Wold-style-cast -Woverloaded-virtual  -Wredundant-decls -Wshadow \
--Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 \
--Wswitch-default -Wundef -Werror -Wno-unused
+CXXFLAGS = -lSDL2 $(CXXWARNINGS)
 
-CXXFLAGS = -lSDL2 $(WARNINGS)
+# All in the ./obj depending on the ./src.
+OBJ = $(patsubst src/%.cpp, obj/%.o, $(wildcard src/*.cpp))
 
-SRC_DIR = src
+# Compilation of object files depends on source files wnich depends on headers.
+# "$@" - alias to name on the left of ':', "$^" - on the right.
+# "$<" is a first item in the dependencies list.
+# "-c" generates the object file.
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
+	@mkdir -p $(OBJ_DIR)
+	$(CC) -c -o $@ $< \
+	$(CXXFLAGS) \
 
-RM = rm -rf
-
-all:
-	$(CC) $(SRC_DIR)/$(TARGET).cpp -o $(TARGET) \
+# Builds the binary by linking object files.
+$(TARGET): $(OBJ)
+	$(CC) -o $@ $^ \
 	$(CXXFLAGS)
 
 .PHONY: clean
 
 clean:
-	$(RM) $(TARGET)
+	$(RM) -r $(TARGET) $(OBJ_DIR)
