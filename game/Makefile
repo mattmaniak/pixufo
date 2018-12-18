@@ -9,7 +9,7 @@ CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
 -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wno-unused \
 -Wsign-conversion -Wswitch-default -Wstrict-null-sentinel -Wstrict-overflow=5
 
-CXXFLAGS = -lSDL2 $(CXXWARNINGS)
+CXXFLAGS = -std=c++98 -lSDL2 $(CXXWARNINGS)
 
 # All in the ./obj depending on the ./src.
 OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
