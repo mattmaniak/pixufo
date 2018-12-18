@@ -25,11 +25,11 @@ namespace sdl_wrapper
 		new_window = SDL_CreateWindow
 		(
 			title.c_str(),
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED,
 			width,
 			height,
-			SDL_WINDOW_SHOWN
+			SDL_WINDOW_FULLSCREEN
 		);
 
 		if(new_window == NULL)
