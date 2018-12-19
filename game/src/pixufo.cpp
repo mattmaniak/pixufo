@@ -13,7 +13,7 @@ int main()
 	sdl_wrapper::set_icon(window, "gfx/icon.bmp");
 
 	// Converts the surface to the texture.
-	SDL_Surface* title = sdl_wrapper::load_bitmap("gfx/title.bmp");
+	SDL_Surface* title = sdl_wrapper::load_bitmap(window, "gfx/title.bmp");
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, title);
 
 	if(texture == NULL)

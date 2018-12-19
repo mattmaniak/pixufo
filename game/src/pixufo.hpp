@@ -8,8 +8,8 @@ namespace sdl_wrapper
 {
 	extern void init();
 	extern SDL_Window* create_window();
-	extern SDL_Surface* load_bitmap(std::string path);
-	extern void set_icon(SDL_Window* window_to_set, std::string path);
+	extern SDL_Surface* load_bitmap(SDL_Window* window, std::string path);
+	extern void set_icon(SDL_Window* window, std::string path);
 }
 
 int main();
