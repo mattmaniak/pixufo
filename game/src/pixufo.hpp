@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+#define STRETCH_BITMAP(bitmap) bitmap->w * 4, bitmap->h * 4
+
 namespace sdl_wrapper
 {
 	extern void init();

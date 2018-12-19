@@ -23,12 +23,7 @@ int main()
 		// TODO: DESTROY AND QUIT.
 	}
 	SDL_FreeSurface(title);
-	SDL_Rect title_pos_sz = {300, 100, 860, 380};
-
-	// Copies and displays the beautiful title.
-	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, texture, NULL, &title_pos_sz);
-	SDL_RenderPresent(renderer);
+	SDL_Rect title_pos_sz = {0, 0, STRETCH_BITMAP(title)};
 
 	while(true) // Close the game after the user's event.
 	{
@@ -37,7 +32,11 @@ int main()
 		{
 			break;
 		}
+		// Copies and displays the beautiful title.
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, texture, NULL, &title_pos_sz);
 		SDL_RenderPresent(renderer);
+
 		SDL_UpdateWindowSurface(window);
 	}
 
