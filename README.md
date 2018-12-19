@@ -3,7 +3,6 @@
 - at least HD display,
 - Windows or Linux-based system.
 
-
 ## TL:DR; guide to the development:
 ### Windows:
 1. Download and install the environment.
@@ -16,7 +15,7 @@ one with Your current MinGW installation path.
 ```
 mingw-get install gcc g++ make
 ```
-4. Clon da repo wit Git.
+4. Clone the repository with Git.
 
 5. Dive in, compile and run.
 ```
@@ -40,9 +39,3 @@ cd pixufo/game
 make
 ./pixufo
 ```
-
-## Requirements for Windows development:
-- MinGW,
-- mingw32-g++,
-- mingw32-make.
-- SDL2
