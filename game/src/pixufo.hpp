@@ -6,6 +6,8 @@
 
 #define STRETCH_BITMAP(bitmap) bitmap->w * 4, bitmap->h * 4
 
+class Game;
+
 namespace sdl_wrapper
 {
 	extern void init();

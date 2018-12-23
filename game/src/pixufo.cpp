@@ -1,20 +1,40 @@
 #include "pixufo.hpp"
 
+class Game
+{
+	public:
+	SDL_Event     event;
+	SDL_Window*   window;
+	SDL_Renderer* renderer;
+	SDL_Texture** texture;
+	SDL_Surface** surface;
+
+	void init()
+	{
+		sdl_wrapper::init();
+
+		window = sdl_wrapper::create_window();
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+		sdl_wrapper::set_icon(window, "gfx/icon.bmp");
+	}
+
+	void end()
+	{
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
+		SDL_Quit();
+	}
+};
+
 int main()
 {
-	sdl_wrapper::init();
-
-	SDL_Event event;
-	SDL_Window* window = sdl_wrapper::create_window();
-
-	SDL_Renderer* renderer =
-	SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	sdl_wrapper::set_icon(window, "gfx/icon.bmp");
+	Game PixUfo;
+	PixUfo.init();
 
 	// Converts the surface to the texture.
-	SDL_Surface* title = sdl_wrapper::load_bitmap(window, "gfx/title.bmp");
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, title);
+	SDL_Surface* title = sdl_wrapper::load_bitmap(PixUfo.window, "gfx/title.bmp");
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(PixUfo.renderer, title);
 
 	if(texture == NULL)
 	{
@@ -27,20 +47,18 @@ int main()
 
 	while(true) // Close the game after the user's event.
 	{
-		SDL_PollEvent(&event);
-		if(event.type == SDL_QUIT)
+		SDL_PollEvent(&PixUfo.event);
+		if(PixUfo.event.type == SDL_QUIT)
 		{
 			break;
 		}
 		// Copies and displays the beautiful title.
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, texture, NULL, &title_pos_sz);
-		SDL_RenderPresent(renderer);
+		SDL_RenderClear(PixUfo.renderer);
+		SDL_RenderCopy(PixUfo.renderer, texture, NULL, &title_pos_sz);
+		SDL_RenderPresent(PixUfo.renderer);
 
-		SDL_UpdateWindowSurface(window);
+		SDL_UpdateWindowSurface(PixUfo.window);
 	}
 
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+	PixUfo.end();
 }
