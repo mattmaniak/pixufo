@@ -2,24 +2,24 @@
 
 class Game
 {
-	public:
-		int           window_w;
-		int           window_h;
-		SDL_Event     event;
-		SDL_Window*   window;
-		SDL_Renderer* renderer;
-		SDL_Surface*  model;
+	void set_icon();
+	void stop();
 
-		Game();
-		void set_icon();
-		void stop();
-		~Game();
+	public:
+	bool          runtime;
+	int           window_w;
+	int           window_h;
+	SDL_Event     event;
+	SDL_Window*   window;
+	SDL_Renderer* renderer;
+
+	Game(int w, int h);
+	~Game();
 };
 
-Game::Game()
+Game::Game(int w, int h) : window_w(w), window_h(h)
 {
-	window_w = 1280;
-	window_h = 720;
+	runtime = true;
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
 	{
@@ -43,7 +43,7 @@ Game::Game()
 
 void Game::set_icon()
 {
-	SDL_Surface* icon = sdlwrap::load_bitmap(window, "game/textures/icon.bmp");
+	SDL_Surface* icon = sdlwrap::load_image(window, "game/textures/icon.bmp");
 
 	if(icon == NULL)
 	{
@@ -57,7 +57,6 @@ void Game::set_icon()
 void Game::stop()
 {
 	SDL_DestroyRenderer(renderer);
-	SDL_FreeSurface(model);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return;
@@ -68,35 +67,92 @@ Game::~Game()
 	stop();
 }
 
+class Model
+{
+	public:
+	SDL_Surface* image;     // Just a bitmap and some metadata.
+	SDL_Texture* texture;   // Driver-specific representation of data.
+	SDL_Rect     rectangle; // Texture's position and size.
+	// int          x;
+	// int          y;
+
+	Model(int x, int y)
+	//: rectangle.x(x), rectangle.y(y)
+	{
+		rectangle.x = x;
+		rectangle.y = y;
+		// rectangle.w = image->w * SCALE_FACTOR;
+		// rectangle.h = image->h * SCALE_FACTOR;
+		// image = sdlwrap::load_image()
+	}
+	~Model()
+	{
+		SDL_FreeSurface(image);
+		SDL_DestroyTexture(texture);
+	}
+};
+
 int main()
 {
-	Game PixUfo;
+	Game  PixUfo(1920, 1080);
+	Model Ufo(0, 0);
 
 	// Converts the surface to the texture.
-	PixUfo.model = sdlwrap::load_bitmap(PixUfo.window, "game/textures/title.bmp");
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(PixUfo.renderer, PixUfo.model);
+	Ufo.image = sdlwrap::load_image(PixUfo.window, "game/textures/ufo.bmp");
+	Ufo.texture = SDL_CreateTextureFromSurface(PixUfo.renderer, Ufo.image);
 
-	if(texture == NULL)
+	if(Ufo.texture == NULL)
 	{
 		std::cerr << "Can't crete the texture." << std::endl;
 		exit(1);
 		// TODO: DESTROY AND QUIT.
 	}
-	SDL_Rect title_pos_sz = {0, 0, RESIZE_SURFACE(PixUfo.model)};
-//	SDL_FreeSurface(PixUfo.model); CAUSES SEGV!
+	Ufo.rectangle.w = Ufo.image->w * SCALE_FACTOR;
+	Ufo.rectangle.h = Ufo.image->h * SCALE_FACTOR;
 
-	while(true) // Close the game after the user's event.
+	while(PixUfo.runtime) // Close the game after the user's event.
 	{
 		SDL_PollEvent(&PixUfo.event);
-		if(PixUfo.event.type == SDL_QUIT)
+		switch(PixUfo.event.type)
 		{
+			default:
+			break;
+
+			case SDL_QUIT:
+			PixUfo.runtime = false;
+			break;
+
+			case SDL_KEYDOWN: // TODO: AND KEYUP?
+			switch(PixUfo.event.key.keysym.sym)
+			{
+				default:
+				break;
+
+				case SDLK_UP:
+				Ufo.rectangle.y -= 8;
+				break;
+
+				case SDLK_DOWN:
+				Ufo.rectangle.y += 8;
+				break;
+
+				case SDLK_LEFT:
+				Ufo.rectangle.x -= 8;
+				break;
+
+				case SDLK_RIGHT:
+				Ufo.rectangle.x += 8;
+				break;
+			}
 			break;
 		}
 		// Copies and displays the beautiful title.
 		SDL_RenderClear(PixUfo.renderer);
-		SDL_RenderCopy(PixUfo.renderer, texture, NULL, &title_pos_sz);
+		SDL_RenderCopy(PixUfo.renderer, Ufo.texture, NULL, &Ufo.rectangle);
 		SDL_RenderPresent(PixUfo.renderer);
 
 		SDL_UpdateWindowSurface(PixUfo.window);
+
+//		SDL_Delay(FRAME_DELAY);
 	}
 }

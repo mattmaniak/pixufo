@@ -6,15 +6,15 @@
 
 #define SUCCESS 0
 
-#define SCALE 4
-#define RESIZE_SURFACE(surface) (surface->w * SCALE), (surface->h * SCALE)
+#define FPS          60
+#define FRAME_DELAY  (1000 / FPS)
+#define SCALE_FACTOR 4
 
 class Game;
 
 namespace sdlwrap
 {
-	extern SDL_Surface* load_bitmap(SDL_Window* window, std::string path);
-	extern void         set_icon(SDL_Window* window, std::string path);
+	extern SDL_Surface* load_image(SDL_Window* window, std::string path);
 }
 
 int main();
