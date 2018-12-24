@@ -43,4 +43,4 @@ address: $(TARGET)
 .PHONY: clean
 
 clean:
-	$(RM) -r $(TARGET) $(OBJ_DIR)
+	$(RM) $(TARGET) $(OBJ_DIR)/*

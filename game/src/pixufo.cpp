@@ -3,35 +3,78 @@
 class Game
 {
 	public:
-	SDL_Event     event;
-	SDL_Window*   window;
-	SDL_Renderer* renderer;
+		int           window_w;
+		int           window_h;
+		SDL_Event     event;
+		SDL_Window*   window;
+		SDL_Renderer* renderer;
+		SDL_Surface*  model;
 
-	Game()
-	{
-		sdl_wrapper::init();
-
-		window = sdl_wrapper::create_window();
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-		sdl_wrapper::set_icon(window, "game/textures/icon.bmp");
-	}
-
-	~Game()
-	{
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		SDL_Quit();
-	}
+		Game();
+		void set_icon();
+		void stop();
+		~Game();
 };
+
+Game::Game()
+{
+	window_w = 1280;
+	window_h = 720;
+
+	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
+	{
+		std::cerr << "Can't initialize the SDL." << std::endl;
+		return;
+	}
+
+	// Creates the window.
+	window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
+	SDL_WINDOWPOS_UNDEFINED, window_w, window_h, SDL_WINDOW_FULLSCREEN);
+
+	if(window == NULL)
+	{
+		std::cerr << "Can't create the window." << std::endl;
+		stop();
+	}
+
+//	sdlwrap::set_icon(window, "game/textures/icon.bmp");
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+}
+
+void Game::set_icon()
+{
+	SDL_Surface* icon = sdlwrap::load_bitmap(window, "game/textures/icon.bmp");
+
+	if(icon == NULL)
+	{
+		std::cerr << "Can't load the icon." << std::endl;
+		stop();
+	}
+	SDL_SetWindowIcon(window, icon);
+	SDL_FreeSurface(icon);
+}
+
+void Game::stop()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_FreeSurface(model);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+	return;
+}
+
+Game::~Game()
+{
+	stop();
+}
 
 int main()
 {
 	Game PixUfo;
 
 	// Converts the surface to the texture.
-	SDL_Surface* title = sdl_wrapper::load_bitmap(PixUfo.window, "game/textures/title.bmp");
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(PixUfo.renderer, title);
+	PixUfo.model = sdlwrap::load_bitmap(PixUfo.window, "game/textures/title.bmp");
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(PixUfo.renderer, PixUfo.model);
 
 	if(texture == NULL)
 	{
@@ -39,8 +82,8 @@ int main()
 		exit(1);
 		// TODO: DESTROY AND QUIT.
 	}
-	SDL_FreeSurface(title);
-	SDL_Rect title_pos_sz = {0, 0, RESIZE_SURFACE(title)};
+	SDL_Rect title_pos_sz = {0, 0, RESIZE_SURFACE(PixUfo.model)};
+//	SDL_FreeSurface(PixUfo.model); CAUSES SEGV!
 
 	while(true) // Close the game after the user's event.
 	{
