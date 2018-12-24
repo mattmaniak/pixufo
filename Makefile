@@ -7,15 +7,17 @@ CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
 -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wno-unused \
 -Wsign-conversion -Wswitch-default -Wstrict-null-sentinel -Wstrict-overflow=5
 
-CXXFLAGS = -std=c++98 -lSDL2 $(CXXWARNINGS)
+CXXFLAGS = -I$(INC_DIR) -std=c++98 -lSDL2 $(CXXWARNINGS)
 DEBUGFLAGS =
 
 ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 -fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
 -fstack-protector-all
 
-SRC_DIR = src
-OBJ_DIR = obj
+GAME_DIR = game
+INC_DIR = $(GAME_DIR)/include
+SRC_DIR = $(GAME_DIR)/src
+OBJ_DIR = $(GAME_DIR)/obj
 
 # All in the ./obj depending on the ./src.
 OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
@@ -24,7 +26,7 @@ OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
 # "$@" - alias to name on the left of ':', "$^" - on the right.
 # "$<" is a first item in the dependencies list.
 # "-c" generates the object file.
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(INC_DIR)/%.hpp
 	@mkdir -p $(OBJ_DIR)
 	$(CC) -c -o $@ $< \
 	$(CXXFLAGS) \
