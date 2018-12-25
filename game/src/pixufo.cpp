@@ -2,13 +2,13 @@
 
 class Game
 {
-	void set_icon();
-	bool stop();
+	void _set_icon();
+	bool _quit();
 
 	public:
 	bool          runtime;
-	int           width;
-	int           height;
+	int           w;
+	int           h;
 	SDL_Event     event;
 	SDL_Window*   window;
 	SDL_Renderer* renderer;
@@ -24,10 +24,8 @@ Game::Game()
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
 	{
-		std::cerr << "Can't initialize the SDL." << std::endl;
-		stop();
+		error("Can't initialize the SDL.");
 	}
-
 	/* According to the SDL_CreateWindow wiki: "If the window is set fullscreen,
 	the width and height parameters w and h will not be used." 0, 0 -> w, h. */
 	window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
@@ -38,24 +36,28 @@ Game::Game()
 		error("Can't create the window.");
 	}
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
 	if(renderer == NULL)
 	{
 		error("Can't create the renderer.");
 	}
-	if(SDL_GetRendererOutputSize(renderer, &width, &height) != SUCCESS)
+	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
+	{
+		error("Can't hide the mouse.");
+	}
+	if(SDL_GetRendererOutputSize(renderer, &w, &h) != SUCCESS)
 	{
 		error("Can't get the renderer size.");
 	}
 }
 
-void Game::set_icon()
+void Game::_set_icon()
 {
 	SDL_Surface* icon = sdlwrap::load_image(window, "game/textures/icon.bmp");
 
 	if(icon == NULL)
 	{
-		std::cerr << "Can't load the icon." << std::endl;
-		stop();
+		error("Can't load the icon.");
 	}
 	SDL_SetWindowIcon(window, icon);
 	SDL_FreeSurface(icon);
@@ -64,11 +66,11 @@ void Game::set_icon()
 bool Game::error(std::string message)
 {
 	std::cerr << message << std::endl;
-	stop();
+	_quit();
 	return 1;
 }
 
-bool Game::stop()
+bool Game::_quit()
 {
 	if(renderer != NULL)
 	{
@@ -84,7 +86,7 @@ bool Game::stop()
 
 Game::~Game()
 {
-	stop();
+	_quit();
 }
 
 class Model
@@ -93,14 +95,12 @@ class Model
 	SDL_Surface* image;     // Just a bitmap and some metadata.
 	SDL_Texture* texture;   // Driver-specific representation of data.
 	SDL_Rect     rectangle; // Texture's position and size.
-	// int          x;
-	// int          y;
+	int          move;      // Pixels offset that can move in a single frame.
 
-	Model(int x, int y)
-	//: rectangle.x(x), rectangle.y(y)
+	Model(int _x, int _y, int _move) : move(_move)
 	{
-		rectangle.x = x;
-		rectangle.y = y;
+		rectangle.x = _x;
+		rectangle.y = _y;
 		// rectangle.w = image->w * SCALE_FACTOR;
 		// rectangle.h = image->h * SCALE_FACTOR;
 		// image = sdlwrap::load_image()
@@ -115,7 +115,7 @@ class Model
 int main()
 {
 	Game  PixUfo;
-	Model Ufo(0, 0);
+	Model Ufo(0, 0, 8);
 
 	// Converts the surface to the texture.
 	Ufo.image = sdlwrap::load_image(PixUfo.window, "game/textures/ufo.bmp");
@@ -123,9 +123,7 @@ int main()
 
 	if(Ufo.texture == NULL)
 	{
-		std::cerr << "Can't crete the texture." << std::endl;
-		exit(1);
-		// TODO: DESTROY AND QUIT.
+		PixUfo.error("Can't crete the texture.");
 	}
 	Ufo.rectangle.w = Ufo.image->w * SCALE_FACTOR;
 	Ufo.rectangle.h = Ufo.image->h * SCALE_FACTOR;
@@ -149,19 +147,31 @@ int main()
 				break;
 
 				case SDLK_UP:
-				Ufo.rectangle.y -= 8;
+				if(Ufo.rectangle.y >= Ufo.move)
+				{
+					Ufo.rectangle.y -= Ufo.move;
+				}
 				break;
 
 				case SDLK_DOWN:
-				Ufo.rectangle.y += 8;
+				if((Ufo.rectangle.y + Ufo.rectangle.h + Ufo.move) <= PixUfo.h)
+				{
+					Ufo.rectangle.y += Ufo.move;
+				}
 				break;
 
 				case SDLK_LEFT:
-				Ufo.rectangle.x -= 8;
+				if(Ufo.rectangle.x >= Ufo.move)
+				{
+					Ufo.rectangle.x -= Ufo.move;
+				}
 				break;
 
 				case SDLK_RIGHT:
-				Ufo.rectangle.x += 8;
+				if((Ufo.rectangle.x + Ufo.rectangle.w + Ufo.move) <= PixUfo.w)
+				{
+					Ufo.rectangle.x += Ufo.move;
+				}
 				break;
 			}
 			break;
