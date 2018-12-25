@@ -3,7 +3,6 @@
 class Game
 {
 	void _set_icon();
-	bool _quit();
 
 	public:
 	bool          runtime;
@@ -14,6 +13,7 @@ class Game
 	SDL_Renderer* renderer;
 
 	Game();
+	bool quit();
 	bool error(std::string message);
 	~Game();
 };
@@ -66,11 +66,11 @@ void Game::_set_icon()
 bool Game::error(std::string message)
 {
 	std::cerr << message << std::endl;
-	_quit();
+	quit();
 	return 1;
 }
 
-bool Game::_quit()
+bool Game::quit()
 {
 	if(renderer != NULL)
 	{
@@ -86,7 +86,7 @@ bool Game::_quit()
 
 Game::~Game()
 {
-	_quit();
+	quit();
 }
 
 class Model
@@ -97,36 +97,50 @@ class Model
 	SDL_Rect     rectangle; // Texture's position and size.
 	int          move;      // Pixels offset that can move in a single frame.
 
-	Model(int _x, int _y, int _move) : move(_move)
+	Model(const Game* game, std::string image_path, int _x, int _y, int _move)
+	: move(_move)
 	{
 		rectangle.x = _x;
 		rectangle.y = _y;
-		// rectangle.w = image->w * SCALE_FACTOR;
-		// rectangle.h = image->h * SCALE_FACTOR;
-		// image = sdlwrap::load_image()
+
+		image = SDL_LoadBMP(image_path.c_str());
+		if(image == NULL)
+		{
+			destroy(); // TODO: HANDLING.
+		}
+
+		texture = SDL_CreateTextureFromSurface(game->renderer, image);
+		if(texture == NULL)
+		{
+
+		}
+		rectangle.w = image->w * SCALE_FACTOR;
+		rectangle.h = image->h * SCALE_FACTOR;
 	}
+
+	bool destroy()
+	{
+		if(image != NULL)
+		{
+			SDL_FreeSurface(image);
+		}
+		if(texture != NULL)
+		{
+			SDL_DestroyTexture(texture);
+		}
+		return 0;
+	}
+
 	~Model()
 	{
-		SDL_FreeSurface(image);
-		SDL_DestroyTexture(texture);
+		destroy();
 	}
 };
 
 int main()
 {
 	Game  PixUfo;
-	Model Ufo(0, 0, 8);
-
-	// Converts the surface to the texture.
-	Ufo.image = sdlwrap::load_image(PixUfo.window, "game/textures/ufo.bmp");
-	Ufo.texture = SDL_CreateTextureFromSurface(PixUfo.renderer, Ufo.image);
-
-	if(Ufo.texture == NULL)
-	{
-		PixUfo.error("Can't crete the texture.");
-	}
-	Ufo.rectangle.w = Ufo.image->w * SCALE_FACTOR;
-	Ufo.rectangle.h = Ufo.image->h * SCALE_FACTOR;
+	Model Ufo(&PixUfo, "game/textures/ufo.bmp", 0, 0, 8);
 
 	while(PixUfo.runtime) // Close the game after the user's event.
 	{
