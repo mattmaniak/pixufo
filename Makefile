@@ -14,10 +14,9 @@ ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 -fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
 -fstack-protector-all
 
-GAME_DIR = game
-INC_DIR = $(GAME_DIR)/include
-SRC_DIR = $(GAME_DIR)/src
-OBJ_DIR = $(GAME_DIR)/obj
+INC_DIR = $(SRC_DIR)/include
+SRC_DIR = src
+OBJ_DIR = obj
 
 # All in the ./obj depending on the ./src.
 OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))

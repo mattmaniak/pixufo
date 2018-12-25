@@ -11,6 +11,7 @@
 #define SCALE_FACTOR 4
 
 class Game;
+class Character;
 
 namespace sdlwrap
 {
