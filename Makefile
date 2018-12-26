@@ -7,7 +7,7 @@ CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
 -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wno-unused \
 -Wsign-conversion -Wswitch-default -Wstrict-null-sentinel -Wstrict-overflow=5
 
-CXXFLAGS = -I$(INC_DIR) -std=c++98 -lSDL2 $(CXXWARNINGS)
+CXXFLAGS = -I$(INC_DIR) -std=c++11 -lSDL2 $(CXXWARNINGS)
 DEBUGFLAGS =
 
 ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
