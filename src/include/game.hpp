@@ -7,6 +7,9 @@
 
 #define SUCCESS 0
 
+#define GAME_RESOLUTION_W 1280
+#define GAME_RESOLUTION_H 720
+
 class Game
 {
 	public:

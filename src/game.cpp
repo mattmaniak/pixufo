@@ -2,20 +2,30 @@
 
 Game::Game()
 {
-	const int unused_size = 0;
+	const int       unused_size = 0;
+	SDL_DisplayMode screen;
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
 	{
 		error("Can't initialize the SDL.");
 	}
 
+	if(SDL_GetDesktopDisplayMode(0, &screen) != SUCCESS)
+	{
+		error("Can't get the screen resolution.");
+	}
+	if((screen.w < GAME_RESOLUTION_W) || (screen.h < GAME_RESOLUTION_H))
+	{
+		error("At least HD screen resolution is required.");
+	}
+
 	window = SDL_CreateWindow(
 	"PixUfo",
 	SDL_WINDOWPOS_UNDEFINED,
 	SDL_WINDOWPOS_UNDEFINED,
-	unused_size,
-	unused_size,
-	SDL_WINDOW_FULLSCREEN_DESKTOP);
+	GAME_RESOLUTION_W,
+	GAME_RESOLUTION_H,
+	SDL_WINDOW_FULLSCREEN);
 
 	if(window == nullptr)
 	{
@@ -28,10 +38,10 @@ Game::Game()
 	{
 		error("Can't create the renderer.");
 	}
-	if(SDL_GetRendererOutputSize(renderer, &w, &h) != SUCCESS)
-	{
-		error("Can't get the renderer size.");
-	}
+	// if(SDL_GetRendererOutputSize(renderer, &w, &h) != SUCCESS)
+	// {
+	// 	error("Can't get the renderer size.");
+	// }
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
 	{
 		std::cerr << "Can't hide the mouse." << std::endl;

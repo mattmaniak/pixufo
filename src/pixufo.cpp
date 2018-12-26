@@ -36,6 +36,7 @@ int main()
 				if((Ufo.dimensions.y + Ufo.dimensions.h + Ufo.step) <= PixUfo.h)
 				{
 					Ufo.dimensions.y += Ufo.step;
+					std::cout << "Move" << std::endl;
 				}
 				break;
 
