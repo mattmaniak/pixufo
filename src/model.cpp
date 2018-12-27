@@ -1,20 +1,21 @@
 #include "game.hpp"
 #include "model.hpp"
 
-Model::Model(Game* Game, const std::string path, const int _x,
+Model::Model(Game* PixUfo, const std::string path, const int _x,
 const int _y, const int _step) : step(_step)
 {
-	image = Game->load_image(path);
+	image = PixUfo->load_image(path);
 
 	dimensions.x = _x;
 	dimensions.y = _y;
 	dimensions.w = image->w * SCALE_FACTOR;
 	dimensions.h = image->h * SCALE_FACTOR;
 
-	texture = SDL_CreateTextureFromSurface(Game->renderer, image);
+	texture = SDL_CreateTextureFromSurface(PixUfo->renderer, image);
 	if(texture == nullptr)
 	{
 		_error("Can't create the texture from: " + path);
+		exit(1);
 	}
 }
 

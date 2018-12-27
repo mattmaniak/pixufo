@@ -7,19 +7,20 @@
 
 #define SUCCESS 0
 
-#define GAME_RESOLUTION_W 1280
-#define GAME_RESOLUTION_H 720
+#define MIN_RESOLUTION_W 1280
+#define MIN_RESOLUTION_H 720
+
+#define SCREEN_TO_PIXEL_RATIO 240 // TODO: COUNT IT.
+#define SCALE_FACTOR          (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO)
 
 class Game
 {
 	public:
-	bool          runtime;
-	int           w;
-	int           h;
-	SDL_Event     event;
-	SDL_Window*   window;
-	SDL_Renderer* renderer;
-	SDL_Texture*  background;
+	bool            runtime;
+	SDL_DisplayMode screen;
+	SDL_Event       event;
+	SDL_Window*     window;
+	SDL_Renderer*   renderer;
 
 	Game();
 

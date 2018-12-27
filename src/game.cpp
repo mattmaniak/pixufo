@@ -2,30 +2,30 @@
 
 Game::Game()
 {
-	const int       unused_size = 0;
-	SDL_DisplayMode screen;
+	const int unused_size = 0;
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
 	{
 		error("Can't initialize the SDL.");
 	}
-
 	if(SDL_GetDesktopDisplayMode(0, &screen) != SUCCESS)
 	{
 		error("Can't get the screen resolution.");
 	}
-	if((screen.w < GAME_RESOLUTION_W) || (screen.h < GAME_RESOLUTION_H))
+	std::cout << "Screen: " << screen.w << '*' << screen.h << std::endl;
+
+	if((screen.w < MIN_RESOLUTION_W) || (screen.h < MIN_RESOLUTION_H))
 	{
-		error("At least HD screen resolution is required.");
+		error("At least the HD screen resolution is required.");
 	}
 
 	window = SDL_CreateWindow(
 	"PixUfo",
 	SDL_WINDOWPOS_UNDEFINED,
 	SDL_WINDOWPOS_UNDEFINED,
-	GAME_RESOLUTION_W,
-	GAME_RESOLUTION_H,
-	SDL_WINDOW_FULLSCREEN);
+	unused_size,
+	unused_size,
+	SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	if(window == nullptr)
 	{
@@ -38,16 +38,10 @@ Game::Game()
 	{
 		error("Can't create the renderer.");
 	}
-	// if(SDL_GetRendererOutputSize(renderer, &w, &h) != SUCCESS)
-	// {
-	// 	error("Can't get the renderer size.");
-	// }
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
 	{
 		std::cerr << "Can't hide the mouse." << std::endl;
 	}
-	background = load_texture("gfx/planet_orange.bmp");
-
 	runtime = true;
 }
 

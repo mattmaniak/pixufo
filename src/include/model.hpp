@@ -5,8 +5,6 @@
 #include <iostream>
 #include <string>
 
-#define SCALE_FACTOR 4
-
 class Model
 {
 	bool _error(const std::string message);
@@ -17,7 +15,7 @@ class Model
 	SDL_Rect     dimensions; // Texture's position and size.
 	int          step;       // Pixels offset that can step in a single frame.
 
-	Model(Game* Game, const std::string path, const int _x,
+	Model(Game* PixUfo, const std::string path, const int _x,
 	const int _y, const int _step);
 
 	bool destroy();

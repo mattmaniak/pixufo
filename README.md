@@ -1,10 +1,10 @@
 # PixUfo
 ## Requirements:
-- at least HD display,
+- at least a HD display (?),
 - Windows or Linux-based system.
 
 ## TL:DR; guide to the development:
-### Windows:
+### Windows: (WIP)
 1. Download and install the environment.
 [MinGW](mingw.org)
 
@@ -19,15 +19,15 @@ mingw-get install gcc g++ make
 
 5. Dive in, compile and run.
 ```
-cd pixufo/game
-mingw32-make
+cd pixufo
+mingw32-make -f makefile.win
 pixufo.exe
 ```
 
 ### GNU/Linux with GUI (commands for Ubuntu):
 1. Install needed tools.
 ```
-apt update && apt install gcc g++ make sdl2
+sudo apt update && sudo apt install gcc g++ make libsdl2-dev
 ```
 2. Clone the repository.
 ```
@@ -35,7 +35,7 @@ git clone https://gitlab.com/mattmaniak/pixufo.git
 ```
 3. Dive in, compile and run.
 ```
-cd pixufo/game
-make
+cd pixufo
+make -f makefile.nix
 ./pixufo
 ```

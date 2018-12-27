@@ -5,7 +5,9 @@
 int main()
 {
 	Game  PixUfo;
-	Model Ufo(&PixUfo, "gfx/ufo.bmp", 0, 0, 8);
+	Model Background(&PixUfo, "gfx/space_menu.bmp", 0, 0, 0);
+	Model Doctor(&PixUfo, "gfx/doctor.bmp", 640, 0, 0);
+	Model Ufo(&PixUfo, "gfx/ufo.bmp", 0, 0, 32);
 
 	while(PixUfo.runtime) // Close the Game after the user's event.
 	{
@@ -33,10 +35,9 @@ int main()
 				break;
 
 				case SDLK_DOWN:
-				if((Ufo.dimensions.y + Ufo.dimensions.h + Ufo.step) <= PixUfo.h)
+				if((Ufo.dimensions.y + Ufo.dimensions.h + Ufo.step) <= PixUfo.screen.h)
 				{
 					Ufo.dimensions.y += Ufo.step;
-					std::cout << "Move" << std::endl;
 				}
 				break;
 
@@ -48,7 +49,7 @@ int main()
 				break;
 
 				case SDLK_RIGHT:
-				if((Ufo.dimensions.x + Ufo.dimensions.w + Ufo.step) <= PixUfo.w)
+				if((Ufo.dimensions.x + Ufo.dimensions.w + Ufo.step) <= PixUfo.screen.w)
 				{
 					Ufo.dimensions.x += Ufo.step;
 				}
@@ -62,7 +63,8 @@ int main()
 		{
 			return 1;
 		}
-		SDL_RenderCopy(PixUfo.renderer, PixUfo.background, nullptr, nullptr);
+		SDL_RenderCopy(PixUfo.renderer, Background.texture, nullptr, &Background.dimensions);
+		SDL_RenderCopy(PixUfo.renderer, Doctor.texture, nullptr, &Doctor.dimensions);
 		SDL_RenderCopy(PixUfo.renderer, Ufo.texture, nullptr, &Ufo.dimensions);
 		SDL_RenderPresent(PixUfo.renderer);
 
