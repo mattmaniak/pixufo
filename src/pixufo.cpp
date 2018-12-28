@@ -11,6 +11,7 @@ int main()
 
 	while(PixUfo.runtime) // Close the Game after the user's event.
 	{
+
 		SDL_PollEvent(&PixUfo.event);
 		switch(PixUfo.event.type)
 		{
@@ -63,9 +64,10 @@ int main()
 		{
 			return 1;
 		}
-		SDL_RenderCopy(PixUfo.renderer, Background.texture, nullptr, &Background.dimensions);
-		SDL_RenderCopy(PixUfo.renderer, Doctor.texture, nullptr, &Doctor.dimensions);
-		SDL_RenderCopy(PixUfo.renderer, Ufo.texture, nullptr, &Ufo.dimensions);
+		Background.render(&PixUfo, 0, 0);
+		Doctor.render(&PixUfo, 120, 120);
+		Ufo.render(&PixUfo, Ufo.dimensions.x, Ufo.dimensions.y);
+
 		SDL_RenderPresent(PixUfo.renderer);
 
 		SDL_UpdateWindowSurface(PixUfo.window);

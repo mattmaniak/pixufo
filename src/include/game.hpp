@@ -10,7 +10,7 @@
 #define MIN_RESOLUTION_W 1280
 #define MIN_RESOLUTION_H 720
 
-#define SCREEN_TO_PIXEL_RATIO 240 // TODO: COUNT IT.
+#define SCREEN_TO_PIXEL_RATIO 480 // TODO: COUNT IT.
 #define SCALE_FACTOR          (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO)
 
 class Game
@@ -26,6 +26,7 @@ class Game
 
 	SDL_Surface* load_image(const std::string path);
 	SDL_Texture* load_texture(const std::string path);
+	void         loop();
 	bool         quit();
 	bool         error(const std::string message);
 
