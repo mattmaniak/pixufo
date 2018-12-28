@@ -10,8 +10,12 @@
 #define MIN_RESOLUTION_W 1280
 #define MIN_RESOLUTION_H 720
 
-#define SCREEN_TO_PIXEL_RATIO 480 // TODO: COUNT IT.
-#define SCALE_FACTOR          (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO)
+// How many times screen's width is bigger than the pixelarts' pixel.
+#define SCREEN_TO_PIXEL_RATIO 480
+
+// TODO.
+#define FPS         60
+#define FRAME_DELAY (1000 / FPS)
 
 class Game
 {

@@ -5,13 +5,14 @@ Model::Model(Game* PixUfo, const std::string _path, const int _x,
 const int _y, const int _step) : step(_step)
 {
 	path = _path;
+	step *= (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 
 	image = PixUfo->load_image(path);
 
 	dimensions.x = _x;
 	dimensions.y = _y;
-	dimensions.w = image->w * SCALE_FACTOR;
-	dimensions.h = image->h * SCALE_FACTOR;
+	dimensions.w = image->w * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
+	dimensions.h = image->h * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 
 	texture = SDL_CreateTextureFromSurface(PixUfo->renderer, image);
 	if(texture == nullptr)

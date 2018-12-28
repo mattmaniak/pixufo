@@ -7,11 +7,10 @@ int main()
 	Game  PixUfo;
 	Model Background(&PixUfo, "gfx/space_menu.bmp", 0, 0, 0);
 	Model Doctor(&PixUfo, "gfx/doctor.bmp", 640, 0, 0);
-	Model Ufo(&PixUfo, "gfx/ufo.bmp", 0, 0, 32);
+	Model Ufo(&PixUfo, "gfx/ufo.bmp", 0, 0, 2);
 
 	while(PixUfo.runtime) // Close the Game after the user's event.
 	{
-
 		SDL_PollEvent(&PixUfo.event);
 		switch(PixUfo.event.type)
 		{
@@ -71,7 +70,5 @@ int main()
 		SDL_RenderPresent(PixUfo.renderer);
 
 		SDL_UpdateWindowSurface(PixUfo.window);
-
-//		SDL_Delay(FRAME_DELAY);
 	}
 }
