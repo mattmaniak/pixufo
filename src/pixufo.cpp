@@ -5,9 +5,9 @@
 int main()
 {
 	Game  PixUfo;
-	Model Background(&PixUfo, "gfx/space_menu.bmp", 0, 0, 0);
-	Model Doctor(&PixUfo, "gfx/doctor.bmp", 640, 0, 0);
-	Model Ufo(&PixUfo, "gfx/ufo.bmp", 0, 0, 2);
+	Model Background(&PixUfo, "gfx/space_menu.bmp", 0);
+	Model Doctor(&PixUfo, "gfx/doctor.bmp", 0);
+	Model Ufo(&PixUfo, "gfx/ufo.bmp", 100);
 
 	while(PixUfo.runtime) // Close the Game after the user's event.
 	{
@@ -28,30 +28,38 @@ int main()
 				break;
 
 				case SDLK_UP:
-				if(Ufo.dimensions.y >= Ufo.step)
+				if(Ufo.dimensions.y >= Ufo.speed)
 				{
-					Ufo.dimensions.y -= Ufo.step;
+					// Ufo.dimensions.y -= Ufo.speed;
+					Ufo.y -= Ufo.speed * FRAME_DELAY;
+					Ufo.dimensions.y = Ufo.y;
 				}
 				break;
 
 				case SDLK_DOWN:
-				if((Ufo.dimensions.y + Ufo.dimensions.h + Ufo.step) <= PixUfo.screen.h)
+				if((Ufo.dimensions.y + Ufo.dimensions.h + Ufo.speed) <= PixUfo.screen.h)
 				{
-					Ufo.dimensions.y += Ufo.step;
+					// Ufo.dimensions.y += Ufo.speed;
+					Ufo.y += Ufo.speed * FRAME_DELAY;
+					Ufo.dimensions.y = Ufo.y;
 				}
 				break;
 
 				case SDLK_LEFT:
-				if(Ufo.dimensions.x >= Ufo.step)
+				if(Ufo.dimensions.x >= Ufo.speed)
 				{
-					Ufo.dimensions.x -= Ufo.step;
+					// Ufo.dimensions.x -= Ufo.speed;
+					Ufo.x -= Ufo.speed * FRAME_DELAY;
+					Ufo.dimensions.x = Ufo.x;
 				}
 				break;
 
 				case SDLK_RIGHT:
-				if((Ufo.dimensions.x + Ufo.dimensions.w + Ufo.step) <= PixUfo.screen.w)
+				if((Ufo.dimensions.x + Ufo.dimensions.w + Ufo.speed) <= PixUfo.screen.w)
 				{
-					Ufo.dimensions.x += Ufo.step;
+					// Ufo.dimensions.x += Ufo.speed;
+					Ufo.x += Ufo.speed * FRAME_DELAY;
+					Ufo.dimensions.x = Ufo.x;
 				}
 				break;
 			}

@@ -14,8 +14,8 @@
 #define SCREEN_TO_PIXEL_RATIO 480
 
 // TODO.
-#define FPS         60
-#define FRAME_DELAY (1000 / FPS)
+#define FPS         60.0
+#define FRAME_DELAY (1.0 / FPS)
 
 class Game
 {

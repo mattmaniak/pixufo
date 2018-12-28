@@ -1,16 +1,14 @@
 #include "game.hpp"
 #include "model.hpp"
 
-Model::Model(Game* PixUfo, const std::string _path, const int _x,
-const int _y, const int _step) : step(_step)
+Model::Model(Game* PixUfo, const std::string _path, const int _speed)
+: path(_path), speed(_speed)
 {
-	path = _path;
-	step *= (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
+	dimensions.x = x = 0.0;
+	dimensions.y = y = 0.0;
 
 	image = PixUfo->load_image(path);
 
-	dimensions.x = _x;
-	dimensions.y = _y;
 	dimensions.w = image->w * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 	dimensions.h = image->h * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 
