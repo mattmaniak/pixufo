@@ -22,6 +22,8 @@ int main()
 			break;
 
 			case SDL_KEYDOWN: // TODO: AND KEYUP?
+			std::cout << Ufo.x << " and " << Ufo.y << std::endl;
+
 			switch(PixUfo.event.key.keysym.sym)
 			{
 				default:
@@ -65,18 +67,15 @@ int main()
 			}
 			break;
 		}
-		// TODO: CHECKS.
-		// Copies and displays the beautiful title.
 		if(SDL_RenderClear(PixUfo.renderer) != SUCCESS)
 		{
+			std::cerr << "Can't clean the renderer." << std::endl;
 			return 1;
 		}
-		Background.render(&PixUfo, 0, 0);
-		Doctor.render(&PixUfo, 120, 120);
-		Ufo.render(&PixUfo, Ufo.dimensions.x, Ufo.dimensions.y);
+		Background.render(PixUfo.renderer, 0, 0);
+		Doctor.render(PixUfo.renderer, 120, 120);
+		Ufo.render(PixUfo.renderer, Ufo.dimensions.x, Ufo.dimensions.y);
 
 		SDL_RenderPresent(PixUfo.renderer);
-
-		SDL_UpdateWindowSurface(PixUfo.window);
 	}
 }

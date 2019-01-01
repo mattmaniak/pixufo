@@ -1,5 +1,8 @@
 TARGET = pixufo
 
+# TODO: COMPILATION FOR WINDOWS!
+
+# CODE BELOW IS INVALID FOR WINDOWS!
 CC = g++
 CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
 -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Werror \

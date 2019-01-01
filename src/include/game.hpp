@@ -16,8 +16,8 @@
 #define SCREEN_TO_PIXEL_RATIO 480
 
 // TODO.
-#define FPS         60
-#define FRAME_DELAY (1000 / FPS)
+#define FPS         60.0
+#define FRAME_DELAY (1.0 / FPS)
 
 class Game
 {
@@ -45,7 +45,6 @@ class Game
 
 		public:
 		std::string  path;
-		SDL_Surface* image;      // Just a bitmap and some metadata.
 		SDL_Texture* texture;    // Driver-specific representation of data.
 		SDL_Rect     dimensions; // Texture's position and size.
 		int          speed;      // Pixels offset that can step in a single frame.
@@ -55,7 +54,7 @@ class Game
 		Player(const std::string _path, const int _speed);
 
 		void render(int _x, int _y);
-		bool destroy();
+		void destroy();
 
 		~Player();
 	};
