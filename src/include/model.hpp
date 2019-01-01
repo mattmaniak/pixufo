@@ -7,7 +7,7 @@
 
 class Model
 {
-	bool _error(const std::string message);
+	void _error(const std::string message);
 
 	public:
 	std::string  path;
@@ -21,7 +21,7 @@ class Model
 	Model(Game* PixUfo, const std::string _path, const int _speed);
 
 	void render(Game* PixUfo, int _x, int _y);
-	bool destroy();
+	void destroy();
 
 	~Model();
 };

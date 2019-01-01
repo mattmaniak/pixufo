@@ -12,12 +12,8 @@ Model::Model(Game* PixUfo, const std::string _path, const int _speed)
 	dimensions.w = image->w * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 	dimensions.h = image->h * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 
-	texture = SDL_CreateTextureFromSurface(PixUfo->renderer, image);
-	if(texture == nullptr)
-	{
-		_error("Can't create the texture from: " + path);
-		exit(1);
-	}
+	texture = PixUfo->create_texture(image);
+	SDL_FreeSurface(image);
 }
 
 void Model::render(Game* PixUfo, int _x, int _y)
@@ -31,28 +27,13 @@ void Model::render(Game* PixUfo, int _x, int _y)
 	}
 }
 
-bool Model::destroy()
-{
-	std::cout << "Model destructor." << std::endl;
-	if(image != nullptr)
-	{
-		SDL_FreeSurface(image);
-	}
-	if(texture != nullptr)
-	{
-		SDL_DestroyTexture(texture);
-	}
-	return 0;
-}
-
-bool Model::_error(const std::string message)
+void Model::_error(const std::string message)
 {
 	std::cerr << message << std::endl;
-	destroy();
-	return 1;
+	exit(1);
 }
 
 Model::~Model()
 {
-	destroy();
+	std::cout << "Model destructor." << std::endl;
 }

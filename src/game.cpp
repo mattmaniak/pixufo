@@ -2,45 +2,46 @@
 
 Game::Game()
 {
-	const int unused_size = 0;
-
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
 	{
-		error("Can't initialize the SDL.");
+		_error("Can't initialize the SDL.");
 	}
 	if(SDL_GetDesktopDisplayMode(0, &screen) != SUCCESS)
 	{
-		error("Can't get the screen resolution.");
+		_error("Can't get the screen resolution.");
 	}
 	std::cout << "Screen: " << screen.w << '*' << screen.h << std::endl;
 
 	if((screen.w < MIN_RESOLUTION_W) || (screen.h < MIN_RESOLUTION_H))
 	{
-		error("At least the HD screen resolution is required.");
+		_error("At least the HD screen resolution is required.");
 	}
 
 	window = SDL_CreateWindow(
 	"PixUfo",
 	SDL_WINDOWPOS_UNDEFINED,
 	SDL_WINDOWPOS_UNDEFINED,
-	unused_size,
-	unused_size,
+	UNUSED_SIZE,
+	UNUSED_SIZE,
 	SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	if(window == nullptr)
 	{
-		error("Can't create the window.");
+		_error("Can't create the window.");
 	}
 	SDL_SetWindowIcon(window, load_image("gfx/icon.bmp"));
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	// renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
+	// | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // TODO: VSYNC?
+
 	if(renderer == nullptr)
 	{
-		error("Can't create the renderer.");
+		_error("Can't create the renderer.");
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
 	{
-		std::cerr << "Can't hide the mouse." << std::endl;
+		_error("Can't hide the mouse.");
 	}
 	runtime = true;
 }
@@ -48,45 +49,58 @@ Game::Game()
 SDL_Surface* Game::load_image(const std::string path)
 {
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
+
 	if(image == nullptr)
 	{
-		error("Can't load the image: " + path);
+		_error("Can't load the image: " + path);
 	}
 	return image;
 }
 
-SDL_Texture* Game::load_texture(const std::string path)
+SDL_Texture* Game::create_texture(SDL_Surface* image)
 {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(
-	renderer,
-	load_image(path));
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
 
 	if(texture == nullptr)
 	{
-		error("Can't create the texture: " + path);
+		_error("Can't create a texture.");
 	}
 	return texture;
 }
 
-bool Game::quit()
+void Game::loop()
 {
-	if(renderer != nullptr)
-	{
-		SDL_DestroyRenderer(renderer);
-	}
-	if(window != nullptr)
-	{
-		SDL_DestroyWindow(window);
-	}
-	SDL_Quit();
-	return 0;
+	// while(runtime) // Close the Game after the user's event.
+	// {
+	// 	SDL_PollEvent(&event);
+	// 	switch(event.type)
+	// 	{
+	// 		default:
+	// 		break;
+	//
+	// 		case SDL_QUIT:
+	// 		runtime = false;
+	// 		break;
+	//
+	// 		// case SDL_KEYDOWN: // TODO: AND KEYUP?
+	// 		// sth
+	// 	}
+	// }
 }
 
-bool Game::error(const std::string message)
+void Game::quit()
+{
+	std::cout << "Game quit." << std::endl;
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+void Game::_error(const std::string message)
 {
 	std::cerr << message << std::endl;
 	quit();
-	return 1;
+	exit(1);
 }
 
 Game::~Game()
