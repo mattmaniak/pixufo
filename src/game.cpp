@@ -10,8 +10,6 @@ Game::Game()
 	{
 		_error("Can't get the screen resolution.");
 	}
-	std::cout << "Screen: " << screen.w << '*' << screen.h << std::endl;
-
 	if((screen.w < MIN_RESOLUTION_W) || (screen.h < MIN_RESOLUTION_H))
 	{
 		_error("At least the HD screen resolution is required.");
@@ -34,7 +32,6 @@ Game::Game()
 	// renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
 	// | SDL_RENDERER_PRESENTVSYNC);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // TODO: VSYNC?
-
 	if(renderer == nullptr)
 	{
 		_error("Can't create the renderer.");
@@ -43,7 +40,6 @@ Game::Game()
 	{
 		_error("Can't hide the mouse.");
 	}
-	runtime = true;
 }
 
 SDL_Surface* Game::load_image(const std::string path)

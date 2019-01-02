@@ -1,16 +1,15 @@
 #include "game.hpp"
 #include "model.hpp"
 
-Model::Model(Game* PixUfo, const std::string path, const int _speed)
-: _path(path), speed(_speed)
+Model::Model(Game* PixUfo, const std::string path, const float _speed)
+: _path(path)
 {
-	SDL_Surface* image;
+	SDL_Surface* image = PixUfo->load_image(_path);
+
+	speed = _speed * FRAME_DELAY;
 
 	dimensions.x = x = 0.0;
 	dimensions.y = y = 0.0;
-
-	image = PixUfo->load_image(_path);
-
 	dimensions.w = image->w * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 	dimensions.h = image->h * (PixUfo->screen.w / SCREEN_TO_PIXEL_RATIO);
 
@@ -18,10 +17,10 @@ Model::Model(Game* PixUfo, const std::string path, const int _speed)
 	SDL_FreeSurface(image);
 }
 
-void Model::render(SDL_Renderer* renderer, int _x, int _y)
+void Model::render(SDL_Renderer* renderer)
 {
-	dimensions.x = _x;
-	dimensions.y = _y;
+	dimensions.x = x;
+	dimensions.y = y;
 
 	if(SDL_RenderCopy(renderer, _texture, NULL, &dimensions) != SUCCESS)
 	{

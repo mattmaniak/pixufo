@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 
+// How many times screen's width is bigger than the pixelarts' pixel.
+#define SCREEN_TO_PIXEL_RATIO 360
+
 class Model
 {
 	std::string  _path;
@@ -14,13 +17,13 @@ class Model
 
 	public:
 	SDL_Rect dimensions; // Texture's position and size.
-	int      speed;      // Pixels offset that can step in a single frame.
+	float    speed;      // Pixels offset that can step in a single frame.
 	float    x;
 	float    y;
 
-	Model(Game* PixUfo, const std::string _path, const int _speed);
+	Model(Game* PixUfo, const std::string _path, const float _speed);
 
-	void render(SDL_Renderer* renderer, int _x, int _y);
+	void render(SDL_Renderer* renderer);
 	void destroy();
 };
 

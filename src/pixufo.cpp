@@ -5,12 +5,34 @@
 int main()
 {
 	Game  PixUfo;
-	Model Background(&PixUfo, "gfx/space_menu.bmp", 0);
-	Model Doctor(&PixUfo, "gfx/doctor.bmp", 0);
-	Model Ufo(&PixUfo, "gfx/ufo.bmp", 100);
+	Model Background(&PixUfo, "gfx/space_menu_seamless.bmp", 0.0);
+	Model Nebula(&PixUfo, "gfx/nebula_1.bmp", 100.0);
+	Model Ufo(&PixUfo, "gfx/ufo.bmp", 100.0);
 
-	while(PixUfo.runtime) // Close the Game after the user's event.
+	bool nebula_direction;
+
+	while(true) // Close the Game after the user's event.
 	{
+		if(Nebula.x == 0)
+		{
+			nebula_direction = true;
+		}
+		else if((Nebula.x + Nebula.dimensions.w + Nebula.speed) >= PixUfo.screen.w)
+		{
+			nebula_direction = false;
+		}
+		std::cout << (Nebula.x + Nebula.dimensions.w + Nebula.speed) << std::endl;
+
+		if(nebula_direction
+		&& ((Nebula.x + Nebula.dimensions.w) <= PixUfo.screen.w))
+		{
+			Nebula.x += Nebula.speed;
+		}
+		else if((Nebula.x + Nebula.dimensions.w) >= 0)
+		{
+			Nebula.x -= Nebula.speed;
+		}
+
 		SDL_PollEvent(&PixUfo.event);
 		switch(PixUfo.event.type)
 		{
@@ -18,10 +40,9 @@ int main()
 			break;
 
 			case SDL_QUIT:
-			PixUfo.runtime = false;
-			break;
+			return 0;
 
-			case SDL_KEYDOWN: // TODO: AND KEYUP?
+			case SDL_KEYDOWN:
 			std::cout << Ufo.x << " and " << Ufo.y << std::endl;
 
 			switch(PixUfo.event.key.keysym.sym)
@@ -30,38 +51,30 @@ int main()
 				break;
 
 				case SDLK_UP:
-				if(Ufo.dimensions.y >= Ufo.speed)
+				if(Ufo.y >= Ufo.speed)
 				{
-					// Ufo.dimensions.y -= Ufo.speed;
-					Ufo.y -= Ufo.speed * FRAME_DELAY;
-					Ufo.dimensions.y = Ufo.y;
+					Ufo.y -= Ufo.speed;
 				}
 				break;
 
 				case SDLK_DOWN:
-				if((Ufo.dimensions.y + Ufo.dimensions.h + Ufo.speed) <= PixUfo.screen.h)
+				if((Ufo.y + Ufo.dimensions.h + Ufo.speed) <= PixUfo.screen.h)
 				{
-					// Ufo.dimensions.y += Ufo.speed;
-					Ufo.y += Ufo.speed * FRAME_DELAY;
-					Ufo.dimensions.y = Ufo.y;
+					Ufo.y += Ufo.speed ;
 				}
 				break;
 
 				case SDLK_LEFT:
-				if(Ufo.dimensions.x >= Ufo.speed)
+				if(Ufo.x >= Ufo.speed)
 				{
-					// Ufo.dimensions.x -= Ufo.speed;
-					Ufo.x -= Ufo.speed * FRAME_DELAY;
-					Ufo.dimensions.x = Ufo.x;
+					Ufo.x -= Ufo.speed ;
 				}
 				break;
 
 				case SDLK_RIGHT:
-				if((Ufo.dimensions.x + Ufo.dimensions.w + Ufo.speed) <= PixUfo.screen.w)
+				if((Ufo.x + Ufo.dimensions.w + Ufo.speed) <= PixUfo.screen.w)
 				{
-					// Ufo.dimensions.x += Ufo.speed;
-					Ufo.x += Ufo.speed * FRAME_DELAY;
-					Ufo.dimensions.x = Ufo.x;
+					Ufo.x += Ufo.speed;
 				}
 				break;
 			}
@@ -72,9 +85,9 @@ int main()
 			std::cerr << "Can't clean the renderer." << std::endl;
 			return 1;
 		}
-		Background.render(PixUfo.renderer, 0, 0);
-		Doctor.render(PixUfo.renderer, 120, 120);
-		Ufo.render(PixUfo.renderer, Ufo.dimensions.x, Ufo.dimensions.y);
+		Background.render(PixUfo.renderer);
+		Nebula.render(PixUfo.renderer);
+		Ufo.render(PixUfo.renderer);
 
 		SDL_RenderPresent(PixUfo.renderer);
 	}

@@ -12,9 +12,6 @@
 #define MIN_RESOLUTION_W 1280
 #define MIN_RESOLUTION_H 720
 
-// How many times screen's width is bigger than the pixelarts' pixel.
-#define SCREEN_TO_PIXEL_RATIO 480
-
 // TODO.
 #define FPS         60.0
 #define FRAME_DELAY (1.0 / FPS)
@@ -24,7 +21,6 @@ class Game
 	void _error(const std::string message);
 
 	public:
-	bool            runtime;
 	SDL_DisplayMode screen;
 	SDL_Event       event;
 	SDL_Window*     window;
