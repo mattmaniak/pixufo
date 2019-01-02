@@ -6,14 +6,14 @@ int main()
 {
 	Game  PixUfo;
 	Model Background(&PixUfo, "gfx/space_menu_seamless.bmp", 0.0);
-	Model Nebula(&PixUfo, "gfx/nebula_1.bmp", 100.0);
-	Model Ufo(&PixUfo, "gfx/ufo.bmp", 100.0);
+	Model Nebula(&PixUfo, "gfx/nebula_1.bmp", 200.0);
+	Model Ufo(&PixUfo, "gfx/ufo.bmp", 200.0);
 
 	bool nebula_direction;
 
 	while(true) // Close the Game after the user's event.
 	{
-		if(Nebula.x == 0)
+		if(Nebula.x < Nebula.speed)
 		{
 			nebula_direction = true;
 		}
@@ -21,14 +21,13 @@ int main()
 		{
 			nebula_direction = false;
 		}
-		std::cout << (Nebula.x + Nebula.dimensions.w + Nebula.speed) << std::endl;
 
 		if(nebula_direction
 		&& ((Nebula.x + Nebula.dimensions.w) <= PixUfo.screen.w))
 		{
 			Nebula.x += Nebula.speed;
 		}
-		else if((Nebula.x + Nebula.dimensions.w) >= 0)
+		else if(Nebula.x >= Nebula.speed)
 		{
 			Nebula.x -= Nebula.speed;
 		}
@@ -43,8 +42,6 @@ int main()
 			return 0;
 
 			case SDL_KEYDOWN:
-			std::cout << Ufo.x << " and " << Ufo.y << std::endl;
-
 			switch(PixUfo.event.key.keysym.sym)
 			{
 				default:

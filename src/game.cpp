@@ -29,9 +29,9 @@ Game::Game()
 	}
 	SDL_SetWindowIcon(window, load_image("gfx/icon.bmp"));
 
-	// renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
-	// | SDL_RENDERER_PRESENTVSYNC);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // TODO: VSYNC?
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
+	| SDL_RENDERER_PRESENTVSYNC);
+	// renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // TODO: VSYNC?
 	if(renderer == nullptr)
 	{
 		_error("Can't create the renderer.");
