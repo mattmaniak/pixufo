@@ -29,9 +29,7 @@ Game::Game()
 	}
 	SDL_SetWindowIcon(window, load_image("gfx/icon.bmp"));
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
-	| SDL_RENDERER_PRESENTVSYNC);
-	// renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // TODO: VSYNC?
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if(renderer == nullptr)
 	{
 		_error("Can't create the renderer.");
@@ -66,7 +64,7 @@ SDL_Texture* Game::create_texture(SDL_Surface* image)
 
 void Game::loop()
 {
-	// while(runtime) // Close the Game after the user's event.
+	// for(;;) // Close the Game after the user's event.
 	// {
 	// 	SDL_PollEvent(&event);
 	// 	switch(event.type)
@@ -75,8 +73,7 @@ void Game::loop()
 	// 		break;
 	//
 	// 		case SDL_QUIT:
-	// 		runtime = false;
-	// 		break;
+	// 		return;
 	//
 	// 		// case SDL_KEYDOWN: // TODO: AND KEYUP?
 	// 		// sth
@@ -86,7 +83,6 @@ void Game::loop()
 
 void Game::quit()
 {
-	std::cout << "Game quit." << std::endl;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -101,6 +97,5 @@ void Game::_error(const std::string message)
 
 Game::~Game()
 {
-	std::cout << "Game destructor." << std::endl;
 	quit();
 }

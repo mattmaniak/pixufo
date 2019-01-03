@@ -1,12 +1,12 @@
 #include "game.hpp"
 #include "model.hpp"
 
-Model::Model(Game* PixUfo, const std::string path, const float _speed)
+Model::Model(Game* PixUfo, const std::string path, const float _step)
 : _path(path)
 {
 	SDL_Surface* image = PixUfo->load_image(_path);
 
-	speed = _speed * FRAME_DELAY;
+	step = _step * FRAME_DELAY;
 
 	dimensions.x = x = 0.0;
 	dimensions.y = y = 0.0;
@@ -24,7 +24,7 @@ void Model::render(SDL_Renderer* renderer)
 
 	if(SDL_RenderCopy(renderer, _texture, NULL, &dimensions) != SUCCESS)
 	{
-		_error("Can't render the _texture: " + _path);
+		_error("Can't render the texture: " + _path);
 	}
 }
 
