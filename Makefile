@@ -3,8 +3,8 @@ TARGET = pixufo
 CC = g++
 CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
 -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Werror \
--Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wundef \
--Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wno-unused \
+-Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wundef \
+-Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow \
 -Wsign-conversion -Wswitch-default -Wstrict-null-sentinel -Wstrict-overflow=5
 
 CXXFLAGS = -I$(INC_DIR) -std=c++11 -lSDL2 $(CXXWARNINGS)

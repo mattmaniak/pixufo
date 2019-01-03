@@ -38,6 +38,7 @@ Game::Game()
 	{
 		_error("Can't hide the mouse.");
 	}
+	delta_time = 0.0;
 }
 
 SDL_Surface* Game::load_image(const std::string path)

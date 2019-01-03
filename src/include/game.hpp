@@ -21,10 +21,11 @@ class Game
 	void _error(const std::string message);
 
 	public:
-	SDL_DisplayMode screen;
 	SDL_Event       event;
+	SDL_DisplayMode screen;
 	SDL_Window*     window;
 	SDL_Renderer*   renderer;
+	float           delta_time; // Single frame's time in seconds.
 
 	Game();
 
