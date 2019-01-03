@@ -22,10 +22,10 @@ class Game
 
 	public:
 	SDL_Event       event;
-	SDL_DisplayMode screen;
+	SDL_DisplayMode display;
 	SDL_Window*     window;
 	SDL_Renderer*   renderer;
-	float           delta_time; // Single frame's time in seconds.
+	double          delta_time; // Single frame's time in seconds.
 
 	Game();
 
@@ -45,8 +45,8 @@ class Game
 		SDL_Texture* texture;    // Driver-specific representation of data.
 		SDL_Rect     dimensions; // Texture's position and size.
 		int          speed;      // Pixels offset that can step in a single frame.
-		float        x;
-		float        y;
+		double       x;
+		double       y;
 
 		Player(const std::string _path, const int _speed);
 

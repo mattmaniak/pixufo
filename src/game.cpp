@@ -6,13 +6,13 @@ Game::Game()
 	{
 		_error("Can't initialize the SDL.");
 	}
-	if(SDL_GetDesktopDisplayMode(0, &screen) != SUCCESS)
+	if(SDL_GetDesktopDisplayMode(0, &display) != SUCCESS)
 	{
-		_error("Can't get the screen resolution.");
+		_error("Can't get the initial display mode.");
 	}
-	if((screen.w < MIN_RESOLUTION_W) || (screen.h < MIN_RESOLUTION_H))
+	if((display.w < MIN_RESOLUTION_W) || (display.h < MIN_RESOLUTION_H))
 	{
-		_error("At least the HD screen resolution is required.");
+		_error("At least the HD display resolution is required.");
 	}
 
 	window = SDL_CreateWindow(
@@ -29,7 +29,9 @@ Game::Game()
 	}
 	SDL_SetWindowIcon(window, load_image("gfx/icon.bmp"));
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1,
+	SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
 	if(renderer == nullptr)
 	{
 		_error("Can't create the renderer.");

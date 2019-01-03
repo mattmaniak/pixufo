@@ -1,4 +1,4 @@
-TARGET = pixufo
+TARGET = PixUfo
 
 CC = g++
 CXXWARNINGS = -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wsign-promo \
