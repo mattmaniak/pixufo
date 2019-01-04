@@ -42,9 +42,9 @@ class Game
 
 		public:
 		std::string  path;
-		SDL_Texture* texture;    // Driver-specific representation of data.
-		SDL_Rect     dimensions; // Texture's position and size.
-		int          speed;      // Pixels offset that can step in a single frame.
+		SDL_Texture* texture;  // Driver-specific representation of data.
+		SDL_Rect     geometry; // Texture's position and size.
+		int          speed;    // Pixels offset that can step in a single frame.
 		double       x;
 		double       y;
 

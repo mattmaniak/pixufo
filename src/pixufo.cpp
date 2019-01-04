@@ -11,26 +11,37 @@ int main()
 
 	bool nebula_direction;
 
+	double fps = 0.0;
+	double elapsed_time = 0.0;
+	double frame_start_time;
+
+	double nebula_start_time = SDL_GetTicks(); // DEBUG.
+
+	// if(SDL_GetDisplayMode(0, 0, &PixUfo.display) != SUCCESS)
+	// {
+	// 	std::cerr << "Can't get the current display mode." << std::endl;
+	// 	return 1;
+	// }
+	// PixUfo.delta_time = 1.0 / static_cast<double>(PixUfo.display.refresh_rate);
+
 	for(;;) // Close the Game after the user's event.
 	{
-		if(SDL_GetDisplayMode(0, 0, &PixUfo.display) != SUCCESS)
-		{
-			std::cerr << "Can't get the current display mode." << std::endl;
-			return 1;
-		}
-		PixUfo.delta_time = 1.0 / static_cast<double>(PixUfo.display.refresh_rate);
+		frame_start_time = SDL_GetTicks();
+
+		// PixUfo.delta_time = 1.0 / static_cast<double>(PixUfo.display.refresh_rate);
 
 		if(Nebula.x < Nebula.speed)
 		{
 			nebula_direction = true;
 		}
-		else if((Nebula.x + Nebula.dimensions.w + Nebula.speed) >= PixUfo.display.w)
+		else if((Nebula.x + Nebula.geometry.w + Nebula.speed) >= PixUfo.display.w)
 		{
 			nebula_direction = false;
+			std::cout << "Nebula time: " << SDL_GetTicks() - nebula_start_time << std::endl;
+			return 0;
 		}
 
-		if(nebula_direction
-		&& ((Nebula.x + Nebula.dimensions.w) <= PixUfo.display.w))
+		if(nebula_direction && ((Nebula.x + Nebula.geometry.w) <= PixUfo.display.w))
 		{
 			Nebula.x += Nebula.speed;
 		}
@@ -62,7 +73,7 @@ int main()
 				break;
 
 				case SDLK_DOWN:
-				if((Ufo.y + Ufo.dimensions.h + Ufo.speed) <= PixUfo.display.h)
+				if((Ufo.y + Ufo.geometry.h + Ufo.speed) <= PixUfo.display.h)
 				{
 					Ufo.y += Ufo.speed;
 				}
@@ -76,7 +87,7 @@ int main()
 				break;
 
 				case SDLK_RIGHT:
-				if((Ufo.x + Ufo.dimensions.w + Ufo.speed) <= PixUfo.display.w)
+				if((Ufo.x + Ufo.geometry.w + Ufo.speed) <= PixUfo.display.w)
 				{
 					Ufo.x += Ufo.speed;
 				}
@@ -95,23 +106,20 @@ int main()
 
 		SDL_RenderPresent(PixUfo.renderer);
 
-		// fps++;
-		// if(fps > std::numeric_limits<double>::max())
-		// {
-		// 	std::cerr << "Too many frames per second." << std::endl;
-		// 	return 1;
-		// }
+		if(++fps >= std::numeric_limits<double>::max())
+		{
+			std::cerr << "Too many frames per second." << std::endl;
+			return 1;
+		}
 
-		// PixUfo.delta_time = (SDL_GetTicks() - frame_start_time) / 1000.0;
-		// elapsed_time += PixUfo.delta_time;
-		// if(elapsed_time >= 1.0)
-		// {
-		// 	std::cout << "fps: " << PixUfo.delta_time << std::endl;
-		// 	std::cout << PixUfo.screen.refresh_rate << std::endl;
-		//
-		// 	elapsed_time = 0.0;
-		// 	fps = 0.0;
-		//
-		// }
+		PixUfo.delta_time = (static_cast<double>(SDL_GetTicks()) - frame_start_time) / 1000.0;
+		if((elapsed_time += PixUfo.delta_time) >= 1.0)
+		{
+			std::cout << "delta " << PixUfo.delta_time << std::endl;
+			std::cout << fps << std::endl;
+
+			elapsed_time = 0.0;
+			fps = 0.0;
+		}
 	}
 }

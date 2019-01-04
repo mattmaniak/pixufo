@@ -16,9 +16,9 @@ class Model
 	void _error(const std::string message);
 
 	public:
-	SDL_Rect dimensions; // Texture's position and size.
-	double   step;       // Pixels offset that can step in a one second.
-	double   speed;      // Real pixels per frame move.
+	SDL_Rect geometry; // Texture's position and size.
+	double   step;     // Pixels offset that can step in a one second.
+	double   speed;    // Real pixels per frame move.
 	double   x;
 	double   y;
 
