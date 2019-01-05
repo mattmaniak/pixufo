@@ -40,7 +40,12 @@ Game::Game()
 	{
 		_error("Can't hide the mouse.");
 	}
-	delta_time = 0.0;
+	delta_time = 1.0 / display.refresh_rate;
+}
+
+Game::~Game()
+{
+	quit();
 }
 
 SDL_Surface* Game::load_image(const std::string path)
@@ -67,21 +72,12 @@ SDL_Texture* Game::create_texture(SDL_Surface* image)
 
 void Game::loop()
 {
-	// for(;;) // Close the Game after the user's event.
-	// {
-	// 	SDL_PollEvent(&event);
-	// 	switch(event.type)
-	// 	{
-	// 		default:
-	// 		break;
-	//
-	// 		case SDL_QUIT:
-	// 		return;
-	//
-	// 		// case SDL_KEYDOWN: // TODO: AND KEYUP?
-	// 		// sth
-	// 	}
-	// }
+	// TODO
+}
+
+void Game::keyboard()
+{
+
 }
 
 void Game::quit()
@@ -96,9 +92,4 @@ void Game::_error(const std::string message)
 	std::cerr << message << std::endl;
 	quit();
 	exit(1);
-}
-
-Game::~Game()
-{
-	quit();
 }

@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <limits>
 #include <string>
 
 #define SUCCESS 0
@@ -11,10 +12,6 @@
 
 #define MIN_RESOLUTION_W 1280
 #define MIN_RESOLUTION_H 720
-
-// TODO.
-#define FPS         60.0
-#define FRAME_DELAY (1.0 / FPS)
 
 class Game
 {
@@ -28,33 +25,14 @@ class Game
 	double          delta_time; // Single frame's time in seconds.
 
 	Game();
+	~Game();
 
 	SDL_Surface* load_image(const std::string path);
 	SDL_Texture* create_texture(SDL_Surface* image);
 	void         loop();
+	void         keyboard();
 	void         quit();
 
-	~Game();
-
-	class Player
-	{
-		bool _error(const std::string message);
-
-		public:
-		std::string  path;
-		SDL_Texture* texture;  // Driver-specific representation of data.
-		SDL_Rect     geometry; // Texture's position and size.
-		int          speed;    // Pixels offset that can step in a single frame.
-		double       x;
-		double       y;
-
-		Player(const std::string _path, const int _speed);
-
-		void render(int _x, int _y);
-		void destroy();
-
-		~Player();
-	};
 };
 
 #endif
