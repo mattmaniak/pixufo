@@ -5,19 +5,30 @@
 int main()
 {
 	Game  PixUfo;
-	Model Background(&PixUfo, "gfx/space_menu_seamless.bmp", 0.0);
-	Model Nebula(&PixUfo, "gfx/nebula_big.bmp", 200.0);
-	Model Player(&PixUfo, "gfx/ufo.bmp", 200.0);
+	Model Background(&PixUfo, "gfx/space_menu_seamless.bmp", 0.0f);
+	Model Nebula(&PixUfo, "gfx/nebula_big.bmp", 200.0f);
+	Model Player(&PixUfo, "gfx/ufo.bmp", 200.0f);
 
 	bool nebula_direction;
 
-	double fps = 0.0;
-	double elapsed_time = 0.0;
-	double frame_start_time;
+	Uint32 fps = 0;
+	float  elapsed_time = 0.0f;
+	float  frame_start_time;
 
 	for(;;) // Close the Game after the user's event.
 	{
-		frame_start_time = SDL_GetTicks();
+		frame_start_time = SDL_GetTicks() / 1000.0f;
+
+		if(SDL_RenderClear(PixUfo.renderer) != SUCCESS)
+		{
+			std::cerr << "Can't clean the renderer." << std::endl;
+			return 1;
+		}
+		Background.render(&PixUfo);
+		Nebula.render(&PixUfo);
+		Player.render(&PixUfo);
+
+		SDL_RenderPresent(PixUfo.renderer);
 
 		if(Nebula.x < Nebula.speed)
 		{
@@ -82,28 +93,18 @@ int main()
 			}
 			break;
 		}
-		if(SDL_RenderClear(PixUfo.renderer) != SUCCESS)
-		{
-			std::cerr << "Can't clean the renderer." << std::endl;
-			return 1;
-		}
-		Background.render(&PixUfo);
-		Nebula.render(&PixUfo);
-		Player.render(&PixUfo);
 
-		SDL_RenderPresent(PixUfo.renderer);
-
-		if(++fps >= std::numeric_limits<double>::max())
+		if(++fps >= std::numeric_limits<Uint32>::max())
 		{
 			std::cerr << "Too many frames per second." << std::endl;
 			return 1;
 		}
 
-		PixUfo.delta_time = (SDL_GetTicks() - frame_start_time) / 1000.0;
-		if((elapsed_time += PixUfo.delta_time) >= 1.0)
+		PixUfo.delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
+		if((elapsed_time += PixUfo.delta_time) >= 1.0f)
 		{
-			fps = 0.0;
-			elapsed_time = 0.0;
+			fps = 0;
+			elapsed_time = 0.0f;
 		}
 	}
 }

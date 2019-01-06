@@ -17,12 +17,12 @@ class Model
 
 	public:
 	SDL_Rect geometry; // Texture's position and size.
-	double   step;     // Pixels offset that can step in a one second.
-	double   speed;    // Real pixels per frame move.
-	double   x;
-	double   y;
+	float    step;     // Pixels offset that can step in a one second.
+	float    speed;    // Real pixels per frame move.
+	float    x;
+	float    y;
 
-	Model(Game* PixUfo, const std::string _path, const double _step);
+	Model(Game* PixUfo, const std::string _path, const float _step);
 
 	void render(Game* PixUfo);
 	void destroy();

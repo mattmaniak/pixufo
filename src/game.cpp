@@ -40,7 +40,6 @@ Game::Game()
 	{
 		_error("Can't hide the mouse.");
 	}
-	delta_time = 1.0 / display.refresh_rate;
 }
 
 Game::~Game()

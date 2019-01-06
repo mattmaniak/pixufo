@@ -1,15 +1,17 @@
 #include "game.hpp"
 #include "model.hpp"
 
-Model::Model(Game* PixUfo, const std::string path, const double _step)
+Model::Model(Game* PixUfo, const std::string path, const float _step)
 : _path(path), step(_step)
 {
 	SDL_Surface* image = PixUfo->load_image(_path);
 
-	geometry.x = x = 0.0;
-	geometry.y = y = 0.0;
+	geometry.x = x = 0.0f;
+	geometry.y = y = 0.0f;
 	geometry.w = image->w * (PixUfo->display.w / SCREEN_TO_PIXEL_RATIO);
 	geometry.h = image->h * (PixUfo->display.w / SCREEN_TO_PIXEL_RATIO);
+
+	PixUfo->delta_time = 1.0f / PixUfo->display.refresh_rate;
 
 	_texture = PixUfo->create_texture(image);
 	SDL_FreeSurface(image);

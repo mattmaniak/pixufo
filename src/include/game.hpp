@@ -22,7 +22,7 @@ class Game
 	SDL_DisplayMode display;
 	SDL_Window*     window;
 	SDL_Renderer*   renderer;
-	double          delta_time; // Single frame's time in seconds.
+	float           delta_time; // Single frame's time in seconds.
 
 	Game();
 	~Game();
