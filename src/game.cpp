@@ -15,23 +15,17 @@ Game::Game()
 		_error("At least the HD display resolution is required.");
 	}
 
-	window = SDL_CreateWindow(
-	"PixUfo",
-	SDL_WINDOWPOS_UNDEFINED,
-	SDL_WINDOWPOS_UNDEFINED,
-	UNUSED_SIZE,
-	UNUSED_SIZE,
-	SDL_WINDOW_FULLSCREEN_DESKTOP);
-
+	window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
+	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE,
+	                          UNUSED_SIZE, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(window == nullptr)
 	{
 		_error("Can't create the window.");
 	}
 	SDL_SetWindowIcon(window, load_image("gfx/icon.bmp"));
 
-	renderer = SDL_CreateRenderer(window, -1,
-	SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
+	                              | SDL_RENDERER_PRESENTVSYNC);
 	if(renderer == nullptr)
 	{
 		_error("Can't create the renderer.");
