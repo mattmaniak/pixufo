@@ -1,8 +1,9 @@
 #ifndef PIXUFO_HPP
 #define PIXUFO_HPP
 
-#include <SDL2/SDL.h>
 #include <iostream>
 #include <limits>
+#include <SDL2/SDL.h>
+#include <vector>
 
 #endif

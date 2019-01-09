@@ -1,33 +1,43 @@
 #include "game.hpp"
+#include "window.hpp"
+#include "sdlwrap.hpp"
 #include "model.hpp"
 
-Model::Model(Game* PixUfo, const std::string path, const float _step)
-: _path(path), step(_step)
+Model::Model(Window* Window, const std::string path, const float _speed)
+: _path(path), speed(_speed)
 {
-	SDL_Surface* image = PixUfo->load_image(_path);
+	SDL_Surface* image = sdlwrap::load_image(_path);
 
 	geometry.x = x = 0.0f;
 	geometry.y = y = 0.0f;
-	geometry.w = image->w * (PixUfo->display.w / SCREEN_TO_PIXEL_RATIO);
-	geometry.h = image->h * (PixUfo->display.w / SCREEN_TO_PIXEL_RATIO);
+	geometry.w = image->w * count_scale(Window);
+	geometry.h = image->h * count_scale(Window);
 
-	PixUfo->delta_time = 1.0f / PixUfo->display.refresh_rate;
-
-	_texture = PixUfo->create_texture(image);
+	_texture = Window->create_texture(image);
 	SDL_FreeSurface(image);
 }
 
-void Model::render(Game* PixUfo)
+void Model::render(Window* Window)
 {
 	geometry.x = x;
 	geometry.y = y;
 
-	speed = step * PixUfo->delta_time;
+	step = speed * Window->delta_time;
 
-	if(SDL_RenderCopy(PixUfo->renderer, _texture, NULL, &geometry) != SUCCESS)
+	if(SDL_RenderCopy(Window->renderer, _texture, NULL, &geometry) != SUCCESS)
 	{
 		_error("Can't render the texture: " + _path);
 	}
+}
+
+int Model::count_scale(Window* Window) // TODO: STEP DEPENDS ON IT?
+{
+	const int pixelart_dot_size = 6; // Eg. 5 px, so pixelarts' dot = 5x5.
+
+	int dot_to_screen_ratio = Window->display.w / pixelart_dot_size;
+	int scale_ratio         = Window->display.w / dot_to_screen_ratio;
+
+	return scale_ratio;
 }
 
 void Model::_error(const std::string message)

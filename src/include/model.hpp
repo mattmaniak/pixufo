@@ -1,12 +1,9 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include <SDL2/SDL.h>
 #include <iostream>
+#include <SDL2/SDL.h>
 #include <string>
-
-// How many times screen's width is bigger than the pixelarts' pixel.
-#define SCREEN_TO_PIXEL_RATIO 320
 
 class Model
 {
@@ -17,14 +14,16 @@ class Model
 
 	public:
 	SDL_Rect geometry; // Texture's position and size.
-	float    step;     // Pixels offset that can step in a one second.
-	float    speed;    // Real pixels per frame move.
+	float    speed;    // Pixels offset that can move in a one second.
+	float    step;     // Real pixels per frame move.
 	float    x;
 	float    y;
+	float    distance_to_player;
 
-	Model(Game* PixUfo, const std::string _path, const float _step);
+	Model(Window* Window, const std::string _path, const float _speed);
 
-	void render(Game* PixUfo);
+	void render(Window* Window);
+	int  count_scale(Window* Window);
 	void destroy();
 };
 
