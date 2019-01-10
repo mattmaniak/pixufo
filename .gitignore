@@ -1,3 +1,6 @@
 pixufo
 PixUfo
-*.o
+pixufo.exe
+PixUfo.exe
+obj/*.o
+SDL2-2.*

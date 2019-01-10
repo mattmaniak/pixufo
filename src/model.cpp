@@ -1,7 +1,7 @@
-#include "game.hpp"
-#include "window.hpp"
-#include "sdlwrap.hpp"
-#include "model.hpp"
+#include "include/game.hpp"
+#include "include/window.hpp"
+#include "include/sdlwrap.hpp"
+#include "include/model.hpp"
 
 Model::Model(Window* Window, const std::string path, const float _speed)
 : _path(path), speed(_speed)

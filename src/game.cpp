@@ -1,5 +1,5 @@
-#include "sdlwrap.hpp"
-#include "game.hpp"
+#include "include/sdlwrap.hpp"
+#include "include/game.hpp"
 
 Game::Game()
 {

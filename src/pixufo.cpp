@@ -1,15 +1,19 @@
-#include "window.hpp"
-#include "game.hpp"
-#include "model.hpp"
-#include "pixufo.hpp"
+#include "include/window.hpp"
+#include "include/game.hpp"
+#include "include/model.hpp"
+#include "include/pixufo.hpp"
 
-int main()
+#ifdef _WIN32
+int WinMain(int argc, char** argv)
+#else
+int main(int argc, char** argv)
+#endif
 {
 	Game   PixUfo;
 	Window Window;
-	Model  Background(&Window, "gfx/space_menu_seamless.bmp", 0.0f);
-	Model  Nebula(&Window, "gfx/nebula_medium.bmp", 200.0f);
-	Model  Player(&Window, "gfx/ufo.bmp", 200.0f);
+	Model  Background(&Window, "space_menu_seamless.bmp", 0.0f);
+	Model  Nebula(&Window, "nebula_medium.bmp", 200.0f);
+	Model  Player(&Window, "ufo.bmp", 200.0f);
 
 	// std::vector<Model> Entities = {}; TODO.
 
@@ -97,4 +101,5 @@ int main()
 		}
 		Window.count_fps();
 	}
+	return 0;
 }

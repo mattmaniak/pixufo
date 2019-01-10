@@ -1,5 +1,5 @@
-#include "sdlwrap.hpp"
-#include "window.hpp"
+#include "include/sdlwrap.hpp"
+#include "include/window.hpp"
 
 Window::Window()
 {
@@ -15,7 +15,6 @@ Window::Window()
 	{
 		_error("At least the HD display resolution is required.");
 	}
-
 	window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
 	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE,
 	                          UNUSED_SIZE, SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -23,10 +22,12 @@ Window::Window()
 	{
 		_error("Can't create the window.");
 	}
-	SDL_SetWindowIcon(window, sdlwrap::load_image("gfx/icon.bmp"));
+	SDL_SetWindowIcon(window, sdlwrap::load_image("icon.bmp"));
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
 	                              | SDL_RENDERER_PRESENTVSYNC);
+	std::cout << "WORKS AGAIN!" << std::endl;
+
 	if(renderer == nullptr)
 	{
 		_error("Can't create the renderer.");

@@ -10,9 +10,6 @@
 
 #define UNUSED_SIZE 0
 
-#define MIN_RESOLUTION_W 1280
-#define MIN_RESOLUTION_H 720
-
 class Game
 {
 	void _error(const std::string message);

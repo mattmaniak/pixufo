@@ -6,22 +6,23 @@
 ## TL:DR; guide to the development:
 ### Windows: (WIP)
 1. Download and install the environment.
-[MinGW](mingw.org)
+[tdm-gcc](http://tdm-gcc.tdragon.net/)
 
-2. Add the environment variable PATH with the value: C:\MinGW\bin or extend this
-one with Your current MinGW installation path.
+2. Install it with: gcc, g++ and mingw32-make (all should be checked by default).
 
-3. Open the cmd.exe and install needed tools.
-```
-mingw-get install gcc g++ make
-```
-4. Clone the repository with Git.
+3. Check PATH environment variable and add if not exists with the value: C:\TDM-GCC-64\bin or extend this
+one with Your current TDM64 installation path.
 
-5. Dive in, compile and run.
+4. Clone the repository with Git and enter it's directory.
+
+5. Download SDL2 development files.
+[SDL2-devel-2.0.9-mingw.tar.gz](https://www.libsdl.org/download-2.0.php)
+Extract them and put the "SDL2-2.0.9" in the game's root folder.
+
+6. Compile and run.
 ```
-cd pixufo
-mingw32-make -f makefile.win
-pixufo.exe
+mingw32-make -f Makefile.win
+PixUfo.exe
 ```
 
 ### GNU/Linux with GUI (commands for Ubuntu):
