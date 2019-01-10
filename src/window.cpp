@@ -1,40 +1,41 @@
-#include "include/sdlwrap.hpp"
-#include "include/window.hpp"
+#include "sdlwrap.hpp"
+#include "window.hpp"
 
 Window::Window()
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
 	{
-		_error("Can't initialize the SDL.");
+		_error();
 	}
 	if(SDL_GetDesktopDisplayMode(0, &display) != SUCCESS)
 	{
-		_error("Can't get the initial display mode.");
+		_error();
 	}
 	if((display.w < MIN_RESOLUTION_W) || (display.h < MIN_RESOLUTION_H))
 	{
-		_error("At least the HD display resolution is required.");
+		std::cerr << "At least the HD display resolution is required." << std::endl;
+		SDL_ClearError();
+		_error();
 	}
 	window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
 	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE,
 	                          UNUSED_SIZE, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(window == nullptr)
 	{
-		_error("Can't create the window.");
+		_error();
 	}
-	SDL_SetWindowIcon(window, sdlwrap::load_image("icon.bmp"));
+	SDL_SetWindowIcon(window, sdlwrap::load_image("icon"));
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
 	                              | SDL_RENDERER_PRESENTVSYNC);
-	std::cout << "WORKS AGAIN!" << std::endl;
 
 	if(renderer == nullptr)
 	{
-		_error("Can't create the renderer.");
+		_error();
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
 	{
-		_error("Can't hide the mouse.");
+		_error();
 	}
 }
 
@@ -44,7 +45,7 @@ SDL_Texture* Window::create_texture(SDL_Surface* image)
 
 	if(texture == nullptr)
 	{
-		_error("Can't create a texture.");
+		_error();
 	}
 	return texture;
 }
@@ -59,7 +60,6 @@ void Window::count_fps()
 	if(++fps >= std::numeric_limits<Uint32>::max())
 	{
 		std::cerr << "Too many frames per second." << std::endl;
-		// return 1;
 		return;
 	}
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
@@ -71,16 +71,16 @@ void Window::count_fps()
 	}
 }
 
-void Window::quit()
+void Window::destroy()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
 
-void Window::_error(const std::string message)
+void Window::_error()
 {
-	std::cerr << message << std::endl;
-	quit();
+	std::cerr << SDL_GetError() << std::endl;
+	destroy();
 	exit(1);
 }

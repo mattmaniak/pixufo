@@ -11,11 +11,11 @@
 #define UNUSED_SIZE 0
 
 #define MIN_RESOLUTION_W 1024
-#define MIN_RESOLUTION_H 600
+#define MIN_RESOLUTION_H 768
 
 class Window
 {
-	void _error(const std::string message);
+	void _error();
 
 	public:
 	SDL_DisplayMode display;
@@ -31,7 +31,7 @@ class Window
 
 	SDL_Texture* create_texture(SDL_Surface* image);
 	void count_fps();
-	void quit();
+	void destroy();
 };
 
 #endif

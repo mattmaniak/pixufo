@@ -1,17 +1,18 @@
-#include "include/sdlwrap.hpp"
+#include "sdlwrap.hpp"
 
-SDL_Surface* sdlwrap::load_image(const std::string path)
+SDL_Surface* sdlwrap::load_image(const std::string name)
 {
+	std::string extension = "bmp";
+
 #ifdef _WIN32
-	std::string paaath = "gfx\\" + path;
-#else
-	std::string paaath = "gfx/" + path;
+	std::string path = "gfx\\" + name + '.' + extension;
 #endif
 
-	std::cout << "WORKS!" << std::endl;
-	std::cout << paaath << std::endl;
+#ifdef __linux__
+	std::string path = "gfx/" + name + '.' + extension;
+#endif
 
-	SDL_Surface* image = SDL_LoadBMP(paaath.c_str());
+	SDL_Surface* image = SDL_LoadBMP(path.c_str());
 
 	if(image == nullptr)
 	{

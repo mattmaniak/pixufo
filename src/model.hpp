@@ -7,10 +7,8 @@
 
 class Model
 {
-	std::string  _path;
+	std::string  _name;
 	SDL_Texture* _texture; // Driver-specific representation of data.
-
-	void _error(const std::string message);
 
 	public:
 	SDL_Rect geometry; // Texture's position and size.
@@ -20,7 +18,7 @@ class Model
 	float    y;
 	float    distance_to_player;
 
-	Model(Window* Window, const std::string _path, const float _speed);
+	Model(Window* Window, const std::string _name, const float _speed);
 
 	void render(Window* Window);
 	int  count_scale(Window* Window);

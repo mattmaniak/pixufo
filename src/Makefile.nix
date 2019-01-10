@@ -1,21 +1,13 @@
-TARGET = PixUfo.exe
+TARGET = PixUfo
 
 CC = g++
-CXXWARNINGS = -Wall -Wextra -pedantic
-
-CXXFLAGS = -std=c++11 $(CXXWARNINGS) $(SDL_INC_DIR)
-DEBUGFLAGS =
-
-LDFLAGS = $(LIB_DIR) -lSDL2main -lSDL2 -mwindows -mconsole -lmingw32
-
-SDL_INC_DIR = -I SDL2-2.0.9/x86_64-w64-mingw32/include
-LIB_DIR = -L SDL2-2.0.9/x86_64-w64-mingw32/lib
+CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
+LDFLAGS = -lSDL2
 
 ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 -fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
 -fstack-protector-all
 
-INC_DIR = $(SRC_DIR)/include
 SRC_DIR = src
 OBJ_DIR = obj
 
@@ -26,20 +18,21 @@ OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
 # "$@" - alias to name on the left of ':', "$^" - on the right.
 # "$<" is a first item in the dependencies list.
 # "-c" generates the object file.
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(INC_DIR)/%.hpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
 	$(CC) -c -o $@ $< \
-	$(CXXFLAGS)
+	$(CXXFLAGS) \
 
 # Builds the binary by linking object files.
 $(TARGET): $(OBJ)
 	$(CC) -o $@ $^ \
-	$(CXXFLAGS) $(LDFLAGS)
-	$(DEBUGFLAGS) \
+	$(CXXFLAGS) \
+	$(LDFLAGS) \
+	$(DEBUGFLAGS)
 
-address: DEBUGFLAGS = $(ASAN_FLAGS)
+address: LDFLAGS += $(ASAN_FLAGS)
 address: $(TARGET)
 
 .PHONY: clean
 
 clean:
-	del /S /Q obj PixUfo.exe
+	$(RM) $(TARGET) $(OBJ_DIR)/*

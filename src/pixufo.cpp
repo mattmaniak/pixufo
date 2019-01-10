@@ -1,19 +1,21 @@
-#include "include/window.hpp"
-#include "include/game.hpp"
-#include "include/model.hpp"
-#include "include/pixufo.hpp"
+#include "window.hpp"
+#include "game.hpp"
+#include "model.hpp"
+#include "pixufo.hpp"
 
 #ifdef _WIN32
 int WinMain(int argc, char** argv)
-#else
-int main(int argc, char** argv)
+#endif
+
+#ifdef __linux__
+int main()
 #endif
 {
 	Game   PixUfo;
 	Window Window;
-	Model  Background(&Window, "space_menu_seamless.bmp", 0.0f);
-	Model  Nebula(&Window, "nebula_medium.bmp", 200.0f);
-	Model  Player(&Window, "ufo.bmp", 200.0f);
+	Model  Background(&Window, "space_menu_seamless", 0.0f);
+	Model  Nebula(&Window, "nebula_medium", 200.0f);
+	Model  Player(&Window, "ufo", 200.0f);
 
 	// std::vector<Model> Entities = {}; TODO.
 
@@ -25,7 +27,7 @@ int main(int argc, char** argv)
 
 		if(SDL_RenderClear(Window.renderer) != SUCCESS)
 		{
-			std::cerr << "Can't clean the renderer." << std::endl;
+			std::cerr << SDL_GetError() << std::endl;
 			return 1;
 		}
 		Background.render(&Window);

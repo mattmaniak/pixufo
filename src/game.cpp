@@ -1,5 +1,5 @@
-#include "include/sdlwrap.hpp"
-#include "include/game.hpp"
+#include "sdlwrap.hpp"
+#include "game.hpp"
 
 Game::Game()
 {
@@ -19,14 +19,5 @@ void Game::loop()
 
 void Game::quit()
 {
-	// SDL_DestroyRenderer(renderer);
-	// SDL_DestroyWindow(window);
 	SDL_Quit();
-}
-
-void Game::_error(const std::string message)
-{
-	std::cerr << message << std::endl;
-	quit();
-	exit(1);
 }

@@ -1,12 +1,12 @@
-#include "include/game.hpp"
-#include "include/window.hpp"
-#include "include/sdlwrap.hpp"
-#include "include/model.hpp"
+#include "game.hpp"
+#include "window.hpp"
+#include "sdlwrap.hpp"
+#include "model.hpp"
 
-Model::Model(Window* Window, const std::string path, const float _speed)
-: _path(path), speed(_speed)
+Model::Model(Window* Window, const std::string name, const float _speed)
+: _name(name), speed(_speed)
 {
-	SDL_Surface* image = sdlwrap::load_image(_path);
+	SDL_Surface* image = sdlwrap::load_image(_name);
 
 	geometry.x = x = 0.0f;
 	geometry.y = y = 0.0f;
@@ -26,7 +26,7 @@ void Model::render(Window* Window)
 
 	if(SDL_RenderCopy(Window->renderer, _texture, NULL, &geometry) != SUCCESS)
 	{
-		_error("Can't render the texture: " + _path);
+		std::cerr << SDL_GetError() << std::endl;
 	}
 }
 
@@ -38,10 +38,4 @@ int Model::count_scale(Window* Window) // TODO: STEP DEPENDS ON IT?
 	int scale_ratio         = Window->display.w / dot_to_screen_ratio;
 
 	return scale_ratio;
-}
-
-void Model::_error(const std::string message)
-{
-	std::cerr << message << std::endl;
-	exit(1);
 }

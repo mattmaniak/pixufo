@@ -12,7 +12,6 @@
 
 class Game
 {
-	void _error(const std::string message);
 
 	public:
 	bool      running;
@@ -21,8 +20,8 @@ class Game
 	Game();
 	~Game();
 
-	void         loop();
-	void         quit();
+	void loop();
+	void quit();
 };
 
 #endif

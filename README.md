@@ -1,18 +1,20 @@
 # PixUfo
 ## Requirements:
-- at least a HD display (?),
-- Windows or Linux-based system.
+- at least a 1024x768 display,
+- Windows or GNU/Linux with a graphical user interface.
 
-## TL:DR; guide to the development:
-### Windows: (WIP)
+## Development guide
+### Windows:
 1. Download and install the environment.
 [tdm-gcc](http://tdm-gcc.tdragon.net/)
-Tested only on 64-bit machine/gcc version!
 
-2. Install it with: gcc, g++ and mingw32-make (all should be checked by default).
+2. Install it with: gcc, g++, mingw32-make (all should be checked by default).
 
-3. Check PATH environment variable and add if not exists with the value: C:\TDM-GCC-64\bin or extend this
-one with Your current TDM64 installation path.
+3. Check PATH environment variable and add if not exists with the value:
+C:\TDM-GCC-xx\bin or extend this one with Your current TDM-GCC-xx installation
+path.
+
+Remark: xx - architecture.
 
 4. Clone the repository with Git and enter it's directory.
 
@@ -22,7 +24,7 @@ Extract them and put the "SDL2-2.0.9" in the game's root folder.
 
 6. Compile and run.
 ```
-mingw32-make -f Makefile.win
+mingw32-make
 PixUfo.exe
 ```
 
@@ -38,6 +40,13 @@ git clone https://gitlab.com/mattmaniak/pixufo.git
 3. Dive in, compile and run.
 ```
 cd pixufo
-make -f makefile.nix
-./pixufo
+make
+./PixUfo
 ```
+### Removing the compilation trash.
+```
+make clean
+```
+It will remove the binary file and all object files from the obj/. Note that
+currently this directory is created empty in the repository. That's because the
+Makefile won't create it.
