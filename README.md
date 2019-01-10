@@ -7,6 +7,7 @@
 ### Windows: (WIP)
 1. Download and install the environment.
 [tdm-gcc](http://tdm-gcc.tdragon.net/)
+Tested only on 64-bit machine/gcc version!
 
 2. Install it with: gcc, g++ and mingw32-make (all should be checked by default).
 
