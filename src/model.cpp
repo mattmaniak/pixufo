@@ -6,36 +6,38 @@
 Model::Model(Window* Window, const std::string name, const float _speed)
 : _name(name), speed(_speed)
 {
-	SDL_Surface* image = sdlwrap::load_image(_name);
+	SDL_Surface* Image = sdlwrap::load_image(_name);
 
-	geometry.x = x = 0.0f;
-	geometry.y = y = 0.0f;
-	geometry.w = image->w * count_scale(Window);
-	geometry.h = image->h * count_scale(Window);
+	Geometry.x = x = 0.0f;
+	Geometry.y = y = 0.0f;
+	Geometry.w = Image->w * count_scale();
+	Geometry.h = Image->h * count_scale();
 
-	_texture = Window->create_texture(image);
-	SDL_FreeSurface(image);
+	_texture = Window->create_texture(Image); // TODO: CHECK.
+	SDL_FreeSurface(Image);
 }
 
-void Model::render(Window* Window)
+int Model::render(Window* Window)
 {
-	geometry.x = x;
-	geometry.y = y;
+	Geometry.x = x;
+	Geometry.y = y;
 
-	step = speed * Window->delta_time;
+	step = speed * count_scale() * Window->delta_time;
 
-	if(SDL_RenderCopy(Window->renderer, _texture, NULL, &geometry) != SUCCESS)
+	if(SDL_RenderCopy(Window->renderer, _texture, NULL, &Geometry) != SUCCESS)
 	{
 		std::cerr << SDL_GetError() << std::endl;
+		return -1;
 	}
+	return 0;
 }
 
-int Model::count_scale(Window* Window) // TODO: STEP DEPENDS ON IT?
+int Model::count_scale() // TODO: STEP DEPENDS ON IT?
 {
-	const int pixelart_dot_size = 6; // Eg. 5 px, so pixelarts' dot = 5x5.
+	const int       pixelart_screen_width = 360;
+	SDL_DisplayMode Current_screen_settings;
 
-	int dot_to_screen_ratio = Window->display.w / pixelart_dot_size;
-	int scale_ratio         = Window->display.w / dot_to_screen_ratio;
+	SDL_GetCurrentDisplayMode(0, &Current_screen_settings);
 
-	return scale_ratio;
+	return (Current_screen_settings.w / pixelart_screen_width);
 }

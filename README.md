@@ -5,39 +5,41 @@
 
 ## Development guide
 ### Windows:
-1. Install the compilation environment as TDM-GCC Recommended, C/C++
+1. Install the compilation environment choosing "TDM-GCC Recommended, C/C++"
 [TDM-GCC](http://tdm-gcc.tdragon.net/)
 
 2. Clone the repository with Git and enter it's directory.
 
 3. Download SDL2 development files.
 [SDL2-devel-2.0.9-mingw.tar.gz](https://www.libsdl.org/download-2.0.php)
-Extract them and put the "SDL2-2.0.9" in the game's root folder.
+Extract the SDL2-devel-2.0.9-mingw.tar.gz to SDL2-devel-2.0.9-mingw.tar and then
+to a normal directory. From extracted folder copy the "SDL2-2.0.9" to the the
+game's folder.
 
-6. Compile and run.
+4. Compile and run.
 ```
-mingw32-make -f Makefile.win
+cd <game directory>
+mingw32-make
 PixUfo.exe
 ```
 
-### GNU/Linux with GUI (commands for Ubuntu):
-1. Install needed tools.
+### TL;DR for Linux-based (example commands for Ubuntu):
 ```
-sudo apt update && sudo apt install gcc g++ make libsdl2-dev
-```
-2. Clone the repository.
-```
-git clone https://gitlab.com/mattmaniak/pixufo.git
-```
-3. Dive in, compile and run.
-```
-cd pixufo
-make
+sudo apt update &&
+sudo apt install git gcc g++ make libsdl2-dev &&
+git clone https://gitlab.com/mattmaniak/pixufo.git &&
+cd pixufo &&
+make &&
 ./PixUfo
 ```
-### Removing the compilation trash.
+
+### Removing the compilation trash
 ```
 make clean
+```
+or
+```
+mingw32-make clean
 ```
 It will remove the binary file and all object files from the obj/. Note that
 currently this directory is created empty in the repository. That's because the

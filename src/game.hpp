@@ -14,7 +14,6 @@ class Game
 {
 
 	public:
-	bool      running;
 	SDL_Event event;
 
 	Game();

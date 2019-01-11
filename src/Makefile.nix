@@ -1,7 +1,7 @@
 TARGET = PixUfo
 
 CC = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
+CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic
 LDFLAGS = -lSDL2
 
 ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \

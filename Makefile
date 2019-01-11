@@ -7,12 +7,13 @@ all:
 clean:
 	make -f src/Makefile.nix clean
 
-else # TODO: ONLY WINDOWS
+else
+all:
 	mingw32-make -f src/Makefile.win
 
 .PHONY: clean
 
 clean:
-	$(MAKE) -f src/Makefile.win clean
+	mingw32-make -f src/Makefile.win clean
 
 endif

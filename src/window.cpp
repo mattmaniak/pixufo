@@ -7,11 +7,11 @@ Window::Window()
 	{
 		_error();
 	}
-	if(SDL_GetDesktopDisplayMode(0, &display) != SUCCESS)
+	if(SDL_GetDesktopDisplayMode(0, &Display) != SUCCESS)
 	{
 		_error();
 	}
-	if((display.w < MIN_RESOLUTION_W) || (display.h < MIN_RESOLUTION_H))
+	if((Display.w < MIN_RESOLUTION_W) || (Display.h < MIN_RESOLUTION_H))
 	{
 		std::cerr << "At least the HD display resolution is required." << std::endl;
 		SDL_ClearError();
@@ -39,15 +39,15 @@ Window::Window()
 	}
 }
 
-SDL_Texture* Window::create_texture(SDL_Surface* image)
+SDL_Texture* Window::create_texture(SDL_Surface* Image)
 {
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+	SDL_Texture* Texture = SDL_CreateTextureFromSurface(renderer, Image);
 
-	if(texture == nullptr)
+	if(Texture == nullptr)
 	{
 		_error();
 	}
-	return texture;
+	return Texture;
 }
 
 Window::~Window()
@@ -55,12 +55,12 @@ Window::~Window()
 
 }
 
-void Window::count_fps()
+int Window::count_fps()
 {
 	if(++fps >= std::numeric_limits<Uint32>::max())
 	{
 		std::cerr << "Too many frames per second." << std::endl;
-		return;
+		return -1;
 	}
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
 
@@ -69,6 +69,7 @@ void Window::count_fps()
 		fps = 0;
 		frame_elapsed_time = 0.0f;
 	}
+	return 0;
 }
 
 void Window::destroy()

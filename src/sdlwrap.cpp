@@ -2,14 +2,15 @@
 
 SDL_Surface* sdlwrap::load_image(const std::string name)
 {
+	std::string directory = "gfx";
 	std::string extension = "bmp";
 
 #ifdef _WIN32
-	std::string path = "gfx\\" + name + '.' + extension;
+	std::string path = directory + '\\' + name + '.' + extension;
 #endif
 
 #ifdef __linux__
-	std::string path = "gfx/" + name + '.' + extension;
+	std::string path = directory+ '/' + name + '.' + extension;
 #endif
 
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
@@ -17,7 +18,6 @@ SDL_Surface* sdlwrap::load_image(const std::string name)
 	if(image == nullptr)
 	{
 		std::cout << SDL_GetError() << std::endl;
-		exit(1); // TODO.
 	}
 	return image;
 }

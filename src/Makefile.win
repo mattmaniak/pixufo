@@ -1,8 +1,8 @@
 TARGET = PixUfo.exe
 
 CC = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic $(SDL_INC_DIR)
-LDFLAGS = -mwindows -mconsole -lmingw32 $(SDL_LIB_DIR) -lSDL2 # TODO: -lSDL2main
+CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic $(SDL_INC_DIR)
+LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB_DIR) -lSDL2
 
 ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 -fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \

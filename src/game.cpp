@@ -3,12 +3,11 @@
 
 Game::Game()
 {
-	running = true;
+
 }
 
 Game::~Game()
 {
-	running = false;
 	quit();
 }
 

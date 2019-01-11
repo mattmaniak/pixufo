@@ -11,7 +11,7 @@ class Model
 	SDL_Texture* _texture; // Driver-specific representation of data.
 
 	public:
-	SDL_Rect geometry; // Texture's position and size.
+	SDL_Rect Geometry; // Texture's position and size.
 	float    speed;    // Pixels offset that can move in a one second.
 	float    step;     // Real pixels per frame move.
 	float    x;
@@ -20,8 +20,8 @@ class Model
 
 	Model(Window* Window, const std::string _name, const float _speed);
 
-	void render(Window* Window);
-	int  count_scale(Window* Window);
+	int  render(Window* Window);
+	int  count_scale();
 	void destroy();
 };
 
