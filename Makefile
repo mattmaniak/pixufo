@@ -5,10 +5,10 @@ all:
 .PHONY: clean
 
 clean:
-	$(MAKE) -f src/Makefile.nix clean
+	make -f src/Makefile.nix clean
 
 else # TODO: ONLY WINDOWS
-	$(MAKE) -f src/Makefile.win
+	mingw32-make -f src/Makefile.win
 
 .PHONY: clean
 

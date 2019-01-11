@@ -4,7 +4,7 @@
 #include "pixufo.hpp"
 
 #ifdef _WIN32
-int WinMain(int argc, char** argv)
+int WinMain()
 #endif
 
 #ifdef __linux__
