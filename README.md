@@ -1,16 +1,16 @@
 # PixUfo
 ## Requirements:
-- at least a 1024x768 display,
+- at least a HD display,
 - Windows or GNU/Linux with a graphical user interface.
 
 ## Development guide
 ### Windows:
-1. Install the compilation environment choosing "TDM-GCC Recommended, C/C++"
+1. Install the compilation environment choosing "TDM-GCC Recommended, C/C++".
 [TDM-GCC](http://tdm-gcc.tdragon.net/)
 
 2. Clone the repository with Git and enter it's directory.
 
-3. Download SDL2 development files.
+3. Download SDL2 development libraries.
 [SDL2-devel-2.0.9-mingw.tar.gz](https://www.libsdl.org/download-2.0.php)
 Extract the SDL2-devel-2.0.9-mingw.tar.gz to SDL2-devel-2.0.9-mingw.tar and then
 to a normal directory. From extracted folder copy the "SDL2-2.0.9" to the the

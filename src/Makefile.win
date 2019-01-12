@@ -10,7 +10,10 @@ SDL_INC_DIR = -I SDL2-2.0.9/x86_64-w64-mingw32/include
 SDL_LIB_DIR = -L SDL2-2.0.9/x86_64-w64-mingw32/lib
 
 # All in the ./obj depending on the ./src.
-OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
+# All in the ./obj depending on the ./src.
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, \
+       $(OBJ_DIR)/%.o, \
+       $(wildcard $(SRC_DIR)/*.cpp))
 
 # Compilation of object files depends on source files wnich depends on headers.
 # "$@" - alias to name on the left of ':', "$^" - on the right.
@@ -22,11 +25,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
 	$(CXXFLAGS)
 
 # Builds the binary by linking object files.
-$(TARGET): $(OBJ)
+$(TARGET): $(OBJS)
 	$(CC) -o $@ $^ \
 	$(CXXFLAGS) \
 	$(LDFLAGS)
-	$(DEBUGFLAGS) \
 
 .PHONY: clean
 

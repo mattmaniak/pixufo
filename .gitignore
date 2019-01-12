@@ -4,3 +4,5 @@ pixufo.exe
 PixUfo.exe
 obj/*.o
 SDL2-2.*
+i686-w64-mingw32
+x64_86-w64-mingw32
