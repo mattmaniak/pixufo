@@ -1,5 +1,3 @@
-#include "sdlwrap.hpp"
-#include "window.hpp"
 #include "game.hpp"
 
 Game::Game()

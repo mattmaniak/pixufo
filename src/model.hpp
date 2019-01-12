@@ -18,9 +18,9 @@ class Model
 	float    y;
 	float    distance_to_player;
 
-	Model(Window* Window, const std::string _name, const float _speed);
+	Model(Graphics* Graphics, const std::string _name, const float _speed);
 
-	int  render(Window* Window);
+	int  render(Graphics* Graphics);
 	int  count_scale();
 	void destroy();
 };

@@ -1,9 +1,9 @@
 #include "game.hpp"
-#include "window.hpp"
+#include "graphics.hpp"
 #include "sdlwrap.hpp"
 #include "model.hpp"
 
-Model::Model(Window* Window, const std::string name, const float _speed)
+Model::Model(Graphics* Graphics, const std::string name, const float _speed)
 : _name(name), speed(_speed)
 {
 	SDL_Surface* Image = sdlwrap::load_image(_name);
@@ -13,18 +13,18 @@ Model::Model(Window* Window, const std::string name, const float _speed)
 	Geometry.w = Image->w * count_scale();
 	Geometry.h = Image->h * count_scale();
 
-	_texture = Window->create_texture(Image); // TODO: CHECK.
+	_texture = Graphics->create_texture(Image); // TODO: CHECK.
 	SDL_FreeSurface(Image);
 }
 
-int Model::render(Window* Window)
+int Model::render(Graphics* Graphics)
 {
 	Geometry.x = x;
 	Geometry.y = y;
 
-	step = speed * count_scale() * Window->delta_time;
+	step = speed * count_scale() * Graphics->delta_time;
 
-	if(SDL_RenderCopy(Window->renderer, _texture, NULL, &Geometry) != SUCCESS)
+	if(SDL_RenderCopy(Graphics->Renderer, _texture, NULL, &Geometry) != SUCCESS)
 	{
 		std::cerr << SDL_GetError() << std::endl;
 		return -1;
