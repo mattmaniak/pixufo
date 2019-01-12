@@ -4,13 +4,11 @@
 #include "engine.hpp"
 #include "pixufo.hpp"
 
-#ifdef _WIN32
-int WinMain()
+#ifdef main
+#undef main
 #endif
 
-#ifdef __linux__
 int main()
-#endif
 {
 	Game   PixUfo;
 	Window Window;
