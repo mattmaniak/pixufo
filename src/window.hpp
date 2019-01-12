@@ -18,9 +18,11 @@ class Window
 	void _error();
 
 	public:
-	SDL_DisplayMode Display;
+	SDL_DisplayMode Screen;
+	SDL_DisplayMode Ingame;
 	SDL_Window*     window;
 	SDL_Renderer*   renderer;
+
 	float           delta_time;
 	float           frame_start_time;
 	float           frame_elapsed_time;
@@ -30,6 +32,7 @@ class Window
 	~Window();
 
 	SDL_Texture* create_texture(SDL_Surface* image);
+	int  render();
 	int  count_fps();
 	void destroy();
 };

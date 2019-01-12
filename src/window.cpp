@@ -7,19 +7,20 @@ Window::Window()
 	{
 		_error();
 	}
-	if(SDL_GetDesktopDisplayMode(0, &Display) != SUCCESS)
+	if(SDL_GetDesktopDisplayMode(0, &Screen) != SUCCESS)
 	{
 		_error();
 	}
-	if((Display.w < MIN_RESOLUTION_W) || (Display.h < MIN_RESOLUTION_H))
+	if((Screen.w < MIN_RESOLUTION_W) || (Screen.h < MIN_RESOLUTION_H))
 	{
 		std::cerr << "At least the HD display resolution is required." << std::endl;
 		SDL_ClearError();
 		_error();
 	}
+
 	window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
-	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE,
-	                          UNUSED_SIZE, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE, UNUSED_SIZE,
+	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(window == nullptr)
 	{
 		_error();
@@ -28,7 +29,6 @@ Window::Window()
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
 	                              | SDL_RENDERER_PRESENTVSYNC);
-
 	if(renderer == nullptr)
 	{
 		_error();
@@ -37,6 +37,13 @@ Window::Window()
 	{
 		_error();
 	}
+
+	// DEBUG.
+	SDL_GetCurrentDisplayMode(0, &Ingame);
+	std::cout << Ingame.w << '*' << Ingame.h << std::endl;
+	SDL_DisplayMode Closest;
+	SDL_GetClosestDisplayMode(0, &Screen, &Closest);
+	std::cout << Closest.w << '*' << Closest.h << std::endl;
 }
 
 SDL_Texture* Window::create_texture(SDL_Surface* Image)
@@ -53,6 +60,11 @@ SDL_Texture* Window::create_texture(SDL_Surface* Image)
 Window::~Window()
 {
 
+}
+
+int Window::render()
+{
+	return 0;
 }
 
 int Window::count_fps()

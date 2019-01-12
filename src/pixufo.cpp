@@ -22,7 +22,7 @@ int main()
 
 	// bool nebula_direction;
 
-	for(;;)
+	while(PixUfo.running)
 	{
 		Window.frame_start_time = SDL_GetTicks() / 1000.0f;
 
@@ -51,12 +51,12 @@ int main()
 		// {
 		// 	nebula_direction = true;
 		// }
-		// else if((Nebula.x + Nebula.Geometry.w + Nebula.step) >= Window.Display.w)
+		// else if((Nebula.x + Nebula.Geometry.w + Nebula.step) >= Window.Ingame.w)
 		// {
 		// 	nebula_direction = false;
 		// }
 		//
-		// if(nebula_direction && ((Nebula.x + Nebula.Geometry.w) <= Window.Display.w))
+		// if(nebula_direction && ((Nebula.x + Nebula.Geometry.w) <= Window.Ingame.w))
 		// {
 		// 	Nebula.x += Nebula.step;
 		// }
@@ -69,27 +69,38 @@ int main()
 		switch(PixUfo.event.type) // TODO: SLASH SPEED - DIVIDE BY 2^(1/2).
 		{
 			case SDL_QUIT:
-			return 0;
+			PixUfo.running = false;
+			break;
 
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
-			if(pressed_key[SDL_SCANCODE_UP] && (Player.y >= Player.step))
+			if(pressed_key[SDL_SCANCODE_UP])
 			{
-				Player.y -= Player.step;
+				if(Player.y >= Player.step)
+				{
+					Player.y -= Player.step;
+				}
 			}
-			if(pressed_key[SDL_SCANCODE_DOWN]
-			&& ((Player.y + Player.Geometry.h + Player.step) <= Window.Display.h))
+			if(pressed_key[SDL_SCANCODE_DOWN])
 			{
-				Player.y += Player.step;
+				if((Player.y + Player.Geometry.h + Player.step) <= Window.Ingame.h)
+				{
+					Player.y += Player.step;
+				}
 			}
-			if(pressed_key[SDL_SCANCODE_LEFT] && (Player.x >= Player.step))
+			if(pressed_key[SDL_SCANCODE_LEFT])
 			{
-				Player.x -= Player.step;
+				if(Player.x >= Player.step)
+				{
+					Player.x -= Player.step;
+				}
 			}
-			if(pressed_key[SDL_SCANCODE_RIGHT]
-			&& ((Player.x + Player.Geometry.w + Player.step) <= Window.Display.w))
+			if(pressed_key[SDL_SCANCODE_RIGHT])
 			{
-				Player.x += Player.step;
+				if((Player.x + Player.Geometry.w + Player.step) <= Window.Ingame.w)
+				{
+					Player.x += Player.step;
+				}
 			}
 		}
 		if(Window.count_fps() == -1)

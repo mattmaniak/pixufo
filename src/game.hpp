@@ -15,10 +15,12 @@ class Game
 
 	public:
 	SDL_Event event;
+	bool      running;
 
 	Game();
 	~Game();
 
+	void handle_keyboard();
 	void loop();
 	void quit();
 };
