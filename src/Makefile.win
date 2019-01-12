@@ -4,10 +4,6 @@ CC = g++
 CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic $(SDL_INC_DIR)
 LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB_DIR) -lSDL2
 
-ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
--fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
--fstack-protector-all
-
 SRC_DIR = src
 OBJ_DIR = obj
 SDL_INC_DIR = -I SDL2-2.0.9/x86_64-w64-mingw32/include
@@ -21,6 +17,7 @@ OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.cpp))
 # "$<" is a first item in the dependencies list.
 # "-c" generates the object file.
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
+	if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
 	$(CC) -c -o $@ $< \
 	$(CXXFLAGS)
 
@@ -31,10 +28,8 @@ $(TARGET): $(OBJ)
 	$(LDFLAGS)
 	$(DEBUGFLAGS) \
 
-address: LDFLAGS += $(ASAN_FLAGS)
-address: $(TARGET)
-
 .PHONY: clean
 
 clean:
-	del /S /Q obj PixUfo.exe
+	del $(TARGET)
+	rmdir /Q /S $(OBJ_DIR)

@@ -1,6 +1,9 @@
 ifeq ($(shell uname), Linux)
 all:
-	$(MAKE) -f src/Makefile.nix
+	make -f src/Makefile.nix
+
+address:
+	make -f src/Makefile.nix address
 
 .PHONY: clean
 
