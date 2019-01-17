@@ -6,8 +6,8 @@ LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB_DIR) -lSDL2 -lSDL2main
 
 SRC_DIR = src
 OBJ_DIR = obj
-SDL_INC_DIR = -I SDL2-2.0.9/x86_64-w64-mingw32/include
-SDL_LIB_DIR = -L SDL2-2.0.9/x86_64-w64-mingw32/lib
+SDL_INC_DIR = -I SDL2-2.*.*/x86_64-w64-mingw32/include
+SDL_LIB_DIR = -L SDL2-2.*.*/x86_64-w64-mingw32/lib
 
 # All in the ./obj depending on the ./src.
 # All in the ./obj depending on the ./src.

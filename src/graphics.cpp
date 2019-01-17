@@ -1,64 +1,106 @@
-#include "sdlwrap.hpp"
 #include "graphics.hpp"
 
 Graphics::Graphics()
 {
-	if(SDL_Init(SDL_INIT_EVERYTHING) != SUCCESS)
+	SDL_Surface* icon = load_image("icon");
+	if(icon == nullptr)
 	{
-		_error();
+		std::cerr << SDL_GetError() << std::endl;
+		initialized = false;
+		return;
 	}
-	if(SDL_GetDesktopDisplayMode(0, &Screen) != SUCCESS)
+	if(SDL_GetDesktopDisplayMode(0, &Display) != 0)
 	{
-		_error();
+		std::cerr << SDL_GetError() << std::endl;
+		initialized = false;
+		return;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
 	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE, UNUSED_SIZE,
 	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(Window == nullptr)
 	{
-		_error();
+		std::cerr << SDL_GetError() << std::endl;
+		initialized = false;
+		return;
 	}
-	if((Screen.w < MIN_RESOLUTION_W) || (Screen.h < MIN_RESOLUTION_H))
+	if((Display.w < MIN_RESOLUTION_W) || (Display.h < MIN_RESOLUTION_H))
 	{
-		std::cerr << "At least the HD display resolution is required." << std::endl;
-		SDL_ClearError();
-		_error();
+		std::cerr << "At least 1024x576 resolution is required." << std::endl;
+		initialized = false;
+		return;
 	}
-	SDL_SetWindowIcon(Window, sdlwrap::load_image("icon"));
+	SDL_SetWindowIcon(Window, icon);
+	SDL_FreeSurface(icon);
 
-	Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED
+	Renderer = SDL_CreateRenderer(Window, DEFAULT_DRIVER,
+	                              SDL_RENDERER_ACCELERATED
 	                              | SDL_RENDERER_PRESENTVSYNC);
 	if(Renderer == nullptr)
 	{
-		_error();
+		std::cerr << SDL_GetError() << std::endl;
+		initialized = false;
+		return;
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
 	{
-		_error();
+		std::cerr << SDL_GetError() << std::endl;
+		initialized = false;
+		return;
 	}
 	fps = 0;
 	frame_elapsed_time = 0.0f;
-}
 
-SDL_Texture* Graphics::create_texture(SDL_Surface* Image)
-{
-	SDL_Texture* Texture = SDL_CreateTextureFromSurface(Renderer, Image);
-
-	if(Texture == nullptr)
-	{
-		_error();
-	}
-	return Texture;
+	initialized = true;
 }
 
 Graphics::~Graphics()
 {
-
+	if(Renderer != nullptr)
+	{
+		SDL_DestroyRenderer(Renderer);
+	}
+	if(Window != nullptr)
+	{
+		SDL_DestroyWindow(Window);
+	}
 }
 
-int Graphics::render()
+SDL_Texture* Graphics::load_texture(const std::string name)
 {
-	return 0;
+	const std::string directory = "gfx";
+	const std::string extension = "bmp";
+
+#ifdef __linux__
+	const std::string path = directory + '/' + name + '.' + extension;
+#endif
+
+#ifdef _WIN32
+	const std::string path = directory + '\\' + name + '.' + extension;
+#endif
+
+	SDL_Surface* Image = SDL_LoadBMP(path.c_str());
+	SDL_Texture* Texture;
+
+	if(Image == nullptr)
+	{
+		std::cout << SDL_GetError() << std::endl;
+		return nullptr;
+	}
+
+	Texture = SDL_CreateTextureFromSurface(Renderer, Image);
+	if(Texture == nullptr)
+	{
+		std::cerr << SDL_GetError() << std::endl;
+	}
+	SDL_FreeSurface(Image);
+
+	return Texture;
+}
+
+bool Graphics::render()
+{
+	return true;
 }
 
 void Graphics::count_frame_start_time()
@@ -83,16 +125,24 @@ int Graphics::count_elapsed_time()
 	return 0;
 }
 
-void Graphics::destroy()
+SDL_Surface* load_image(const std::string name)
 {
-	SDL_DestroyRenderer(Renderer);
-	SDL_DestroyWindow(Window);
-	SDL_Quit();
-}
+	const std::string directory = "gfx";
+	const std::string extension = "bmp";
 
-void Graphics::_error()
-{
-	std::cerr << SDL_GetError() << std::endl;
-	destroy();
-	exit(1);
+#ifdef __linux__
+	const std::string path = directory + '/' + name + '.' + extension;
+#endif
+
+#ifdef _WIN32
+	const std::string path = directory + '\\' + name + '.' + extension;
+#endif
+
+	SDL_Surface* image = SDL_LoadBMP(path.c_str());
+
+	if(image == nullptr)
+	{
+		std::cout << SDL_GetError() << std::endl;
+	}
+	return image;
 }

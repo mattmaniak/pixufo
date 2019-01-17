@@ -5,24 +5,28 @@
 #include <SDL2/SDL.h>
 #include <string>
 
+class Graphics;
+
 class Model
 {
-	std::string  _name;
-	SDL_Texture* _texture; // Driver-specific representation of data.
+	SDL_Texture* Texture_; // Driver-specific representation of data.
 
 	public:
-	SDL_Rect Geometry; // Texture's position and size.
+	bool     initialized;
+	SDL_Rect Geometry; // Texture_'s position and size.
 	float    speed;    // Pixels offset that can move in a one second.
 	float    step;     // Real pixels per frame move.
 	float    x;
 	float    y;
 	float    distance_to_player;
+	int      max_x;
+	int      max_y;
 
-	Model(Graphics* Graphics, const std::string _name, const float _speed);
+	Model(Graphics* Graphics, const std::string name, const float speed);
+	~Model();
 
-	int  render(Graphics* Graphics);
+	bool render(Graphics* Graphics);
 	int  count_scale();
-	void destroy();
 };
 
 #endif

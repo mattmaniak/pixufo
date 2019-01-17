@@ -8,11 +8,11 @@
 
 #define SUCCESS 0
 
-#define UNUSED_SIZE 0
+class Model;
+class Graphics;
 
 class Game
 {
-
 	public:
 	SDL_Event event;
 	bool      running;
@@ -20,9 +20,7 @@ class Game
 	Game();
 	~Game();
 
-	void handle_keyboard();
-	void loop();
-	void quit();
+	void handle_keyboard(Model* Player, const Uint8* key);
 };
 
 #endif

@@ -8,21 +8,21 @@
 
 #define SUCCESS 0
 
-#define UNUSED_SIZE 0
+#define UNUSED_SIZE    0
+#define DEFAULT_DRIVER -1
 
 #define MIN_RESOLUTION_W 1024
 #define MIN_RESOLUTION_H 576
 
 class Graphics
 {
-	float  frame_elapsed_time;
 	float  frame_start_time;
+	float  frame_elapsed_time;
 	Uint32 fps;
 
-	void _error();
-
 	public:
-	SDL_DisplayMode Screen;
+	bool            initialized;
+	SDL_DisplayMode Display;
 	SDL_Window*     Window;
 	SDL_Renderer*   Renderer;
 	float           delta_time;
@@ -30,11 +30,12 @@ class Graphics
 	Graphics();
 	~Graphics();
 
-	SDL_Texture* create_texture(SDL_Surface* image);
-	int          render();
+	SDL_Texture* load_texture(const std::string name);
+	bool         render();
 	void         count_frame_start_time();
 	int          count_elapsed_time();
-	void         destroy();
 };
+
+SDL_Surface* load_image(const std::string name);
 
 #endif
