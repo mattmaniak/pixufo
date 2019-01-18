@@ -2,6 +2,9 @@
 
 Graphics::Graphics()
 {
+	const int default_driver = -1;
+	const int unused_size = 0;
+
 	SDL_Surface* icon = load_image("icon");
 	if(icon == nullptr)
 	{
@@ -16,7 +19,7 @@ Graphics::Graphics()
 		return;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
-	                          SDL_WINDOWPOS_UNDEFINED, UNUSED_SIZE, UNUSED_SIZE,
+	                          SDL_WINDOWPOS_UNDEFINED, unused_size, unused_size,
 	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(Window == nullptr)
 	{
@@ -33,7 +36,7 @@ Graphics::Graphics()
 	SDL_SetWindowIcon(Window, icon);
 	SDL_FreeSurface(icon);
 
-	Renderer = SDL_CreateRenderer(Window, DEFAULT_DRIVER,
+	Renderer = SDL_CreateRenderer(Window, default_driver,
 	                              SDL_RENDERER_ACCELERATED
 	                              | SDL_RENDERER_PRESENTVSYNC);
 	if(Renderer == nullptr)
@@ -108,12 +111,12 @@ void Graphics::count_frame_start_time()
 	frame_start_time = SDL_GetTicks() / 1000.0f;
 }
 
-int Graphics::count_elapsed_time()
+bool Graphics::count_elapsed_time()
 {
 	if(++fps >= std::numeric_limits<Uint32>::max())
 	{
 		std::cerr << "Too many frames per second." << std::endl;
-		return -1;
+		return false;
 	}
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
 
@@ -122,7 +125,7 @@ int Graphics::count_elapsed_time()
 		fps = 0;
 		frame_elapsed_time = 0.0f;
 	}
-	return 0;
+	return true;
 }
 
 SDL_Surface* load_image(const std::string name)

@@ -1,7 +1,7 @@
 #include "graphics.hpp"
 #include "menu.hpp"
 
-bool Menu::main(SDL_Renderer* renderer)
+bool Menu::main(SDL_Renderer* Renderer)
 {
 	// Button Play;
 	// Button Quit;
@@ -17,14 +17,20 @@ bool Menu::main(SDL_Renderer* renderer)
 	// {
 	// 	return false;
 	// }
-	SDL_RenderClear(renderer);
-
+	if(SDL_RenderClear(Renderer) != SUCCESS)
+	{
+		std::cerr << SDL_GetError() << std::endl;
+		return false;
+	}
 	return true;
 }
 
-bool Menu::paused(SDL_Renderer* renderer)
+bool Menu::paused(SDL_Renderer* Renderer)
 {
-	SDL_RenderClear(renderer);
-
+	if(SDL_RenderClear(Renderer) != SUCCESS)
+	{
+		std::cerr << SDL_GetError() << std::endl;
+		return false;
+	}
 	return true;
 }

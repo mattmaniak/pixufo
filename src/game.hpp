@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <cmath>
 #include <iostream>
 #include <limits>
 #include <SDL2/SDL.h>
@@ -14,13 +15,15 @@ class Graphics;
 class Game
 {
 	public:
-	SDL_Event event;
 	bool      running;
+	bool      menu;
+	bool      paused;
+	SDL_Event event;
 
 	Game();
 	~Game();
 
-	void handle_keyboard(Model* Player, const Uint8* key);
+	void handle_keyboard(Model* Player);
 };
 
 #endif

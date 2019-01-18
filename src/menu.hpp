@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-class Button
+class Button // TODO: INHERIT FROM MODEL?
 {
 	public:
 	bool         initialized;
@@ -11,6 +11,9 @@ class Button
 	SDL_Texture* Texture;
 	int          pos_x;
 	int          pos_y;
+
+	Button();
+	~Button();
 };
 
 class Menu

@@ -22,8 +22,8 @@ Model::Model(Graphics* Graphics, const std::string name, const float spd)
 
 	Geometry.w *= count_scale();
 	Geometry.h *= count_scale();
-	Geometry.x =  x = 0;
-	Geometry.y =  y = 0;
+	Geometry.x  = x = 0.0f;
+	Geometry.y  = y = 0.0f;
 
 	max_x = Graphics->Display.w;
 	max_y = Graphics->Display.h;
@@ -56,10 +56,11 @@ bool Model::render(Graphics* Graphics)
 
 int Model::count_scale() // TODO: STEP DEPENDS ON IT?
 {
+	const int       single_display = 0;
 	const int       pixelart_display_width = 360;
 	SDL_DisplayMode Current_display;
 
-	SDL_GetCurrentDisplayMode(0, &Current_display);
+	SDL_GetCurrentDisplayMode(single_display, &Current_display);
 
 	return (Current_display.w / pixelart_display_width);
 }

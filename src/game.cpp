@@ -4,16 +4,34 @@
 Game::Game()
 {
 	running = true;
+	menu    = true;
+	paused  = false;
 }
 
 Game::~Game()
 {
 	SDL_Quit();
-	running = false;
 }
 
-void Game::handle_keyboard(Model* Player, const Uint8* key)
+void Game::handle_keyboard(Model* Player)
 {
+	const Uint8* key = SDL_GetKeyboardState(nullptr);
+	Uint8        pressed_keys_amount = 0;
+
+	SDL_PollEvent(&event);
+
+	for(Uint8 index = 0; index < std::numeric_limits<Uint8>::max(); index++)
+	{
+		if(key[index] == 1)
+		{
+			pressed_keys_amount++;
+		}
+	}
+	if(pressed_keys_amount > 1)
+	{
+		Player->step = std::sqrt(Player->step);
+	}
+
 	switch(event.type)
 	{
 		case SDL_QUIT:

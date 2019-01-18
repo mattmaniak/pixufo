@@ -8,9 +8,6 @@
 
 #define SUCCESS 0
 
-#define UNUSED_SIZE    0
-#define DEFAULT_DRIVER -1
-
 #define MIN_RESOLUTION_W 1024
 #define MIN_RESOLUTION_H 576
 
@@ -33,7 +30,7 @@ class Graphics
 	SDL_Texture* load_texture(const std::string name);
 	bool         render();
 	void         count_frame_start_time();
-	int          count_elapsed_time();
+	bool         count_elapsed_time();
 };
 
 SDL_Surface* load_image(const std::string name);
