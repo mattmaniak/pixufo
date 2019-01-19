@@ -9,11 +9,11 @@ class Graphics;
 
 class Model
 {
-	SDL_Texture* Texture_; // Driver-specific representation of data.
 
 	public:
 	bool     initialized;
-	SDL_Rect Geometry; // Texture_'s position and size.
+	SDL_Texture* Texture; // Driver-specific representation of data.
+	SDL_Rect Geometry; // Texture's position and size.
 	float    speed;    // Pixels offset that can move in a one second.
 	float    step;     // Real pixels per frame move.
 	float    x;

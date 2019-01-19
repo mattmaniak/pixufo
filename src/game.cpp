@@ -63,7 +63,7 @@ void Game::handle_keyboard(Model* Player)
 		}
 		if(key[SDL_SCANCODE_RIGHT])
 		{
-			if((Player->x + Player->Geometry.w + Player->step) <= Player->max_y)
+			if((Player->x + Player->Geometry.w + Player->step) <= Player->max_x)
 			{
 				Player->x += Player->step;
 			}

@@ -20,15 +20,15 @@ bool Menu::main(Game* Pixufo, Graphics* Graphics)
 		std::cerr << "" << std::endl;
 		return false;
 	}
-
 	Play.x = Quit.x = (Graphics->Display.w - Play.Geometry.w) / 2.0f;
-	// Quit.x = (Graphics->Display.w - Quit.Geometry.w) / 2.0f;
 
 	Play.y = Graphics->Display.h / 2.0f;
 	Quit.y = (Graphics->Display.h / 2.0f) + ((buttons_amount - 1) * Play.Geometry.h);
 
 	while(Pixufo->menu)
 	{
+		SDL_SetTextureAlphaMod(Quit.Texture, 127);
+
 		Play.render(Graphics);
 		Quit.render(Graphics);
 		SDL_RenderPresent(Graphics->Renderer);

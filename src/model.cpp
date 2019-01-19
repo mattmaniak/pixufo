@@ -4,15 +4,15 @@
 Model::Model(Graphics* Graphics, const std::string name, const float spd)
 : speed(spd)
 {
-	Texture_ = Graphics->load_texture(name);
-	if(Texture_ == nullptr)
+	Texture = Graphics->load_texture(name);
+	if(Texture == nullptr)
 	{
 		std::cerr << SDL_GetError() << std::endl;
 		initialized = false;
 		return;
 	}
 
-	if(SDL_QueryTexture(Texture_, nullptr, nullptr, &Geometry.w, &Geometry.h)
+	if(SDL_QueryTexture(Texture, nullptr, nullptr, &Geometry.w, &Geometry.h)
 	   != 0)
 	{
 		std::cerr << SDL_GetError() << std::endl;
@@ -33,9 +33,9 @@ Model::Model(Graphics* Graphics, const std::string name, const float spd)
 
 Model::~Model()
 {
-	if(Texture_ != nullptr)
+	if(Texture != nullptr)
 	{
-		SDL_DestroyTexture(Texture_);
+		SDL_DestroyTexture(Texture);
 	}
 }
 
@@ -46,7 +46,7 @@ bool Model::render(Graphics* Graphics)
 	Geometry.x = x;
 	Geometry.y = y;
 
-	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry) != 0)
 	{
 		std::cerr << SDL_GetError() << std::endl;
 		return false;
