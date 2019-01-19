@@ -16,7 +16,7 @@ class Game
 	public:
 	bool      running;
 	bool      menu;
-	bool      paused;
+	bool      pause;
 	SDL_Event event;
 
 	Game();

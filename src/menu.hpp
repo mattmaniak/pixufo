@@ -13,12 +13,9 @@ class Menu
 	int max_button_index;
 	int current_button_index;
 
-	Menu();
-
 	bool primal(Game* Pixufo, Graphics* Graphics);
-	bool paused(Game* Pixufo, Graphics* Graphics);
+	bool pause(Game* Pixufo, Graphics* Graphics);
 	void handle_keyboard(Game* Pixufo);
-	bool render();
 };
 
 class Button: public Model

@@ -11,6 +11,8 @@ Button::Button(Graphics* Graphics, const std::string name, const int idx)
 
 bool Button::render(Graphics* Graphics, Menu* Menu)
 {
+	const int actual_button_shift = 64;
+
 	// Centering.
 	Geometry.x = (Graphics->Display.w - Geometry.w) / 2;
 	Geometry.y = (Graphics->Display.h / 2) + (index * Geometry.h);
@@ -18,7 +20,7 @@ bool Button::render(Graphics* Graphics, Menu* Menu)
 	// Shift the selected button.
 	if(index == Menu->current_button_index)
 	{
-		Geometry.x += 64;
+		Geometry.x += actual_button_shift;
 	}
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
@@ -28,12 +30,6 @@ bool Button::render(Graphics* Graphics, Menu* Menu)
 	return true;
 }
 
-Menu::Menu()
-{
-	current_button_index = 0;
-	max_button_index     = 1;
-}
-
 bool Menu::primal(Game* Pixufo, Graphics* Graphics)
 {
 	Button Play(Graphics, "play", 0);
@@ -41,22 +37,19 @@ bool Menu::primal(Game* Pixufo, Graphics* Graphics)
 
 	if(!Play.initialized)
 	{
-		std::cerr << "" << std::endl;
+		std::cerr << "ERROR" << std::endl;
 		return false;
 	}
 	if(!Quit.initialized)
 	{
-		std::cerr << "" << std::endl;
+		std::cerr << "ERROR" << std::endl;
 		return false;
 	}
+	current_button_index = 0;
+	max_button_index     = 1;
 
 	while(Pixufo->menu)
 	{
-		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
-		{
-			std::cerr << SDL_GetError() << std::endl;
-			return 0;
-		}
 		Play.render(Graphics, this);
 		Quit.render(Graphics, this);
 		SDL_RenderPresent(Graphics->Renderer);
@@ -92,29 +85,58 @@ void Menu::handle_keyboard(Game* Pixufo)
 	}
 	else if(key[SDL_SCANCODE_RETURN])
 	{
-		if(current_button_index == 0)
+		if(Pixufo->menu)
 		{
-			Pixufo->menu = false;
+			if(current_button_index == 0)
+			{
+				Pixufo->menu = false;
+			}
+			else if(current_button_index == 1)
+			{
+				Pixufo->running = false;
+			}
 		}
-		else if(current_button_index == 1)
+		else if(Pixufo->pause)
 		{
-			Pixufo->running = false;
+			if(current_button_index == 1)
+			{
+				Pixufo->menu = true;
+			}
+			Pixufo->pause = false;
 		}
 	}
 }
 
-// bool Menu::paused(Game* Pixufo, Graphics* Graphics)
-// {
-// 	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
-// 	{
-// 		std::cerr << SDL_GetError() << std::endl;
-// 		return false;
-// 	}
-// 	return true;
-// }
-
-bool Menu::render()
+bool Menu::pause(Game* Pixufo, Graphics* Graphics)
 {
+	Button Continue(Graphics, "continue", 0);
+	Button Main_menu(Graphics, "main_menu", 1);
 
+	if(!Continue.initialized)
+	{
+		std::cerr << "ERROR" << std::endl;
+		return false;
+	}
+	if(!Main_menu.initialized)
+	{
+		std::cerr << "ERROR" << std::endl;
+		return false;
+	}
+	current_button_index = 0;
+	max_button_index     = 1;
+
+	while(Pixufo->pause)
+	{
+		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		{
+			std::cerr << SDL_GetError() << std::endl;
+			return false;
+		}
+		Continue.render(Graphics, this);
+		Main_menu.render(Graphics, this);
+		SDL_RenderPresent(Graphics->Renderer);
+
+		handle_keyboard(Pixufo);
+	}
 	return true;
 }

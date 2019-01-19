@@ -34,11 +34,6 @@ int main()
 	}
 	Menu Menu;
 
-	if(!Menu.primal(&Pixufo, &Graphics))
-	{
-		return 0;
-	}
-
 	while(Pixufo.running)
 	{
 		Graphics.count_frame_start_time();
@@ -47,6 +42,14 @@ int main()
 		{
 			std::cerr << SDL_GetError() << std::endl;
 			return 0;
+		}
+
+		if(Pixufo.menu)
+		{
+			if(!Menu.primal(&Pixufo, &Graphics))
+			{
+				return 0;
+			}
 		}
 		if(!Background.render(&Graphics))
 		{
@@ -58,6 +61,16 @@ int main()
 		}
 		SDL_RenderPresent(Graphics.Renderer);
 		Pixufo.handle_keyboard(&Player);
+
+		if(Pixufo.pause)
+		{
+			if(!Menu.pause(&Pixufo, &Graphics))
+			{
+				return 0;
+			}
+			SDL_Delay(1000);
+			// TODO: ANIMATION OR STH TO PREVENT ENTER ON RETURN TO THE MAIN MENU.
+		}
 
 		if(!Graphics.count_elapsed_time())
 		{

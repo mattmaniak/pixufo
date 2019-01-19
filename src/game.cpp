@@ -5,7 +5,7 @@ Game::Game()
 {
 	running = true;
 	menu    = true;
-	paused  = false;
+	pause   = false;
 }
 
 Game::~Game()
@@ -70,7 +70,7 @@ void Game::handle_keyboard(Player* Player)
 		}
 		if(key[SDL_SCANCODE_ESCAPE])
 		{
-			running = false;
+			pause = !pause;
 		}
 	}
 }
