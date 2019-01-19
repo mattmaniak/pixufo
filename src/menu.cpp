@@ -1,23 +1,56 @@
 #include "graphics.hpp"
+#include "model.hpp"
+#include "game.hpp"
 #include "menu.hpp"
 
-bool Menu::main(SDL_Renderer* Renderer)
+bool Menu::main(Game* Pixufo, Graphics* Graphics)
 {
-	// Button Play;
-	// Button Quit;
+	const int buttons_amount = 2;
 
-	// SDL_Surface* button_play = load_image("play");
-	// SDL_Surface* button_quit = load_image("quit");
-	//
-	// if(button_play == nullptr)
-	// {
-	// 	return false;
-	// }
-	// if(button_quit == nullptr)
-	// {
-	// 	return false;
-	// }
-	if(SDL_RenderClear(Renderer) != SUCCESS)
+	Model Play(Graphics, "play", 0.0f);
+	Model Quit(Graphics, "quit", 0.0f);
+
+	if(!Play.initialized)
+	{
+		std::cerr << "" << std::endl;
+		return false;
+	}
+	if(!Quit.initialized)
+	{
+		std::cerr << "" << std::endl;
+		return false;
+	}
+
+	Play.x = Quit.x = (Graphics->Display.w - Play.Geometry.w) / 2.0f;
+	// Quit.x = (Graphics->Display.w - Quit.Geometry.w) / 2.0f;
+
+	Play.y = Graphics->Display.h / 2.0f;
+	Quit.y = (Graphics->Display.h / 2.0f) + ((buttons_amount - 1) * Play.Geometry.h);
+
+	while(Pixufo->menu)
+	{
+		Play.render(Graphics);
+		Quit.render(Graphics);
+		SDL_RenderPresent(Graphics->Renderer);
+
+		SDL_PollEvent(&Pixufo->event);
+		const Uint8* key = SDL_GetKeyboardState(nullptr);
+		if(key[SDL_SCANCODE_RETURN])
+		{
+			Pixufo->menu = false;
+		}
+		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		{
+			std::cerr << SDL_GetError() << std::endl;
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Menu::paused(Game* Pixufo, Graphics* Graphics)
+{
+	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
 	{
 		std::cerr << SDL_GetError() << std::endl;
 		return false;
@@ -25,12 +58,8 @@ bool Menu::main(SDL_Renderer* Renderer)
 	return true;
 }
 
-bool Menu::paused(SDL_Renderer* Renderer)
+bool Menu::render()
 {
-	if(SDL_RenderClear(Renderer) != SUCCESS)
-	{
-		std::cerr << SDL_GetError() << std::endl;
-		return false;
-	}
+
 	return true;
 }

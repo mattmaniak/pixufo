@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 
+class Game;
+class Graphics;
+
 class Button // TODO: INHERIT FROM MODEL?
 {
 	public:
@@ -18,8 +21,10 @@ class Button // TODO: INHERIT FROM MODEL?
 
 class Menu
 {
-	bool main(SDL_Renderer* Renderer);
-	bool paused(SDL_Renderer* Renderer);
+	public:
+	bool main(Game* Pixufo, Graphics* Graphics);
+	bool paused(Game* Pixufo, Graphics* Graphics);
+	bool render();
 };
 
 #endif

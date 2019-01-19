@@ -1,6 +1,7 @@
+#include "game.hpp"
 #include "graphics.hpp"
 #include "model.hpp"
-#include "game.hpp"
+#include "menu.hpp"
 #include "pixufo.hpp"
 
 // Very ugly "undefined reference to WinMain" fix.
@@ -31,6 +32,12 @@ int main()
 	{
 		return 0;
 	}
+	Menu Menu;
+
+	if(!Menu.main(&Pixufo, &Graphics))
+	{
+		return 0;
+	}
 
 	while(Pixufo.running)
 	{
@@ -41,10 +48,6 @@ int main()
 			std::cerr << SDL_GetError() << std::endl;
 			return 0;
 		}
-		// if(Pixufo.menu)
-		// {
-		//
-		// }
 		if(!Background.render(&Graphics))
 		{
 			return 0;

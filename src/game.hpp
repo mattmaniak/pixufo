@@ -10,7 +10,6 @@
 #define SUCCESS 0
 
 class Model;
-class Graphics;
 
 class Game
 {
