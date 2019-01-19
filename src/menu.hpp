@@ -10,21 +10,25 @@ class Graphics;
 class Menu
 {
 	public:
+	int max_button_index;
+	int current_button_index;
+
+	Menu();
+
 	bool primal(Game* Pixufo, Graphics* Graphics);
 	bool paused(Game* Pixufo, Graphics* Graphics);
+	void handle_keyboard(Game* Pixufo);
 	bool render();
 };
 
 class Button: public Model
 {
 	public:
-	int  index;
-	bool selected;
+	int index;
 
-	Button(Graphics* Graphics, const std::string name, const int idx,
-	       const bool select);
+	Button(Graphics* Graphics, const std::string name, const int idx);
 
-	bool render(Graphics* Graphics);
+	bool render(Graphics* Graphics, Menu* Menu);
 };
 
 #endif

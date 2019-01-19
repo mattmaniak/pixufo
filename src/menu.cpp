@@ -3,22 +3,22 @@
 #include "game.hpp"
 #include "menu.hpp"
 
-Button::Button(Graphics* Graphics, const std::string name, const int idx,
-               const bool select)
+Button::Button(Graphics* Graphics, const std::string name, const int idx)
 : Model(Graphics, name)
 {
-	index    = idx;
-	selected = select;
+	index = idx;
 }
 
-bool Button::render(Graphics* Graphics)
+bool Button::render(Graphics* Graphics, Menu* Menu)
 {
+	// Centering.
 	Geometry.x = (Graphics->Display.w - Geometry.w) / 2;
 	Geometry.y = (Graphics->Display.h / 2) + (index * Geometry.h);
 
-	if(!selected)
+	// Shift the selected button.
+	if(index == Menu->current_button_index)
 	{
-		SDL_SetTextureAlphaMod(Texture_, 127);
+		Geometry.x += 64;
 	}
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
@@ -28,10 +28,16 @@ bool Button::render(Graphics* Graphics)
 	return true;
 }
 
+Menu::Menu()
+{
+	current_button_index = 0;
+	max_button_index     = 1;
+}
+
 bool Menu::primal(Game* Pixufo, Graphics* Graphics)
 {
-	Button Play(Graphics, "play", 0, true);
-	Button Quit(Graphics, "quit", 1, false);
+	Button Play(Graphics, "play", 0);
+	Button Quit(Graphics, "quit", 1);
 
 	if(!Play.initialized)
 	{
@@ -44,31 +50,57 @@ bool Menu::primal(Game* Pixufo, Graphics* Graphics)
 		return false;
 	}
 
-	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
-	{
-		std::cerr << SDL_GetError() << std::endl;
-		return 0;
-	}
-	Play.render(Graphics);
-	Quit.render(Graphics);
-	SDL_RenderPresent(Graphics->Renderer);
-
 	while(Pixufo->menu)
 	{
-		const Uint8* key = SDL_GetKeyboardState(nullptr);
+		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		{
+			std::cerr << SDL_GetError() << std::endl;
+			return 0;
+		}
+		Play.render(Graphics, this);
+		Quit.render(Graphics, this);
+		SDL_RenderPresent(Graphics->Renderer);
 
-		SDL_PollEvent(&Pixufo->event);
-		if(key[SDL_SCANCODE_RETURN])
+		handle_keyboard(Pixufo);
+
+		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		{
+			std::cerr << SDL_GetError() << std::endl;
+			return false;
+		}
+		if(!Pixufo->running)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void Menu::handle_keyboard(Game* Pixufo)
+{
+	const Uint8* key = SDL_GetKeyboardState(nullptr);
+
+	SDL_PollEvent(&Pixufo->event);
+
+	if(key[SDL_SCANCODE_UP] && (current_button_index > 0))
+	{
+		current_button_index--;
+	}
+	else if(key[SDL_SCANCODE_DOWN] && (current_button_index < max_button_index))
+	{
+		current_button_index++;
+	}
+	else if(key[SDL_SCANCODE_RETURN])
+	{
+		if(current_button_index == 0)
 		{
 			Pixufo->menu = false;
 		}
+		else if(current_button_index == 1)
+		{
+			Pixufo->running = false;
+		}
 	}
-	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
-	{
-		std::cerr << SDL_GetError() << std::endl;
-		return false;
-	}
-	return true;
 }
 
 // bool Menu::paused(Game* Pixufo, Graphics* Graphics)
