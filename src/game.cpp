@@ -13,7 +13,7 @@ Game::~Game()
 	SDL_Quit();
 }
 
-void Game::handle_keyboard(Model* Player)
+void Game::handle_keyboard(Player* Player)
 {
 	const Uint8* key = SDL_GetKeyboardState(nullptr);
 	Uint8        pressed_keys_amount = 0;
@@ -49,10 +49,10 @@ void Game::handle_keyboard(Model* Player)
 		}
 		if(key[SDL_SCANCODE_DOWN])
 		{
-			if((Player->y + Player->Geometry.h + Player->step) <= Player->max_y)
-			{
+			// if((Player->y + Player->Geometry.h + Player->step) <= Player->max_y)
+			// {
 				Player->y += Player->step;
-			}
+			// }
 		}
 		if(key[SDL_SCANCODE_LEFT])
 		{
@@ -63,10 +63,10 @@ void Game::handle_keyboard(Model* Player)
 		}
 		if(key[SDL_SCANCODE_RIGHT])
 		{
-			if((Player->x + Player->Geometry.w + Player->step) <= Player->max_x)
-			{
+			// if((Player->x + Player->Geometry.w + Player->step) <= Player->max_x)
+			// {
 				Player->x += Player->step;
-			}
+			// }
 		}
 		if(key[SDL_SCANCODE_ESCAPE])
 		{

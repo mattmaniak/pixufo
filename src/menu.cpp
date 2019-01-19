@@ -3,12 +3,35 @@
 #include "game.hpp"
 #include "menu.hpp"
 
-bool Menu::main(Game* Pixufo, Graphics* Graphics)
+Button::Button(Graphics* Graphics, const std::string name, const int idx,
+               const bool select)
+: Model(Graphics, name)
 {
-	const int buttons_amount = 2;
+	index    = idx;
+	selected = select;
+}
 
-	Model Play(Graphics, "play", 0.0f);
-	Model Quit(Graphics, "quit", 0.0f);
+bool Button::render(Graphics* Graphics)
+{
+	Geometry.x = (Graphics->Display.w - Geometry.w) / 2;
+	Geometry.y = (Graphics->Display.h / 2) + (index * Geometry.h);
+
+	if(!selected)
+	{
+		SDL_SetTextureAlphaMod(Texture_, 127);
+	}
+	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	{
+		std::cerr << SDL_GetError() << std::endl;
+		return false;
+	}
+	return true;
+}
+
+bool Menu::primal(Game* Pixufo, Graphics* Graphics)
+{
+	Button Play(Graphics, "play", 0, true);
+	Button Quit(Graphics, "quit", 1, false);
 
 	if(!Play.initialized)
 	{
@@ -20,36 +43,26 @@ bool Menu::main(Game* Pixufo, Graphics* Graphics)
 		std::cerr << "" << std::endl;
 		return false;
 	}
-	Play.x = Quit.x = (Graphics->Display.w - Play.Geometry.w) / 2.0f;
 
-	Play.y = Graphics->Display.h / 2.0f;
-	Quit.y = (Graphics->Display.h / 2.0f) + ((buttons_amount - 1) * Play.Geometry.h);
+	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+	{
+		std::cerr << SDL_GetError() << std::endl;
+		return 0;
+	}
+	Play.render(Graphics);
+	Quit.render(Graphics);
+	SDL_RenderPresent(Graphics->Renderer);
 
 	while(Pixufo->menu)
 	{
-		SDL_SetTextureAlphaMod(Quit.Texture, 127);
-
-		Play.render(Graphics);
-		Quit.render(Graphics);
-		SDL_RenderPresent(Graphics->Renderer);
+		const Uint8* key = SDL_GetKeyboardState(nullptr);
 
 		SDL_PollEvent(&Pixufo->event);
-		const Uint8* key = SDL_GetKeyboardState(nullptr);
 		if(key[SDL_SCANCODE_RETURN])
 		{
 			Pixufo->menu = false;
 		}
-		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
-		{
-			std::cerr << SDL_GetError() << std::endl;
-			return false;
-		}
 	}
-	return true;
-}
-
-bool Menu::paused(Game* Pixufo, Graphics* Graphics)
-{
 	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
 	{
 		std::cerr << SDL_GetError() << std::endl;
@@ -57,6 +70,16 @@ bool Menu::paused(Game* Pixufo, Graphics* Graphics)
 	}
 	return true;
 }
+
+// bool Menu::paused(Game* Pixufo, Graphics* Graphics)
+// {
+// 	if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+// 	{
+// 		std::cerr << SDL_GetError() << std::endl;
+// 		return false;
+// 	}
+// 	return true;
+// }
 
 bool Menu::render()
 {

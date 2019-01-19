@@ -4,7 +4,7 @@
 #include "menu.hpp"
 #include "pixufo.hpp"
 
-// Very ugly "undefined reference to WinMain" fix.
+// Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
 #undef main
 #endif
@@ -22,19 +22,19 @@ int main()
 	{
 		return 0;
 	}
-	Model Background(&Graphics, "space_menu_seamless", 0.0f);
+	Model Background(&Graphics, "space_menu_seamless");
 	if(!Background.initialized)
 	{
 		return 0;
 	}
-	Model Player(&Graphics, "ufo", 50.0f);
+	Player Player(&Graphics, "ufo", 50.0f);
 	if(!Player.initialized)
 	{
 		return 0;
 	}
 	Menu Menu;
 
-	if(!Menu.main(&Pixufo, &Graphics))
+	if(!Menu.primal(&Pixufo, &Graphics))
 	{
 		return 0;
 	}

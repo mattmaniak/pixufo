@@ -1,18 +1,17 @@
 #include "model.hpp"
 #include "graphics.hpp"
 
-Model::Model(Graphics* Graphics, const std::string name, const float spd)
-: speed(spd)
+Model::Model(Graphics* Graphics, const std::string name)
 {
-	Texture = Graphics->load_texture(name);
-	if(Texture == nullptr)
+	Texture_ = Graphics->load_texture(name);
+	if(Texture_ == nullptr)
 	{
 		std::cerr << SDL_GetError() << std::endl;
 		initialized = false;
 		return;
 	}
 
-	if(SDL_QueryTexture(Texture, nullptr, nullptr, &Geometry.w, &Geometry.h)
+	if(SDL_QueryTexture(Texture_, nullptr, nullptr, &Geometry.w, &Geometry.h)
 	   != 0)
 	{
 		std::cerr << SDL_GetError() << std::endl;
@@ -25,28 +24,20 @@ Model::Model(Graphics* Graphics, const std::string name, const float spd)
 	Geometry.x  = x = 0.0f;
 	Geometry.y  = y = 0.0f;
 
-	max_x = Graphics->Display.w; // TEMPONARY.
-	max_y = Graphics->Display.h; // TOO.
-
 	initialized = true;
 }
 
 Model::~Model()
 {
-	if(Texture != nullptr)
+	if(Texture_ != nullptr)
 	{
-		SDL_DestroyTexture(Texture);
+		SDL_DestroyTexture(Texture_);
 	}
 }
 
 bool Model::render(Graphics* Graphics)
 {
-	step = speed * count_scale() * Graphics->delta_time;
-
-	Geometry.x = x;
-	Geometry.y = y;
-
-	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
 		std::cerr << SDL_GetError() << std::endl;
 		return false;
@@ -54,13 +45,34 @@ bool Model::render(Graphics* Graphics)
 	return true;
 }
 
-int Model::count_scale() // TODO: STEP DEPENDS ON IT?
+int Model::count_scale()
 {
-	const int       single_display = 0;
 	const int       pixelart_display_width = 480;
+	const int       display_index = 0;
 	SDL_DisplayMode Current_display;
 
-	SDL_GetCurrentDisplayMode(single_display, &Current_display);
+	SDL_GetCurrentDisplayMode(display_index, &Current_display);
 
 	return (Current_display.w / pixelart_display_width);
+}
+
+Player::Player(Graphics* Graphics, const std::string name, const float spd)
+: Model(Graphics, name)
+{
+	speed = spd;
+}
+
+bool Player::render(Graphics* Graphics)
+{
+	step = speed * Graphics->delta_time * count_scale();
+
+	Geometry.x = x;
+	Geometry.y = y;
+
+	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	{
+		std::cerr << SDL_GetError() << std::endl;
+		return false;
+	}
+	return true;
 }

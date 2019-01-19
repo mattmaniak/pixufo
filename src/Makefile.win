@@ -1,7 +1,7 @@
 TARGET = PixUfo.exe
 
 CC = g++
-CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic $(SDL_INC_DIR)
+CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -Wpedantic $(SDL_INC_DIR)
 LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB_DIR) -lSDL2 -lSDL2main
 
 SRC_DIR = src

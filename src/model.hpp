@@ -9,24 +9,45 @@ class Graphics;
 
 class Model
 {
+	protected:
+	SDL_Texture* Texture_;  // Driver-specific representation of data.
 
 	public:
-	bool     initialized;
-	SDL_Texture* Texture; // Driver-specific representation of data.
-	SDL_Rect Geometry; // Texture's position and size.
-	float    speed;    // Pixels offset that can move in a one second.
-	float    step;     // Real pixels per frame move.
-	float    x;
-	float    y;
-	float    distance_to_player;
-	int      max_x;
-	int      max_y;
+	bool         initialized;
+	SDL_Rect     Geometry; // Texture_'s position and size.
+	float        x;
+	float        y;
 
-	Model(Graphics* Graphics, const std::string name, const float speed);
+	Model(Graphics* Graphics, const std::string name);
 	~Model();
 
 	bool render(Graphics* Graphics);
 	int  count_scale();
+};
+
+class Planet: public Model
+{
+	float player_distance;
+};
+
+class Enemy: public Model
+{
+	public:
+	float speed;
+	float step;
+	float max_x;
+	float max_y;
+	float player_distance;
+};
+
+class Player: public Model
+{
+	public:
+	float speed;
+	float step;
+
+	Player(Graphics* Graphics, const std::string name, const float spd);
+	bool render(Graphics* Graphics);
 };
 
 #endif

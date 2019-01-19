@@ -4,27 +4,27 @@
 #include <SDL2/SDL.h>
 
 class Game;
+class Model;
 class Graphics;
-
-class Button // TODO: INHERIT FROM MODEL?
-{
-	public:
-	bool         initialized;
-	bool         selected;
-	SDL_Texture* Texture;
-	int          pos_x;
-	int          pos_y;
-
-	Button();
-	~Button();
-};
 
 class Menu
 {
 	public:
-	bool main(Game* Pixufo, Graphics* Graphics);
+	bool primal(Game* Pixufo, Graphics* Graphics);
 	bool paused(Game* Pixufo, Graphics* Graphics);
 	bool render();
+};
+
+class Button: public Model
+{
+	public:
+	int  index;
+	bool selected;
+
+	Button(Graphics* Graphics, const std::string name, const int idx,
+	       const bool select);
+
+	bool render(Graphics* Graphics);
 };
 
 #endif

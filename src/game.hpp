@@ -9,7 +9,7 @@
 
 #define SUCCESS 0
 
-class Model;
+class Player;
 
 class Game
 {
@@ -22,7 +22,7 @@ class Game
 	Game();
 	~Game();
 
-	void handle_keyboard(Model* Player);
+	void handle_keyboard(Player* Player);
 };
 
 #endif
