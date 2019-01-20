@@ -6,22 +6,24 @@
 class Game;
 class Model;
 class Graphics;
+class Player;
 
 class Menu
 {
 	public:
-	int max_button_index;
-	int current_button_index;
+	unsigned int max_button_index;
+	unsigned int current_button_index;
 
-	bool primal(Game* Pixufo, Graphics* Graphics);
-	bool pause(Game* Pixufo, Graphics* Graphics);
-	void handle_keyboard(Game* Pixufo);
+	bool primal(Game* Game, Graphics* Graphics);
+	bool pause(Game* Game, Graphics* Graphics);
+	void handle_keyboard(Game* Game);
+	bool fader(Graphics* Graphics);
 };
 
 class Button: public Model
 {
 	public:
-	int index;
+	unsigned int index;
 
 	Button(Graphics* Graphics, const std::string name, const int idx);
 

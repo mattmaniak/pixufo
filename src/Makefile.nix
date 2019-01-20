@@ -1,12 +1,8 @@
 TARGET = PixUfo
 
 CC = g++
-CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -Wpedantic
+CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic
 LDFLAGS = -lSDL2
-
-ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
--fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
--fstack-protector-all
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -30,10 +26,6 @@ $(TARGET): $(OBJS)
 	$(CC) -o $@ $^ \
 	$(CXXFLAGS) \
 	$(LDFLAGS) \
-	$(DEBUGFLAGS)
-
-address: LDFLAGS += $(ASAN_FLAGS)
-address: $(TARGET)
 
 .PHONY: clean
 

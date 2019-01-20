@@ -15,8 +15,8 @@ class Model
 	public:
 	bool         initialized;
 	SDL_Rect     Geometry; // Texture_'s position and size.
-	float        x;
-	float        y;
+	float        pos_x;
+	float        pos_y;
 
 	Model(Graphics* Graphics, const std::string name);
 	~Model();
@@ -27,27 +27,44 @@ class Model
 
 class Planet: public Model
 {
-	float player_distance;
+	bool     visible;
+	float    distance_to_player;
+	SDL_Rect Hitbox;
 };
 
-class Enemy: public Model
+class Enemy: public Model // TODO: INHERIT FROM PLANET?
 {
 	public:
+	bool     visible;
+	float    distance_to_player;
+	SDL_Rect Hitbox;
+
 	float speed;
 	float step;
-	float max_x;
-	float max_y;
-	float player_distance;
+	// float max_x;
+	// float max_y;
+
+	Enemy(Graphics* Graphics, const std::string name, const float spd);
+	bool render(Graphics* Graphics);
 };
 
 class Player: public Model
 {
 	public:
-	float speed;
-	float step;
+	float    speed;
+	float    step;
+	SDL_Rect Hitbox;
 
 	Player(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);
+};
+
+class Background: public Model
+{
+	public:
+
+	Background(Graphics* Graphics, const std::string name);
+	bool tile(Graphics* Graphics);
 };
 
 #endif

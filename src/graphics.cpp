@@ -101,11 +101,6 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-bool Graphics::render()
-{
-	return true;
-}
-
 void Graphics::count_frame_start_time()
 {
 	frame_start_time = SDL_GetTicks() / 1000.0f;
@@ -148,4 +143,22 @@ SDL_Surface* load_image(const std::string name)
 		std::cout << SDL_GetError() << std::endl;
 	}
 	return image;
+}
+
+bool Graphics::render(void* Model)
+{
+	// step = speed * Graphics->delta_time * count_scale();
+
+	// if((Model->Geometry.x > -Model->Geometry.x)
+	// && (Model->Geometry.y > -Model->Geometry.y)
+	// && (Model->Geometry.x < (Display.w + Model->Geometry.x))
+	// && (Model->Geometry.y > (Display.h + Model->Geometry.x)))
+	// {
+	// 	if(SDL_RenderCopy(Renderer, Model->Texture, NULL, &Model->Geometry) != 0)
+	// 	{
+	// 		std::cerr << SDL_GetError() << std::endl;
+	// 		return false;
+	// 	}
+	// }
+	return true;
 }

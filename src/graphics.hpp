@@ -28,7 +28,7 @@ class Graphics
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string name);
-	bool         render();
+	bool         render(void* Model);
 	void         count_frame_start_time();
 	bool         count_elapsed_time();
 };

@@ -29,7 +29,7 @@ void Game::handle_keyboard(Player* Player)
 	}
 	if(pressed_keys_amount > 1)
 	{
-		Player->step = std::sqrt(Player->step);
+		Player->step = Player->step / std::sqrt(2);
 	}
 
 	switch(event.type)
@@ -42,30 +42,30 @@ void Game::handle_keyboard(Player* Player)
 		case SDL_KEYUP:
 		if(key[SDL_SCANCODE_UP])
 		{
-			if(Player->y >= Player->step)
-			{
-				Player->y -= Player->step;
-			}
+			// if(Player->pos_y >= Player->step)
+			// {
+				Player->pos_y -= Player->step;
+			// }
 		}
 		if(key[SDL_SCANCODE_DOWN])
 		{
-			// if((Player->y + Player->Geometry.h + Player->step) <= Player->max_y)
+			// if((Player->pos_y + Player->Geometry.h + Player->step) <= Player->max_y)
 			// {
-				Player->y += Player->step;
+				Player->pos_y += Player->step;
 			// }
 		}
 		if(key[SDL_SCANCODE_LEFT])
 		{
-			if(Player->x >= Player->step)
-			{
-				Player->x -= Player->step;
-			}
+			// if(Player->pos_x >= Player->step)
+			// {
+				Player->pos_x -= Player->step;
+			// }
 		}
 		if(key[SDL_SCANCODE_RIGHT])
 		{
-			// if((Player->x + Player->Geometry.w + Player->step) <= Player->max_x)
+			// if((Player->pos_x + Player->Geometry.w + Player->step) <= Player->max_x)
 			// {
-				Player->x += Player->step;
+				Player->pos_x += Player->step;
 			// }
 		}
 		if(key[SDL_SCANCODE_ESCAPE])

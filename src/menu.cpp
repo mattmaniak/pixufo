@@ -30,7 +30,7 @@ bool Button::render(Graphics* Graphics, Menu* Menu)
 	return true;
 }
 
-bool Menu::primal(Game* Pixufo, Graphics* Graphics)
+bool Menu::primal(Game* Game, Graphics* Graphics)
 {
 	Button Play(Graphics, "play", 0);
 	Button Quit(Graphics, "quit", 1);
@@ -48,20 +48,20 @@ bool Menu::primal(Game* Pixufo, Graphics* Graphics)
 	current_button_index = 0;
 	max_button_index     = 1;
 
-	while(Pixufo->menu)
+	while(Game->menu)
 	{
 		Play.render(Graphics, this);
 		Quit.render(Graphics, this);
 		SDL_RenderPresent(Graphics->Renderer);
 
-		handle_keyboard(Pixufo);
+		handle_keyboard(Game);
 
 		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
 		{
 			std::cerr << SDL_GetError() << std::endl;
 			return false;
 		}
-		if(!Pixufo->running)
+		if(!Game->running)
 		{
 			return false;
 		}
@@ -69,11 +69,11 @@ bool Menu::primal(Game* Pixufo, Graphics* Graphics)
 	return true;
 }
 
-void Menu::handle_keyboard(Game* Pixufo)
+void Menu::handle_keyboard(Game* Game)
 {
 	const Uint8* key = SDL_GetKeyboardState(nullptr);
 
-	SDL_PollEvent(&Pixufo->event);
+	SDL_PollEvent(&Game->event);
 
 	if(key[SDL_SCANCODE_UP] && (current_button_index > 0))
 	{
@@ -85,29 +85,31 @@ void Menu::handle_keyboard(Game* Pixufo)
 	}
 	else if(key[SDL_SCANCODE_RETURN])
 	{
-		if(Pixufo->menu)
+		if(Game->menu)
 		{
-			if(current_button_index == 0)
+			switch(current_button_index)
 			{
-				Pixufo->menu = false;
-			}
-			else if(current_button_index == 1)
-			{
-				Pixufo->running = false;
+				case 0:
+				Game->menu = false;
+				break;
+
+				case 1:
+				Game->running = false;
 			}
 		}
-		else if(Pixufo->pause)
+		else if(Game->pause)
 		{
-			if(current_button_index == 1)
+			switch(current_button_index)
 			{
-				Pixufo->menu = true;
+				case 1:
+				Game->menu = true;
 			}
-			Pixufo->pause = false;
+			Game->pause = false;
 		}
 	}
 }
 
-bool Menu::pause(Game* Pixufo, Graphics* Graphics)
+bool Menu::pause(Game* Game, Graphics* Graphics)
 {
 	Button Continue(Graphics, "continue", 0);
 	Button Main_menu(Graphics, "main_menu", 1);
@@ -125,7 +127,7 @@ bool Menu::pause(Game* Pixufo, Graphics* Graphics)
 	current_button_index = 0;
 	max_button_index     = 1;
 
-	while(Pixufo->pause)
+	while(Game->pause)
 	{
 		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
 		{
@@ -136,7 +138,26 @@ bool Menu::pause(Game* Pixufo, Graphics* Graphics)
 		Main_menu.render(Graphics, this);
 		SDL_RenderPresent(Graphics->Renderer);
 
-		handle_keyboard(Pixufo);
+		handle_keyboard(Game);
+	}
+	return true;
+}
+
+bool Menu::fader(Graphics* Graphics)
+{
+	Uint32 fader_time = 500;
+	Uint32 start_time = SDL_GetTicks();
+
+	while((SDL_GetTicks() - start_time) < fader_time)
+	{
+		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		{
+			std::cerr << SDL_GetError() << std::endl;
+			return false;
+		}
+		// Continue.render(Graphics, this);
+		// Main_menu.render(Graphics, this);
+		SDL_RenderPresent(Graphics->Renderer);
 	}
 	return true;
 }
