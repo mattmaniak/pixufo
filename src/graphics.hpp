@@ -13,9 +13,9 @@
 
 class Graphics
 {
-	float  frame_start_time;
-	float  frame_elapsed_time;
-	Uint32 fps;
+	float        frame_start_time;
+	float        frame_elapsed_time;
+	unsigned int fps;
 
 	public:
 	bool            initialized;
@@ -28,7 +28,7 @@ class Graphics
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string name);
-	bool         render(void* Model);
+	bool         render(void* Model_basic);
 	void         count_frame_start_time();
 	bool         count_elapsed_time();
 };

@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 
 class Game;
-class Model;
+class Model_basic;
 class Graphics;
 class Player;
 
@@ -20,10 +20,10 @@ class Menu
 	bool fader(Graphics* Graphics);
 };
 
-class Button: public Model
+class Button: public Model_basic
 {
 	public:
-	unsigned int index;
+	const unsigned int index;
 
 	Button(Graphics* Graphics, const std::string name, const int idx);
 

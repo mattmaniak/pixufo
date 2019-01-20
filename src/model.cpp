@@ -1,7 +1,7 @@
 #include "model.hpp"
 #include "graphics.hpp"
 
-Model::Model(Graphics* Graphics, const std::string name)
+Model_basic::Model_basic(Graphics* Graphics, const std::string name)
 {
 	Texture_ = Graphics->load_texture(name);
 	if(Texture_ == nullptr)
@@ -27,7 +27,7 @@ Model::Model(Graphics* Graphics, const std::string name)
 	initialized = true;
 }
 
-Model::~Model()
+Model_basic::~Model_basic()
 {
 	if(Texture_ != nullptr)
 	{
@@ -35,7 +35,7 @@ Model::~Model()
 	}
 }
 
-bool Model::render(Graphics* Graphics)
+bool Model_basic::render(Graphics* Graphics)
 {
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
@@ -45,7 +45,7 @@ bool Model::render(Graphics* Graphics)
 	return true;
 }
 
-int Model::count_scale()
+int Model_basic::count_scale()
 {
 	const int       pixelart_display_width = 480;
 	const int       display_index = 0;
@@ -56,8 +56,8 @@ int Model::count_scale()
 	return (Current_display.w / pixelart_display_width);
 }
 
-Player::Player(Graphics* Graphics, const std::string name, const float spd)
-: Model(Graphics, name)
+Model_player::Model_player(Graphics* Graphics, const std::string name, const float spd)
+: Model_basic(Graphics, name)
 {
 	speed = spd;
 
@@ -70,7 +70,7 @@ Player::Player(Graphics* Graphics, const std::string name, const float spd)
 	Hitbox.y = (Graphics->Display.h - Hitbox.h) / 2;
 }
 
-bool Player::render(Graphics* Graphics)
+bool Model_player::render(Graphics* Graphics)
 {
 	step = speed * Graphics->delta_time * count_scale();
 
@@ -82,15 +82,16 @@ bool Player::render(Graphics* Graphics)
 	return true;
 }
 
-Enemy::Enemy(Graphics* Graphics, const std::string name, const float spd)
-: Model(Graphics, name)
+Model_enemy::Model_enemy(Graphics* Graphics, const std::string name,
+                         const float spd)
+                         : Model_basic(Graphics, name), speed(spd)
 {
-	speed = spd;
+	// speed = spd;
 	pos_x = 0;
 	pos_y = 0;
 }
 
-bool Enemy::render(Graphics* Graphics)
+bool Model_enemy::render(Graphics* Graphics)
 {
 	step = speed * Graphics->delta_time * count_scale();
 
@@ -105,17 +106,24 @@ bool Enemy::render(Graphics* Graphics)
 	return true;
 }
 
-Background::Background(Graphics* Graphics, const std::string name)
-: Model(Graphics, name)
+Model_background::Model_background(Graphics* Graphics, const std::string name)
+: Model_basic(Graphics, name)
 {
 
 }
 
-bool Background::tile(Graphics* Graphics)
+bool Model_background::tile(Graphics* Graphics)
 {
 	// Additional value to support the infinite scrolling.
 	unsigned int tiles_x = (Graphics->Display.w / Geometry.w) + 1;
 	unsigned int tiles_y = (Graphics->Display.h / Geometry.h) + 1;
+
+	if((tiles_x >= std::numeric_limits<unsigned int>::max())
+	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
+	{
+		std::cerr << "Too many tiles in the background." << std::endl;
+		return false;
+	}
 
 	if(pos_x > 0) // Shifted right.
 	{

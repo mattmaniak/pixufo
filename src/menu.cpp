@@ -4,9 +4,9 @@
 #include "menu.hpp"
 
 Button::Button(Graphics* Graphics, const std::string name, const int idx)
-: Model(Graphics, name)
+: Model_basic(Graphics, name), index(idx)
 {
-	index = idx;
+
 }
 
 bool Button::render(Graphics* Graphics, Menu* Menu)

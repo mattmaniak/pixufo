@@ -108,7 +108,7 @@ void Graphics::count_frame_start_time()
 
 bool Graphics::count_elapsed_time()
 {
-	if(++fps >= std::numeric_limits<Uint32>::max())
+	if(++fps >= std::numeric_limits<unsigned int>::max())
 	{
 		std::cerr << "Too many frames per second." << std::endl;
 		return false;
@@ -145,16 +145,16 @@ SDL_Surface* load_image(const std::string name)
 	return image;
 }
 
-bool Graphics::render(void* Model)
+bool Graphics::render(void* Model_basic)
 {
 	// step = speed * Graphics->delta_time * count_scale();
 
-	// if((Model->Geometry.x > -Model->Geometry.x)
-	// && (Model->Geometry.y > -Model->Geometry.y)
-	// && (Model->Geometry.x < (Display.w + Model->Geometry.x))
-	// && (Model->Geometry.y > (Display.h + Model->Geometry.x)))
+	// if((Model_basic->Geometry.x > -Model_basic->Geometry.x)
+	// && (Model_basic->Geometry.y > -Model_basic->Geometry.y)
+	// && (Model_basic->Geometry.x < (Display.w + Model_basic->Geometry.x))
+	// && (Model_basic->Geometry.y > (Display.h + Model_basic->Geometry.x)))
 	// {
-	// 	if(SDL_RenderCopy(Renderer, Model->Texture, NULL, &Model->Geometry) != 0)
+	// 	if(SDL_RenderCopy(Renderer, Model_basic->Texture, NULL, &Model_basic->Geometry) != 0)
 	// 	{
 	// 		std::cerr << SDL_GetError() << std::endl;
 	// 		return false;

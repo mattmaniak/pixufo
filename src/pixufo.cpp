@@ -23,17 +23,17 @@ int main()
 	{
 		return 0;
 	}
-	Background Background(&Graphics, "space_menu_seamless");
-	if(!Background.initialized)
+	Model_background Space(&Graphics, "space_menu_seamless");
+	if(!Space.initialized)
 	{
 		return 0;
 	}
-	Player Player(&Graphics, "ufo", 200.0f);
+	Model_player Player(&Graphics, "ufo", 200.0f);
 	if(!Player.initialized)
 	{
 		return 0;
 	}
-	Enemy Nebula(&Graphics, "nebula_small", 0.0f);
+	Model_enemy Nebula(&Graphics, "nebula_small", 0.0f);
 	if(!Nebula.initialized)
 	{
 		return 0;
@@ -57,7 +57,7 @@ int main()
 				return 0;
 			}
 		}
-		if(!Background.tile(&Graphics))
+		if(!Space.tile(&Graphics))
 		{
 			return 0;
 		}
@@ -73,7 +73,7 @@ int main()
 		SDL_RenderPresent(Graphics.Renderer);
 		Game.handle_keyboard(&Player);
 
-		camera::move_entities(&Player, &Background, &Nebula);
+		camera::move_entities(&Player, &Space, &Nebula);
 
 		if(Game.pause)
 		{

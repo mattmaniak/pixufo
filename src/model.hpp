@@ -7,7 +7,7 @@
 
 class Graphics;
 
-class Model
+class Model_basic
 {
 	protected:
 	SDL_Texture* Texture_;  // Driver-specific representation of data.
@@ -18,21 +18,21 @@ class Model
 	float        pos_x;
 	float        pos_y;
 
-	Model(Graphics* Graphics, const std::string name);
-	~Model();
+	Model_basic(Graphics* Graphics, const std::string name);
+	~Model_basic();
 
 	bool render(Graphics* Graphics);
 	int  count_scale();
 };
 
-class Planet: public Model
+class Model_planet: public Model_basic
 {
 	bool     visible;
 	float    distance_to_player;
 	SDL_Rect Hitbox;
 };
 
-class Enemy: public Model // TODO: INHERIT FROM PLANET?
+class Model_enemy: public Model_basic // TODO: INHERIT FROM PLANET?
 {
 	public:
 	bool     visible;
@@ -44,26 +44,26 @@ class Enemy: public Model // TODO: INHERIT FROM PLANET?
 	// float max_x;
 	// float max_y;
 
-	Enemy(Graphics* Graphics, const std::string name, const float spd);
+	Model_enemy(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);
 };
 
-class Player: public Model
+class Model_player: public Model_basic
 {
 	public:
 	float    speed;
 	float    step;
 	SDL_Rect Hitbox;
 
-	Player(Graphics* Graphics, const std::string name, const float spd);
+	Model_player(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);
 };
 
-class Background: public Model
+class Model_background: public Model_basic
 {
 	public:
 
-	Background(Graphics* Graphics, const std::string name);
+	Model_background(Graphics* Graphics, const std::string name);
 	bool tile(Graphics* Graphics);
 };
 

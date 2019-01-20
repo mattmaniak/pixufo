@@ -1,7 +1,8 @@
 #include "camera.hpp"
 #include "model.hpp"
 
-void camera::move_entities(Player* Player, Background* Background, Enemy* Enemy)
+void camera::move_entities(Model_player* Player, Model_background* Background,
+                           Model_enemy* Enemy)
 {
 	const float player_to_background_speed = 2.0f;
 

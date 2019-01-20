@@ -4,14 +4,15 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-class Background;
-class Enemy;
-class Planet;
-class Player;
+class Model_background;
+class Model_enemy;
+class Model_planet;
+class Model_player;
 
 namespace camera
 {
-	void move_entities(Player* Player, Background* Background, Enemy* enemy);
+	void move_entities(Model_player* Player, Model_background* Background,
+	                   Model_enemy* enemy);
 }
 
 #endif

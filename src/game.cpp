@@ -13,7 +13,7 @@ Game::~Game()
 	SDL_Quit();
 }
 
-void Game::handle_keyboard(Player* Player)
+void Game::handle_keyboard(Model_player* Player)
 {
 	const Uint8* key = SDL_GetKeyboardState(nullptr);
 	Uint8        pressed_keys_amount = 0;
@@ -29,7 +29,7 @@ void Game::handle_keyboard(Player* Player)
 	}
 	if(pressed_keys_amount > 1)
 	{
-		Player->step = Player->step / std::sqrt(2);
+		Player->step = Player->step / std::sqrt(2.0f);
 	}
 
 	switch(event.type)
