@@ -1,85 +1,99 @@
-#include "game.hpp"
-#include "graphics.hpp"
-#include "model.hpp"
-#include "menu.hpp"
-#include "camera.hpp"
 #include "pixufo.hpp"
+#include "graphics.hpp"
+#include "models.hpp"
+#include "menus.hpp"
+#include "keyboard.hpp"
+#include "pause.hpp"
+#include "camera.hpp"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
 #undef main
 #endif
 
+int exit_game()
+{
+	SDL_Quit();
+	return 0;
+}
+
 int main()
 {
-	Game Game;
+	Keyboard Keyboard;
+
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		std::cout << SDL_GetError() << std::endl;
-		return 0;
+		return exit_game();
 	}
 	Graphics Graphics;
 	if(!Graphics.initialized)
 	{
-		return 0;
+		return exit_game();
 	}
 	Model_background Space(&Graphics, "space_menu_seamless");
 	if(!Space.initialized)
 	{
-		return 0;
+		return exit_game();
 	}
 	Model_player Player(&Graphics, "ufo", 200.0f);
 	if(!Player.initialized)
 	{
-		return 0;
+		return exit_game();
 	}
 	Model_enemy Nebula(&Graphics, "nebula_small", 0.0f);
 	if(!Nebula.initialized)
 	{
-		return 0;
+		return exit_game();
 	}
-	Menu Menu;
+	Menu  Menu;
+	Pause Pause;
 
-	while(Game.running)
+	for(;;)
 	{
-		Graphics.count_frame_start_time();
-
+		if(!Graphics.count_frame_start_time())
+		{
+			return exit_game();
+		}
 		if(SDL_RenderClear(Graphics.Renderer) != SUCCESS)
 		{
 			std::cerr << SDL_GetError() << std::endl;
-			return 0;
+			return exit_game();
 		}
 
-		if(Game.menu)
+		if(Menu.active)
 		{
-			if(!Menu.primal(&Game, &Graphics))
+			if(!Menu.launch(&Graphics, &Keyboard))
 			{
-				return 0;
+				return exit_game();
 			}
 		}
 		if(!Space.tile(&Graphics))
 		{
-			return 0;
+			return exit_game();
 		}
 		if(!Nebula.render(&Graphics))
 		{
-			return 0;
+			return exit_game();
 		}
 
 		if(!Player.render(&Graphics))
 		{
-			return 0;
+			return exit_game();
 		}
 		SDL_RenderPresent(Graphics.Renderer);
-		Game.handle_keyboard(&Player);
 
+		if(!Keyboard.handle_ingame(&Player, &Pause.active))
+		{
+			return exit_game();
+		}
 		camera::move_entities(&Player, &Space, &Nebula);
 
-		if(Game.pause)
+		if(Pause.active)
 		{
-			if(!Menu.pause(&Game, &Graphics))
+			if(!Pause.launch(&Graphics, &Keyboard, &Menu))
 			{
-				return 0;
+				return exit_game();
 			}
 			SDL_Delay(500);
 			// TODO: ANIMATION OR STH TO PREVENT ENTER ON RETURN TO THE MAIN MENU.
@@ -87,8 +101,8 @@ int main()
 
 		if(!Graphics.count_elapsed_time())
 		{
-			return 0;
+			return exit_game();
 		}
 	}
-	return 0;
+	return exit_game();
 }

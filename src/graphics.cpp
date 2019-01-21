@@ -101,9 +101,16 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-void Graphics::count_frame_start_time()
+bool Graphics::count_frame_start_time()
 {
+	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
+	{
+		std::cerr << "The game can't run so long." << std::endl;
+		return false;
+	}
 	frame_start_time = SDL_GetTicks() / 1000.0f;
+
+	return true;
 }
 
 bool Graphics::count_elapsed_time()
@@ -111,6 +118,11 @@ bool Graphics::count_elapsed_time()
 	if(++fps >= std::numeric_limits<unsigned int>::max())
 	{
 		std::cerr << "Too many frames per second." << std::endl;
+		return false;
+	}
+	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
+	{
+		std::cerr << "The game can't run so long." << std::endl;
 		return false;
 	}
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
@@ -143,22 +155,4 @@ SDL_Surface* load_image(const std::string name)
 		std::cout << SDL_GetError() << std::endl;
 	}
 	return image;
-}
-
-bool Graphics::render(void* Model_basic)
-{
-	// step = speed * Graphics->delta_time * count_scale();
-
-	// if((Model_basic->Geometry.x > -Model_basic->Geometry.x)
-	// && (Model_basic->Geometry.y > -Model_basic->Geometry.y)
-	// && (Model_basic->Geometry.x < (Display.w + Model_basic->Geometry.x))
-	// && (Model_basic->Geometry.y > (Display.h + Model_basic->Geometry.x)))
-	// {
-	// 	if(SDL_RenderCopy(Renderer, Model_basic->Texture, NULL, &Model_basic->Geometry) != 0)
-	// 	{
-	// 		std::cerr << SDL_GetError() << std::endl;
-	// 		return false;
-	// 	}
-	// }
-	return true;
 }

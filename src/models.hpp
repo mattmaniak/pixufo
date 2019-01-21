@@ -1,5 +1,5 @@
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#ifndef MODELS_HPP
+#define MODELS_HPP
 
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -41,8 +41,6 @@ class Model_enemy: public Model_basic // TODO: INHERIT FROM PLANET?
 
 	float speed;
 	float step;
-	// float max_x;
-	// float max_y;
 
 	Model_enemy(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);
@@ -65,6 +63,16 @@ class Model_background: public Model_basic
 
 	Model_background(Graphics* Graphics, const std::string name);
 	bool tile(Graphics* Graphics);
+};
+
+class Model_button: public Model_basic
+{
+	public:
+	const unsigned int index;
+
+	Model_button(Graphics* Graphics, const std::string name, const int idx);
+
+	bool render(Graphics* Graphics, unsigned int current_index);
 };
 
 #endif

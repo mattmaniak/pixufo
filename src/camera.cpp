@@ -1,5 +1,5 @@
 #include "camera.hpp"
-#include "model.hpp"
+#include "models.hpp"
 
 void camera::move_entities(Model_player* Player, Model_background* Background,
                            Model_enemy* Enemy)

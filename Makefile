@@ -3,6 +3,7 @@ TARGET =
 CC = g++
 CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic
 LDFLAGS = -lSDL2
+ASAN_FLAGS =
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -15,6 +16,7 @@ ifeq ($(OS), Windows_NT)
 	MKDIR_OBJ = if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
 else
 	TARGET = PixUfo
+	ASAN_FLAGS = -fsanitize=address
 	MKDIR_OBJ = mkdir -p $(OBJ_DIR)
 endif
 
@@ -37,6 +39,9 @@ $(TARGET): $(OBJS)
 	$(CC) -o $@ $^ \
 	$(CXXFLAGS) \
 	$(LDFLAGS)
+
+address: LDFLAGS += $(ASAN_FLAGS)
+address: $(TARGET)
 
 .PHONY: clean
 
