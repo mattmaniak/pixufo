@@ -1,4 +1,5 @@
 #include "pixufo.hpp"
+#include "error.hpp"
 #include "graphics.hpp"
 #include "models.hpp"
 #include "menus.hpp"
@@ -21,9 +22,9 @@ int main()
 {
 	Keyboard Keyboard;
 
-	if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
-		std::cout << SDL_GetError() << std::endl;
+		error::show_box("Can't initialize the SDL2.");
 		return exit_game();
 	}
 	Graphics Graphics;
@@ -55,9 +56,9 @@ int main()
 		{
 			return exit_game();
 		}
-		if(SDL_RenderClear(Graphics.Renderer) != SUCCESS)
+		if(SDL_RenderClear(Graphics.Renderer) != SDL2_SUCCESS)
 		{
-			std::cerr << SDL_GetError() << std::endl;
+			error::show_box("Can't clean the renderer.");
 			return exit_game();
 		}
 
@@ -87,8 +88,6 @@ int main()
 		{
 			return exit_game();
 		}
-		camera::move_entities(&Player, &Space, &Nebula);
-
 		if(Pause.active)
 		{
 			if(!Pause.launch(&Graphics, &Keyboard, &Menu))
@@ -98,6 +97,7 @@ int main()
 			SDL_Delay(500);
 			// TODO: ANIMATION OR STH TO PREVENT ENTER ON RETURN TO THE MAIN MENU.
 		}
+		camera::move_entities(&Player, &Space, &Nebula);
 
 		if(!Graphics.count_elapsed_time())
 		{

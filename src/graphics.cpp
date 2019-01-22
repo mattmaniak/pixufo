@@ -1,4 +1,5 @@
 #include "graphics.hpp"
+#include "error.hpp"
 
 Graphics::Graphics()
 {
@@ -8,13 +9,13 @@ Graphics::Graphics()
 	SDL_Surface* icon = load_image("icon");
 	if(icon == nullptr)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't load the icon.");
 		initialized = false;
 		return;
 	}
-	if(SDL_GetDesktopDisplayMode(0, &Display) != 0)
+	if(SDL_GetDesktopDisplayMode(0, &Display) != SDL2_SUCCESS)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't get the display size.");
 		initialized = false;
 		return;
 	}
@@ -23,13 +24,13 @@ Graphics::Graphics()
 	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(Window == nullptr)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't create the window.");
 		initialized = false;
 		return;
 	}
 	if((Display.w < MIN_RESOLUTION_W) || (Display.h < MIN_RESOLUTION_H))
 	{
-		std::cerr << "At least 1024x576 resolution is required." << std::endl;
+		error::show_box("At least 1024x576 resolution is required.");
 		initialized = false;
 		return;
 	}
@@ -41,13 +42,13 @@ Graphics::Graphics()
 	                              | SDL_RENDERER_PRESENTVSYNC);
 	if(Renderer == nullptr)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't create the renderer.");
 		initialized = false;
 		return;
 	}
-	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SUCCESS)
+	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't hide the mouse pointer.");
 		initialized = false;
 		return;
 	}
@@ -87,14 +88,14 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 
 	if(Image == nullptr)
 	{
-		std::cout << SDL_GetError() << std::endl;
+		error::show_box("Can't load the image: " + path);
 		return nullptr;
 	}
 
 	Texture = SDL_CreateTextureFromSurface(Renderer, Image);
 	if(Texture == nullptr)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't create the texture from image: " + path);
 	}
 	SDL_FreeSurface(Image);
 
@@ -105,7 +106,7 @@ bool Graphics::count_frame_start_time()
 {
 	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
 	{
-		std::cerr << "The game can't run so long." << std::endl;
+		error::show_box("The game can't run so long.");
 		return false;
 	}
 	frame_start_time = SDL_GetTicks() / 1000.0f;
@@ -115,14 +116,16 @@ bool Graphics::count_frame_start_time()
 
 bool Graphics::count_elapsed_time()
 {
-	if(++fps >= std::numeric_limits<unsigned int>::max())
+	fps++;
+
+	if(fps >= std::numeric_limits<unsigned int>::max())
 	{
-		std::cerr << "Too many frames per second." << std::endl;
+		error::show_box("Too many frames per second.");
 		return false;
 	}
 	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
 	{
-		std::cerr << "The game can't run so long." << std::endl;
+		error::show_box("The game can't run so long.");
 		return false;
 	}
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);

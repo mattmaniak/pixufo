@@ -1,4 +1,5 @@
 #include "pause.hpp"
+#include "error.hpp"
 #include "menus.hpp"
 #include "models.hpp"
 #include "keyboard.hpp"
@@ -16,12 +17,12 @@ bool Pause::launch(Graphics* Graphics, Keyboard* Keyboard, Menu* Menu)
 
 	if(!Continue.initialized)
 	{
-		std::cerr << "ERROR" << std::endl;
+		error::show_box("Can't initialize the continue button.");
 		return false;
 	}
 	if(!Main_menu.initialized)
 	{
-		std::cerr << "ERROR" << std::endl;
+		error::show_box("Can't initialize the main menu button.");
 		return false;
 	}
 	current_button_index = 0;
@@ -31,14 +32,23 @@ bool Pause::launch(Graphics* Graphics, Keyboard* Keyboard, Menu* Menu)
 	{
 		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
 		{
-			std::cerr << SDL_GetError() << std::endl;
+			error::show_box("Can't clean the renderer in the pause menu.");
 			return false;
 		}
-		Continue.render(Graphics, current_button_index);
-		Main_menu.render(Graphics, current_button_index);
+		if(!Continue.render(Graphics, current_button_index))
+		{
+			return false;
+		}
+		if(!Main_menu.render(Graphics, current_button_index))
+		{
+			return false;
+		}
 		SDL_RenderPresent(Graphics->Renderer);
 
-		Keyboard->handle_pause(Menu, this);
+		if(!Keyboard->handle_pause(Menu, this))
+		{
+			return false;
+		}
 	}
 	return true;
 }

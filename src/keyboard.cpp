@@ -62,6 +62,10 @@ bool Keyboard::handle_ingame(Model_player* Player, bool* pause_active)
 				Player->pos_x += Player->step;
 			// }
 		}
+	}
+	switch(event.key.keysym.sym)
+	{
+		case SDLK_ESCAPE:
 		if(keys[SDL_SCANCODE_ESCAPE])
 		{
 			*pause_active = !*pause_active;
@@ -74,22 +78,33 @@ bool Keyboard::handle_menu(Menu* Menu)
 {
 	SDL_PollEvent(&event);
 
-	if(keys[SDL_SCANCODE_UP] && (Menu->current_button_index > 0))
+	switch(event.type)
 	{
-		Menu->current_button_index--;
+		case SDL_QUIT:
+		return false;
 	}
-	else if(keys[SDL_SCANCODE_DOWN]
-	&& (Menu->current_button_index < Menu->max_button_index))
+	switch(event.key.keysym.sym)
 	{
-		Menu->current_button_index++;
-	}
-	else if(keys[SDL_SCANCODE_RETURN])
-	{
+		case SDLK_UP:
+		if(Menu->current_button_index > 0)
+		{
+			Menu->current_button_index--;
+		}
+		return true;
+
+		case SDLK_DOWN:
+		if(Menu->current_button_index < Menu->max_button_index)
+		{
+			Menu->current_button_index++;
+		}
+		return true;
+
+		case SDLK_RETURN:
 		switch(Menu->current_button_index)
 		{
 			case 0:
 			Menu->active = false;
-			break;
+			return true;
 
 			case 1:
 			return false;
@@ -102,17 +117,28 @@ bool Keyboard::handle_pause(Menu* Menu, Pause* Pause)
 {
 	SDL_PollEvent(&event);
 
-	if(keys[SDL_SCANCODE_UP] && (Pause->current_button_index > 0))
+	switch(event.type)
 	{
-		Pause->current_button_index--;
+		case SDL_QUIT:
+		return false;
 	}
-	else if(keys[SDL_SCANCODE_DOWN]
-	&& (Pause->current_button_index < Pause->max_button_index))
+	switch(event.key.keysym.sym)
 	{
-		Pause->current_button_index++;
-	}
-	else if(keys[SDL_SCANCODE_RETURN])
-	{
+		case SDLK_UP:
+		if(Pause->current_button_index > 0)
+		{
+			Pause->current_button_index--;
+		}
+		return true;
+
+		case SDLK_DOWN:
+		if(Pause->current_button_index < Menu->max_button_index)
+		{
+			Pause->current_button_index++;
+		}
+		return true;
+
+		case SDLK_RETURN:
 		switch(Pause->current_button_index)
 		{
 			case 1:

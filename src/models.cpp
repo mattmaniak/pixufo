@@ -1,4 +1,5 @@
 #include "models.hpp"
+#include "error.hpp"
 #include "graphics.hpp"
 
 Model_basic::Model_basic(Graphics* Graphics, const std::string name)
@@ -6,15 +7,14 @@ Model_basic::Model_basic(Graphics* Graphics, const std::string name)
 	Texture_ = Graphics->load_texture(name);
 	if(Texture_ == nullptr)
 	{
-		std::cerr << SDL_GetError() << std::endl;
 		initialized = false;
 		return;
 	}
 
 	if(SDL_QueryTexture(Texture_, nullptr, nullptr, &Geometry.w, &Geometry.h)
-	   != 0)
+	!= SDL2_SUCCESS)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't get a texture size.");
 		initialized = false;
 		return;
 	}
@@ -39,7 +39,7 @@ bool Model_basic::render(Graphics* Graphics)
 {
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't copy a texture to the renderer.");
 		return false;
 	}
 	return true;
@@ -78,15 +78,15 @@ bool Model_player::render(Graphics* Graphics)
 
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't copy a texture to the renderer.");
 		return false;
 	}
 	return true;
 }
 
 Model_enemy::Model_enemy(Graphics* Graphics, const std::string name,
-                         const float spd)
-: Model_basic(Graphics, name), speed(spd)
+                         const float spd) : Model_basic(Graphics, name),
+                         speed(spd)
 {
 	pos_x = 0;
 	pos_y = 0;
@@ -101,7 +101,7 @@ bool Model_enemy::render(Graphics* Graphics)
 
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't copy a texture to the renderer.");
 		return false;
 	}
 	return true;
@@ -122,7 +122,7 @@ bool Model_background::tile(Graphics* Graphics)
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
 	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
 	{
-		std::cerr << "Too many tiles in the background." << std::endl;
+		error::show_box("Too many tiles in the background.");
 		return false;
 	}
 
@@ -156,7 +156,7 @@ bool Model_background::tile(Graphics* Graphics)
 
 			if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 			{
-				std::cerr << SDL_GetError() << std::endl;
+				error::show_box("Can't copy a texture to the renderer.");
 				return false;
 			}
 		}
@@ -165,8 +165,8 @@ bool Model_background::tile(Graphics* Graphics)
 }
 
 Model_button::Model_button(Graphics* Graphics, const std::string name,
-                           const int idx)
-: Model_basic(Graphics, name), index(idx)
+                           const int idx) : Model_basic(Graphics, name),
+                           index(idx)
 {
 
 }
@@ -186,7 +186,7 @@ bool Model_button::render(Graphics* Graphics, unsigned int current_index)
 	}
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{
-		std::cerr << SDL_GetError() << std::endl;
+		error::show_box("Can't copy a texture to the renderer.");
 		return false;
 	}
 	return true;
