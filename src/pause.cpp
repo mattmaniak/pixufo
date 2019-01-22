@@ -30,7 +30,7 @@ bool Pause::launch(Graphics* Graphics, Keyboard* Keyboard, Menu* Menu)
 
 	while(active)
 	{
-		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		if(SDL_RenderClear(Graphics->Renderer) != SDL2_SUCCESS)
 		{
 			error::show_box("Can't clean the renderer in the pause menu.");
 			return false;

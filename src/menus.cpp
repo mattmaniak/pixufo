@@ -44,7 +44,7 @@ bool Menu::launch(Graphics* Graphics, Keyboard* Keyboard)
 			return false;
 		}
 
-		if(SDL_RenderClear(Graphics->Renderer) != SUCCESS)
+		if(SDL_RenderClear(Graphics->Renderer) != SDL2_SUCCESS)
 		{
 			error::show_box("Can't clean the renderer in the menu.");
 			return false;

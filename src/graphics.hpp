@@ -6,8 +6,6 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-#define SUCCESS 0
-
 #define MIN_RESOLUTION_W 1024
 #define MIN_RESOLUTION_H 576
 

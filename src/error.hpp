@@ -1,6 +1,7 @@
 #ifndef ERROR_HPP
 #define ERROR_HPP
 
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <string>
 
@@ -8,7 +9,7 @@
 
 namespace error
 {
-	void show_box(std::string);
+	void show_box(const std::string message);
 }
 
 #endif

@@ -84,7 +84,7 @@ int main()
 		}
 		SDL_RenderPresent(Graphics.Renderer);
 
-		if(!Keyboard.handle_ingame(&Player, &Pause.active))
+		if(!Keyboard.handle_ingame(&Graphics, &Player, &Pause.active))
 		{
 			return exit_game();
 		}

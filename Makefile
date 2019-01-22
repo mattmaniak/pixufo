@@ -14,7 +14,8 @@ ifeq ($(OS), Windows_NT)
 	TARGET = PixUfo.exe
 	LDFLAGS += -lmingw32 -mwindows -mconsole -lSDL2main
 	MKDIR_OBJ = if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
-else
+
+else ifeq ($(shell uname), Linux)
 	TARGET = PixUfo
 	ASAN_FLAGS = -fsanitize=address
 	MKDIR_OBJ = mkdir -p $(OBJ_DIR)

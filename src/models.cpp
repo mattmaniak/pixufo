@@ -57,13 +57,20 @@ int Model_basic::count_scale()
 }
 
 Model_player::Model_player(Graphics* Graphics, const std::string name,
-                           const float spd)
-: Model_basic(Graphics, name)
+                           const float spd) : Model_basic(Graphics, name),
+                           speed(spd)
 {
-	speed = spd;
+	step = 0.0f;
 
 	Geometry.x = (Graphics->Display.w - Geometry.w) / 2;
 	Geometry.y = (Graphics->Display.h - Geometry.h) / 2;
+
+	pos_x = pos_y = 0.0f;
+
+	min_x = -1920.0f / 2.0f;
+	max_x = 1920.0f / 2.0f;
+	min_y = -1920.0f / 2.0f;
+	max_y = 1920.0f / 2.0f;
 
 	// WIP hitbox with area of 25% of the original model.
 	Hitbox.w = Geometry.w / 2;
@@ -94,7 +101,7 @@ Model_enemy::Model_enemy(Graphics* Graphics, const std::string name,
 
 bool Model_enemy::render(Graphics* Graphics)
 {
-	step = speed * Graphics->delta_time * count_scale();
+	// step = speed * Graphics->delta_time * count_scale();
 
 	Geometry.x = pos_x;
 	Geometry.y = pos_y;

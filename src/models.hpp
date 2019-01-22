@@ -51,6 +51,10 @@ class Model_player: public Model_basic
 	public:
 	float    speed;
 	float    step;
+	float    min_x;
+	float    max_x;
+	float    min_y;
+	float    max_y;
 	SDL_Rect Hitbox;
 
 	Model_player(Graphics* Graphics, const std::string name, const float spd);
@@ -62,6 +66,7 @@ class Model_background: public Model_basic
 	public:
 
 	Model_background(Graphics* Graphics, const std::string name);
+
 	bool tile(Graphics* Graphics);
 };
 

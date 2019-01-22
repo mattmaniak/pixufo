@@ -15,4 +15,11 @@ namespace camera
 	                   Model_enemy* enemy);
 }
 
+class Camera
+{
+	public:
+	float pos_x;
+	float pos_y;
+};
+
 #endif

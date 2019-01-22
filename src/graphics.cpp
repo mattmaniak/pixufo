@@ -75,12 +75,14 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	const std::string directory = "gfx";
 	const std::string extension = "bmp";
 
+#ifdef _WIN32
+	const std::string path = directory + '\\' + name + '.' + extension;
+
+#else
 #ifdef __linux__
 	const std::string path = directory + '/' + name + '.' + extension;
 #endif
 
-#ifdef _WIN32
-	const std::string path = directory + '\\' + name + '.' + extension;
 #endif
 
 	SDL_Surface* Image = SDL_LoadBMP(path.c_str());
