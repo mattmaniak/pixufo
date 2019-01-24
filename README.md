@@ -1,6 +1,6 @@
 # PixUfo
 ## Requirements:
-- 1024x576 resolution,
+- HD display resolution,
 - Windows or GNU/Linux with a graphical user interface.
 
 ## Development guide

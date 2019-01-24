@@ -3,8 +3,8 @@
 
 Graphics::Graphics()
 {
+	const int unused_size    = 0;
 	const int default_driver = -1;
-	const int unused_size = 0;
 
 	SDL_Surface* icon = load_image("icon");
 	if(icon == nullptr)
@@ -13,9 +13,9 @@ Graphics::Graphics()
 		initialized = false;
 		return;
 	}
-	if(SDL_GetDesktopDisplayMode(0, &Display) != SDL2_SUCCESS)
+	if(SDL_GetDesktopDisplayMode(0, &Screen) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't get the display size.");
+		error::show_box("Can't get the desktop size.");
 		initialized = false;
 		return;
 	}
@@ -28,9 +28,9 @@ Graphics::Graphics()
 		initialized = false;
 		return;
 	}
-	if((Display.w < MIN_RESOLUTION_W) || (Display.h < MIN_RESOLUTION_H))
+	if((Screen.w < MIN_DISPLAY_WIDTH) || (Screen.h < MIN_DISPLAY_HEIGHT))
 	{
-		error::show_box("At least 1024x576 resolution is required.");
+		error::show_box("At least the HD display resolution is required.");
 		initialized = false;
 		return;
 	}

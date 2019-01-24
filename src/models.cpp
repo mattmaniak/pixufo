@@ -47,36 +47,27 @@ bool Model_basic::render(Graphics* Graphics)
 
 int Model_basic::count_scale()
 {
-	const int       pixelart_display_width = 480;
 	const int       display_index = 0;
-	SDL_DisplayMode Current_display;
+	SDL_DisplayMode Ingame_display;
 
-	SDL_GetCurrentDisplayMode(display_index, &Current_display);
-
-	return (Current_display.w / pixelart_display_width);
+	if(SDL_GetDesktopDisplayMode(display_index, &Ingame_display) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't get the current display size.");
+		initialized = false;
+	}
+	return Ingame_display.w / PIXELART_DISPLAY_WIDTH;
 }
 
 Model_player::Model_player(Graphics* Graphics, const std::string name,
-                           const float spd) : Model_basic(Graphics, name),
+                           const float spd): Model_basic(Graphics, name),
                            speed(spd)
 {
 	step = 0.0f;
 
-	Geometry.x = (Graphics->Display.w - Geometry.w) / 2;
-	Geometry.y = (Graphics->Display.h - Geometry.h) / 2;
+	Geometry.x = pos_x = (Graphics->Screen.w - Geometry.w) / 2;
+	Geometry.y = pos_y = (Graphics->Screen.h - Geometry.h) / 2;
 
-	pos_x = pos_y = 0.0f;
-
-	min_x = -1920.0f / 2.0f;
-	max_x = 1920.0f / 2.0f;
-	min_y = -1920.0f / 2.0f;
-	max_y = 1920.0f / 2.0f;
-
-	// WIP hitbox with area of 25% of the original model.
-	Hitbox.w = Geometry.w / 2;
-	Hitbox.h = Geometry.h / 2;
-	Hitbox.x = (Graphics->Display.w - Hitbox.w) / 2;
-	Hitbox.y = (Graphics->Display.h - Hitbox.h) / 2;
+	// pos_x = pos_y = 0.0f;
 }
 
 bool Model_player::render(Graphics* Graphics)
@@ -92,11 +83,10 @@ bool Model_player::render(Graphics* Graphics)
 }
 
 Model_enemy::Model_enemy(Graphics* Graphics, const std::string name,
-                         const float spd) : Model_basic(Graphics, name),
+                         const float spd): Model_basic(Graphics, name),
                          speed(spd)
 {
-	pos_x = 0;
-	pos_y = 0;
+	pos_x = pos_y = 0.0f;
 }
 
 bool Model_enemy::render(Graphics* Graphics)
@@ -123,8 +113,8 @@ Model_background::Model_background(Graphics* Graphics, const std::string name)
 bool Model_background::tile(Graphics* Graphics)
 {
 	// Additional row and column to support the infinite scrolling.
-	unsigned int tiles_x = (Graphics->Display.w / Geometry.w) + 1;
-	unsigned int tiles_y = (Graphics->Display.h / Geometry.h) + 1;
+	unsigned int tiles_x = (Graphics->Screen.w / Geometry.w) + 1;
+	unsigned int tiles_y = (Graphics->Screen.h / Geometry.h) + 1;
 
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
 	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
@@ -183,8 +173,8 @@ bool Model_button::render(Graphics* Graphics, unsigned int current_index)
 	const unsigned int actual_button_shift = 64;
 
 	// Centering.
-	Geometry.x = (Graphics->Display.w - Geometry.w) / 2;
-	Geometry.y = (Graphics->Display.h / 2) + (index * Geometry.h);
+	Geometry.x = (Graphics->Screen.w - Geometry.w) / 2;
+	Geometry.y = (Graphics->Screen.h / 2) + (index * Geometry.h);
 
 	// Selected button shift.
 	if(index == current_index)

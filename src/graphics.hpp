@@ -6,8 +6,10 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-#define MIN_RESOLUTION_W 1024
-#define MIN_RESOLUTION_H 576
+#define MIN_DISPLAY_WIDTH  1280
+#define MIN_DISPLAY_HEIGHT 720
+
+#define PIXELART_DISPLAY_WIDTH 640
 
 class Graphics
 {
@@ -17,7 +19,7 @@ class Graphics
 
 	public:
 	bool            initialized;
-	SDL_DisplayMode Display;
+	SDL_DisplayMode Screen;
 	SDL_Window*     Window;
 	SDL_Renderer*   Renderer;
 	float           delta_time;

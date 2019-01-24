@@ -37,7 +37,6 @@ class Model_enemy: public Model_basic // TODO: INHERIT FROM PLANET?
 	public:
 	bool     visible;
 	float    distance_to_player;
-	SDL_Rect Hitbox;
 
 	float speed;
 	float step;
@@ -51,11 +50,6 @@ class Model_player: public Model_basic
 	public:
 	float    speed;
 	float    step;
-	float    min_x;
-	float    max_x;
-	float    min_y;
-	float    max_y;
-	SDL_Rect Hitbox;
 
 	Model_player(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);

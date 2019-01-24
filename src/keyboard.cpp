@@ -2,6 +2,7 @@
 #include "menus.hpp"
 #include "pause.hpp"
 #include "graphics.hpp"
+#include "level.hpp"
 #include "models.hpp"
 
 Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
@@ -9,7 +10,7 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 
 }
 
-bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player, bool* pause_active)
+bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player, bool* pause_active, Level* Level)
 {
 	SDL_PollEvent(&Event);
 
@@ -28,8 +29,8 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player, bool* pau
 		Player->step /= std::sqrt(2.0f);
 	}
 
-	std::cout << Player->min_x << Player->min_y << Player->max_x << Player->max_y << std::endl;
-	std::cout << Player->pos_x << ' ' << Player->pos_y << std::endl;
+	// std::cout << Player->min_x << Player->min_y << Player->max_x << Player->max_y << std::endl;
+	// std::cout << Player->pos_x << ' ' << Player->pos_y << std::endl;
 
 	switch(Event.type)
 	{
@@ -41,31 +42,31 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player, bool* pau
 
 		if(keys[SDL_SCANCODE_UP])
 		{
-			if(Player->pos_y > Player->min_y)
+			if(Player->pos_y > Player->step)
 			{
 				Player->pos_y -= Player->step;
 			}
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			// if((Player->pos_y + Player->Geometry.h + Player->step) <= Player->max_y)
-			// {
+			if((Player->pos_y + Player->Geometry.h + Player->step) < Level->height)
+			{
 				Player->pos_y += Player->step;
-			// }
+			}
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			// if(Player->pos_x >= Player->step)
-			// {
+			if(Player->pos_x > Player->step)
+			{
 				Player->pos_x -= Player->step;
-			// }
+			}
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			// if((Player->pos_x + Player->Geometry.w + Player->step) <= Player->max_x)
-			// {
+			if((Player->pos_x + Player->Geometry.w + Player->step) < Level->width)
+			{
 				Player->pos_x += Player->step;
-			// }
+			}
 		}
 	}
 	switch(Event.key.keysym.sym)

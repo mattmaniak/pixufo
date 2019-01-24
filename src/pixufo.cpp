@@ -5,6 +5,7 @@
 #include "menus.hpp"
 #include "keyboard.hpp"
 #include "pause.hpp"
+#include "level.hpp"
 #include "camera.hpp"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
@@ -32,7 +33,7 @@ int main()
 	{
 		return exit_game();
 	}
-	Model_background Space(&Graphics, "space_menu_seamless");
+	Model_background Space(&Graphics, "background1_seamless");
 	if(!Space.initialized)
 	{
 		return exit_game();
@@ -44,6 +45,11 @@ int main()
 	}
 	Model_enemy Nebula(&Graphics, "nebula_small", 0.0f);
 	if(!Nebula.initialized)
+	{
+		return exit_game();
+	}
+	Level Level(&Graphics, "background1_seamless");
+	if(!Level.initialized)
 	{
 		return exit_game();
 	}
@@ -84,7 +90,7 @@ int main()
 		}
 		SDL_RenderPresent(Graphics.Renderer);
 
-		if(!Keyboard.handle_ingame(&Graphics, &Player, &Pause.active))
+		if(!Keyboard.handle_ingame(&Graphics, &Player, &Pause.active, &Level))
 		{
 			return exit_game();
 		}
@@ -95,9 +101,8 @@ int main()
 				return exit_game();
 			}
 			SDL_Delay(500);
-			// TODO: ANIMATION OR STH TO PREVENT ENTER ON RETURN TO THE MAIN MENU.
 		}
-		camera::move_entities(&Player, &Space, &Nebula);
+		camera::move_entities(&Level, &Player, &Space, &Nebula);
 
 		if(!Graphics.count_elapsed_time())
 		{

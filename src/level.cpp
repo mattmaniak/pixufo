@@ -1,7 +1,15 @@
 #include "level.hpp"
 #include "models.hpp"
+#include "graphics.hpp"
 
-Level::Level(const std::string background_name): width(3 * 480), height(3 * 480)
+Level::Level(Graphics* Graphics, const std::string background_name):
+             width(Graphics->Screen.w), height(Graphics->Screen.w)
 {
-	// Background =
+	Model_background Background(Graphics, background_name);
+	if(!Background.initialized)
+	{
+		initialized = false;
+		return;
+	}
+	initialized = true;
 }
