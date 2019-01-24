@@ -9,10 +9,10 @@ class Model_background;
 class Level
 {
 	public:
-	bool               initialized;
-	const unsigned int width;
-	const unsigned int height;
-	// Model_background   Background;
+	bool     initialized;
+	const int width;
+	const int height;
+	// Model_background   Background(dawdwad, awdaw);
 
 	Level(Graphics* Graphics, const std::string background_name);
 };

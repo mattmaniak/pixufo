@@ -28,53 +28,66 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player, bool* pau
 	{
 		Player->step /= std::sqrt(2.0f);
 	}
-
-	// std::cout << Player->min_x << Player->min_y << Player->max_x << Player->max_y << std::endl;
-	// std::cout << Player->pos_x << ' ' << Player->pos_y << std::endl;
-
 	switch(Event.type)
 	{
 		case SDL_QUIT:
 		return false;
 
 		case SDL_KEYDOWN:
+		switch(Event.key.keysym.sym)
+		{
+			case SDLK_ESCAPE:
+			*pause_active = true;
+			break;
+		}
 		case SDL_KEYUP:
-
 		if(keys[SDL_SCANCODE_UP])
 		{
-			if(Player->pos_y > Player->step)
+			// The player can't go above the level.
+			if(Player->pos_y > -(Level->height / 2))
 			{
 				Player->pos_y -= Player->step;
+			}
+			else // Don't slow down near the border when two keys are pressed.
+			{
+				Player->step *= std::sqrt(2.0f);
 			}
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			if((Player->pos_y + Player->Geometry.h + Player->step) < Level->height)
+			// The player can't go below the level.
+			if(Player->pos_y < (Level->height / 2))
 			{
 				Player->pos_y += Player->step;
+			}
+			else // Don't slow down near the border when two keys are pressed.
+			{
+				Player->step *= std::sqrt(2.0f);
 			}
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			if(Player->pos_x > Player->step)
+			// The player can't go behind the right side of the level.
+			if(Player->pos_x > -(Level->width / 2))
 			{
 				Player->pos_x -= Player->step;
+			}
+			else // Don't slow down near the border when two keys are pressed.
+			{
+				Player->step *= std::sqrt(2.0f);
 			}
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			if((Player->pos_x + Player->Geometry.w + Player->step) < Level->width)
+			// The player can't go behind the left side of the level.
+			if(Player->pos_x < (Level->width / 2))
 			{
 				Player->pos_x += Player->step;
 			}
-		}
-	}
-	switch(Event.key.keysym.sym)
-	{
-		case SDLK_ESCAPE:
-		if(keys[SDL_SCANCODE_ESCAPE])
-		{
-			*pause_active = true;
+			else // Don't slow down near the border when two keys are pressed.
+			{
+				Player->step *= std::sqrt(2.0f);
+			}
 		}
 	}
 	return true;

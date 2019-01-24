@@ -3,7 +3,7 @@
 #include "graphics.hpp"
 
 Level::Level(Graphics* Graphics, const std::string background_name):
-             width(Graphics->Screen.w), height(Graphics->Screen.w)
+             width(Graphics->Screen.w), height(Graphics->Screen.h)
 {
 	Model_background Background(Graphics, background_name);
 	if(!Background.initialized)
