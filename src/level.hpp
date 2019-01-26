@@ -9,12 +9,13 @@ class Model_background;
 class Level
 {
 	public:
-	bool     initialized;
+	bool      initialized;
 	const int width;
 	const int height;
 	// Model_background   Background(dawdwad, awdaw);
 
 	Level(Graphics* Graphics, const std::string background_name);
+	bool scroll();
 };
 
 #endif

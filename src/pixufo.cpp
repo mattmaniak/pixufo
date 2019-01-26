@@ -22,6 +22,7 @@ int exit_game()
 int main()
 {
 	Keyboard Keyboard;
+	Camera   Camera;
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
@@ -38,12 +39,12 @@ int main()
 	{
 		return exit_game();
 	}
-	Model_player Player(&Graphics, "ufo", 200.0f);
+	Model_player Player(&Graphics, "ufo", 100.0f);
 	if(!Player.initialized)
 	{
 		return exit_game();
 	}
-	Model_enemy Nebula(&Graphics, "nebula_small", 0.0f);
+	Model_enemy Nebula(&Graphics, "nebula_big", 0.0f);
 	if(!Nebula.initialized)
 	{
 		return exit_game();
@@ -102,7 +103,7 @@ int main()
 			}
 			SDL_Delay(500);
 		}
-		camera::move_entities(&Level, &Player, &Space, &Nebula);
+		Camera.move_entities(&Level, &Player, &Space, &Nebula);
 
 		if(!Graphics.count_elapsed_time())
 		{

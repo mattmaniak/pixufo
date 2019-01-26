@@ -17,8 +17,10 @@ class Model_basic
 	SDL_Rect     Geometry; // Texture_'s position and size.
 	float        pos_x;
 	float        pos_y;
+	float        step;
+	float        speed;
 
-	Model_basic(Graphics* Graphics, const std::string name);
+	Model_basic(Graphics* Graphics, const std::string name, const float spd);
 	~Model_basic();
 
 	bool render(Graphics* Graphics);
@@ -38,8 +40,8 @@ class Model_enemy: public Model_basic // TODO: INHERIT FROM PLANET?
 	bool     visible;
 	float    distance_to_player;
 
-	float speed;
-	float step;
+	// float speed;
+	// float step;
 
 	Model_enemy(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);
@@ -48,8 +50,8 @@ class Model_enemy: public Model_basic // TODO: INHERIT FROM PLANET?
 class Model_player: public Model_basic
 {
 	public:
-	float    speed;
-	float    step;
+	// float    speed;
+	// float    step;
 
 	Model_player(Graphics* Graphics, const std::string name, const float spd);
 	bool render(Graphics* Graphics);

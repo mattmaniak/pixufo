@@ -2,7 +2,8 @@
 #include "error.hpp"
 #include "graphics.hpp"
 
-Model_basic::Model_basic(Graphics* Graphics, const std::string name)
+Model_basic::Model_basic(Graphics* Graphics, const std::string name,
+                         const float spd): speed(spd)
 {
 	Texture_ = Graphics->load_texture(name);
 	if(Texture_ == nullptr)
@@ -12,7 +13,7 @@ Model_basic::Model_basic(Graphics* Graphics, const std::string name)
 	}
 
 	if(SDL_QueryTexture(Texture_, nullptr, nullptr, &Geometry.w, &Geometry.h)
-	!= SDL2_SUCCESS)
+	   != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get a texture size.");
 		initialized = false;
@@ -59,8 +60,8 @@ int Model_basic::count_scale()
 }
 
 Model_player::Model_player(Graphics* Graphics, const std::string name,
-                           const float spd): Model_basic(Graphics, name),
-                           speed(spd)
+                           const float speed):
+Model_basic(Graphics, name, speed)
 {
 	step = 0.0f;
 
@@ -83,15 +84,15 @@ bool Model_player::render(Graphics* Graphics)
 }
 
 Model_enemy::Model_enemy(Graphics* Graphics, const std::string name,
-                         const float spd): Model_basic(Graphics, name),
-                         speed(spd)
+                         const float speed):
+Model_basic(Graphics, name, speed)
 {
 	pos_x = pos_y = 0.0f;
 }
 
 bool Model_enemy::render(Graphics* Graphics)
 {
-	// step = speed * Graphics->delta_time * count_scale();
+	step = speed * Graphics->delta_time * count_scale();
 
 	Geometry.x = pos_x;
 	Geometry.y = pos_y;
@@ -104,8 +105,8 @@ bool Model_enemy::render(Graphics* Graphics)
 	return true;
 }
 
-Model_background::Model_background(Graphics* Graphics, const std::string name)
-: Model_basic(Graphics, name)
+Model_background::Model_background(Graphics* Graphics, const std::string name):
+Model_basic(Graphics, name, 0.0f)
 {
 
 }
@@ -113,8 +114,8 @@ Model_background::Model_background(Graphics* Graphics, const std::string name)
 bool Model_background::tile(Graphics* Graphics)
 {
 	// Additional row and column to support the infinite scrolling.
-	unsigned int tiles_x = (Graphics->Screen.w / Geometry.w) + 1;
-	unsigned int tiles_y = (Graphics->Screen.h / Geometry.h) + 1;
+	unsigned int tiles_x = Graphics->Screen.w / Geometry.w;
+	unsigned int tiles_y = Graphics->Screen.h / Geometry.h;
 
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
 	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
@@ -123,25 +124,24 @@ bool Model_background::tile(Graphics* Graphics)
 		return false;
 	}
 
-	// TODO: DEBUG POSITIONS.
-
-	// Scrolling.
-	if(pos_x > 0) // Background shifted right.
-	{
-		pos_x -= Geometry.w; // Move the background one tile left.
-	}
-	else if(pos_x < -Geometry.w) // Background shifted left.
-	{
-		pos_x += Geometry.w; // Move the background one tile right.
-	}
-	if(pos_y > 0) // Background shifted down.
-	{
-		pos_y -= Geometry.h; // Move the background one tile up.
-	}
-	else if(pos_y < -Geometry.h) // Background shifted up.
-	{
-		pos_y += Geometry.h; // Move the background one tile down.
-	}
+	// Scrolling. TODO: DOESN"T WORK.
+	// if(pos_x > 0) // Background shifted right.
+	// {
+	// 	pos_x -= Geometry.w; // Move the background one tile left.
+	// }
+	// else if(pos_x < -Geometry.w) // Background shifted left.
+	// {
+	// 	pos_x += Geometry.w; // Move the background one tile right.
+	// }
+	// if(pos_y > 0) // Background shifted down.
+	// {
+	// 	pos_y -= Geometry.h; // Move the background one tile up.
+	// }
+	// else if(pos_y < -Geometry.h) // Background shifted up.
+	// {
+	// 	pos_y += Geometry.h; // Move the background one tile down.
+	// }
+	// std::cout << "Background: " << pos_x << ' ' << pos_y << std::endl;
 
 	// Tiling.
 	for(unsigned int y = 0; y <= tiles_y; y++)
@@ -151,7 +151,8 @@ bool Model_background::tile(Graphics* Graphics)
 			Geometry.x = pos_x + (x * Geometry.w);
 			Geometry.y = pos_y + (y * Geometry.h);
 
-			if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+			if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry)
+			!= SDL2_SUCCESS)
 			{
 				error::show_box("Can't copy a texture to the renderer.");
 				return false;
@@ -162,8 +163,8 @@ bool Model_background::tile(Graphics* Graphics)
 }
 
 Model_button::Model_button(Graphics* Graphics, const std::string name,
-                           const int idx) : Model_basic(Graphics, name),
-                           index(idx)
+                           const int idx):
+Model_basic(Graphics, name, 0.0f), index(idx)
 {
 
 }

@@ -120,7 +120,7 @@ bool Graphics::count_elapsed_time()
 {
 	fps++;
 
-	if(fps >= std::numeric_limits<unsigned int>::max())
+	if(fps >= std::numeric_limits<Uint32>::max())
 	{
 		error::show_box("Too many frames per second.");
 		return false;
@@ -136,6 +136,18 @@ bool Graphics::count_elapsed_time()
 	{
 		fps = 0;
 		frame_elapsed_time = 0.0f;
+	}
+	return true;
+}
+
+template<class Model>
+bool Graphics::render(Model* Model_to_render)
+{
+	if(SDL_RenderCopy(Renderer, Model_to_render->Texture_, NULL,
+	   &Model_to_render->Geometry) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't copy a texture to the renderer.");
+		return false;
 	}
 	return true;
 }
