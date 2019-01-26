@@ -67,13 +67,14 @@ Model_basic(Graphics, name, speed)
 
 	Geometry.x = pos_x = (Graphics->Screen.w - Geometry.w) / 2;
 	Geometry.y = pos_y = (Graphics->Screen.h - Geometry.h) / 2;
-
-	// pos_x = pos_y = 0.0f;
 }
 
 bool Model_player::render(Graphics* Graphics)
 {
 	step = speed * Graphics->delta_time * count_scale();
+
+	Geometry.x = pos_x;
+	Geometry.y = pos_y;
 
 	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
 	{

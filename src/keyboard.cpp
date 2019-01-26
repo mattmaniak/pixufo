@@ -11,7 +11,7 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 }
 
 bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player,
-                             bool* pause_active, Level* Level)
+                             bool* pause_active)
 {
 	SDL_PollEvent(&Event);
 
@@ -25,10 +25,11 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player,
 			keys_amount++;
 		}
 	}
-	if(keys_amount == 2)
+	if(keys_amount > 2)
 	{
 		Player->step /= std::sqrt(2.0f);
 	}
+
 	switch(Event.type)
 	{
 		case SDL_QUIT:
@@ -44,54 +45,38 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player,
 		case SDL_KEYUP:
 		if(keys[SDL_SCANCODE_UP])
 		{
-			// The player can't go above the level.
-			if((Player->pos_y) > -((Level->height + Player->Geometry.h) / 2))
+			Player->pos_y -= Player->step;
+
+			if(Player->pos_y <= -Player->Geometry.h)
 			{
-				Player->pos_y -= Player->step;
-			}
-			else // Don't slow down near the border when two keys are pressed.
-			{
-				Player->pos_y = (Level->height - Player->Geometry.h) / 2;
-				// Player->step *= std::sqrt(2.0f);
+				Player->pos_y = Graphics->Screen.h;
 			}
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			// The player can't go below the level.
-			if(Player->pos_y < (Level->height / 2))
+			Player->pos_y += Player->step;
+
+			if(Player->pos_y >= Graphics->Screen.h)
 			{
-				Player->pos_y += Player->step;
-			}
-			else // Don't slow down near the border when two keys are pressed.
-			{
-				Player->pos_y = Level->height / 2;
-				// Player->step *= std::sqrt(2.0f);
+				Player->pos_y = -Player->Geometry.h;
 			}
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			// The player can't go behind the right side of the level.
-			if(Player->pos_x > -((Level->width + Player->Geometry.w) / 2))
+			Player->pos_x -= Player->step;
+
+			if(Player->pos_x <= -Player->Geometry.w)
 			{
-				Player->pos_x -= Player->step;
-			}
-			else // Don't slow down near the border when two keys are pressed.
-			{
-				Player->pos_x = (Level->width - Player->Geometry.w) / 2;
-				// Player->step *= std::sqrt(2.0f);
+				Player->pos_x = Graphics->Screen.w;
 			}
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			// The player can't go behind the left side of the level.
-			if(Player->pos_x < (Level->width / 2))
+			Player->pos_x += Player->step;
+
+			if(Player->pos_x >= Graphics->Screen.w)
 			{
-				Player->pos_x += Player->step;
-			}
-			else // Don't slow down near the border when two keys are pressed.
-			{
-				Player->pos_x = Level->width / 2;
-				// Player->step *= std::sqrt(2.0f);
+				Player->pos_x = -Player->Geometry.w;
 			}
 		}
 	}

@@ -6,7 +6,6 @@
 #include "keyboard.hpp"
 #include "pause.hpp"
 #include "level.hpp"
-#include "camera.hpp"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
@@ -22,8 +21,6 @@ int exit_game()
 int main()
 {
 	Keyboard Keyboard;
-	Camera   Camera;
-
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2.");
@@ -91,7 +88,7 @@ int main()
 		}
 		SDL_RenderPresent(Graphics.Renderer);
 
-		if(!Keyboard.handle_ingame(&Graphics, &Player, &Pause.active, &Level))
+		if(!Keyboard.handle_ingame(&Graphics, &Player, &Pause.active))
 		{
 			return exit_game();
 		}
@@ -103,8 +100,6 @@ int main()
 			}
 			SDL_Delay(500);
 		}
-		Camera.move_entities(&Level, &Player, &Space, &Nebula);
-
 		if(!Graphics.count_elapsed_time())
 		{
 			return exit_game();

@@ -20,7 +20,9 @@ class Keyboard
 
 	Keyboard();
 
-	bool handle_ingame(Graphics* Graphics, Model_player* Player, bool* pause_active, Level* Level);
+	bool handle_ingame(Graphics* Graphics, Model_player* Player,
+	                   bool* pause_active);
+
 	bool handle_menu(Menu* Menu);
 	bool handle_pause(Menu* Menu, Pause* Pause);
 };
