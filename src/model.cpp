@@ -5,14 +5,14 @@
 model::Basic::Basic(Graphics* Graphics, const std::string name,
                          const float spd): speed(spd)
 {
-	Texture_ = Graphics->load_texture(name);
-	if(Texture_ == nullptr)
+	Texture = Graphics->load_texture(name);
+	if(Texture == nullptr)
 	{
 		initialized = false;
 		return;
 	}
 
-	if(SDL_QueryTexture(Texture_, nullptr, nullptr, &Geometry.w, &Geometry.h)
+	if(SDL_QueryTexture(Texture, nullptr, nullptr, &Geometry.w, &Geometry.h)
 	   != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get a texture size.");
@@ -30,15 +30,15 @@ model::Basic::Basic(Graphics* Graphics, const std::string name,
 
 model::Basic::~Basic()
 {
-	if(Texture_ != nullptr)
+	if(Texture != nullptr)
 	{
-		SDL_DestroyTexture(Texture_);
+		SDL_DestroyTexture(Texture);
 	}
 }
 
 bool model::Basic::render(Graphics* Graphics)
 {
-	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry)
 	   != SDL2_SUCCESS)
 	{
 		error::show_box("Can't copy a texture to the renderer."); // TODO: WITH PATH
@@ -77,7 +77,7 @@ bool model::Player::render(Graphics* Graphics)
 	Geometry.x = pos_x;
 	Geometry.y = pos_y;
 
-	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry) != 0)
 	{
 		error::show_box("Can't copy a texture to the renderer.");
 		return false;
@@ -99,7 +99,7 @@ bool model::Enemy::render(Graphics* Graphics)
 	Geometry.x = pos_x;
 	Geometry.y = pos_y;
 
-	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry) != 0)
 	{
 		error::show_box("Can't copy a texture to the renderer.");
 		return false;
@@ -153,7 +153,7 @@ bool model::Background::tile(Graphics* Graphics)
 			Geometry.x = pos_x + (x * Geometry.w);
 			Geometry.y = pos_y + (y * Geometry.h);
 
-			if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry)
+			if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry)
 			!= SDL2_SUCCESS)
 			{
 				error::show_box("Can't copy a texture to the renderer.");
@@ -184,7 +184,7 @@ bool model::Button::render(Graphics* Graphics, unsigned int current_index)
 	{
 		Geometry.x += actual_button_shift;
 	}
-	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry) != 0)
 	{
 		error::show_box("Can't copy a texture to the renderer.");
 		return false;

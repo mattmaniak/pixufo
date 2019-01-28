@@ -19,6 +19,7 @@ class Level
 	bool                       initialized;
 	const int                  width;
 	const int                  height;
+	size_t                     enemies_amount;
 	model::Player*             Player;
 	model::Background*         Background;
 	std::vector<model::Enemy*> Enemies;

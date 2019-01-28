@@ -13,12 +13,13 @@ namespace model
 {
 	class Basic
 	{
-		protected:
-		SDL_Texture* Texture_;  // Driver-specific representation of data.
+		// protected:
 
 		public:
 		bool         initialized;
-		SDL_Rect     Geometry; // Texture_'s position and size.
+		SDL_Texture* Texture;  // Driver-specific representation of data.
+		const std::string path;
+		SDL_Rect     Geometry; // Texture's position and size.
 		float        pos_x;
 		float        pos_y;
 		float        step;     // Pixel position move in a one frame.

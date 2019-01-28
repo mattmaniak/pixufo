@@ -9,6 +9,8 @@
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
+class Level;
+
 class Graphics
 {
 	float  frame_start_time;
@@ -26,8 +28,9 @@ class Graphics
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string name);
-	bool         count_frame_start_time();
-	bool         count_elapsed_time();
+	bool         start_fps_count();
+	bool         count_fps();
+	bool         render_level(Level* Level);
 
 	template<class Model>
 	bool render(Model* Model_to_render);

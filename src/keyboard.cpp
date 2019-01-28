@@ -10,8 +10,7 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 
 }
 
-bool Keyboard::handle_ingame(Level* Level, model::Player* Player,
-                             bool* pause_active)
+bool Keyboard::handle_ingame(Level* Level, bool* pause_active)
 {
 	SDL_PollEvent(&Event);
 	keys_amount = 0;
@@ -26,7 +25,7 @@ bool Keyboard::handle_ingame(Level* Level, model::Player* Player,
 	}
 	if(keys_amount >= 2)
 	{
-		Player->step /= std::sqrt(2.0f);
+		Level->Player->step /= std::sqrt(2.0f);
 	}
 
 	switch(Event.type)
@@ -44,38 +43,38 @@ bool Keyboard::handle_ingame(Level* Level, model::Player* Player,
 		case SDL_KEYUP:
 		if(keys[SDL_SCANCODE_UP])
 		{
-			Player->pos_y -= Player->step;
+			Level->Player->pos_y -= Level->Player->step;
 
-			if(Player->pos_y <= -(Player->Geometry.h - Player->count_scale()))
+			if(Level->Player->pos_y <= -(Level->Player->Geometry.h - Level->Player->count_scale()))
 			{
-				Player->pos_y = Level->height - Player->count_scale();
+				Level->Player->pos_y = Level->height - Level->Player->count_scale();
 			}
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			Player->pos_y += Player->step;
+			Level->Player->pos_y += Level->Player->step;
 
-			if(Player->pos_y >= (Level->height - Player->count_scale()))
+			if(Level->Player->pos_y >= (Level->height - Level->Player->count_scale()))
 			{
-				Player->pos_y = -(Player->Geometry.h - Player->count_scale());
+				Level->Player->pos_y = -(Level->Player->Geometry.h - Level->Player->count_scale());
 			}
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			Player->pos_x -= Player->step;
+			Level->Player->pos_x -= Level->Player->step;
 
-			if(Player->pos_x <= -(Player->Geometry.w - Player->count_scale()))
+			if(Level->Player->pos_x <= -(Level->Player->Geometry.w - Level->Player->count_scale()))
 			{
-				Player->pos_x = Level->width - Player->count_scale();
+				Level->Player->pos_x = Level->width - Level->Player->count_scale();
 			}
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			Player->pos_x += Player->step;
+			Level->Player->pos_x += Level->Player->step;
 
-			if(Player->pos_x >= (Level->width - Player->count_scale()))
+			if(Level->Player->pos_x >= (Level->width - Level->Player->count_scale()))
 			{
-				Player->pos_x = -(Player->Geometry.w - Player->count_scale());
+				Level->Player->pos_x = -(Level->Player->Geometry.w - Level->Player->count_scale());
 			}
 		}
 	}

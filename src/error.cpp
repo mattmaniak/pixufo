@@ -6,6 +6,6 @@ void error::show_box(const std::string message)
 	                            message.c_str(), nullptr) != SDL2_SUCCESS)
 	{
 		// Poor...
-		std::cerr << "Can't show the error message box." << std::endl;
+		std::clog << "Can't show the error message box." << std::endl;
 	}
 }

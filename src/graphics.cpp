@@ -1,5 +1,7 @@
 #include "graphics.hpp"
 #include "error.hpp"
+#include "level.hpp"
+#include "model.hpp"
 
 Graphics::Graphics()
 {
@@ -104,7 +106,7 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-bool Graphics::count_frame_start_time()
+bool Graphics::start_fps_count()
 {
 	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
 	{
@@ -116,7 +118,7 @@ bool Graphics::count_frame_start_time()
 	return true;
 }
 
-bool Graphics::count_elapsed_time()
+bool Graphics::count_fps()
 {
 	fps++;
 
@@ -143,7 +145,7 @@ bool Graphics::count_elapsed_time()
 template<class Model>
 bool Graphics::render(Model* Model_to_render)
 {
-	if(SDL_RenderCopy(Renderer, Model_to_render->Texture_, NULL,
+	if(SDL_RenderCopy(Renderer, Model_to_render->Texture, NULL,
 	   &Model_to_render->Geometry) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't copy a texture to the renderer.");
@@ -152,17 +154,78 @@ bool Graphics::render(Model* Model_to_render)
 	return true;
 }
 
+bool Graphics::render_level(Level* Level)
+{
+	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't clean the renderer.");
+		return false;
+	}
+
+	Level->Background->Geometry.x = Level->Background->pos_x;
+	Level->Background->Geometry.y = Level->Background->pos_y;
+
+	if(SDL_RenderCopy(Renderer, Level->Background->Texture, nullptr,
+	   &Level->Background->Geometry) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't copy the background texture to the renderer.");
+		return false;
+	}
+
+	Level->Background->step = Level->Background->speed
+	                          * Level->Background->count_scale()
+	                          * delta_time;
+
+	// TODO: BUILT-IN HERE BACKGROUND TILING.
+
+	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
+	{
+		Level->Enemies[idx]->Geometry.x = Level->Enemies[idx]->pos_x;
+		Level->Enemies[idx]->Geometry.y = Level->Enemies[idx]->pos_y;
+
+		if(SDL_RenderCopy(Renderer, Level->Enemies[idx]->Texture, nullptr,
+		   &Level->Enemies[idx]->Geometry) != SDL2_SUCCESS)
+		{
+			error::show_box("Can't copy the enemy texture to the renderer.");
+			return false;
+		}
+
+		Level->Enemies[idx]->step = Level->Enemies[idx]->speed
+		                            * Level->Enemies[idx]->count_scale()
+		                            * delta_time;
+	}
+
+	Level->Player->Geometry.x = Level->Player->pos_x;
+	Level->Player->Geometry.y = Level->Player->pos_y;
+
+	if(SDL_RenderCopy(Renderer, Level->Player->Texture, nullptr,
+	   &Level->Player->Geometry) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't copy the player texture to the renderer.");
+		return false;
+	}
+
+	Level->Player->step = Level->Player->speed * Level->Player->count_scale()
+	                      * delta_time;
+
+	SDL_RenderPresent(Renderer);
+
+	return true;
+}
+
 SDL_Surface* load_image(const std::string name)
 {
 	const std::string directory = "gfx";
 	const std::string extension = "bmp";
 
+#ifdef _WIN32
+	const std::string path = directory + '\\' + name + '.' + extension;
+
+#else
 #ifdef __linux__
 	const std::string path = directory + '/' + name + '.' + extension;
 #endif
 
-#ifdef _WIN32
-	const std::string path = directory + '\\' + name + '.' + extension;
 #endif
 
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());

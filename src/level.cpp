@@ -6,8 +6,9 @@
 Level::Level(Graphics* Graphics, const std::string bg_name):
              width(Graphics->Screen.w), height(Graphics->Screen.h)
 {
-	// TODO: VECTOR OF POINTERS.
-	Player = new model::Player(Graphics, "ufo", 500.0f);
+	enemies_amount = 1;
+
+	Player = new model::Player(Graphics, "ufo", 100.0f);
 	if(!Player->initialized)
 	{
 		error::show_box("Can't initialize the player's model.");
@@ -24,11 +25,10 @@ Level::Level(Graphics* Graphics, const std::string bg_name):
 	}
 	initialized = true;
 
-	model::Enemy* Nebula_big = new model::Enemy(Graphics, "nebula_big", 100.0f);
-	Enemies.push_back(Nebula_big);
-
-	for(size_t idx = 0; idx < Enemies.size(); idx++)
+	for(size_t idx = 0; idx < enemies_amount; idx++)
 	{
+		Enemies.push_back(new model::Enemy(Graphics, "nebula_big", 50.0f));
+
 		if(!Enemies[idx]->initialized)
 		{
 			error::show_box("Can't initialize the enemy's model.");

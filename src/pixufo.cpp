@@ -36,16 +36,6 @@ int main()
 	{
 		return exit_game();
 	}
-	model::Player Player(&Graphics, "ufo", 100.0f);
-	if(!Player.initialized)
-	{
-		return exit_game();
-	}
-	model::Enemy Nebula(&Graphics, "nebula_big", 0.0f);
-	if(!Nebula.initialized)
-	{
-		return exit_game();
-	}
 	Level Level(&Graphics, "background1_seamless");
 	if(!Level.initialized)
 	{
@@ -56,7 +46,7 @@ int main()
 
 	for(;;)
 	{
-		if(!Graphics.count_frame_start_time())
+		if(!Graphics.start_fps_count())
 		{
 			return exit_game();
 		}
@@ -73,22 +63,9 @@ int main()
 				return exit_game();
 			}
 		}
-		if(!Space.tile(&Graphics))
-		{
-			return exit_game();
-		}
-		if(!Nebula.render(&Graphics))
-		{
-			return exit_game();
-		}
+		Graphics.render_level(&Level);
 
-		if(!Player.render(&Graphics))
-		{
-			return exit_game();
-		}
-		SDL_RenderPresent(Graphics.Renderer);
-
-		if(!Keyboard.handle_ingame(&Level, &Player, &Pause.active))
+		if(!Keyboard.handle_ingame(&Level, &Pause.active))
 		{
 			return exit_game();
 		}
@@ -100,7 +77,7 @@ int main()
 			}
 			SDL_Delay(500);
 		}
-		if(!Graphics.count_elapsed_time())
+		if(!Graphics.count_fps())
 		{
 			return exit_game();
 		}
