@@ -1,7 +1,7 @@
 #include "pause.hpp"
 #include "error.hpp"
 #include "menus.hpp"
-#include "models.hpp"
+#include "model.hpp"
 #include "keyboard.hpp"
 #include "graphics.hpp"
 
@@ -12,8 +12,8 @@ Pause::Pause(): active(false)
 
 bool Pause::launch(Graphics* Graphics, Keyboard* Keyboard, Menu* Menu)
 {
-	Model_button Continue(Graphics, "continue", 0);
-	Model_button Main_menu(Graphics, "main_menu", 1);
+	model::Button Continue(Graphics, "continue", 0);
+	model::Button Main_menu(Graphics, "main_menu", 1);
 
 	if(!Continue.initialized)
 	{

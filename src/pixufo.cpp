@@ -1,7 +1,7 @@
 #include "pixufo.hpp"
 #include "error.hpp"
 #include "graphics.hpp"
-#include "models.hpp"
+#include "model.hpp"
 #include "menus.hpp"
 #include "keyboard.hpp"
 #include "pause.hpp"
@@ -31,17 +31,17 @@ int main()
 	{
 		return exit_game();
 	}
-	Model_background Space(&Graphics, "background1_seamless");
+	model::Background Space(&Graphics, "background1_seamless");
 	if(!Space.initialized)
 	{
 		return exit_game();
 	}
-	Model_player Player(&Graphics, "ufo", 100.0f);
+	model::Player Player(&Graphics, "ufo", 100.0f);
 	if(!Player.initialized)
 	{
 		return exit_game();
 	}
-	Model_enemy Nebula(&Graphics, "nebula_big", 0.0f);
+	model::Enemy Nebula(&Graphics, "nebula_big", 0.0f);
 	if(!Nebula.initialized)
 	{
 		return exit_game();
@@ -51,7 +51,7 @@ int main()
 	{
 		return exit_game();
 	}
-	Menu  Menu;
+	Menu  Menu(&Graphics);
 	Pause Pause;
 
 	for(;;)
@@ -88,7 +88,7 @@ int main()
 		}
 		SDL_RenderPresent(Graphics.Renderer);
 
-		if(!Keyboard.handle_ingame(&Graphics, &Player, &Pause.active))
+		if(!Keyboard.handle_ingame(&Level, &Player, &Pause.active))
 		{
 			return exit_game();
 		}

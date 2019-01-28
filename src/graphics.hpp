@@ -9,8 +9,6 @@
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
-#define PIXELART_DISPLAY_WIDTH 640
-
 class Graphics
 {
 	float  frame_start_time;

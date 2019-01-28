@@ -5,7 +5,11 @@
 #include <limits>
 #include <SDL2/SDL.h>
 
-class Model_player;
+namespace model
+{
+	class Player;
+}
+
 class Pause;
 class Menu;
 class Graphics;
@@ -20,8 +24,7 @@ class Keyboard
 
 	Keyboard();
 
-	bool handle_ingame(Graphics* Graphics, Model_player* Player,
-	                   bool* pause_active);
+	bool handle_ingame(Level* Level, model::Player* Player, bool* pause_active);
 
 	bool handle_menu(Menu* Menu);
 	bool handle_pause(Menu* Menu, Pause* Pause);

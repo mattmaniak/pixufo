@@ -2,20 +2,29 @@
 #define LEVEL_HPP
 
 #include <string>
+#include <vector>
 
 class Graphics;
-class Model_background;
+
+namespace model
+{
+	class Background;
+	class Player;
+	class Enemy;
+}
 
 class Level
 {
 	public:
-	bool      initialized;
-	const int width;
-	const int height;
-	// Model_background   Background(dawdwad, awdaw);
+	bool                       initialized;
+	const int                  width;
+	const int                  height;
+	model::Player*             Player;
+	model::Background*         Background;
+	std::vector<model::Enemy*> Enemies;
 
-	Level(Graphics* Graphics, const std::string background_name);
-	bool scroll();
+	Level(Graphics* Graphics, const std::string bg_name);
+	~Level();
 };
 
 #endif

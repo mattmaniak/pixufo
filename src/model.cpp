@@ -1,8 +1,8 @@
-#include "models.hpp"
+#include "model.hpp"
 #include "error.hpp"
 #include "graphics.hpp"
 
-Model_basic::Model_basic(Graphics* Graphics, const std::string name,
+model::Basic::Basic(Graphics* Graphics, const std::string name,
                          const float spd): speed(spd)
 {
 	Texture_ = Graphics->load_texture(name);
@@ -28,7 +28,7 @@ Model_basic::Model_basic(Graphics* Graphics, const std::string name,
 	initialized = true;
 }
 
-Model_basic::~Model_basic()
+model::Basic::~Basic()
 {
 	if(Texture_ != nullptr)
 	{
@@ -36,17 +36,18 @@ Model_basic::~Model_basic()
 	}
 }
 
-bool Model_basic::render(Graphics* Graphics)
+bool model::Basic::render(Graphics* Graphics)
 {
-	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture_, NULL, &Geometry)
+	   != SDL2_SUCCESS)
 	{
-		error::show_box("Can't copy a texture to the renderer.");
+		error::show_box("Can't copy a texture to the renderer."); // TODO: WITH PATH
 		return false;
 	}
 	return true;
 }
 
-int Model_basic::count_scale()
+float model::Basic::count_scale()
 {
 	const int       display_index = 0;
 	SDL_DisplayMode Ingame_display;
@@ -59,9 +60,9 @@ int Model_basic::count_scale()
 	return Ingame_display.w / PIXELART_DISPLAY_WIDTH;
 }
 
-Model_player::Model_player(Graphics* Graphics, const std::string name,
-                           const float speed):
-Model_basic(Graphics, name, speed)
+model::Player::Player(Graphics* Graphics, const std::string name,
+                      const float speed):
+model::Basic(Graphics, name, speed)
 {
 	step = 0.0f;
 
@@ -69,7 +70,7 @@ Model_basic(Graphics, name, speed)
 	Geometry.y = pos_y = (Graphics->Screen.h - Geometry.h) / 2;
 }
 
-bool Model_player::render(Graphics* Graphics)
+bool model::Player::render(Graphics* Graphics)
 {
 	step = speed * Graphics->delta_time * count_scale();
 
@@ -84,14 +85,14 @@ bool Model_player::render(Graphics* Graphics)
 	return true;
 }
 
-Model_enemy::Model_enemy(Graphics* Graphics, const std::string name,
-                         const float speed):
-Model_basic(Graphics, name, speed)
+model::Enemy::Enemy(Graphics* Graphics, const std::string name,
+                    const float speed):
+model::Basic(Graphics, name, speed)
 {
 	pos_x = pos_y = 0.0f;
 }
 
-bool Model_enemy::render(Graphics* Graphics)
+bool model::Enemy::render(Graphics* Graphics)
 {
 	step = speed * Graphics->delta_time * count_scale();
 
@@ -106,13 +107,13 @@ bool Model_enemy::render(Graphics* Graphics)
 	return true;
 }
 
-Model_background::Model_background(Graphics* Graphics, const std::string name):
-Model_basic(Graphics, name, 0.0f)
+model::Background::Background(Graphics* Graphics, const std::string name):
+model::Basic(Graphics, name, 0.0f)
 {
 
 }
 
-bool Model_background::tile(Graphics* Graphics)
+bool model::Background::tile(Graphics* Graphics)
 {
 	// Additional row and column to support the infinite scrolling.
 	unsigned int tiles_x = Graphics->Screen.w / Geometry.w;
@@ -163,14 +164,14 @@ bool Model_background::tile(Graphics* Graphics)
 	return true;
 }
 
-Model_button::Model_button(Graphics* Graphics, const std::string name,
-                           const int idx):
-Model_basic(Graphics, name, 0.0f), index(idx)
+model::Button::Button(Graphics* Graphics, const std::string name,
+                      const int idx):
+model::Basic(Graphics, name, 0.0f), index(idx)
 {
 
 }
 
-bool Model_button::render(Graphics* Graphics, unsigned int current_index)
+bool model::Button::render(Graphics* Graphics, unsigned int current_index)
 {
 	const unsigned int actual_button_shift = 64;
 

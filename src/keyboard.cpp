@@ -3,18 +3,17 @@
 #include "pause.hpp"
 #include "graphics.hpp"
 #include "level.hpp"
-#include "models.hpp"
+#include "model.hpp"
 
 Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 {
 
 }
 
-bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player,
+bool Keyboard::handle_ingame(Level* Level, model::Player* Player,
                              bool* pause_active)
 {
 	SDL_PollEvent(&Event);
-
 	keys_amount = 0;
 
 	// TODO
@@ -25,7 +24,7 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player,
 			keys_amount++;
 		}
 	}
-	if(keys_amount > 2)
+	if(keys_amount >= 2)
 	{
 		Player->step /= std::sqrt(2.0f);
 	}
@@ -47,36 +46,36 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Model_player* Player,
 		{
 			Player->pos_y -= Player->step;
 
-			if(Player->pos_y <= -Player->Geometry.h)
+			if(Player->pos_y <= -(Player->Geometry.h - Player->count_scale()))
 			{
-				Player->pos_y = Graphics->Screen.h;
+				Player->pos_y = Level->height - Player->count_scale();
 			}
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
 			Player->pos_y += Player->step;
 
-			if(Player->pos_y >= Graphics->Screen.h)
+			if(Player->pos_y >= (Level->height - Player->count_scale()))
 			{
-				Player->pos_y = -Player->Geometry.h;
+				Player->pos_y = -(Player->Geometry.h - Player->count_scale());
 			}
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
 			Player->pos_x -= Player->step;
 
-			if(Player->pos_x <= -Player->Geometry.w)
+			if(Player->pos_x <= -(Player->Geometry.w - Player->count_scale()))
 			{
-				Player->pos_x = Graphics->Screen.w;
+				Player->pos_x = Level->width - Player->count_scale();
 			}
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
 			Player->pos_x += Player->step;
 
-			if(Player->pos_x >= Graphics->Screen.w)
+			if(Player->pos_x >= (Level->width - Player->count_scale()))
 			{
-				Player->pos_x = -Player->Geometry.w;
+				Player->pos_x = -(Player->Geometry.w - Player->count_scale());
 			}
 		}
 	}

@@ -1,39 +1,43 @@
 #include "menus.hpp"
 #include "error.hpp"
-#include "models.hpp"
+#include "model.hpp"
 #include "graphics.hpp"
 #include "keyboard.hpp"
 
-Menu::Menu(): active(true)
+Menu::Menu(Graphics* Graphics): active(true)
 {
+	model::Button* Play = new model::Button(Graphics, "play", 0);
+	Buttons.push_back(Play);
 
+	model::Button* Quit = new model::Button(Graphics, "quit", 1);
+	Buttons.push_back(Quit);
+
+	for(size_t idx = 0; idx < Buttons.size(); idx++)
+	{
+		if(!Buttons[idx]->initialized)
+		{
+			error::show_box("Can't initialze the menu button with index: "
+			                + idx);
+
+			initialized = false;
+			return;
+		}
+	}
+	initialized = true;
 }
 
 bool Menu::launch(Graphics* Graphics, Keyboard* Keyboard)
 {
-	Model_button Play(Graphics, "play", 0);
-	Model_button Quit(Graphics, "quit", 1);
-
-	if(!Play.initialized)
-	{
-		error::show_box("Can't initialize the play button.");
-		return false;
-	}
-	if(!Quit.initialized)
-	{
-		error::show_box("Can't initialize the quit button.");
-		return false;
-	}
 	current_button_index = 0;
 	max_button_index     = 1;
 
 	while(active)
 	{
-		if(!Play.render(Graphics, current_button_index))
+		if(!Buttons[0]->render(Graphics, current_button_index))
 		{
 			return false;
 		}
-		if(!Quit.render(Graphics, current_button_index))
+		if(!Buttons[1]->render(Graphics, current_button_index))
 		{
 			return false;
 		}
@@ -51,4 +55,12 @@ bool Menu::launch(Graphics* Graphics, Keyboard* Keyboard)
 		}
 	}
 	return true;
+}
+
+Menu::~Menu()
+{
+	for(size_t idx = 0; idx < Buttons.size(); idx++)
+	{
+		delete Buttons[idx];
+	}
 }

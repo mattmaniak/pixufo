@@ -2,18 +2,27 @@
 #define MENUS_HPP
 
 #include <SDL2/SDL.h>
+#include <vector>
 
 class Keyboard;
 class Graphics;
 
+namespace model
+{
+	class Button;
+}
+
 class Menu
 {
 	public:
-	bool         active;
-	unsigned int max_button_index;
-	unsigned int current_button_index;
+	bool                        initialized;
+	bool                        active;
+	size_t                      max_button_index;
+	size_t                      current_button_index;
+	std::vector<model::Button*> Buttons;
 
-	Menu();
+	Menu(Graphics* Graphics);
+	~Menu();
 
 	bool launch(Graphics* Graphics, Keyboard* Keyboard);
 };
