@@ -24,7 +24,7 @@ class Keyboard
 
 	Keyboard();
 
-	bool handle_ingame(Level* Level, bool* pause_active);
+	bool handle_ingame(Graphics* Graphics, Level* Level, bool* pause_active);
 
 	bool handle_menu(Menu* Menu);
 	bool handle_pause(Menu* Menu, Pause* Pause);

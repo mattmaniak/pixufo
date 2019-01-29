@@ -31,11 +31,6 @@ int main()
 	{
 		return exit_game();
 	}
-	model::Background Space(&Graphics, "background1_seamless");
-	if(!Space.initialized)
-	{
-		return exit_game();
-	}
 	Level Level(&Graphics, "background1_seamless");
 	if(!Level.initialized)
 	{
@@ -62,10 +57,11 @@ int main()
 			{
 				return exit_game();
 			}
+			SDL_Delay(500);
 		}
 		Graphics.render_level(&Level);
 
-		if(!Keyboard.handle_ingame(&Level, &Pause.active))
+		if(!Keyboard.handle_ingame(&Graphics, &Level, &Pause.active))
 		{
 			return exit_game();
 		}

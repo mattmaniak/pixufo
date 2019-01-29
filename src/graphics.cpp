@@ -74,7 +74,7 @@ Graphics::~Graphics()
 
 SDL_Texture* Graphics::load_texture(const std::string name)
 {
-	const std::string directory = "gfx";
+	const std::string directory = "textures";
 	const std::string extension = "bmp";
 
 #ifdef _WIN32
@@ -133,24 +133,71 @@ bool Graphics::count_fps()
 		return false;
 	}
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
+	frame_elapsed_time += delta_time;
 
-	if((frame_elapsed_time += delta_time) >= 1.0f)
+	if(frame_elapsed_time >= 1.0f)
 	{
-		fps = 0;
+		fps                = 0;
 		frame_elapsed_time = 0.0f;
 	}
 	return true;
 }
 
-template<class Model>
-bool Graphics::render(Model* Model_to_render)
+bool Graphics::tile_background(model::Background* Background)
 {
-	if(SDL_RenderCopy(Renderer, Model_to_render->Texture, NULL,
-	   &Model_to_render->Geometry) != SDL2_SUCCESS)
+	// + 1 - extra one for scrolling.
+	unsigned int tiles_x = (Screen.w / Background->Geometry.w) + 1;
+	unsigned int tiles_y = (Screen.h / Background->Geometry.h) + 1;
+
+	if((tiles_x >= std::numeric_limits<unsigned int>::max())
+	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
 	{
-		error::show_box("Can't copy a texture to the renderer.");
+		error::show_box("Too many tiles in the background.");
 		return false;
 	}
+
+	// Scrolling.
+	if(Background->pos_x > 0) // Background shifted right.
+	{
+		// Move the background one tile left.
+		Background->pos_x -= Background->Geometry.w;
+	}
+	else if(Background->pos_x < -Background->Geometry.w) // Background shifted left.
+	{
+		// Move the background one tile right.
+		Background->pos_x += Background->Geometry.w;
+	}
+	if(Background->pos_y > 0) // Background shifted down.
+	{
+		// Move the background one tile up.
+		Background->pos_y -= Background->Geometry.h;
+	}
+	else if(Background->pos_y < -Background->Geometry.h) // Background shifted up.
+	{
+		// Move the background one tile down.
+		Background->pos_y += Background->Geometry.h;
+	}
+
+	// Tiling.
+	for(unsigned int y = 0; y <= tiles_y; y++)
+	{
+		for(unsigned int x = 0; x <= tiles_x; x++)
+		{
+			Background->Geometry.x = Background->pos_x
+			                         + (x * Background->Geometry.w);
+
+			Background->Geometry.y = Background->pos_y
+			                         + (y * Background->Geometry.h);
+
+			if(SDL_RenderCopy(Renderer, Background->Texture, nullptr,
+			   &Background->Geometry) != SDL2_SUCCESS)
+			{
+				error::show_box("Can't render the background texture.");
+				return false;
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -162,21 +209,17 @@ bool Graphics::render_level(Level* Level)
 		return false;
 	}
 
+	Level->Background->pos_x -= 0.25f;
+	Level->Background->pos_y -= 0.25f;
+
+	tile_background(Level->Background);
+
 	Level->Background->Geometry.x = Level->Background->pos_x;
 	Level->Background->Geometry.y = Level->Background->pos_y;
-
-	if(SDL_RenderCopy(Renderer, Level->Background->Texture, nullptr,
-	   &Level->Background->Geometry) != SDL2_SUCCESS)
-	{
-		error::show_box("Can't copy the background texture to the renderer.");
-		return false;
-	}
 
 	Level->Background->step = Level->Background->speed
 	                          * Level->Background->count_scale()
 	                          * delta_time;
-
-	// TODO: BUILT-IN HERE BACKGROUND TILING.
 
 	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
 	{
@@ -186,7 +229,7 @@ bool Graphics::render_level(Level* Level)
 		if(SDL_RenderCopy(Renderer, Level->Enemies[idx]->Texture, nullptr,
 		   &Level->Enemies[idx]->Geometry) != SDL2_SUCCESS)
 		{
-			error::show_box("Can't copy the enemy texture to the renderer.");
+			error::show_box("Can't render the enemy's texture.");
 			return false;
 		}
 
@@ -201,7 +244,7 @@ bool Graphics::render_level(Level* Level)
 	if(SDL_RenderCopy(Renderer, Level->Player->Texture, nullptr,
 	   &Level->Player->Geometry) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't copy the player texture to the renderer.");
+		error::show_box("Can't render the player's texture.");
 		return false;
 	}
 
@@ -215,7 +258,7 @@ bool Graphics::render_level(Level* Level)
 
 SDL_Surface* load_image(const std::string name)
 {
-	const std::string directory = "gfx";
+	const std::string directory = "textures";
 	const std::string extension = "bmp";
 
 #ifdef _WIN32

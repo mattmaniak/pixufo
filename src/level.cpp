@@ -16,6 +16,11 @@ Level::Level(Graphics* Graphics, const std::string bg_name):
 		return;
 	}
 
+	// Set the player's default position;
+	Player->Geometry.x = Player->pos_x = (Graphics->Screen.w - Player->Geometry.w) / 2;
+	Player->Geometry.y = Player->pos_y = (Graphics->Screen.h - Player->Geometry.h) / 2;
+
+
 	Background = new model::Background(Graphics, bg_name);
 	if(!Background->initialized)
 	{
@@ -25,6 +30,7 @@ Level::Level(Graphics* Graphics, const std::string bg_name):
 	}
 	initialized = true;
 
+	// Create all enemies.
 	for(size_t idx = 0; idx < enemies_amount; idx++)
 	{
 		Enemies.push_back(new model::Enemy(Graphics, "nebula_big", 50.0f));

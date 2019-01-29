@@ -5,30 +5,31 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-#define PIXELART_DISPLAY_WIDTH 640.0f
+#define PIXELART_DISPLAY_WIDTH 720.0f
 
 class Graphics;
 
 namespace model
 {
+
 	class Basic
 	{
-		// protected:
-
 		public:
-		bool         initialized;
-		SDL_Texture* Texture;  // Driver-specific representation of data.
 		const std::string path;
-		SDL_Rect     Geometry; // Texture's position and size.
-		float        pos_x;
-		float        pos_y;
-		float        step;     // Pixel position move in a one frame.
-		float        speed;    // Pixel position move in a one second.
+		bool              initialized;
+
+		SDL_Texture*      Texture;  // Driver-specific representation of data.
+		SDL_Rect          Geometry; // Texture's position and size.
+
+		float             pos_x;    // Virtual Y-position to use with a delta.
+		float             pos_y;    // Virtual X-position to use with a delta.
+		float             step;     // Pixel position move in a one frame.
+		float             speed;    // Pixel position move in a one second.
 
 		Basic(Graphics* Graphics, const std::string name, const float spd);
 		~Basic();
 
-		bool  render(Graphics* Graphics);
+		// To fit a screen width and render with the same size everywhere.
 		float count_scale();
 	};
 
@@ -42,26 +43,25 @@ namespace model
 		// float step;
 
 		Enemy(Graphics* Graphics, const std::string name, const float spd);
-		bool render(Graphics* Graphics);
+		// bool render(Graphics* Graphics);
 	};
 
 	class Player: public Basic
 	{
 		public:
-		// float    speed;
-		// float    step;
+		const Uint32 max_levitation_time;
+		Uint32       current_levitation_time;
 
 		Player(Graphics* Graphics, const std::string name, const float spd);
-		bool render(Graphics* Graphics);
+		// bool render(Graphics* Graphics);
+
+		bool count_levitation_time(Graphics* Graphics);
 	};
 
 	class Background: public Basic
 	{
 		public:
-
 		Background(Graphics* Graphics, const std::string name);
-
-		bool tile(Graphics* Graphics);
 	};
 
 	class Button: public Basic
@@ -70,7 +70,6 @@ namespace model
 		const unsigned int index;
 
 		Button(Graphics* Graphics, const std::string name, const int idx);
-
 		bool render(Graphics* Graphics, unsigned int current_index);
 	};
 }

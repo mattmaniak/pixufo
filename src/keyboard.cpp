@@ -10,7 +10,7 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 
 }
 
-bool Keyboard::handle_ingame(Level* Level, bool* pause_active)
+bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_active)
 {
 	SDL_PollEvent(&Event);
 	keys_amount = 0;
@@ -49,6 +49,7 @@ bool Keyboard::handle_ingame(Level* Level, bool* pause_active)
 			{
 				Level->Player->pos_y = Level->height - Level->Player->count_scale();
 			}
+			Level->Player->current_levitation_time = SDL_GetTicks();
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
@@ -77,7 +78,9 @@ bool Keyboard::handle_ingame(Level* Level, bool* pause_active)
 				Level->Player->pos_x = -(Level->Player->Geometry.w - Level->Player->count_scale());
 			}
 		}
+		// Level->Player->current_levitation_time = SDL_GetTicks();
 	}
+	Level->Player->count_levitation_time(Graphics);
 	return true;
 }
 
