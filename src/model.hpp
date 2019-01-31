@@ -50,9 +50,9 @@ namespace model
 	class Player: public Basic
 	{
 		public:
-		bool         levitation;
-		const Uint32 max_levitation_time;
-		Uint32       current_levitation_time;
+		bool        levitation;
+		const float max_levitation_time;
+		float       current_levitation_time;
 
 		Player(Graphics* Graphics, const std::string name, const float spd);
 		// bool render(Graphics* Graphics);

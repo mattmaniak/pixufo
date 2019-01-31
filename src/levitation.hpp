@@ -25,7 +25,10 @@ class Levitation
 	}
 	last_direction;
 
-	bool levitate(model::Player* Player);
+	float elapsed_time;
+
+	bool  levitate(model::Player* Player);
+	float slowdown(model::Player* Player);
 };
 
 #endif

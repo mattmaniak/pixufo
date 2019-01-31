@@ -13,28 +13,11 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 {
 	SDL_PollEvent(&Event);
-	keys_amount = 0;
+	count_keys();
 
-	if(keys[SDL_SCANCODE_UP])
+	if(keys_amount == 2)
 	{
-		keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_DOWN])
-	{
-		keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_LEFT])
-	{
-		keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_RIGHT])
-	{
-		keys_amount++;
-	}
-
-	if((keys_amount == 2) || ((keys_amount == 1) && Level->Player->levitation))
-	{
-		Level->Player->step /= std::sqrt(2);
+		Level->Player->step /= std::sqrt(2.0f);
 	}
 
 	switch(Event.type)
@@ -62,8 +45,8 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 			Level->Player->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->up;
 
-			// std::cout << "STEP: " << Level->Player->step << std::endl;
-			// std::cout << "ELAPS: " << Level->Player->current_levitation_time << std::endl;
+			levitate_diagonally(Level, SDL_SCANCODE_UP);
+			last_key = SDL_SCANCODE_UP;
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
@@ -76,6 +59,8 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 			Level->Player->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->down;
 
+			levitate_diagonally(Level, SDL_SCANCODE_DOWN);
+			last_key = SDL_SCANCODE_DOWN;
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
@@ -88,6 +73,7 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 			Level->Player->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->left;
 
+			last_key = SDL_SCANCODE_LEFT;
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
@@ -99,11 +85,67 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 			}
 			Level->Player->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->right;
+
+			last_key = SDL_SCANCODE_RIGHT;
 		}
 	}
 	Level->Player_levitation->levitate(Level->Player);
 
 	return true;
+}
+
+void Keyboard::levitate_diagonally(Level* Level, SDL_Scancode key)
+{
+	/* Saving the last key gives a small time window when the player can release
+	the keys in different moments. */
+	if(key == SDL_SCANCODE_UP)
+	{
+		if(last_key == SDL_SCANCODE_LEFT)
+		{
+			Level->Player_levitation->last_direction =
+			Level->Player_levitation->left_up;
+		}
+		else if(last_key == SDL_SCANCODE_RIGHT)
+		{
+			Level->Player_levitation->last_direction =
+			Level->Player_levitation->right_up;
+		}
+	}
+	else if(key == SDL_SCANCODE_DOWN)
+	{
+		if(last_key == SDL_SCANCODE_LEFT)
+		{
+			Level->Player_levitation->last_direction =
+			Level->Player_levitation->left_down;
+		}
+		else if(last_key == SDL_SCANCODE_RIGHT)
+		{
+			Level->Player_levitation->last_direction =
+			Level->Player_levitation->right_down;
+		}
+	}
+}
+
+void Keyboard::count_keys()
+{
+	keys_amount = 0;
+
+	if(keys[SDL_SCANCODE_UP])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_DOWN])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_LEFT])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_RIGHT])
+	{
+		keys_amount++;
+	}
 }
 
 bool Keyboard::handle_menu(Menu* Menu)

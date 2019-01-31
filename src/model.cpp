@@ -67,8 +67,8 @@ model::Basic(Graphics, name, 0.0f)
 }
 
 model::Player::Player(Graphics* Graphics, const std::string name, const float spd):
-model::Basic(Graphics, name, spd), levitation(false), max_levitation_time(1000),
-current_levitation_time(0)
+model::Basic(Graphics, name, spd), levitation(false), max_levitation_time(2000.0f),
+current_levitation_time(0.0f)
 {
 
 }
