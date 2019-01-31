@@ -33,7 +33,7 @@ class Graphics
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string name);
-	bool         start_fps_count();
+	void         start_fps_count();
 	bool         count_fps();
 	bool         tile_background(model::Background* Background);
 	bool         render_level(Level* Level);

@@ -8,6 +8,7 @@
 #define PIXELART_DISPLAY_WIDTH 720.0f
 
 class Graphics;
+class Keyboard;
 
 namespace model
 {
@@ -49,13 +50,14 @@ namespace model
 	class Player: public Basic
 	{
 		public:
+		bool         levitation;
 		const Uint32 max_levitation_time;
 		Uint32       current_levitation_time;
 
 		Player(Graphics* Graphics, const std::string name, const float spd);
 		// bool render(Graphics* Graphics);
 
-		bool count_levitation_time(Graphics* Graphics);
+		// bool levitate();
 	};
 
 	class Background: public Basic

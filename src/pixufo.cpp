@@ -2,9 +2,8 @@
 #include "error.hpp"
 #include "graphics.hpp"
 #include "model.hpp"
-#include "menus.hpp"
+#include "menu.hpp"
 #include "keyboard.hpp"
-#include "pause.hpp"
 #include "level.hpp"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
@@ -20,6 +19,8 @@ int exit_game()
 
 int main()
 {
+	Menu Menu;
+
 	Keyboard Keyboard;
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
@@ -31,43 +32,45 @@ int main()
 	{
 		return exit_game();
 	}
-	Level Level(&Graphics, "background1_seamless");
-	if(!Level.initialized)
+	Level* Cosmic = new Level(&Graphics, "background1_seamless");
+	if(!Cosmic->initialized)
 	{
+		delete Cosmic;
 		return exit_game();
 	}
-	Menu  Menu(&Graphics);
-	Pause Pause;
 
 	for(;;)
 	{
-		if(!Graphics.start_fps_count())
-		{
-			return exit_game();
-		}
+		Graphics.start_fps_count();
+
 		if(SDL_RenderClear(Graphics.Renderer) != SDL2_SUCCESS)
 		{
 			error::show_box("Can't clean the renderer.");
 			return exit_game();
 		}
 
-		if(Menu.active)
+		if(Menu.mode == Menu.primary_enabled)
 		{
-			if(!Menu.launch(&Graphics, &Keyboard))
+			if(!Menu.primary(&Graphics, &Keyboard))
 			{
 				return exit_game();
 			}
 			SDL_Delay(500);
 		}
-		Graphics.render_level(&Level);
-
-		if(!Keyboard.handle_ingame(&Graphics, &Level, &Pause.active))
+		if(!Graphics.render_level(Cosmic))
 		{
 			return exit_game();
 		}
-		if(Pause.active)
+
+		if(!Keyboard.handle_ingame(Cosmic, &Menu))
 		{
-			if(!Pause.launch(&Graphics, &Keyboard, &Menu))
+			return exit_game();
+		}
+		if(Menu.mode == Menu.pause_enabled)
+		{
+			delete Cosmic;
+
+			if(!Menu.pause(&Graphics, &Keyboard))
 			{
 				return exit_game();
 			}

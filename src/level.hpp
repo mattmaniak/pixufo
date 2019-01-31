@@ -5,6 +5,7 @@
 #include <vector>
 
 class Graphics;
+class Levitation;
 
 namespace model
 {
@@ -21,6 +22,7 @@ class Level
 	const int                  height;
 	size_t                     enemies_amount;
 	model::Player*             Player;
+	Levitation*                Player_levitation;
 	model::Background*         Background;
 	std::vector<model::Enemy*> Enemies;
 

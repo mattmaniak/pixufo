@@ -1,5 +1,5 @@
-#ifndef MENUS_HPP
-#define MENUS_HPP
+#ifndef MENU_HPP
+#define MENU_HPP
 
 #include <SDL2/SDL.h>
 #include <vector>
@@ -12,19 +12,26 @@ namespace model
 	class Button;
 }
 
+
 class Menu
 {
 	public:
-	bool                        initialized;
-	bool                        active;
+	enum
+	{
+		primary_enabled,
+		pause_enabled,
+		all_disabled
+	}
+	mode;
+
 	size_t                      max_button_index;
 	size_t                      current_button_index;
 	std::vector<model::Button*> Buttons;
 
-	Menu(Graphics* Graphics);
-	~Menu();
+	Menu();
 
-	bool launch(Graphics* Graphics, Keyboard* Keyboard);
+	bool primary(Graphics* Graphics, Keyboard* Keyboard);
+	bool pause(Graphics* Graphics, Keyboard* Keyboard);
 };
 
 #endif

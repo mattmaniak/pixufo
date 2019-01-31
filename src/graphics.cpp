@@ -106,16 +106,9 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-bool Graphics::start_fps_count()
+void Graphics::start_fps_count()
 {
-	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
-	{
-		error::show_box("The game can't run so long.");
-		return false;
-	}
 	frame_start_time = SDL_GetTicks() / 1000.0f;
-
-	return true;
 }
 
 bool Graphics::count_fps()
@@ -127,11 +120,7 @@ bool Graphics::count_fps()
 		error::show_box("Too many frames per second.");
 		return false;
 	}
-	if(SDL_GetTicks() >= std::numeric_limits<Uint32>::max())
-	{
-		error::show_box("The game can't run so long.");
-		return false;
-	}
+
 	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
 	frame_elapsed_time += delta_time;
 
@@ -197,7 +186,6 @@ bool Graphics::tile_background(model::Background* Background)
 			}
 		}
 	}
-
 	return true;
 }
 
@@ -209,8 +197,8 @@ bool Graphics::render_level(Level* Level)
 		return false;
 	}
 
-	Level->Background->pos_x -= 0.25f;
-	Level->Background->pos_y -= 0.25f;
+	// Level->Background->pos_x -= 0.25f;
+	// Level->Background->pos_y -= 0.25f;
 
 	tile_background(Level->Background);
 

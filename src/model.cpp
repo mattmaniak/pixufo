@@ -1,6 +1,7 @@
 #include "model.hpp"
 #include "error.hpp"
 #include "graphics.hpp"
+#include "keyboard.hpp"
 
 model::Basic::Basic(Graphics* Graphics, const std::string name,
                     const float spd): speed(spd)
@@ -66,33 +67,11 @@ model::Basic(Graphics, name, 0.0f)
 }
 
 model::Player::Player(Graphics* Graphics, const std::string name, const float spd):
-model::Basic(Graphics, name, spd), max_levitation_time(1000), current_levitation_time(0)
+model::Basic(Graphics, name, spd), levitation(false), max_levitation_time(1000),
+current_levitation_time(0)
 {
 
 }
-
-bool model::Player::count_levitation_time(Graphics* Graphics)
-{
-	// current_levitation_time = SDL_GetTicks(); // TODO: MAX VALUES CHECKS.
-
-	if((SDL_GetTicks() - current_levitation_time) < max_levitation_time)
-	{
-		// step = speed * count_scale() * Graphics->delta_time;
-
-		pos_y -= step;
-
-		if(pos_y <= -(Geometry.h - count_scale()))
-		{
-			pos_y = Graphics->Screen.h - count_scale();
-		}
-	}
-	else
-	{
-		current_levitation_time = 0;
-	}
-	return true;
-}
-
 
 model::Button::Button(Graphics* Graphics, const std::string name,
                       const int idx):

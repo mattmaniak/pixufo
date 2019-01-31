@@ -20,14 +20,13 @@ class Keyboard
 	public:
 	SDL_Event    Event;
 	const Uint8* keys;
-	Uint8        keys_amount;
+	int          keys_amount;
 
 	Keyboard();
 
-	bool handle_ingame(Graphics* Graphics, Level* Level, bool* pause_active);
-
+	bool handle_ingame(Level* Level, Menu* Menu);
 	bool handle_menu(Menu* Menu);
-	bool handle_pause(Menu* Menu, Pause* Pause);
+	bool handle_pause(Menu* Menu);
 };
 
 #endif

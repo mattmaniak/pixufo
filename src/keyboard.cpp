@@ -1,31 +1,40 @@
 #include "keyboard.hpp"
-#include "menus.hpp"
-#include "pause.hpp"
+#include "menu.hpp"
 #include "graphics.hpp"
 #include "level.hpp"
 #include "model.hpp"
+#include "levitation.hpp"
 
 Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 {
 
 }
 
-bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_active)
+bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 {
 	SDL_PollEvent(&Event);
 	keys_amount = 0;
 
-	// TODO
-	for(Uint8 index = 0; index < std::numeric_limits<Uint8>::max(); index++)
+	if(keys[SDL_SCANCODE_UP])
 	{
-		if(keys[index])
-		{
-			keys_amount++;
-		}
+		keys_amount++;
 	}
-	if(keys_amount >= 2)
+	if(keys[SDL_SCANCODE_DOWN])
 	{
-		Level->Player->step /= std::sqrt(2.0f);
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_LEFT])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_RIGHT])
+	{
+		keys_amount++;
+	}
+
+	if((keys_amount == 2) || ((keys_amount == 1) && Level->Player->levitation))
+	{
+		Level->Player->step /= std::sqrt(2);
 	}
 
 	switch(Event.type)
@@ -37,9 +46,10 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_activ
 		switch(Event.key.keysym.sym)
 		{
 			case SDLK_ESCAPE:
-			*pause_active = true;
+			Menu->mode = Menu->pause_enabled;
 			break;
 		}
+
 		case SDL_KEYUP:
 		if(keys[SDL_SCANCODE_UP])
 		{
@@ -50,6 +60,10 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_activ
 				Level->Player->pos_y = Level->height - Level->Player->count_scale();
 			}
 			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->last_direction = Level->Player_levitation->up;
+
+			// std::cout << "STEP: " << Level->Player->step << std::endl;
+			// std::cout << "ELAPS: " << Level->Player->current_levitation_time << std::endl;
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
@@ -59,6 +73,9 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_activ
 			{
 				Level->Player->pos_y = -(Level->Player->Geometry.h - Level->Player->count_scale());
 			}
+			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->last_direction = Level->Player_levitation->down;
+
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
@@ -68,6 +85,9 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_activ
 			{
 				Level->Player->pos_x = Level->width - Level->Player->count_scale();
 			}
+			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->last_direction = Level->Player_levitation->left;
+
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
@@ -77,10 +97,12 @@ bool Keyboard::handle_ingame(Graphics* Graphics, Level* Level, bool* pause_activ
 			{
 				Level->Player->pos_x = -(Level->Player->Geometry.w - Level->Player->count_scale());
 			}
+			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->last_direction = Level->Player_levitation->right;
 		}
-		// Level->Player->current_levitation_time = SDL_GetTicks();
 	}
-	Level->Player->count_levitation_time(Graphics);
+	Level->Player_levitation->levitate(Level->Player);
+
 	return true;
 }
 
@@ -114,8 +136,8 @@ bool Keyboard::handle_menu(Menu* Menu)
 			switch(Menu->current_button_index)
 			{
 				case 0:
-				Menu->active = false;
-				break;;
+				Menu->mode = Menu->all_disabled;
+				break;
 
 				case 1:
 				return false;
@@ -125,7 +147,7 @@ bool Keyboard::handle_menu(Menu* Menu)
 	return true;
 }
 
-bool Keyboard::handle_pause(Menu* Menu, Pause* Pause)
+bool Keyboard::handle_pause(Menu* Menu)
 {
 	SDL_PollEvent(&Event);
 
@@ -137,26 +159,29 @@ bool Keyboard::handle_pause(Menu* Menu, Pause* Pause)
 	switch(Event.key.keysym.sym)
 	{
 		case SDLK_UP:
-		if(Pause->current_button_index > 0)
+		if(Menu->current_button_index > 0)
 		{
-			Pause->current_button_index--;
+			Menu->current_button_index--;
 		}
 		break;
 
 		case SDLK_DOWN:
-		if(Pause->current_button_index < Menu->max_button_index)
+		if(Menu->current_button_index < Menu->max_button_index)
 		{
-			Pause->current_button_index++;
+			Menu->current_button_index++;
 		}
 		break;
 
 		case SDLK_RETURN:
-		switch(Pause->current_button_index)
+		switch(Menu->current_button_index)
 		{
+			case 0:
+			Menu->mode = Menu->all_disabled;
+			break;
+
 			case 1:
-			Menu->active = true;
+			Menu->mode = Menu->primary_enabled;
 		}
-		Pause->active = false;
 	}
 	return true;
 }
