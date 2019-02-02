@@ -1,6 +1,7 @@
 #ifndef LAVITATION_HPP
 #define LEVITATION_HPP
 
+#include <cmath>
 #include <iostream>
 #include <SDL2/SDL.h>
 
