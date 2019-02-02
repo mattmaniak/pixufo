@@ -53,33 +53,37 @@ int main()
 		{
 			if(!Menu.primary(&Graphics, &Keyboard))
 			{
+				delete Cosmic;
 				return exit_game();
 			}
 			SDL_Delay(500);
 		}
 		if(!Graphics.render_level(Cosmic))
 		{
+			delete Cosmic;
 			return exit_game();
 		}
 
 		if(!Keyboard.handle_ingame(Cosmic, &Menu))
 		{
+			delete Cosmic;
 			return exit_game();
 		}
 		if(Menu.mode == Menu.pause_enabled)
 		{
-			delete Cosmic;
-
 			if(!Menu.pause(&Graphics, &Keyboard))
 			{
+				delete Cosmic;
 				return exit_game();
 			}
 			SDL_Delay(500);
 		}
 		if(!Graphics.count_fps())
 		{
+			delete Cosmic;
 			return exit_game();
 		}
 	}
+	delete Cosmic;
 	return exit_game();
 }

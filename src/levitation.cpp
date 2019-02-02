@@ -61,9 +61,17 @@ bool Levitation::levitate(model::Player* Player)
 
 float Levitation::slowdown(model::Player* Player)
 {
-	const float exponent = 0.2f;
+	/* Increment for slowdown. Just dynamic change of the step each time. Looks
+	very ugly but scales the speed naturally. */
+	float exponent = (Player->max_levitation_time / 20.0f)
+	                 / (Player->max_levitation_time - elapsed_time);
 
-	// Mathemathical graph for that slowdown: f(x) = 1 / x^exponent.
+	if(exponent > 1.0f)
+	{
+		exponent = 1.0f;
+	}
+	std::cout << exponent << ' ' << Player->step / std::pow(elapsed_time, exponent) << std::endl;
 
+	// Example mathemathical graph for that slowdown: f(x) = 1 / x^exponent.
 	return Player->step / std::pow(elapsed_time, exponent);
 }

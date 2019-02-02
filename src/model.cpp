@@ -67,8 +67,8 @@ model::Basic(Graphics, name, 0.0f)
 }
 
 model::Player::Player(Graphics* Graphics, const std::string name, const float spd):
-model::Basic(Graphics, name, spd), levitation(false), max_levitation_time(2000.0f),
-current_levitation_time(0.0f)
+model::Basic(Graphics, name, spd), max_levitation_time(3000.0f),
+             current_levitation_time(0.0f)
 {
 
 }
@@ -93,7 +93,8 @@ bool model::Button::render(Graphics* Graphics, unsigned int current_index)
 	{
 		Geometry.x += actual_button_shift;
 	}
-	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry) != 0)
+	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry)
+	   != SDL2_SUCCESS)
 	{
 		error::show_box("Can't copy a texture to the renderer.");
 		return false;

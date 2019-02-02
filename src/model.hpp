@@ -12,7 +12,6 @@ class Keyboard;
 
 namespace model
 {
-
 	class Basic
 	{
 		public:
@@ -40,24 +39,16 @@ namespace model
 		bool     visible;
 		float    distance_to_player;
 
-		// float speed;
-		// float step;
-
 		Enemy(Graphics* Graphics, const std::string name, const float spd);
-		// bool render(Graphics* Graphics);
 	};
 
 	class Player: public Basic
 	{
 		public:
-		bool        levitation;
 		const float max_levitation_time;
 		float       current_levitation_time;
 
 		Player(Graphics* Graphics, const std::string name, const float spd);
-		// bool render(Graphics* Graphics);
-
-		// bool levitate();
 	};
 
 	class Background: public Basic
