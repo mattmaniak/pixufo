@@ -1,7 +1,8 @@
 # PixUfo
 ## Requirements:
 - HD display resolution,
-- Windows or GNU/Linux with a graphical user interface.
+- Windows or GNU/Linux with a graphical user interface,
+- [development-only] g++ (gcc with libstdc++) with version >= 4.8.1.
 
 ## Development guide
 ### Windows (example for cmd.exe - 64-bit only for now):

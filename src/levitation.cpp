@@ -70,7 +70,6 @@ float Levitation::slowdown(model::Player* Player)
 	{
 		exponent = 1.0f;
 	}
-	std::cout << exponent << ' ' << Player->step / std::pow(elapsed_time, exponent) << std::endl;
 
 	// Example mathemathical graph for that slowdown: f(x) = 1 / x^exponent.
 	return Player->step / std::pow(elapsed_time, exponent);

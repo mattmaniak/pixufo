@@ -34,6 +34,13 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 		}
 
 		case SDL_KEYUP:
+		switch(Event.key.keysym.sym)
+		{
+			case SDLK_ESCAPE:
+			Menu->mode = Menu->pause_enabled;
+			break;
+		}
+
 		if(keys[SDL_SCANCODE_UP])
 		{
 			Level->Player->pos_y -= Level->Player->step;

@@ -1,7 +1,7 @@
 TARGET =
 
 CC = g++
-CXXFLAGS = -std=c++11 -O3 -Wall -Wextra -pedantic
+CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
 LDFLAGS = -lSDL2
 ASAN_FLAGS =
 
@@ -12,12 +12,15 @@ MKDIR_OBJ =
 
 ifeq ($(OS), Windows_NT)
 	TARGET = PixUfo.exe
-	LDFLAGS += -lmingw32 -mwindows -mconsole -lSDL2main
+	LDFLAGS += -lmingw32 -mwindows -lSDL2main
 	MKDIR_OBJ = if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
 
 else ifeq ($(shell uname), Linux)
 	TARGET = PixUfo
-	ASAN_FLAGS = -fsanitize=address
+	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
+	-fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
+	-fstack-protector-all
+
 	MKDIR_OBJ = mkdir -p $(OBJ_DIR)
 endif
 
