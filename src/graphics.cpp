@@ -1,11 +1,13 @@
 #include "graphics.hpp"
 #include "error.hpp"
 #include "level.hpp"
-#include "model.hpp"
+#include "background.hpp"
+#include "player.hpp"
+#include "enemy.hpp"
 
 Graphics::Graphics()
 {
-	const int unused_size    = 0;
+	const int unused_sz      = 0;
 	const int default_driver = -1;
 
 	SDL_Surface* icon = load_image("icon");
@@ -22,7 +24,7 @@ Graphics::Graphics()
 		return;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
-	                          SDL_WINDOWPOS_UNDEFINED, unused_size, unused_size,
+	                          SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
 	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if(Window == nullptr)
 	{
@@ -132,11 +134,11 @@ bool Graphics::count_fps()
 	return true;
 }
 
-bool Graphics::tile_background(model::Background* Background)
+bool Graphics::tile_background(Background* Space)
 {
 	// + 1 - extra one for scrolling.
-	unsigned int tiles_x = (Screen.w / Background->Geometry.w) + 1;
-	unsigned int tiles_y = (Screen.h / Background->Geometry.h) + 1;
+	unsigned int tiles_x = (Screen.w / Space->Geometry.w) + 1;
+	unsigned int tiles_y = (Screen.h / Space->Geometry.h) + 1;
 
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
 	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
@@ -146,25 +148,25 @@ bool Graphics::tile_background(model::Background* Background)
 	}
 
 	// Scrolling.
-	if(Background->pos_x > 0) // Background shifted right.
+	if(Space->pos_x > 0) // Space shifted right.
 	{
 		// Move the background one tile left.
-		Background->pos_x -= Background->Geometry.w;
+		Space->pos_x -= Space->Geometry.w;
 	}
-	else if(Background->pos_x < -Background->Geometry.w) // Background shifted left.
+	else if(Space->pos_x < -Space->Geometry.w) // Space shifted left.
 	{
 		// Move the background one tile right.
-		Background->pos_x += Background->Geometry.w;
+		Space->pos_x += Space->Geometry.w;
 	}
-	if(Background->pos_y > 0) // Background shifted down.
+	if(Space->pos_y > 0) // Space shifted down.
 	{
 		// Move the background one tile up.
-		Background->pos_y -= Background->Geometry.h;
+		Space->pos_y -= Space->Geometry.h;
 	}
-	else if(Background->pos_y < -Background->Geometry.h) // Background shifted up.
+	else if(Space->pos_y < -Space->Geometry.h) // Space shifted up.
 	{
 		// Move the background one tile down.
-		Background->pos_y += Background->Geometry.h;
+		Space->pos_y += Space->Geometry.h;
 	}
 
 	// Tiling.
@@ -172,14 +174,11 @@ bool Graphics::tile_background(model::Background* Background)
 	{
 		for(unsigned int x = 0; x <= tiles_x; x++)
 		{
-			Background->Geometry.x = Background->pos_x
-			                         + (x * Background->Geometry.w);
+			Space->Geometry.x = Space->pos_x + (x * Space->Geometry.w);
+			Space->Geometry.y = Space->pos_y + (y * Space->Geometry.h);
 
-			Background->Geometry.y = Background->pos_y
-			                         + (y * Background->Geometry.h);
-
-			if(SDL_RenderCopy(Renderer, Background->Texture, nullptr,
-			   &Background->Geometry) != SDL2_SUCCESS)
+			if(SDL_RenderCopy(Renderer, Space->Texture, nullptr,
+			   &Space->Geometry) != SDL2_SUCCESS)
 			{
 				error::show_box("Can't render the background texture.");
 				return false;
@@ -197,17 +196,16 @@ bool Graphics::render_level(Level* Level)
 		return false;
 	}
 
-	// Level->Background->pos_x -= 0.25f;
-	// Level->Background->pos_y -= 0.25f;
+	// Level->Space->pos_x -= 0.25f;
+	// Level->Space->pos_y -= 0.25f;
 
-	tile_background(Level->Background);
+	tile_background(Level->Space);
 
-	Level->Background->Geometry.x = Level->Background->pos_x;
-	Level->Background->Geometry.y = Level->Background->pos_y;
+	Level->Space->Geometry.x = Level->Space->pos_x;
+	Level->Space->Geometry.y = Level->Space->pos_y;
 
-	Level->Background->step = Level->Background->speed
-	                          * Level->Background->count_scale()
-	                          * delta_time;
+	Level->Space->step = Level->Space->speed * Level->Space->pixelart_pixel_sz()
+	                     * delta_time;
 
 	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
 	{
@@ -221,23 +219,22 @@ bool Graphics::render_level(Level* Level)
 			return false;
 		}
 
-		Level->Enemies[idx]->step = Level->Enemies[idx]->speed
-		                            * Level->Enemies[idx]->count_scale()
-		                            * delta_time;
+		Level->Enemies[idx]->step = Level->Enemies[idx]->speed * delta_time
+		                            * Level->Enemies[idx]->pixelart_pixel_sz();
 	}
 
-	Level->Player->Geometry.x = Level->Player->pos_x;
-	Level->Player->Geometry.y = Level->Player->pos_y;
+	Level->Ufo->Geometry.x = Level->Ufo->pos_x;
+	Level->Ufo->Geometry.y = Level->Ufo->pos_y;
 
-	if(SDL_RenderCopy(Renderer, Level->Player->Texture, nullptr,
-	   &Level->Player->Geometry) != SDL2_SUCCESS)
+	if(SDL_RenderCopy(Renderer, Level->Ufo->Texture, nullptr,
+	   &Level->Ufo->Geometry) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't render the player's texture.");
 		return false;
 	}
 
-	Level->Player->step = Level->Player->speed * Level->Player->count_scale()
-	                      * delta_time;
+	Level->Ufo->step = Level->Ufo->speed * Level->Ufo->pixelart_pixel_sz()
+	                   * delta_time;
 
 	SDL_RenderPresent(Renderer);
 

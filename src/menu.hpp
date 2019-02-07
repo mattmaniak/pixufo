@@ -7,11 +7,7 @@
 class Keyboard;
 class Graphics;
 
-namespace model
-{
-	class Button;
-}
-
+class Button;
 
 class Menu
 {
@@ -24,9 +20,9 @@ class Menu
 	}
 	mode;
 
-	size_t                      max_button_index;
-	size_t                      current_button_index;
-	std::vector<model::Button*> Buttons;
+	size_t               max_button_idx;
+	size_t               current_button_idx;
+	std::vector<Button*> Buttons;
 
 	Menu();
 

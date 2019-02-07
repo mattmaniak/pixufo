@@ -5,10 +5,10 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-namespace model
-{
+// namespace model
+// {
 	class Player;
-}
+// }
 
 class Levitation
 {
@@ -28,8 +28,8 @@ class Levitation
 
 	float elapsed_time;
 
-	bool  levitate(model::Player* Player);
-	float slowdown(model::Player* Player);
+	bool  levitate(Player* Ufo);
+	float slowdown(Player* Ufo);
 };
 
 #endif

@@ -5,11 +5,7 @@
 #include <limits>
 #include <SDL2/SDL.h>
 
-namespace model
-{
-	class Player;
-}
-
+class Player;
 class Pause;
 class Menu;
 class Graphics;

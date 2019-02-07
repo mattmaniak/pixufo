@@ -3,8 +3,8 @@
 #include "graphics.hpp"
 #include "keyboard.hpp"
 
-model::Basic::Basic(Graphics* Graphics, const std::string name,
-                    const float spd): speed(spd)
+Model::Model(Graphics* Graphics, const std::string name,
+             const float passed_speed): speed(passed_speed)
 {
 	Texture = Graphics->load_texture(name);
 	if(Texture == nullptr)
@@ -21,17 +21,19 @@ model::Basic::Basic(Graphics* Graphics, const std::string name,
 		return;
 	}
 
-	Geometry.w *= count_scale();
-	Geometry.h *= count_scale();
+	Geometry.w *= pixelart_pixel_sz();
+	Geometry.h *= pixelart_pixel_sz();
 	Geometry.x  = pos_x = 0.0f;
 	Geometry.y  = pos_y = 0.0f;
+
+	min_x = max_x = min_y = max_y = 0; // Reanitialized in derived models.
 
 	step = 0.0f;
 
 	initialized = true;
 }
 
-model::Basic::~Basic()
+Model::~Model()
 {
 	if(Texture != nullptr)
 	{
@@ -39,12 +41,12 @@ model::Basic::~Basic()
 	}
 }
 
-float model::Basic::count_scale()
+float Model::pixelart_pixel_sz()
 {
-	const int       display_index = 0;
+	const int       display_idx = 0;
 	SDL_DisplayMode Ingame_display;
 
-	if(SDL_GetDesktopDisplayMode(display_index, &Ingame_display)
+	if(SDL_GetDesktopDisplayMode(display_idx, &Ingame_display)
 	   != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the current display size.");
@@ -53,45 +55,25 @@ float model::Basic::count_scale()
 	return Ingame_display.w / PIXELART_DISPLAY_WIDTH;
 }
 
-model::Enemy::Enemy(Graphics* Graphics, const std::string name,
-                    const float speed):
-model::Basic(Graphics, name, speed)
-{
-	pos_x = pos_y = 0.0f;
-}
-
-model::Background::Background(Graphics* Graphics, const std::string name):
-model::Basic(Graphics, name, 0.0f)
-{
-
-}
-
-model::Player::Player(Graphics* Graphics, const std::string name, const float spd):
-model::Basic(Graphics, name, spd), max_levitation_time(3000.0f),
-             current_levitation_time(0.0f)
-{
-
-}
-
-model::Button::Button(Graphics* Graphics, const std::string name,
+Button::Button(Graphics* Graphics, const std::string name,
                       const int idx):
-model::Basic(Graphics, name, 0.0f), index(idx)
+Model(Graphics, name, 0.0f), idx(idx)
 {
 
 }
 
-bool model::Button::render(Graphics* Graphics, unsigned int current_index)
+bool Button::render(Graphics* Graphics, unsigned int current_idx)
 {
-	const unsigned int actual_button_shift = 64;
+	const unsigned int current_button_shift = 64;
 
 	// Centering.
 	Geometry.x = (Graphics->Screen.w - Geometry.w) / 2;
-	Geometry.y = (Graphics->Screen.h / 2) + (index * Geometry.h);
+	Geometry.y = (Graphics->Screen.h / 2) + (idx * Geometry.h);
 
 	// Selected button shift.
-	if(index == current_index)
+	if(idx == current_idx)
 	{
-		Geometry.x += actual_button_shift;
+		Geometry.x += current_button_shift;
 	}
 	if(SDL_RenderCopy(Graphics->Renderer, Texture, NULL, &Geometry)
 	   != SDL2_SUCCESS)

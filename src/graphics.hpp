@@ -10,11 +10,8 @@
 #define MIN_DISPLAY_HEIGHT 720
 
 class Level;
-
-namespace model
-{
-	class Background;
-}
+class Background;
+class Enemy;
 
 class Graphics
 {
@@ -35,7 +32,7 @@ class Graphics
 	SDL_Texture* load_texture(const std::string name);
 	void         start_fps_count();
 	bool         count_fps();
-	bool         tile_background(model::Background* Background);
+	bool         tile_background(Background* Space);
 	bool         render_level(Level* Level);
 };
 

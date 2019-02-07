@@ -2,7 +2,7 @@
 #include "menu.hpp"
 #include "graphics.hpp"
 #include "level.hpp"
-#include "model.hpp"
+#include "player.hpp"
 #include "levitation.hpp"
 
 Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
@@ -17,7 +17,7 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 
 	if(keys_amount == 2)
 	{
-		Level->Player->step /= std::sqrt(2.0f);
+		Level->Ufo->step /= std::sqrt(2.0f);
 	}
 
 	switch(Event.type)
@@ -43,13 +43,13 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 
 		if(keys[SDL_SCANCODE_UP])
 		{
-			Level->Player->pos_y -= Level->Player->step;
+			Level->Ufo->pos_y -= Level->Ufo->step;
 
-			if(Level->Player->pos_y <= -(Level->Player->Geometry.h - Level->Player->count_scale()))
+			if(Level->Ufo->pos_y < Level->Ufo->min_y)
 			{
-				Level->Player->pos_y = Level->height - Level->Player->count_scale();
+				Level->Ufo->pos_y = Level->Ufo->max_y;
 			}
-			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Ufo->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->up;
 
 			levitate_diagonally(Level, SDL_SCANCODE_UP);
@@ -57,13 +57,13 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			Level->Player->pos_y += Level->Player->step;
+			Level->Ufo->pos_y += Level->Ufo->step;
 
-			if(Level->Player->pos_y >= (Level->height - Level->Player->count_scale()))
+			if(Level->Ufo->pos_y > Level->Ufo->max_y)
 			{
-				Level->Player->pos_y = -(Level->Player->Geometry.h - Level->Player->count_scale());
+				Level->Ufo->pos_y = Level->Ufo->min_y;
 			}
-			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Ufo->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->down;
 
 			levitate_diagonally(Level, SDL_SCANCODE_DOWN);
@@ -71,32 +71,32 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			Level->Player->pos_x -= Level->Player->step;
+			Level->Ufo->pos_x -= Level->Ufo->step;
 
-			if(Level->Player->pos_x <= -(Level->Player->Geometry.w - Level->Player->count_scale()))
+			if(Level->Ufo->pos_x < Level->Ufo->min_x)
 			{
-				Level->Player->pos_x = Level->width - Level->Player->count_scale();
+				Level->Ufo->pos_x = Level->Ufo->max_x;
 			}
-			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Ufo->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->left;
 
 			last_key = SDL_SCANCODE_LEFT;
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			Level->Player->pos_x += Level->Player->step;
+			Level->Ufo->pos_x += Level->Ufo->step;
 
-			if(Level->Player->pos_x >= (Level->width - Level->Player->count_scale()))
+			if(Level->Ufo->pos_x > Level->Ufo->max_x)
 			{
-				Level->Player->pos_x = -(Level->Player->Geometry.w - Level->Player->count_scale());
+				Level->Ufo->pos_x = Level->Ufo->min_x;
 			}
-			Level->Player->current_levitation_time = SDL_GetTicks();
+			Level->Ufo->current_levitation_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->right;
 
 			last_key = SDL_SCANCODE_RIGHT;
 		}
 	}
-	Level->Player_levitation->levitate(Level->Player);
+	Level->Player_levitation->levitate(Level->Ufo);
 
 	return true;
 }
@@ -168,21 +168,21 @@ bool Keyboard::handle_menu(Menu* Menu)
 		switch(Event.key.keysym.sym)
 		{
 			case SDLK_UP:
-			if(Menu->current_button_index > 0)
+			if(Menu->current_button_idx > 0)
 			{
-				Menu->current_button_index--;
+				Menu->current_button_idx--;
 			}
 			break;
 
 			case SDLK_DOWN:
-			if(Menu->current_button_index < Menu->max_button_index)
+			if(Menu->current_button_idx < Menu->max_button_idx)
 			{
-				Menu->current_button_index++;
+				Menu->current_button_idx++;
 			}
 			break;
 
 			case SDLK_RETURN:
-			switch(Menu->current_button_index)
+			switch(Menu->current_button_idx)
 			{
 				case 0:
 				Menu->mode = Menu->all_disabled;
@@ -208,21 +208,21 @@ bool Keyboard::handle_pause(Menu* Menu)
 	switch(Event.key.keysym.sym)
 	{
 		case SDLK_UP:
-		if(Menu->current_button_index > 0)
+		if(Menu->current_button_idx > 0)
 		{
-			Menu->current_button_index--;
+			Menu->current_button_idx--;
 		}
 		break;
 
 		case SDLK_DOWN:
-		if(Menu->current_button_index < Menu->max_button_index)
+		if(Menu->current_button_idx < Menu->max_button_idx)
 		{
-			Menu->current_button_index++;
+			Menu->current_button_idx++;
 		}
 		break;
 
 		case SDLK_RETURN:
-		switch(Menu->current_button_index)
+		switch(Menu->current_button_idx)
 		{
 			case 0:
 			Menu->mode = Menu->all_disabled;

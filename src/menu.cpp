@@ -11,30 +11,30 @@ Menu::Menu(): mode(primary_enabled)
 
 bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 {
-	model::Button Play(Graphics, "play", 0);
+	Button Play(Graphics, "play", 0);
 	if(!Play.initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Play);
 
-	model::Button Quit(Graphics, "quit", 1);
+	Button Quit(Graphics, "quit", 1);
 	if(!Quit.initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Quit);
 
-	current_button_index = 0;
-	max_button_index     = 1;
+	current_button_idx = 0;
+	max_button_idx     = 1;
 
 	while(mode == primary_enabled)
 	{
-		if(!Buttons[0]->render(Graphics, current_button_index))
+		if(!Buttons[0]->render(Graphics, current_button_idx))
 		{
 			return false;
 		}
-		if(!Buttons[1]->render(Graphics, current_button_index))
+		if(!Buttons[1]->render(Graphics, current_button_idx))
 		{
 			return false;
 		}
@@ -56,7 +56,7 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 
 bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard)
 {
-	model::Button Continue(Graphics, "continue", 0);
+	Button Continue(Graphics, "continue", 0);
 	if(!Continue.initialized)
 	{
 		error::show_box("Can't initialize the continue button.");
@@ -64,7 +64,7 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard)
 	}
 	Buttons.push_back(&Continue);
 
-	model::Button Main_menu(Graphics, "main_menu", 1);
+	Button Main_menu(Graphics, "main_menu", 1);
 	if(!Main_menu.initialized)
 	{
 		error::show_box("Can't initialize the main menu button.");
@@ -72,8 +72,8 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard)
 	}
 	Buttons.push_back(&Main_menu);
 
-	current_button_index = 0;
-	max_button_index     = 1;
+	current_button_idx = 0;
+	max_button_idx     = 1;
 
 	while(mode == pause_enabled)
 	{
@@ -82,11 +82,11 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard)
 			error::show_box("Can't clean the renderer in the pause menu.");
 			return false;
 		}
-		if(!Continue.render(Graphics, current_button_index))
+		if(!Continue.render(Graphics, current_button_idx))
 		{
 			return false;
 		}
-		if(!Main_menu.render(Graphics, current_button_index))
+		if(!Main_menu.render(Graphics, current_button_idx))
 		{
 			return false;
 		}
