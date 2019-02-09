@@ -8,7 +8,8 @@ class Enemy: public Model
 	public:
 	float distance_to_player;
 
-	Enemy(Rendering* Rendering, const std::string name, const float speed);
+	Enemy(Rendering* Rendering, const std::string name,
+	      const float passed_max_speed);
 };
 
 #endif

@@ -23,7 +23,11 @@ class Slowdown
 	}
 	last_direction;
 
-	float elapsed_time;
+	const float max_time;
+	float       current_time;
+	float       elapsed_time;
+
+	Slowdown();
 
 	bool  set_direction(Player* Ufo);
 	float count_step_length(Player* Ufo);

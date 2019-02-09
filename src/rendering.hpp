@@ -19,8 +19,8 @@ class Menu;
 
 class Rendering
 {
-	float  frame_start_time;
-	float  frame_elapsed_time;
+	Uint32 frame_start_time;
+	Uint32 frame_elapsed_time;
 	Uint32 fps;
 
 	public:

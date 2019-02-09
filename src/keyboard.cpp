@@ -37,11 +37,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_y -= Level->Ufo->step;
 
-			if(Level->Ufo->pos_y < Level->Ufo->min_y)
-			{
-				Level->Ufo->pos_y = Level->Ufo->max_y;
-			}
-			Level->Ufo->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->current_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->up;
 
 			levitate_diagonally(Level, SDL_SCANCODE_UP);
@@ -51,11 +47,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_y += Level->Ufo->step;
 
-			if(Level->Ufo->pos_y > Level->Ufo->max_y)
-			{
-				Level->Ufo->pos_y = Level->Ufo->min_y;
-			}
-			Level->Ufo->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->current_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->down;
 
 			levitate_diagonally(Level, SDL_SCANCODE_DOWN);
@@ -65,11 +57,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_x -= Level->Ufo->step;
 
-			if(Level->Ufo->pos_x < Level->Ufo->min_x)
-			{
-				Level->Ufo->pos_x = Level->Ufo->max_x;
-			}
-			Level->Ufo->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->current_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->left;
 
 			last_key = SDL_SCANCODE_LEFT;
@@ -78,16 +66,13 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_x += Level->Ufo->step;
 
-			if(Level->Ufo->pos_x > Level->Ufo->max_x)
-			{
-				Level->Ufo->pos_x = Level->Ufo->min_x;
-			}
-			Level->Ufo->current_levitation_time = SDL_GetTicks();
+			Level->Player_levitation->current_time = SDL_GetTicks();
 			Level->Player_levitation->last_direction = Level->Player_levitation->right;
 
 			last_key = SDL_SCANCODE_RIGHT;
 		}
 	}
+	Level->check_player_pos();
 	Level->Player_levitation->set_direction(Level->Ufo);
 
 	return true;

@@ -2,13 +2,18 @@
 #include "model.hpp"
 #include "player.hpp"
 
+Slowdown::Slowdown(): max_time(2000.0f)
+{
+
+}
+
 bool Slowdown::set_direction(Player* Ufo)
 {
-	elapsed_time = SDL_GetTicks() - Ufo->current_levitation_time;
+	elapsed_time = SDL_GetTicks() - current_time;
 
-	if(elapsed_time < Ufo->max_levitation_time)
+	if(elapsed_time < max_time)
 	{
-		if(elapsed_time > 0)
+		if(elapsed_time > 0.0f)
 		{
 			switch(last_direction)
 			{
@@ -29,7 +34,7 @@ bool Slowdown::set_direction(Player* Ufo)
 				break;
 
 				case right_up:
-				Ufo->step  /= std::sqrt(2.0f);
+				Ufo->step /= std::sqrt(2.0f);
 				Ufo->pos_x += count_step_length(Ufo);
 				Ufo->pos_y -= count_step_length(Ufo);
 				break;
@@ -55,23 +60,14 @@ bool Slowdown::set_direction(Player* Ufo)
 	}
 	else
 	{
-		Ufo->current_levitation_time = 0;
+		elapsed_time = 0.0f;
 	}
 	return true;
 }
 
 float Slowdown::count_step_length(Player* Ufo)
 {
-	/* Increment for slowdown. Just dynamic change of the step each time. Looks
-	very ugly but scales the speed naturally. */
-	float exponent = (Ufo->max_levitation_time / 20.0f)
-	                 / (Ufo->max_levitation_time - elapsed_time);
-
-	if(exponent > 1.0f)
-	{
-		exponent = 1.0f;
-	}
-
-	// Example mathemathical graph for that slowdown: f(x) = 1 / x^exponent.
-	return Ufo->step / std::pow(elapsed_time, exponent);
+	/* Example mathemathical graph for that slowdown:
+	f(x) = 1 / ((1000 - x) / 1000). */
+	return Ufo->step * ((max_time - elapsed_time) / max_time);
 }

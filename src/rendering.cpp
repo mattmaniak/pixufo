@@ -122,7 +122,7 @@ float Rendering::pixelart_pixel_sz()
 
 void Rendering::start_fps_count()
 {
-	frame_start_time = SDL_GetTicks() / 1000.0f;
+	frame_start_time = SDL_GetTicks();
 }
 
 bool Rendering::count_fps()
@@ -135,10 +135,10 @@ bool Rendering::count_fps()
 		return false;
 	}
 
-	delta_time = ((SDL_GetTicks() / 1000.0f) - frame_start_time);
-	frame_elapsed_time += delta_time;
+	delta_time = (SDL_GetTicks() - frame_start_time) / 1000.0f;
+	frame_elapsed_time += delta_time * 1000;
 
-	if(frame_elapsed_time >= 1.0f)
+	if(frame_elapsed_time >= 1000)
 	{
 		fps                = 0;
 		frame_elapsed_time = 0.0f;
@@ -160,22 +160,22 @@ bool Rendering::tile_background(Background* Space)
 	}
 
 	// Scrolling.
-	if(Space->pos_x > 0) // Space shifted right.
+	if(Space->pos_x > Space->max_x) // Space shifted right.
 	{
 		// Move the background one tile left.
 		Space->pos_x -= Space->Geometry.w;
 	}
-	else if(Space->pos_x < -Space->Geometry.w) // Space shifted left.
+	else if(Space->pos_x < Space->min_x) // Space shifted left.
 	{
 		// Move the background one tile right.
 		Space->pos_x += Space->Geometry.w;
 	}
-	if(Space->pos_y > 0) // Space shifted down.
+	if(Space->pos_y > Space->max_y) // Space shifted down.
 	{
 		// Move the background one tile up.
 		Space->pos_y -= Space->Geometry.h;
 	}
-	else if(Space->pos_y < -Space->Geometry.h) // Space shifted up.
+	else if(Space->pos_y < Space->min_y) // Space shifted up.
 	{
 		// Move the background one tile down.
 		Space->pos_y += Space->Geometry.h;
@@ -216,7 +216,7 @@ bool Rendering::render_level(Level* Level)
 	Level->Space->Geometry.x = Level->Space->pos_x;
 	Level->Space->Geometry.y = Level->Space->pos_y;
 
-	Level->Space->step = Level->Space->speed * delta_time * pixelart_pixel_sz();
+	Level->Space->step = Level->Space->max_speed * delta_time * pixelart_pixel_sz();
 
 	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
 	{
@@ -230,7 +230,7 @@ bool Rendering::render_level(Level* Level)
 			return false;
 		}
 
-		Level->Enemies[idx]->step = Level->Enemies[idx]->speed * delta_time
+		Level->Enemies[idx]->step = Level->Enemies[idx]->max_speed * delta_time
 		                            * pixelart_pixel_sz();
 	}
 
@@ -244,7 +244,7 @@ bool Rendering::render_level(Level* Level)
 		return false;
 	}
 
-	Level->Ufo->step = Level->Ufo->speed * delta_time * pixelart_pixel_sz();
+	Level->Ufo->step = Level->Ufo->max_speed * delta_time * pixelart_pixel_sz();
 
 	SDL_RenderPresent(Renderer);
 

@@ -34,6 +34,11 @@ Level::Level(Rendering* Rendering, const std::string bg_name):
 		return;
 	}
 
+	Space->min_x = -Space->Geometry.w;
+	Space->max_x = 0;
+	Space->min_y = -Space->Geometry.h;
+	Space->max_y = 0;
+
 	// Create all enemies.
 	for(size_t enemy_idx = 0; enemy_idx < enemies_amount; enemy_idx++)
 	{
@@ -57,6 +62,28 @@ Level::~Level()
 	for(size_t enemy_idx = 0; enemy_idx < Enemies.size(); enemy_idx++)
 	{
 		delete Enemies[enemy_idx];
-		Enemies.pop_back();
+	}
+	Enemies.clear();
+}
+
+void Level::check_player_pos()
+{
+	/* If the player is out of the level (display), it will be moved to the
+	mirrored place. */
+	if(Ufo->pos_x < Ufo->min_x)
+	{
+		Ufo->pos_x = Ufo->max_x;
+	}
+	else if(Ufo->pos_x > Ufo->max_x)
+	{
+		Ufo->pos_x = Ufo->min_x;
+	}
+	else if(Ufo->pos_y < Ufo->min_y)
+	{
+		Ufo->pos_y = Ufo->max_y;
+	}
+	else if(Ufo->pos_y > Ufo->max_y)
+	{
+		Ufo->pos_y = Ufo->min_y;
 	}
 }

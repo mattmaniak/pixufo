@@ -6,11 +6,10 @@
 class Player: public Model
 {
 	public:
-	const float max_levitation_time;
-	float       current_levitation_time;
+	float current_speed;
 
 	Player(Rendering* Rendering, const std::string name,
-	       const float passed_speed);
+	       const float passed_max_speed);
 };
 
 #endif

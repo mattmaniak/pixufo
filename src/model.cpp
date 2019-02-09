@@ -4,7 +4,8 @@
 #include "keyboard.hpp"
 
 Model::Model(Rendering* Rendering, const std::string passed_name,
-             const float passed_speed): name(passed_name), speed(passed_speed)
+             const float passed_max_speed): name(passed_name),
+             max_speed(passed_max_speed)
 {
 	Texture = Rendering->load_texture(name);
 	if(Texture == nullptr)

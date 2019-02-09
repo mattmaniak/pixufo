@@ -26,6 +26,8 @@ class Level
 
 	Level(Rendering* Rendering, const std::string bg_name);
 	~Level();
+
+	void check_player_pos(); // Move the player if out the level.
 };
 
 #endif
