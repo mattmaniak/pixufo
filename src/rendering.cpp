@@ -1,11 +1,13 @@
-#include "graphics.hpp"
+#include "rendering.hpp"
 #include "error.hpp"
 #include "level.hpp"
 #include "background.hpp"
 #include "player.hpp"
+#include "menu.hpp"
+#include "button.hpp"
 #include "enemy.hpp"
 
-Graphics::Graphics()
+Rendering::Rendering()
 {
 	const int unused_sz      = 0;
 	const int default_driver = -1;
@@ -17,7 +19,7 @@ Graphics::Graphics()
 		initialized = false;
 		return;
 	}
-	if(SDL_GetDesktopDisplayMode(0, &Screen) != SDL2_SUCCESS)
+	if(SDL_GetDesktopDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the desktop size.");
 		initialized = false;
@@ -32,7 +34,7 @@ Graphics::Graphics()
 		initialized = false;
 		return;
 	}
-	if((Screen.w < MIN_DISPLAY_WIDTH) || (Screen.h < MIN_DISPLAY_HEIGHT))
+	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
 		error::show_box("At least the HD display resolution is required.");
 		initialized = false;
@@ -62,7 +64,7 @@ Graphics::Graphics()
 	initialized = true;
 }
 
-Graphics::~Graphics()
+Rendering::~Rendering()
 {
 	if(Renderer != nullptr)
 	{
@@ -74,7 +76,7 @@ Graphics::~Graphics()
 	}
 }
 
-SDL_Texture* Graphics::load_texture(const std::string name)
+SDL_Texture* Rendering::load_texture(const std::string name)
 {
 	const std::string directory = "textures";
 	const std::string extension = "bmp";
@@ -108,12 +110,22 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-void Graphics::start_fps_count()
+float Rendering::pixelart_pixel_sz()
+{
+	if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't get the current display size.");
+		initialized = false;
+	}
+	return Display.w / PIXELART_DISPLAY_WIDTH;
+}
+
+void Rendering::start_fps_count()
 {
 	frame_start_time = SDL_GetTicks() / 1000.0f;
 }
 
-bool Graphics::count_fps()
+bool Rendering::count_fps()
 {
 	fps++;
 
@@ -134,11 +146,11 @@ bool Graphics::count_fps()
 	return true;
 }
 
-bool Graphics::tile_background(Background* Space)
+bool Rendering::tile_background(Background* Space)
 {
 	// + 1 - extra one for scrolling.
-	unsigned int tiles_x = (Screen.w / Space->Geometry.w) + 1;
-	unsigned int tiles_y = (Screen.h / Space->Geometry.h) + 1;
+	unsigned int tiles_x = (Display.w / Space->Geometry.w) + 1;
+	unsigned int tiles_y = (Display.h / Space->Geometry.h) + 1;
 
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
 	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
@@ -188,7 +200,7 @@ bool Graphics::tile_background(Background* Space)
 	return true;
 }
 
-bool Graphics::render_level(Level* Level)
+bool Rendering::render_level(Level* Level)
 {
 	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
 	{
@@ -204,8 +216,7 @@ bool Graphics::render_level(Level* Level)
 	Level->Space->Geometry.x = Level->Space->pos_x;
 	Level->Space->Geometry.y = Level->Space->pos_y;
 
-	Level->Space->step = Level->Space->speed * Level->Space->pixelart_pixel_sz()
-	                     * delta_time;
+	Level->Space->step = Level->Space->speed * delta_time * pixelart_pixel_sz();
 
 	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
 	{
@@ -220,7 +231,7 @@ bool Graphics::render_level(Level* Level)
 		}
 
 		Level->Enemies[idx]->step = Level->Enemies[idx]->speed * delta_time
-		                            * Level->Enemies[idx]->pixelart_pixel_sz();
+		                            * pixelart_pixel_sz();
 	}
 
 	Level->Ufo->Geometry.x = Level->Ufo->pos_x;
@@ -233,13 +244,87 @@ bool Graphics::render_level(Level* Level)
 		return false;
 	}
 
-	Level->Ufo->step = Level->Ufo->speed * Level->Ufo->pixelart_pixel_sz()
-	                   * delta_time;
+	Level->Ufo->step = Level->Ufo->speed * delta_time * pixelart_pixel_sz();
 
 	SDL_RenderPresent(Renderer);
 
 	return true;
 }
+
+bool Rendering::render_primary_menu(Menu* Menu)
+{
+	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't clean the renderer in the primary menu.");
+		return false;
+	}
+
+	for(unsigned int idx = 0; idx <= Menu->max_button_idx; idx++)
+	{
+		Menu->Buttons[idx]->Geometry.x = (Display.w
+		                                 - Menu->Buttons[idx]->Geometry.w) / 2;
+
+		Menu->Buttons[idx]->Geometry.y = (Display.h / 2)
+		                                 + (Menu->Buttons[idx]->idx
+		                                 * Menu->Buttons[idx]->Geometry.h);
+
+		// Selected button shift.
+		if(Menu->Buttons[idx]->idx == Menu->current_button_idx)
+		{
+			Menu->Buttons[idx]->Geometry.x += CURRENT_BUTTON_SHIFT
+			                                  * pixelart_pixel_sz();
+		}
+
+		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
+		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
+		{
+			error::show_box("Can't copy a texture: " + Menu->Buttons[idx]->name
+			                + " to the renderer.");
+			return false;
+		}
+	}
+	SDL_RenderPresent(Renderer);
+
+	return true;
+}
+
+bool Rendering::render_pause_menu(Menu* Menu)
+{
+	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't clean the renderer in the pause menu.");
+		return false;
+	}
+
+	for(unsigned int idx = 0; idx <= Menu->max_button_idx; idx++)
+	{
+		Menu->Buttons[idx]->Geometry.x = (Display.w
+		                                 - Menu->Buttons[idx]->Geometry.w) / 2;
+
+		Menu->Buttons[idx]->Geometry.y = (Display.h / 2)
+		                                 + (Menu->Buttons[idx]->idx
+		                                 * Menu->Buttons[idx]->Geometry.h);
+
+		// Selected button shift.
+		if(Menu->Buttons[idx]->idx == Menu->current_button_idx)
+		{
+			Menu->Buttons[idx]->Geometry.x += CURRENT_BUTTON_SHIFT
+			                                  * pixelart_pixel_sz();
+		}
+
+		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
+		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
+		{
+			error::show_box("Can't copy a texture: " + Menu->Buttons[idx]->name
+			                + " to the renderer.");
+			return false;
+		}
+	}
+	SDL_RenderPresent(Renderer);
+
+	return true;
+}
+
 
 SDL_Surface* load_image(const std::string name)
 {

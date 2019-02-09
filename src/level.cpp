@@ -1,50 +1,46 @@
 #include "level.hpp"
 #include "error.hpp"
-#include "graphics.hpp"
+#include "rendering.hpp"
 #include "enemy.hpp"
 #include "background.hpp"
 #include "player.hpp"
-#include "levitation.hpp"
+#include "slowdown.hpp"
 
-Level::Level(Graphics* Graphics, const std::string bg_name):
-             width(Graphics->Screen.w), height(Graphics->Screen.h)
+Level::Level(Rendering* Rendering, const std::string bg_name):
+             width(Rendering->Display.w), height(Rendering->Display.h),
+             enemies_amount(0)
 {
-	enemies_amount = 1;
-
-	Ufo = new Player(Graphics, "ufo", 100.0f);
+	Ufo = new Player(Rendering, "ufo", 100.0f);
 	if(!Ufo->initialized)
 	{
-		error::show_box("Can't initialize the player's model.");
 		initialized = false;
 		return;
 	}
-	Ufo->min_x = Ufo->pixelart_pixel_sz() - Ufo->Geometry.w;
-	Ufo->max_x = width - Ufo->pixelart_pixel_sz();
-	Ufo->min_y = Ufo->pixelart_pixel_sz() - Ufo->Geometry.h;
-	Ufo->max_y = height - Ufo->pixelart_pixel_sz();
+	Ufo->min_x = Rendering->pixelart_pixel_sz() - Ufo->Geometry.w;
+	Ufo->max_x = width - Rendering->pixelart_pixel_sz();
+	Ufo->min_y = Rendering->pixelart_pixel_sz() - Ufo->Geometry.h;
+	Ufo->max_y = height - Rendering->pixelart_pixel_sz();
 
-	Player_levitation = new Levitation;
+	Player_levitation = new Slowdown;
 
 	// Set the player's default position;
-	Ufo->Geometry.x = Ufo->pos_x = (Graphics->Screen.w - Ufo->Geometry.w) / 2;
-	Ufo->Geometry.y = Ufo->pos_y = (Graphics->Screen.h - Ufo->Geometry.h) / 2;
+	Ufo->Geometry.x = Ufo->pos_x = (Rendering->Display.w - Ufo->Geometry.w) / 2;
+	Ufo->Geometry.y = Ufo->pos_y = (Rendering->Display.h - Ufo->Geometry.h) / 2;
 
-	Space = new Background(Graphics, bg_name);
+	Space = new Background(Rendering, bg_name);
 	if(!Space>initialized)
 	{
-		error::show_box("Can't initialize the background's model.");
 		initialized = false;
 		return;
 	}
 
 	// Create all enemies.
-	for(size_t idx = 0; idx < enemies_amount; idx++)
+	for(size_t enemy_idx = 0; enemy_idx < enemies_amount; enemy_idx++)
 	{
-		Enemies.push_back(new Enemy(Graphics, "nebula_big", 50.0f));
+		Enemies.push_back(new Enemy(Rendering, "nebula_big", 50.0f));
 
-		if(!Enemies[idx]->initialized)
+		if(!Enemies[enemy_idx]->initialized)
 		{
-			error::show_box("Can't initialize the enemy's model.");
 			initialized = false;
 			return;
 		}
@@ -58,8 +54,9 @@ Level::~Level()
 	delete Player_levitation;
 	delete Space;
 
-	for(size_t idx = 0; idx < Enemies.size(); idx++)
+	for(size_t enemy_idx = 0; enemy_idx < Enemies.size(); enemy_idx++)
 	{
-		delete Enemies[idx];
+		delete Enemies[enemy_idx];
+		Enemies.pop_back();
 	}
 }

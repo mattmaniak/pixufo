@@ -8,7 +8,7 @@
 class Player;
 class Pause;
 class Menu;
-class Graphics;
+class Rendering;
 class Level;
 
 class Keyboard
@@ -21,11 +21,11 @@ class Keyboard
 
 	Keyboard();
 
-	bool handle_ingame(Level* Level, Menu* Menu);
+	bool move_player(Level* Level, Menu* Menu);
 	void levitate_diagonally(Level* Level, SDL_Scancode key);
 	void count_keys();
-	bool handle_menu(Menu* Menu);
-	bool handle_pause(Menu* Menu);
+	bool menu(Menu* Menu);
+	bool pause(Menu* Menu);
 };
 
 #endif

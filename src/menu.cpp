@@ -1,7 +1,7 @@
 #include "menu.hpp"
 #include "error.hpp"
-#include "model.hpp"
-#include "graphics.hpp"
+#include "button.hpp"
+#include "rendering.hpp"
 #include "keyboard.hpp"
 
 Menu::Menu(): mode(primary_enabled)
@@ -9,93 +9,77 @@ Menu::Menu(): mode(primary_enabled)
 
 }
 
-bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
+bool Menu::primary(Rendering* Rendering, Keyboard* Keyboard)
 {
-	Button Play(Graphics, "play", 0);
+	Button Play(Rendering, "play", 0);
 	if(!Play.initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Play);
 
-	Button Quit(Graphics, "quit", 1);
+	Button Quit(Rendering, "quit", 1);
 	if(!Quit.initialized)
 	{
+		Buttons.clear();
 		return false;
 	}
 	Buttons.push_back(&Quit);
 
-	current_button_idx = 0;
 	max_button_idx     = 1;
+	current_button_idx = 0;
 
 	while(mode == primary_enabled)
 	{
-		if(!Buttons[0]->render(Graphics, current_button_idx))
+		if(!Rendering->render_primary_menu(this))
 		{
+			Buttons.clear();
 			return false;
 		}
-		if(!Buttons[1]->render(Graphics, current_button_idx))
+		if(!Keyboard->menu(this))
 		{
-			return false;
-		}
-		SDL_RenderPresent(Graphics->Renderer);
-
-		if(!Keyboard->handle_menu(this))
-		{
-			return false;
-		}
-
-		if(SDL_RenderClear(Graphics->Renderer) != SDL2_SUCCESS)
-		{
-			error::show_box("Can't clean the renderer in the menu.");
+			Buttons.clear();
 			return false;
 		}
 	}
+	Buttons.clear();
 	return true;
 }
 
-bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard)
+bool Menu::pause(Rendering* Rendering, Keyboard* Keyboard)
 {
-	Button Continue(Graphics, "continue", 0);
+	Button Continue(Rendering, "continue", 0);
 	if(!Continue.initialized)
 	{
-		error::show_box("Can't initialize the continue button.");
 		return false;
 	}
 	Buttons.push_back(&Continue);
 
-	Button Main_menu(Graphics, "main_menu", 1);
+	Button Main_menu(Rendering, "main_menu", 1);
 	if(!Main_menu.initialized)
 	{
-		error::show_box("Can't initialize the main menu button.");
+		Buttons.clear();
 		return false;
 	}
 	Buttons.push_back(&Main_menu);
 
-	current_button_idx = 0;
 	max_button_idx     = 1;
+	current_button_idx = 0;
 
 	while(mode == pause_enabled)
 	{
-		if(SDL_RenderClear(Graphics->Renderer) != SDL2_SUCCESS)
+		if(!Rendering->render_pause_menu(this))
 		{
-			error::show_box("Can't clean the renderer in the pause menu.");
+			Buttons.clear();
 			return false;
 		}
-		if(!Continue.render(Graphics, current_button_idx))
+		if(!Keyboard->pause(this))
 		{
-			return false;
-		}
-		if(!Main_menu.render(Graphics, current_button_idx))
-		{
-			return false;
-		}
-		SDL_RenderPresent(Graphics->Renderer);
-
-		if(!Keyboard->handle_pause(this))
-		{
+			Buttons.clear();
 			return false;
 		}
 	}
+	Buttons.clear();
+
 	return true;
 }

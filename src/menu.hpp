@@ -5,7 +5,7 @@
 #include <vector>
 
 class Keyboard;
-class Graphics;
+class Rendering;
 
 class Button;
 
@@ -20,14 +20,14 @@ class Menu
 	}
 	mode;
 
-	size_t               max_button_idx;
-	size_t               current_button_idx;
+	unsigned int         max_button_idx;
+	unsigned int         current_button_idx;
 	std::vector<Button*> Buttons;
 
 	Menu();
 
-	bool primary(Graphics* Graphics, Keyboard* Keyboard);
-	bool pause(Graphics* Graphics, Keyboard* Keyboard);
+	bool primary(Rendering* Rendering, Keyboard* Keyboard);
+	bool pause(Rendering* Rendering, Keyboard* Keyboard);
 };
 
 #endif

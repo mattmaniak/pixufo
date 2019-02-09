@@ -1,8 +1,8 @@
-#include "levitation.hpp"
+#include "slowdown.hpp"
 #include "model.hpp"
 #include "player.hpp"
 
-bool Levitation::levitate(Player* Ufo)
+bool Slowdown::set_direction(Player* Ufo)
 {
 	elapsed_time = SDL_GetTicks() - Ufo->current_levitation_time;
 
@@ -13,43 +13,43 @@ bool Levitation::levitate(Player* Ufo)
 			switch(last_direction)
 			{
 				case up:
-				Ufo->pos_y -= slowdown(Ufo);
+				Ufo->pos_y -= count_step_length(Ufo);
 				break;
 
 				case down:
-				Ufo->pos_y += slowdown(Ufo);
+				Ufo->pos_y += count_step_length(Ufo);
 				break;
 
 				case left:
-				Ufo->pos_x -= slowdown(Ufo);
+				Ufo->pos_x -= count_step_length(Ufo);
 				break;
 
 				case right:
-				Ufo->pos_x += slowdown(Ufo);
+				Ufo->pos_x += count_step_length(Ufo);
 				break;
 
 				case right_up:
 				Ufo->step  /= std::sqrt(2.0f);
-				Ufo->pos_x += slowdown(Ufo);
-				Ufo->pos_y -= slowdown(Ufo);
+				Ufo->pos_x += count_step_length(Ufo);
+				Ufo->pos_y -= count_step_length(Ufo);
 				break;
 
 				case right_down:
 				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x += slowdown(Ufo);
-				Ufo->pos_y += slowdown(Ufo);
+				Ufo->pos_x += count_step_length(Ufo);
+				Ufo->pos_y += count_step_length(Ufo);
 				break;
 
 				case left_up:
 				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x -= slowdown(Ufo);
-				Ufo->pos_y -= slowdown(Ufo);
+				Ufo->pos_x -= count_step_length(Ufo);
+				Ufo->pos_y -= count_step_length(Ufo);
 				break;
 
 				case left_down:
 				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x -= slowdown(Ufo);
-				Ufo->pos_y += slowdown(Ufo);
+				Ufo->pos_x -= count_step_length(Ufo);
+				Ufo->pos_y += count_step_length(Ufo);
 			}
 		}
 	}
@@ -60,7 +60,7 @@ bool Levitation::levitate(Player* Ufo)
 	return true;
 }
 
-float Levitation::slowdown(Player* Ufo)
+float Slowdown::count_step_length(Player* Ufo)
 {
 	/* Increment for slowdown. Just dynamic change of the step each time. Looks
 	very ugly but scales the speed naturally. */

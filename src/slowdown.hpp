@@ -1,16 +1,13 @@
-#ifndef LAVITATION_HPP
-#define LEVITATION_HPP
+#ifndef SLOWDOWN_HPP
+#define SLOWDOWN_HPP
 
 #include <cmath>
 #include <iostream>
 #include <SDL2/SDL.h>
 
-// namespace model
-// {
-	class Player;
-// }
+class Player;
 
-class Levitation
+class Slowdown
 {
 	public:
 	enum
@@ -28,8 +25,8 @@ class Levitation
 
 	float elapsed_time;
 
-	bool  levitate(Player* Ufo);
-	float slowdown(Player* Ufo);
+	bool  set_direction(Player* Ufo);
+	float count_step_length(Player* Ufo);
 };
 
 #endif

@@ -1,16 +1,16 @@
 #include "keyboard.hpp"
 #include "menu.hpp"
-#include "graphics.hpp"
+#include "rendering.hpp"
 #include "level.hpp"
 #include "player.hpp"
-#include "levitation.hpp"
+#include "slowdown.hpp"
 
 Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 {
 
 }
 
-bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
+bool Keyboard::move_player(Level* Level, Menu* Menu)
 {
 	SDL_PollEvent(&Event);
 	count_keys();
@@ -32,15 +32,7 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 			Menu->mode = Menu->pause_enabled;
 			break;
 		}
-
 		case SDL_KEYUP:
-		switch(Event.key.keysym.sym)
-		{
-			case SDLK_ESCAPE:
-			Menu->mode = Menu->pause_enabled;
-			break;
-		}
-
 		if(keys[SDL_SCANCODE_UP])
 		{
 			Level->Ufo->pos_y -= Level->Ufo->step;
@@ -96,7 +88,7 @@ bool Keyboard::handle_ingame(Level* Level, Menu* Menu)
 			last_key = SDL_SCANCODE_RIGHT;
 		}
 	}
-	Level->Player_levitation->levitate(Level->Ufo);
+	Level->Player_levitation->set_direction(Level->Ufo);
 
 	return true;
 }
@@ -155,7 +147,7 @@ void Keyboard::count_keys()
 	}
 }
 
-bool Keyboard::handle_menu(Menu* Menu)
+bool Keyboard::menu(Menu* Menu)
 {
 	SDL_PollEvent(&Event);
 
@@ -196,7 +188,7 @@ bool Keyboard::handle_menu(Menu* Menu)
 	return true;
 }
 
-bool Keyboard::handle_pause(Menu* Menu)
+bool Keyboard::pause(Menu* Menu)
 {
 	SDL_PollEvent(&Event);
 

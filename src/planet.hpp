@@ -1,6 +1,12 @@
 #ifndef PLANET_HPP
 #define PLANET_HPP
 
-#include <SDL2/SDL.h>
+#include "model.hpp"
+
+class Planet: public Model
+{
+	public:
+
+};
 
 #endif

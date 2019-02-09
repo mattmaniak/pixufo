@@ -6,10 +6,9 @@
 class Enemy: public Model
 {
 	public:
-	bool     visible;
-	float    distance_to_player;
+	float distance_to_player;
 
-	Enemy(Graphics* Graphics, const std::string name, const float speed);
+	Enemy(Rendering* Rendering, const std::string name, const float speed);
 };
 
 #endif

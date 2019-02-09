@@ -9,14 +9,8 @@ class Player: public Model
 	const float max_levitation_time;
 	float       current_levitation_time;
 
-	Player(Graphics* Graphics, const std::string name,
+	Player(Rendering* Rendering, const std::string name,
 	       const float passed_speed);
-};
-
-class Levitation
-{
-	public:
-	Uint32 elased_time;
 };
 
 #endif

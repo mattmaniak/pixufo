@@ -4,19 +4,13 @@
 #include <string>
 #include <vector>
 
-class Graphics;
-class Levitation;
+class Rendering;
+class Slowdown;
 
 class Background;
 class Player;
 class Enemy;
-
-// namespace model
-// {
-// 	class Background;
-// 	class Player;
-// 	class Enemy;
-// }
+class Model;
 
 class Level
 {
@@ -26,11 +20,11 @@ class Level
 	const int           height;
 	size_t              enemies_amount;
 	Player*             Ufo;
-	Levitation*         Player_levitation;
+	Slowdown*           Player_levitation;
 	Background*         Space;
 	std::vector<Enemy*> Enemies;
 
-	Level(Graphics* Graphics, const std::string bg_name);
+	Level(Rendering* Rendering, const std::string bg_name);
 	~Level();
 };
 
