@@ -32,7 +32,7 @@ int main()
 	{
 		return exit_game();
 	}
-	Level Cosmic(&Rendering, "background1_seamless");
+	Level Cosmic(&Rendering, "background_level");
 	if(!Cosmic.initialized)
 	{
 		return exit_game();

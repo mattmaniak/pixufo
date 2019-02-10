@@ -7,17 +7,26 @@
 
 class Player;
 
+enum slowdown_direction
+{
+	up,
+	down,
+	left,
+	right
+};
+
 class Player_slowdown
 {
 	public:
-	enum direction
-	{
-		up,
-		down,
-		left,
-		right,
-	}
-	last_direction;
+	slowdown_direction direction;
+	// enum direction
+	// {
+	// 	up,
+	// 	down,
+	// 	left,
+	// 	right,
+	// }
+	// last_direction;
 
 	bool        active;
 	const float max_time;
@@ -26,7 +35,7 @@ class Player_slowdown
 
 	Player_slowdown(const float passed_max_time);
 
-	void  activate(direction last_dir);
+	void  activate(slowdown_direction passed_direction);
 	void  set_direction(Player* Ufo);
 	float count_step_length(Player* Ufo);
 };

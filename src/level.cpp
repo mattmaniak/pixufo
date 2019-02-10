@@ -26,7 +26,7 @@ Level::Level(Rendering* Rendering, const std::string bg_name):
 	Ufo->Geometry.y = Ufo->pos_y = (Rendering->Display.h - Ufo->Geometry.h) / 2;
 
 	Space = new Background(Rendering, bg_name);
-	if(!Space>initialized)
+	if(!Space->initialized)
 	{
 		initialized = false;
 		return;
@@ -35,7 +35,7 @@ Level::Level(Rendering* Rendering, const std::string bg_name):
 	// Create all enemies.
 	for(std::size_t enemy_idx = 0; enemy_idx < enemies_amount; enemy_idx++)
 	{
-		Enemies.push_back(new Enemy(Rendering, "nebula_big", 50.0f));
+		Enemies.push_back(new Enemy(Rendering, "enemy_nebula_big", 50.0f));
 
 		if(!Enemies[enemy_idx]->initialized)
 		{
@@ -55,6 +55,7 @@ Level::~Level()
 	{
 		delete Enemies[enemy_idx];
 	}
+	Enemies.clear();
 }
 
 void Level::check_player_pos()

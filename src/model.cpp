@@ -24,8 +24,7 @@ Model::Model(Rendering* Rendering, const std::string passed_name,
 
 	Geometry.w *= Rendering->pixelart_pixel_sz();
 	Geometry.h *= Rendering->pixelart_pixel_sz();
-	Geometry.x  = pos_x = 0.0f;
-	Geometry.y  = pos_y = 0.0f;
+	Geometry.x  = Geometry.y = pos_x = pos_y = 0.0f;
 
 	min_x = max_x = min_y = max_y = 0; // Reanitialized in derived models.
 

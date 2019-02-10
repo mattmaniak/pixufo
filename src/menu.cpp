@@ -3,6 +3,7 @@
 #include "button.hpp"
 #include "rendering.hpp"
 #include "keyboard.hpp"
+#include "background.hpp"
 
 Menu::Menu(): mode(primary_enabled)
 {
@@ -11,14 +12,20 @@ Menu::Menu(): mode(primary_enabled)
 
 bool Menu::primary(Rendering* Rendering, Keyboard* Keyboard)
 {
-	Button Play(Rendering, "play", 0);
+	Menu_background = new Background(Rendering, "background_primary_menu");
+	if(!Menu_background->initialized)
+	{
+		return false;
+	}
+
+	Button Play(Rendering, "button_play", 0);
 	if(!Play.initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Play);
 
-	Button Quit(Rendering, "quit", 1);
+	Button Quit(Rendering, "button_quit", 1);
 	if(!Quit.initialized)
 	{
 		Buttons.clear();
@@ -43,19 +50,21 @@ bool Menu::primary(Rendering* Rendering, Keyboard* Keyboard)
 		}
 	}
 	Buttons.clear();
+	delete Menu_background;
+
 	return true;
 }
 
 bool Menu::pause(Rendering* Rendering, Keyboard* Keyboard)
 {
-	Button Continue(Rendering, "continue", 0);
+	Button Continue(Rendering, "button_continue", 0);
 	if(!Continue.initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Continue);
 
-	Button Main_menu(Rendering, "main_menu", 1);
+	Button Main_menu(Rendering, "button_main_menu", 1);
 	if(!Main_menu.initialized)
 	{
 		Buttons.clear();

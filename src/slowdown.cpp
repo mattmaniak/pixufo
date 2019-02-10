@@ -3,16 +3,16 @@
 #include "player.hpp"
 
 Player_slowdown::Player_slowdown(const float passed_max_time):
-                                 max_time(passed_max_time)
+                                 active(false), max_time(passed_max_time)
 {
-	active = false;
+
 }
 
-void Player_slowdown::activate(direction last_dir)
+void Player_slowdown::activate(slowdown_direction passed_direction)
 {
-	active         = true;
-	current_time   = SDL_GetTicks();
-	last_direction = last_dir;
+	active       = true;
+	current_time = SDL_GetTicks();
+	direction    = passed_direction;
 }
 
 void Player_slowdown::set_direction(Player* Ufo)
@@ -23,7 +23,7 @@ void Player_slowdown::set_direction(Player* Ufo)
 	{
 		if(elapsed_time > 0.0f)
 		{
-			switch(last_direction)
+			switch(direction)
 			{
 				case up:
 				Ufo->pos_y -= count_step_length(Ufo);

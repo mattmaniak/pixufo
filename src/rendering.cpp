@@ -270,6 +270,11 @@ bool Rendering::render_primary_menu(Menu* Menu)
 		return false;
 	}
 
+	tile_background(Menu->Menu_background);
+
+	Menu->Menu_background->Geometry.x = Menu->Menu_background->pos_x;
+	Menu->Menu_background->Geometry.y = Menu->Menu_background->pos_y;
+
 	for(unsigned int idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
 		Menu->Buttons[idx]->Geometry.x = (Display.w
@@ -289,8 +294,8 @@ bool Rendering::render_primary_menu(Menu* Menu)
 		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
 		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
 		{
-			error::show_box("Can't copy a texture: " + Menu->Buttons[idx]->name
-			                + " to the renderer.");
+			error::show_box("Can't copy the button's texture: "
+			                + Menu->Buttons[idx]->name + " to the renderer.");
 			return false;
 		}
 	}

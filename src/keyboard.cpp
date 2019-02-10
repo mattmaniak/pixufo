@@ -60,22 +60,22 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		if(keys[SDL_SCANCODE_UP])
 		{
 			Level->Ufo->pos_y -= Level->Ufo->step;
-			Level->Ufo->Slowdown[0]->activate(Level->Ufo->Slowdown[0]->up);
+			Level->Ufo->Slowdown[up]->activate(up);
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
 			Level->Ufo->pos_y += Level->Ufo->step;
-			Level->Ufo->Slowdown[1]->activate(Level->Ufo->Slowdown[1]->down);
+			Level->Ufo->Slowdown[down]->activate(down);
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
 			Level->Ufo->pos_x -= Level->Ufo->step;
-			Level->Ufo->Slowdown[2]->activate(Level->Ufo->Slowdown[2]->left);
+			Level->Ufo->Slowdown[left]->activate(left);
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
 			Level->Ufo->pos_x += Level->Ufo->step;
-			Level->Ufo->Slowdown[3]->activate(Level->Ufo->Slowdown[3]->right);
+			Level->Ufo->Slowdown[right]->activate(right);
 		}
 	}
 
@@ -85,6 +85,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			slowdowns_amount++;
 		}
+		// TODO: SPEED-UPS AGAIN?, UNCOTROLLED UPWARD MOVE AFTER "PLAY".
 		if((slowdowns_amount >= 2) // Diagonal speed-ups prevention.
 		   || ((keys_amount == 1) && (slowdowns_amount >= 1)))
 		{
