@@ -17,13 +17,11 @@ class Keyboard
 	SDL_Event    Event;
 	const Uint8* keys;
 	int          keys_amount;
-	SDL_Scancode last_key;
 
 	Keyboard();
 
-	bool move_player(Level* Level, Menu* Menu);
-	void levitate_diagonally(Level* Level, SDL_Scancode key);
 	void count_keys();
+	bool move_player(Level* Level, Menu* Menu);
 	bool menu(Menu* Menu);
 	bool pause(Menu* Menu);
 };

@@ -10,6 +10,28 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 
 }
 
+void Keyboard::count_keys()
+{
+	keys_amount = 0;
+
+	if(keys[SDL_SCANCODE_UP])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_DOWN])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_LEFT])
+	{
+		keys_amount++;
+	}
+	if(keys[SDL_SCANCODE_RIGHT])
+	{
+		keys_amount++;
+	}
+}
+
 bool Keyboard::move_player(Level* Level, Menu* Menu)
 {
 	SDL_PollEvent(&Event);
@@ -36,100 +58,32 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		if(keys[SDL_SCANCODE_UP])
 		{
 			Level->Ufo->pos_y -= Level->Ufo->step;
-
-			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
-			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->up;
-
-			levitate_diagonally(Level, SDL_SCANCODE_UP);
-			last_key = SDL_SCANCODE_UP;
+			Level->Ufo->Slowdown[0]->activate(Level->Ufo->Slowdown[0]->up);
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
 			Level->Ufo->pos_y += Level->Ufo->step;
-
-			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
-			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->down;
-
-			levitate_diagonally(Level, SDL_SCANCODE_DOWN);
-			last_key = SDL_SCANCODE_DOWN;
+			Level->Ufo->Slowdown[1]->activate(Level->Ufo->Slowdown[1]->down);
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
 			Level->Ufo->pos_x -= Level->Ufo->step;
-
-			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
-			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->left;
-
-			last_key = SDL_SCANCODE_LEFT;
+			Level->Ufo->Slowdown[2]->activate(Level->Ufo->Slowdown[2]->left);
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
 			Level->Ufo->pos_x += Level->Ufo->step;
-
-			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
-			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->right;
-
-			last_key = SDL_SCANCODE_RIGHT;
+			Level->Ufo->Slowdown[3]->activate(Level->Ufo->Slowdown[3]->right);
 		}
+	}
+	// TODO: BOOST WITH THE ONE KEY PRESSED AND ONE SLOWDOWN.
+	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
+	{
+		Level->Ufo->Slowdown[dir_idx]->set_direction(Level->Ufo);
 	}
 	Level->check_player_pos();
-	Level->Ufo->Slowdown->set_direction(Level->Ufo);
 
 	return true;
-}
-
-void Keyboard::levitate_diagonally(Level* Level, SDL_Scancode key)
-{
-	/* Saving the last key gives a small time window when the player can release
-	the keys in different moments. */
-	if(key == SDL_SCANCODE_UP)
-	{
-		if(last_key == SDL_SCANCODE_LEFT)
-		{
-			Level->Ufo->Slowdown->last_direction =
-			Level->Ufo->Slowdown->left_up;
-		}
-		else if(last_key == SDL_SCANCODE_RIGHT)
-		{
-			Level->Ufo->Slowdown->last_direction =
-			Level->Ufo->Slowdown->right_up;
-		}
-	}
-	else if(key == SDL_SCANCODE_DOWN)
-	{
-		if(last_key == SDL_SCANCODE_LEFT)
-		{
-			Level->Ufo->Slowdown->last_direction =
-			Level->Ufo->Slowdown->left_down;
-		}
-		else if(last_key == SDL_SCANCODE_RIGHT)
-		{
-			Level->Ufo->Slowdown->last_direction =
-			Level->Ufo->Slowdown->right_down;
-		}
-	}
-}
-
-void Keyboard::count_keys()
-{
-	keys_amount = 0;
-
-	if(keys[SDL_SCANCODE_UP])
-	{
-		keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_DOWN])
-	{
-		keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_LEFT])
-	{
-		keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_RIGHT])
-	{
-		keys_amount++;
-	}
 }
 
 bool Keyboard::menu(Menu* Menu)

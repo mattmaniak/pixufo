@@ -55,7 +55,6 @@ Level::~Level()
 	{
 		delete Enemies[enemy_idx];
 	}
-	Enemies.clear();
 }
 
 void Level::check_player_pos()

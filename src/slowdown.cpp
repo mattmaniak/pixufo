@@ -8,6 +8,12 @@ Player_slowdown::Player_slowdown(const float passed_max_time):
 
 }
 
+void Player_slowdown::activate(direction last_dir)
+{
+	current_time   = SDL_GetTicks();
+	last_direction = last_dir;
+}
+
 void Player_slowdown::set_direction(Player* Ufo)
 {
 	elapsed_time = SDL_GetTicks() - current_time;
@@ -32,30 +38,6 @@ void Player_slowdown::set_direction(Player* Ufo)
 
 				case right:
 				Ufo->pos_x += count_step_length(Ufo);
-				break;
-
-				case right_up:
-				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x += count_step_length(Ufo);
-				Ufo->pos_y -= count_step_length(Ufo);
-				break;
-
-				case right_down:
-				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x += count_step_length(Ufo);
-				Ufo->pos_y += count_step_length(Ufo);
-				break;
-
-				case left_up:
-				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x -= count_step_length(Ufo);
-				Ufo->pos_y -= count_step_length(Ufo);
-				break;
-
-				case left_down:
-				Ufo->step /= std::sqrt(2.0f);
-				Ufo->pos_x -= count_step_length(Ufo);
-				Ufo->pos_y += count_step_length(Ufo);
 			}
 		}
 	}
