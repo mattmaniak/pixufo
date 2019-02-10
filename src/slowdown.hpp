@@ -19,6 +19,7 @@ class Player_slowdown
 	}
 	last_direction;
 
+	bool        active;
 	const float max_time;
 	float       elapsed_time;
 	float       current_time;

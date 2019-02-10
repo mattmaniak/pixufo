@@ -34,6 +34,8 @@ void Keyboard::count_keys()
 
 bool Keyboard::move_player(Level* Level, Menu* Menu)
 {
+	unsigned int slowdowns_amount = 0;
+
 	SDL_PollEvent(&Event);
 	count_keys();
 
@@ -76,9 +78,18 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 			Level->Ufo->Slowdown[3]->activate(Level->Ufo->Slowdown[3]->right);
 		}
 	}
-	// TODO: BOOST WITH THE ONE KEY PRESSED AND ONE SLOWDOWN.
+
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{
+		if(Level->Ufo->Slowdown[dir_idx]->active)
+		{
+			slowdowns_amount++;
+		}
+		if((slowdowns_amount >= 2) // Diagonal speed-ups prevention.
+		   || ((keys_amount == 1) && (slowdowns_amount >= 1)))
+		{
+			Level->Ufo->step /= std::sqrt(2.0f);
+		}
 		Level->Ufo->Slowdown[dir_idx]->set_direction(Level->Ufo);
 	}
 	Level->check_player_pos();

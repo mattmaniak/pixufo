@@ -5,11 +5,12 @@
 Player_slowdown::Player_slowdown(const float passed_max_time):
                                  max_time(passed_max_time)
 {
-
+	active = false;
 }
 
 void Player_slowdown::activate(direction last_dir)
 {
+	active         = true;
 	current_time   = SDL_GetTicks();
 	last_direction = last_dir;
 }
@@ -44,6 +45,7 @@ void Player_slowdown::set_direction(Player* Ufo)
 	else
 	{
 		elapsed_time = 0.0f;
+		active       = false;
 	}
 }
 
