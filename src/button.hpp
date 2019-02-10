@@ -3,8 +3,6 @@
 
 #include "model.hpp"
 
-#define CURRENT_BUTTON_SHIFT 32
-
 class Button: public Model
 {
 	public:

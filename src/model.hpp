@@ -5,8 +5,6 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-#define PIXELART_DISPLAY_WIDTH 720.0f
-
 class Rendering;
 class Keyboard;
 

@@ -21,8 +21,6 @@ Level::Level(Rendering* Rendering, const std::string bg_name):
 	Ufo->min_y = Rendering->pixelart_pixel_sz() - Ufo->Geometry.h;
 	Ufo->max_y = height - Rendering->pixelart_pixel_sz();
 
-	Player_levitation = new Slowdown;
-
 	// Set the player's default position;
 	Ufo->Geometry.x = Ufo->pos_x = (Rendering->Display.w - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (Rendering->Display.h - Ufo->Geometry.h) / 2;
@@ -34,13 +32,8 @@ Level::Level(Rendering* Rendering, const std::string bg_name):
 		return;
 	}
 
-	Space->min_x = -Space->Geometry.w;
-	Space->max_x = 0;
-	Space->min_y = -Space->Geometry.h;
-	Space->max_y = 0;
-
 	// Create all enemies.
-	for(size_t enemy_idx = 0; enemy_idx < enemies_amount; enemy_idx++)
+	for(std::size_t enemy_idx = 0; enemy_idx < enemies_amount; enemy_idx++)
 	{
 		Enemies.push_back(new Enemy(Rendering, "nebula_big", 50.0f));
 
@@ -56,10 +49,9 @@ Level::Level(Rendering* Rendering, const std::string bg_name):
 Level::~Level()
 {
 	delete Ufo;
-	delete Player_levitation;
 	delete Space;
 
-	for(size_t enemy_idx = 0; enemy_idx < Enemies.size(); enemy_idx++)
+	for(std::size_t enemy_idx = 0; enemy_idx < Enemies.size(); enemy_idx++)
 	{
 		delete Enemies[enemy_idx];
 	}

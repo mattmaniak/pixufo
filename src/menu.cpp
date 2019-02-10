@@ -26,8 +26,8 @@ bool Menu::primary(Rendering* Rendering, Keyboard* Keyboard)
 	}
 	Buttons.push_back(&Quit);
 
-	max_button_idx     = 1;
-	current_button_idx = 0;
+	max_button_idx      = 1;
+	selected_button_idx = 0;
 
 	while(mode == primary_enabled)
 	{
@@ -63,8 +63,8 @@ bool Menu::pause(Rendering* Rendering, Keyboard* Keyboard)
 	}
 	Buttons.push_back(&Main_menu);
 
-	max_button_idx     = 1;
-	current_button_idx = 0;
+	max_button_idx      = 1;
+	selected_button_idx = 0;
 
 	while(mode == pause_enabled)
 	{

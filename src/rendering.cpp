@@ -76,7 +76,7 @@ Rendering::~Rendering()
 	}
 }
 
-SDL_Texture* Rendering::load_texture(const std::string name)
+SDL_Surface* Rendering::load_image(const std::string name)
 {
 	const std::string directory = "textures";
 	const std::string extension = "bmp";
@@ -91,19 +91,30 @@ SDL_Texture* Rendering::load_texture(const std::string name)
 
 #endif
 
-	SDL_Surface* Image = SDL_LoadBMP(path.c_str());
+	SDL_Surface* image = SDL_LoadBMP(path.c_str());
+
+	if(image == nullptr)
+	{
+		error::show_box("Can't load the image: " + name);
+	}
+	return image;
+}
+
+SDL_Texture* Rendering::load_texture(const std::string name)
+{
+	SDL_Surface* Image = load_image(name);
 	SDL_Texture* Texture;
 
 	if(Image == nullptr)
 	{
-		error::show_box("Can't load the image: " + path);
+		error::show_box("Can't load the image: " + name);
 		return nullptr;
 	}
 
 	Texture = SDL_CreateTextureFromSurface(Renderer, Image);
 	if(Texture == nullptr)
 	{
-		error::show_box("Can't create the texture from image: " + path);
+		error::show_box("Can't create the texture from image: " + name);
 	}
 	SDL_FreeSurface(Image);
 
@@ -269,9 +280,9 @@ bool Rendering::render_primary_menu(Menu* Menu)
 		                                 * Menu->Buttons[idx]->Geometry.h);
 
 		// Selected button shift.
-		if(Menu->Buttons[idx]->idx == Menu->current_button_idx)
+		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
 		{
-			Menu->Buttons[idx]->Geometry.x += CURRENT_BUTTON_SHIFT
+			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
 			                                  * pixelart_pixel_sz();
 		}
 
@@ -306,9 +317,9 @@ bool Rendering::render_pause_menu(Menu* Menu)
 		                                 * Menu->Buttons[idx]->Geometry.h);
 
 		// Selected button shift.
-		if(Menu->Buttons[idx]->idx == Menu->current_button_idx)
+		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
 		{
-			Menu->Buttons[idx]->Geometry.x += CURRENT_BUTTON_SHIFT
+			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
 			                                  * pixelart_pixel_sz();
 		}
 
@@ -323,29 +334,4 @@ bool Rendering::render_pause_menu(Menu* Menu)
 	SDL_RenderPresent(Renderer);
 
 	return true;
-}
-
-
-SDL_Surface* load_image(const std::string name)
-{
-	const std::string directory = "textures";
-	const std::string extension = "bmp";
-
-#ifdef _WIN32
-	const std::string path = directory + '\\' + name + '.' + extension;
-
-#else
-#ifdef __linux__
-	const std::string path = directory + '/' + name + '.' + extension;
-#endif
-
-#endif
-
-	SDL_Surface* image = SDL_LoadBMP(path.c_str());
-
-	if(image == nullptr)
-	{
-		std::cout << SDL_GetError() << std::endl;
-	}
-	return image;
 }

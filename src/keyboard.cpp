@@ -37,8 +37,8 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_y -= Level->Ufo->step;
 
-			Level->Player_levitation->current_time = SDL_GetTicks();
-			Level->Player_levitation->last_direction = Level->Player_levitation->up;
+			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
+			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->up;
 
 			levitate_diagonally(Level, SDL_SCANCODE_UP);
 			last_key = SDL_SCANCODE_UP;
@@ -47,8 +47,8 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_y += Level->Ufo->step;
 
-			Level->Player_levitation->current_time = SDL_GetTicks();
-			Level->Player_levitation->last_direction = Level->Player_levitation->down;
+			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
+			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->down;
 
 			levitate_diagonally(Level, SDL_SCANCODE_DOWN);
 			last_key = SDL_SCANCODE_DOWN;
@@ -57,8 +57,8 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_x -= Level->Ufo->step;
 
-			Level->Player_levitation->current_time = SDL_GetTicks();
-			Level->Player_levitation->last_direction = Level->Player_levitation->left;
+			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
+			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->left;
 
 			last_key = SDL_SCANCODE_LEFT;
 		}
@@ -66,14 +66,14 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->pos_x += Level->Ufo->step;
 
-			Level->Player_levitation->current_time = SDL_GetTicks();
-			Level->Player_levitation->last_direction = Level->Player_levitation->right;
+			Level->Ufo->Slowdown->current_time = SDL_GetTicks();
+			Level->Ufo->Slowdown->last_direction = Level->Ufo->Slowdown->right;
 
 			last_key = SDL_SCANCODE_RIGHT;
 		}
 	}
 	Level->check_player_pos();
-	Level->Player_levitation->set_direction(Level->Ufo);
+	Level->Ufo->Slowdown->set_direction(Level->Ufo);
 
 	return true;
 }
@@ -86,26 +86,26 @@ void Keyboard::levitate_diagonally(Level* Level, SDL_Scancode key)
 	{
 		if(last_key == SDL_SCANCODE_LEFT)
 		{
-			Level->Player_levitation->last_direction =
-			Level->Player_levitation->left_up;
+			Level->Ufo->Slowdown->last_direction =
+			Level->Ufo->Slowdown->left_up;
 		}
 		else if(last_key == SDL_SCANCODE_RIGHT)
 		{
-			Level->Player_levitation->last_direction =
-			Level->Player_levitation->right_up;
+			Level->Ufo->Slowdown->last_direction =
+			Level->Ufo->Slowdown->right_up;
 		}
 	}
 	else if(key == SDL_SCANCODE_DOWN)
 	{
 		if(last_key == SDL_SCANCODE_LEFT)
 		{
-			Level->Player_levitation->last_direction =
-			Level->Player_levitation->left_down;
+			Level->Ufo->Slowdown->last_direction =
+			Level->Ufo->Slowdown->left_down;
 		}
 		else if(last_key == SDL_SCANCODE_RIGHT)
 		{
-			Level->Player_levitation->last_direction =
-			Level->Player_levitation->right_down;
+			Level->Ufo->Slowdown->last_direction =
+			Level->Ufo->Slowdown->right_down;
 		}
 	}
 }
@@ -145,21 +145,21 @@ bool Keyboard::menu(Menu* Menu)
 		switch(Event.key.keysym.sym)
 		{
 			case SDLK_UP:
-			if(Menu->current_button_idx > 0)
+			if(Menu->selected_button_idx > 0)
 			{
-				Menu->current_button_idx--;
+				Menu->selected_button_idx--;
 			}
 			break;
 
 			case SDLK_DOWN:
-			if(Menu->current_button_idx < Menu->max_button_idx)
+			if(Menu->selected_button_idx < Menu->max_button_idx)
 			{
-				Menu->current_button_idx++;
+				Menu->selected_button_idx++;
 			}
 			break;
 
 			case SDLK_RETURN:
-			switch(Menu->current_button_idx)
+			switch(Menu->selected_button_idx)
 			{
 				case 0:
 				Menu->mode = Menu->all_disabled;
@@ -185,21 +185,21 @@ bool Keyboard::pause(Menu* Menu)
 	switch(Event.key.keysym.sym)
 	{
 		case SDLK_UP:
-		if(Menu->current_button_idx > 0)
+		if(Menu->selected_button_idx > 0)
 		{
-			Menu->current_button_idx--;
+			Menu->selected_button_idx--;
 		}
 		break;
 
 		case SDLK_DOWN:
-		if(Menu->current_button_idx < Menu->max_button_idx)
+		if(Menu->selected_button_idx < Menu->max_button_idx)
 		{
-			Menu->current_button_idx++;
+			Menu->selected_button_idx++;
 		}
 		break;
 
 		case SDLK_RETURN:
-		switch(Menu->current_button_idx)
+		switch(Menu->selected_button_idx)
 		{
 			case 0:
 			Menu->mode = Menu->all_disabled;

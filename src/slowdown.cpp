@@ -2,12 +2,13 @@
 #include "model.hpp"
 #include "player.hpp"
 
-Slowdown::Slowdown(): max_time(2000.0f)
+Player_slowdown::Player_slowdown(const float passed_max_time):
+                                 max_time(passed_max_time)
 {
 
 }
 
-bool Slowdown::set_direction(Player* Ufo)
+void Player_slowdown::set_direction(Player* Ufo)
 {
 	elapsed_time = SDL_GetTicks() - current_time;
 
@@ -62,10 +63,9 @@ bool Slowdown::set_direction(Player* Ufo)
 	{
 		elapsed_time = 0.0f;
 	}
-	return true;
 }
 
-float Slowdown::count_step_length(Player* Ufo)
+float Player_slowdown::count_step_length(Player* Ufo)
 {
 	/* Example mathemathical graph for that slowdown:
 	f(x) = 1 / ((1000 - x) / 1000). */

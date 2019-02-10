@@ -7,7 +7,7 @@
 
 class Player;
 
-class Slowdown
+class Player_slowdown
 {
 	public:
 	enum
@@ -24,12 +24,12 @@ class Slowdown
 	last_direction;
 
 	const float max_time;
-	float       current_time;
 	float       elapsed_time;
+	float       current_time;
 
-	Slowdown();
+	Player_slowdown(const float passed_max_time);
 
-	bool  set_direction(Player* Ufo);
+	void  set_direction(Player* Ufo);
 	float count_step_length(Player* Ufo);
 };
 

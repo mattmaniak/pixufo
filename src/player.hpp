@@ -3,13 +3,18 @@
 
 #include "model.hpp"
 
+class Player_acceleration;
+class Player_slowdown;
+
 class Player: public Model
 {
 	public:
-	float current_speed;
+	Player_acceleration* Acceleration;
+	Player_slowdown*     Slowdown;
 
 	Player(Rendering* Rendering, const std::string name,
 	       const float passed_max_speed);
+	~Player();
 };
 
 #endif

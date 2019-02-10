@@ -4,10 +4,9 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
+class Button;
 class Keyboard;
 class Rendering;
-
-class Button;
 
 class Menu
 {
@@ -21,7 +20,7 @@ class Menu
 	mode;
 
 	unsigned int         max_button_idx;
-	unsigned int         current_button_idx;
+	unsigned int         selected_button_idx;
 	std::vector<Button*> Buttons;
 
 	Menu();

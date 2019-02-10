@@ -5,7 +5,7 @@
 #include <vector>
 
 class Rendering;
-class Slowdown;
+class Player_slowdown;
 
 class Background;
 class Player;
@@ -18,9 +18,9 @@ class Level
 	bool                initialized;
 	const int           width;
 	const int           height;
-	size_t              enemies_amount;
+	std::size_t         enemies_amount;
 	Player*             Ufo;
-	Slowdown*           Player_levitation;
+	Player_slowdown*    Player_levitation;
 	Background*         Space;
 	std::vector<Enemy*> Enemies;
 

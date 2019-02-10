@@ -7,7 +7,9 @@
 #include <string>
 
 #define CURRENT_DISPLAY 0
-#define PIXELART_DISPLAY_WIDTH 720.0f
+#define PIXELART_DISPLAY_WIDTH 800.0f
+
+#define SELECTED_BUTTON_SHIFT 32
 
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
@@ -33,6 +35,7 @@ class Rendering
 	Rendering();
 	~Rendering();
 
+	SDL_Surface* load_image(const std::string name);
 	SDL_Texture* load_texture(const std::string name);
 	float        pixelart_pixel_sz();
 	void         start_fps_count();
@@ -43,8 +46,5 @@ class Rendering
 	bool         render_primary_menu(Menu* Menu);
 	bool         render_pause_menu(Menu* Menu);
 };
-
-// namespace TODO
-SDL_Surface* load_image(const std::string name);
 
 #endif
