@@ -16,7 +16,7 @@ class Keyboard
 	public:
 	SDL_Event    Event;
 	const Uint8* keys;
-	int          keys_amount;
+	unsigned int keys_amount;
 
 	Keyboard();
 

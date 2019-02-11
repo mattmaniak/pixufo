@@ -58,8 +58,9 @@ Rendering::Rendering()
 		initialized = false;
 		return;
 	}
-	fps = 0;
+	delta_time         = 0.0f;
 	frame_elapsed_time = 0.0f;
+	fps                = 0;
 
 	initialized = true;
 }
@@ -147,9 +148,9 @@ bool Rendering::count_fps()
 	}
 
 	delta_time = (SDL_GetTicks() - frame_start_time) / 1000.0f;
-	frame_elapsed_time += delta_time * 1000;
+	frame_elapsed_time += delta_time * 1000.0f;
 
-	if(frame_elapsed_time >= 1000)
+	if(frame_elapsed_time >= 1000.0f)
 	{
 		fps                = 0;
 		frame_elapsed_time = 0.0f;
@@ -164,7 +165,7 @@ bool Rendering::tile_background(Background* Space)
 	unsigned int tiles_y = (Display.h / Space->Geometry.h) + 1;
 
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
-	|| (tiles_y >= std::numeric_limits<unsigned int>::max()))
+	   || (tiles_y >= std::numeric_limits<unsigned int>::max()))
 	{
 		error::show_box("Too many tiles in the background.");
 		return false;
@@ -256,7 +257,6 @@ bool Rendering::render_level(Level* Level)
 	}
 
 	Level->Ufo->step = Level->Ufo->max_speed * delta_time * pixelart_pixel_sz();
-
 	SDL_RenderPresent(Renderer);
 
 	return true;
@@ -270,12 +270,15 @@ bool Rendering::render_primary_menu(Menu* Menu)
 		return false;
 	}
 
+	// Menu->Menu_background->pos_x -= 0.25f;
+	// Menu->Menu_background->pos_y -= 0.25f;
+
 	tile_background(Menu->Menu_background);
 
 	Menu->Menu_background->Geometry.x = Menu->Menu_background->pos_x;
 	Menu->Menu_background->Geometry.y = Menu->Menu_background->pos_y;
 
-	for(unsigned int idx = 0; idx <= Menu->max_button_idx; idx++)
+	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
 		Menu->Buttons[idx]->Geometry.x = (Display.w
 		                                 - Menu->Buttons[idx]->Geometry.w) / 2;
@@ -312,7 +315,7 @@ bool Rendering::render_pause_menu(Menu* Menu)
 		return false;
 	}
 
-	for(unsigned int idx = 0; idx <= Menu->max_button_idx; idx++)
+	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
 		Menu->Buttons[idx]->Geometry.x = (Display.w
 		                                 - Menu->Buttons[idx]->Geometry.w) / 2;
@@ -331,8 +334,8 @@ bool Rendering::render_pause_menu(Menu* Menu)
 		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
 		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
 		{
-			error::show_box("Can't copy a texture: " + Menu->Buttons[idx]->name
-			                + " to the renderer.");
+			error::show_box("Can't copy the button's texture: "
+			                + Menu->Buttons[idx]->name + " to the renderer.");
 			return false;
 		}
 	}

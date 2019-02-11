@@ -48,7 +48,6 @@ int main()
 			{
 				return exit_game();
 			}
-			SDL_Delay(500);
 		}
 		if(!Rendering.render_level(&Cosmic))
 		{

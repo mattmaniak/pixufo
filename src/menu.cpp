@@ -41,11 +41,13 @@ bool Menu::primary(Rendering* Rendering, Keyboard* Keyboard)
 		if(!Rendering->render_primary_menu(this))
 		{
 			Buttons.clear();
+			delete Menu_background;
 			return false;
 		}
 		if(!Keyboard->menu(this))
 		{
 			Buttons.clear();
+			delete Menu_background;
 			return false;
 		}
 	}

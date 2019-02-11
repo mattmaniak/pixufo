@@ -50,34 +50,86 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		return false;
 
 		case SDL_KEYDOWN:
+		SDL_PumpEvents();
+
+		if(keys[SDL_SCANCODE_UP])
+		{
+			if(!Level->Ufo->Acceleration[down]->active)
+			{
+				Level->Ufo->Acceleration[down]->activate(down);
+			}
+			Level->Ufo->pos_y -= Level->Ufo->step;
+		}
+		if(keys[SDL_SCANCODE_DOWN])
+		{
+			if(!Level->Ufo->Acceleration[up]->active)
+			{
+				Level->Ufo->Acceleration[up]->activate(up);
+			}
+			Level->Ufo->pos_y += Level->Ufo->step;
+
+		}
+		if(keys[SDL_SCANCODE_LEFT])
+		{
+			if(!Level->Ufo->Acceleration[right]->active)
+			{
+				Level->Ufo->Acceleration[right]->activate(right);
+			}
+			Level->Ufo->pos_x -= Level->Ufo->step;
+		}
+		if(keys[SDL_SCANCODE_RIGHT])
+		{
+			if(!Level->Ufo->Acceleration[left]->active)
+			{
+				Level->Ufo->Acceleration[left]->activate(left);
+			}
+			Level->Ufo->pos_x += Level->Ufo->step;
+		}
 		switch(Event.key.keysym.sym)
 		{
 			case SDLK_ESCAPE:
 			Menu->mode = Menu->pause_enabled;
 			break;
 		}
+
 		case SDL_KEYUP:
 		if(keys[SDL_SCANCODE_UP])
 		{
-			Level->Ufo->pos_y -= Level->Ufo->step;
+			// Level->Ufo->pos_y -= Level->Ufo->step;
 			Level->Ufo->Slowdown[up]->activate(up);
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			Level->Ufo->pos_y += Level->Ufo->step;
+			// Level->Ufo->pos_y += Level->Ufo->step;
 			Level->Ufo->Slowdown[down]->activate(down);
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			Level->Ufo->pos_x -= Level->Ufo->step;
+			// Level->Ufo->pos_x -= Level->Ufo->step;
 			Level->Ufo->Slowdown[left]->activate(left);
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			Level->Ufo->pos_x += Level->Ufo->step;
+			// Level->Ufo->pos_x += Level->Ufo->step;
 			Level->Ufo->Slowdown[right]->activate(right);
 		}
 	}
+
+
+	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
+	{
+		// if(Level->Ufo->Slowdown[dir_idx]->active)
+		// {
+		// 	slowdowns_amount++;
+		// }
+		// if((slowdowns_amount >= 2) // Diagonal speed-ups prevention.
+		//    || ((keys_amount >= 1) && (slowdowns_amount >= 1)))
+		// {
+		// 	Level->Ufo->step /= std::sqrt(2.0f);
+		// }
+		Level->Ufo->Acceleration[dir_idx]->set_direction(Level->Ufo);
+	}
+
 
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{
@@ -85,9 +137,8 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			slowdowns_amount++;
 		}
-		// TODO: SPEED-UPS AGAIN?, UNCOTROLLED UPWARD MOVE AFTER "PLAY".
 		if((slowdowns_amount >= 2) // Diagonal speed-ups prevention.
-		   || ((keys_amount == 1) && (slowdowns_amount >= 1)))
+		   || ((keys_amount >= 1) && (slowdowns_amount >= 1)))
 		{
 			Level->Ufo->step /= std::sqrt(2.0f);
 		}
@@ -174,6 +225,11 @@ bool Keyboard::pause(Menu* Menu)
 			case 1:
 			Menu->mode = Menu->primary_enabled;
 		}
+		break;
+
+		// TODO: DELAY/FADER.
+		case SDLK_ESCAPE:
+		Menu->mode = Menu->all_disabled;
 	}
 	return true;
 }
