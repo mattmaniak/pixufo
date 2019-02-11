@@ -17,6 +17,7 @@ class Keyboard
 	SDL_Event    Event;
 	const Uint8* keys;
 	unsigned int keys_amount;
+	SDL_Scancode last_pressed_key;
 
 	Keyboard();
 

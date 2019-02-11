@@ -25,19 +25,19 @@ void Player_slowdown::set_direction(Player* Ufo)
 		{
 			switch(direction)
 			{
-				case up:
+				case slow_up:
 				Ufo->pos_y -= count_step_length(Ufo);
 				break;
 
-				case down:
+				case slow_down:
 				Ufo->pos_y += count_step_length(Ufo);
 				break;
 
-				case left:
+				case slow_left:
 				Ufo->pos_x -= count_step_length(Ufo);
 				break;
 
-				case right:
+				case slow_right:
 				Ufo->pos_x += count_step_length(Ufo);
 			}
 		}

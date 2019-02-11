@@ -10,7 +10,7 @@ class Player_slowdown;
 class Player: public Model
 {
 	public:
-	std::array<Player_slowdown*, 4> Acceleration; // TODO: CAUSES UPWARD MOVE AT THE BEGINNING.
+	std::array<Player_acceleration*, 4> Acceleration; // TODO: CAUSES UPWARD MOVE AT THE BEGINNING.
 	std::array<Player_slowdown*, 4> Slowdown;
 
 	Player(Rendering* Rendering, const std::string name,

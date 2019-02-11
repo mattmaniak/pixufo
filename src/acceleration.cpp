@@ -7,6 +7,13 @@ Player_acceleration::Player_acceleration(const float passed_max_time):
 
 }
 
+void Player_acceleration::activate(acceleration_direction passed_direction)
+{
+	active       = true;
+	current_time = SDL_GetTicks();
+	direction    = passed_direction;
+}
+
 void Player_acceleration::set_direction(Player* Ufo)
 {
 	elapsed_time = SDL_GetTicks() - current_time;
@@ -15,12 +22,29 @@ void Player_acceleration::set_direction(Player* Ufo)
 	{
 		if(elapsed_time > 0.0f)
 		{
+			switch(direction)
+			{
+				case acc_up:
+				Ufo->pos_y += count_step_length(Ufo);
+				break;
 
+				case acc_down:
+				Ufo->pos_y -= count_step_length(Ufo);
+				break;
+
+				case acc_left:
+				Ufo->pos_x += count_step_length(Ufo);
+				break;
+
+				case acc_right:
+				Ufo->pos_x -= count_step_length(Ufo);
+			}
 		}
 	}
 	else
 	{
 		elapsed_time = 0.0f;
+		active       = false;
 	}
 }
 

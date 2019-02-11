@@ -12,7 +12,7 @@ Model(Rendering, name, passed_max_speed)
 
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{
-		Acceleration[dir_idx] = new Player_slowdown(levitation_time);
+		Acceleration[dir_idx] = new Player_acceleration(levitation_time);
 	}
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{

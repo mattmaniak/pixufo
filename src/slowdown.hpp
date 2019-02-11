@@ -9,24 +9,16 @@ class Player;
 
 enum slowdown_direction
 {
-	up,
-	down,
-	left,
-	right
+	slow_up,
+	slow_down,
+	slow_left,
+	slow_right
 };
 
 class Player_slowdown
 {
 	public:
 	slowdown_direction direction;
-	// enum direction
-	// {
-	// 	up,
-	// 	down,
-	// 	left,
-	// 	right,
-	// }
-	// last_direction;
 
 	bool        active;
 	const float max_time;
