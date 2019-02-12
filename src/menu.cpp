@@ -12,6 +12,8 @@ Menu::Menu(): mode(primary_enabled)
 
 bool Menu::primary(Rendering* Rendering, Keyboard* Keyboard)
 {
+	// Menu_background = new Background(Rendering, "planet_menu");
+
 	Menu_background = new Background(Rendering, "background_primary_menu");
 	if(!Menu_background->initialized)
 	{

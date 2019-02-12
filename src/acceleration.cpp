@@ -18,7 +18,7 @@ void Player_acceleration::set_direction(Player* Ufo)
 {
 	elapsed_time = SDL_GetTicks() - current_time;
 
-	if(elapsed_time < max_time)
+	if((elapsed_time < max_time) && active)
 	{
 		if(elapsed_time > 0.0f)
 		{
@@ -43,8 +43,8 @@ void Player_acceleration::set_direction(Player* Ufo)
 	}
 	else
 	{
-		elapsed_time = 0.0f;
-		active       = false;
+		// elapsed_time = 2000.0f;
+		active = false;
 	}
 }
 

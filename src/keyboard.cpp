@@ -52,107 +52,87 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		return false;
 
 		case SDL_KEYDOWN:
-		SDL_PumpEvents();
-
 		if(keys[SDL_SCANCODE_UP])
 		{
+			Level->Ufo->pos_y -= Level->Ufo->step;
+			std::cout << "DOWN" << std::endl;
+
 			if((!Level->Ufo->Acceleration[acc_up]->active)
 			   && (last_pressed_key != SDL_SCANCODE_UP))
 			{
 				Level->Ufo->Acceleration[acc_up]->activate(acc_up);
 			}
-			Level->Ufo->pos_y -= Level->Ufo->step;
 			last_pressed_key = SDL_SCANCODE_UP;
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
+			Level->Ufo->pos_y += Level->Ufo->step;
+
 			if((!Level->Ufo->Acceleration[acc_down]->active)
 			   && (last_pressed_key != SDL_SCANCODE_DOWN))
 			{
 				Level->Ufo->Acceleration[acc_down]->activate(acc_down);
 			}
-			Level->Ufo->pos_y += Level->Ufo->step;
 			last_pressed_key = SDL_SCANCODE_DOWN;
-
-			// for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
-			// {
-			// 	if(Level->Ufo->Acceleration[dir_idx]->direction != acc_down)
-			// 	{
-			// 		Level->Ufo->Acceleration[dir_idx]->active = false;;
-			// 	}
-			// }
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
+			Level->Ufo->pos_x -= Level->Ufo->step;
+
 			if((!Level->Ufo->Acceleration[acc_left]->active)
 			   && (last_pressed_key != SDL_SCANCODE_LEFT))
 			{
 				Level->Ufo->Acceleration[acc_left]->activate(acc_left);
 			}
-			Level->Ufo->pos_x -= Level->Ufo->step;
 			last_pressed_key = SDL_SCANCODE_LEFT;
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			if((!Level->Ufo->Acceleration[acc_down]->active)
+			Level->Ufo->pos_x += Level->Ufo->step;
+
+			if((!Level->Ufo->Acceleration[acc_right]->active)
 			   && (last_pressed_key != SDL_SCANCODE_RIGHT))
 			{
-				Level->Ufo->Acceleration[acc_left]->activate(acc_left);
+				Level->Ufo->Acceleration[acc_right]->activate(acc_right);
 			}
-			Level->Ufo->pos_x += Level->Ufo->step;
 			last_pressed_key = SDL_SCANCODE_RIGHT;
 		}
-		switch(Event.key.keysym.sym)
+		if(keys[SDL_SCANCODE_ESCAPE])
 		{
-			case SDLK_ESCAPE:
 			Menu->mode = Menu->pause_enabled;
-			break;
 		}
+		// break;
 
 		case SDL_KEYUP:
-		SDL_PumpEvents();
-		last_pressed_key = SDL_SCANCODE_UNKNOWN;
-
 		if(keys[SDL_SCANCODE_UP])
 		{
-			// Level->Ufo->pos_y -= Level->Ufo->step;
 			Level->Ufo->Slowdown[slow_up]->activate(slow_up);
+			Level->Ufo->Acceleration[acc_up]->elapsed_time = 0.0f;
+
+			last_pressed_key = SDL_SCANCODE_UNKNOWN;
+			std::cout << "UP" << std::endl;
 		}
 		if(keys[SDL_SCANCODE_DOWN])
 		{
-			// Level->Ufo->pos_y += Level->Ufo->step;
 			Level->Ufo->Slowdown[slow_down]->activate(slow_down);
+			// last_pressed_key = SDL_SCANCODE_UNKNOWN;
 		}
 		if(keys[SDL_SCANCODE_LEFT])
 		{
-			// Level->Ufo->pos_x -= Level->Ufo->step;
 			Level->Ufo->Slowdown[slow_left]->activate(slow_left);
+			last_pressed_key = SDL_SCANCODE_UNKNOWN;
 		}
 		if(keys[SDL_SCANCODE_RIGHT])
 		{
-			// Level->Ufo->pos_x += Level->Ufo->step;
 			Level->Ufo->Slowdown[slow_right]->activate(slow_right);
+			last_pressed_key = SDL_SCANCODE_UNKNOWN;
 		}
 	}
 
-
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{
-		// if(Level->Ufo->Slowdown[dir_idx]->active)
-		// {
-		// 	slowdowns_amount++;
-		// }
-		// if((slowdowns_amount >= 2) // Diagonal speed-ups prevention.
-		//    || ((keys_amount >= 1) && (slowdowns_amount >= 1)))
-		// {
-		// 	Level->Ufo->step /= std::sqrt(2.0f);
-		// }
 		Level->Ufo->Acceleration[dir_idx]->set_direction(Level->Ufo);
-	}
 
-
-	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
-	{
 		if(Level->Ufo->Slowdown[dir_idx]->active)
 		{
 			slowdowns_amount++;
@@ -248,8 +228,8 @@ bool Keyboard::pause(Menu* Menu)
 		break;
 
 		// TODO: DELAY/FADER.
-		case SDLK_ESCAPE:
-		Menu->mode = Menu->all_disabled;
+		// case SDLK_ESCAPE:
+		// Menu->mode = Menu->all_disabled;
 	}
 	return true;
 }

@@ -7,7 +7,7 @@
 #include <string>
 
 #define CURRENT_DISPLAY 0
-#define PIXELART_DISPLAY_WIDTH 800.0f
+#define PIXELART_DISPLAY_WIDTH 800.0f // Will be be >= 640.0f and <= 800.0f.
 
 #define SELECTED_BUTTON_SHIFT 32
 
