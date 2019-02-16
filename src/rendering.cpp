@@ -83,14 +83,16 @@ SDL_Surface* Rendering::load_image(const std::string name)
 	const std::string extension = "bmp";
 
 #ifdef _WIN32
-	const std::string path = directory + '\\' + name + '.' + extension;
+	const std::string separator = "\\";
 
 #else
 #ifdef __linux__
-	const std::string path = directory + '/' + name + '.' + extension;
+	const std::string separator = "/";
 #endif
 
 #endif
+
+	const std::string path = directory + separator + name + '.' + extension;
 
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
 
@@ -228,7 +230,8 @@ bool Rendering::render_level(Level* Level)
 	Level->Space->Geometry.x = Level->Space->pos_x;
 	Level->Space->Geometry.y = Level->Space->pos_y;
 
-	Level->Space->step = Level->Space->max_speed * delta_time * pixelart_pixel_sz();
+	Level->Space->step = Level->Space->max_speed * delta_time
+	                     * pixelart_pixel_sz();
 
 	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
 	{

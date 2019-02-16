@@ -8,7 +8,7 @@
 
 Level::Level(Rendering* Rendering, const std::string bg_name):
              width(Rendering->Display.w), height(Rendering->Display.h),
-             enemies_amount(0)
+             enemies_amount(1)
 {
 	Ufo = new Player(Rendering, "ufo", 100.0f);
 	if(!Ufo->initialized)

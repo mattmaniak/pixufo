@@ -6,7 +6,6 @@
 #include <SDL2/SDL.h>
 
 class Player;
-class Pause;
 class Menu;
 class Rendering;
 class Level;
@@ -16,8 +15,7 @@ class Keyboard
 	public:
 	SDL_Event    Event;
 	const Uint8* keys;
-	unsigned int keys_amount;
-	SDL_Scancode last_pressed_key;
+	size_t       pressed_keys_amount;
 
 	Keyboard();
 

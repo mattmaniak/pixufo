@@ -9,10 +9,10 @@ class Player;
 
 enum slowdown_direction
 {
-	slow_up,
-	slow_down,
-	slow_left,
-	slow_right
+	up,
+	down,
+	left,
+	right
 };
 
 class Player_slowdown

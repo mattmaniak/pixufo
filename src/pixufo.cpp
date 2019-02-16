@@ -5,6 +5,7 @@
 #include "menu.hpp"
 #include "keyboard.hpp"
 #include "level.hpp"
+#include "fader.hpp"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
@@ -20,6 +21,7 @@ int exit_game()
 int main()
 {
 	Menu Menu;
+	Fader Fader;
 
 	Keyboard Keyboard;
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
@@ -48,6 +50,7 @@ int main()
 			{
 				return exit_game();
 			}
+			Fader.primary_menu_to_level(&Rendering, &Menu, &Cosmic);
 		}
 		if(!Rendering.render_level(&Cosmic))
 		{
@@ -68,7 +71,6 @@ int main()
 		}
 		if(SDL_RenderClear(Rendering.Renderer) != SDL2_SUCCESS)
 		{
-			error::show_box("Can't clean the renderer in the game loop.");
 			return exit_game();
 		}
 		if(!Rendering.count_fps())
