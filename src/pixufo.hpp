@@ -1,6 +1,7 @@
 #ifndef PIXUFO_HPP
 #define PIXUFO_HPP
 
+#include <ctime>
 #include "error.hpp"
 #include "graphics.hpp"
 #include "model.hpp"
