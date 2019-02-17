@@ -16,10 +16,16 @@ class Model
 	public:
 	bool              initialized;
 	const std::string name;
-	bool              animated;
 
-	SDL_Texture*      Texture;  // Driver-specific representation of data.
-	SDL_Rect          Geometry; // Texture's position and size.
+	bool              animated;
+	Uint32            animation_period;
+	std::size_t       current_frame_idx;
+	Uint32            animation_elapsed_time;
+
+	std::array<SDL_Texture*, MAX_FRAMES_AMOUNT> Textures;
+
+	// SDL_Texture*      Textures;  // Driver-specific representation of data.
+	SDL_Rect          Geometry; // Textures's position and size.
 
 	const float       speed;    // Pixel position move in a one second.
 	float             step;     // Pixel position move in a one frame.
@@ -33,10 +39,12 @@ class Model
 	int               max_y;
 
 	Model(Graphics* Graphics, const std::string passed_name,
-	      const float passed_speed);
+	      const float passed_speed, const bool passed_animated);
 	~Model();
 
 	void convert_pos();
+	bool load_animation_files(Graphics* Graphics);
+	void animate(Graphics* Graphics);
 };
 
 #endif

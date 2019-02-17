@@ -19,10 +19,7 @@ class Level
 	const unsigned int   width;
 	const unsigned int   height;
 	Background*          Space;
-
 	Player*              Ufo;
-	Player_slowdown*     Player_levitation;
-
 	std::size_t          enemies_amount;
 	std::vector<Entity*> Enemies;
 

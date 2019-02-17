@@ -23,7 +23,7 @@ class Entity: public Model
 	SDL_Rect Hitbox;
 
 	Entity(Graphics* Graphics, const std::string name,
-	      const float passed_speed);
+	      const float passed_speed, const bool passed_animated);
 
 	void randomize_initial_pos();
 };

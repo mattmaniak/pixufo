@@ -35,7 +35,8 @@ Level::Level(Graphics* Graphics, const std::string bg_name):
 	// Create all enemies.
 	for(std::size_t idx = 0; idx < enemies_amount; idx++)
 	{
-		Enemies.push_back(new Entity(Graphics, "enemy_nebula_medium", 50.0f));
+		Enemies.push_back(new Entity(Graphics, "enemy_nebula_medium", 40.0f,
+		                             true));
 
 		if(!Enemies[idx]->initialized)
 		{

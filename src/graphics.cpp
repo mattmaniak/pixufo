@@ -80,7 +80,6 @@ Graphics::~Graphics()
 SDL_Surface* Graphics::load_image(const std::string name)
 {
 	const std::string directory = "textures";
-	const std::string extension = "bmp";
 
 #ifdef _WIN32
 	const std::string separator = "\\";
@@ -92,32 +91,31 @@ SDL_Surface* Graphics::load_image(const std::string name)
 
 #endif
 
-	const std::string path = directory + separator + name + '.' + extension;
+	const std::string path = directory + separator + name + FILE_EXTENSION;
 
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
 
 	if(image == nullptr)
 	{
-		error::show_box("Can't load the image: " + name);
+		error::show_box("Can't load the image: " + path);
 	}
 	return image;
 }
 
 SDL_Texture* Graphics::load_texture(const std::string name)
 {
-	SDL_Surface* Image = load_image(name);
 	SDL_Texture* Texture;
+	SDL_Surface* Image = load_image(name);
 
 	if(Image == nullptr)
 	{
-		error::show_box("Can't load the image: " + name);
 		return nullptr;
 	}
 
 	Texture = SDL_CreateTextureFromSurface(Renderer, Image);
 	if(Texture == nullptr)
 	{
-		error::show_box("Can't create the texture from image: " + name);
+		error::show_box("Can't create the texture from the image: " + name);
 	}
 	SDL_FreeSurface(Image);
 
@@ -203,7 +201,7 @@ bool Graphics::render_tiled_background(Background* Space)
 			Space->Geometry.x = Space->pos_x + (x * Space->Geometry.w);
 			Space->Geometry.y = Space->pos_y + (y * Space->Geometry.h);
 
-			if(SDL_RenderCopy(Renderer, Space->Texture, nullptr,
+			if(SDL_RenderCopy(Renderer, Space->Textures[0], nullptr,
 			   &Space->Geometry) != SDL2_SUCCESS)
 			{
 				error::show_box("Can't render the background texture.");
@@ -233,11 +231,14 @@ bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 	for(size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
 		Level->Enemies[idx]->convert_pos();
+		Level->Enemies[idx]->animate(this);
+
 		Level->Enemies[idx]->step = Level->Enemies[idx]->speed * delta_time
 		                            * pixelart_px_sz();
 
-		if(SDL_RenderCopy(Renderer, Level->Enemies[idx]->Texture, nullptr,
-		   &Level->Enemies[idx]->Geometry) != SDL2_SUCCESS)
+		if(SDL_RenderCopy(Renderer,
+		   Level->Enemies[idx]->Textures[Level->Enemies[idx]->current_frame_idx],
+		   nullptr, &Level->Enemies[idx]->Geometry) != SDL2_SUCCESS)
 		{
 			error::show_box("Can't render the enemy's texture.");
 			return false;
@@ -247,7 +248,7 @@ bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 	Level->Ufo->convert_pos();
 	Level->Ufo->step = Level->Ufo->speed * delta_time * pixelart_px_sz();
 
-	if(SDL_RenderCopy(Renderer, Level->Ufo->Texture, nullptr,
+	if(SDL_RenderCopy(Renderer, Level->Ufo->Textures[0], nullptr,
 	   &Level->Ufo->Geometry) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't render the player's texture.");
@@ -292,7 +293,7 @@ bool Graphics::render_primary_menu(Menu* Menu)
 			                                  * pixelart_px_sz();
 		}
 
-		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
+		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Textures[0], nullptr,
 		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
 		{
 			error::show_box("Can't copy the button's texture: "
@@ -325,7 +326,7 @@ bool Graphics::render_pause_menu(Menu* Menu, Level* Level)
 			                                  * pixelart_px_sz();
 		}
 
-		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
+		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Textures[0], nullptr,
 		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
 		{
 			error::show_box("Can't copy the button's texture: "

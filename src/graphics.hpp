@@ -14,6 +14,8 @@
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
+#define FILE_EXTENSION ".bmp"
+
 class Level;
 class Background;
 class Enemy;

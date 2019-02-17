@@ -3,7 +3,7 @@
 
 Player::Player(Graphics* Graphics, const std::string name,
                const float passed_max_speed):
-Model(Graphics, name, passed_max_speed)
+Model(Graphics, name, passed_max_speed, false)
 {
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{

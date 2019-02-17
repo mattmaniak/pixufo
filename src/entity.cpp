@@ -1,8 +1,8 @@
 #include "entity.hpp"
 
 Entity::Entity(Graphics* Graphics, const std::string name,
-               const float passed_speed):
-Model(Graphics, name, passed_speed)
+               const float passed_speed, const bool passed_animated):
+Model(Graphics, name, passed_speed, passed_animated)
 {
 
 }
