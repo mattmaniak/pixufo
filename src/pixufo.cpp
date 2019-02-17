@@ -1,11 +1,4 @@
 #include "pixufo.hpp"
-#include "error.hpp"
-#include "rendering.hpp"
-#include "model.hpp"
-#include "menu.hpp"
-#include "keyboard.hpp"
-#include "level.hpp"
-#include "fader.hpp"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
@@ -20,8 +13,9 @@ int exit_game()
 
 int main()
 {
+	std::srand(time(nullptr));
+
 	Menu Menu;
-	Fader Fader;
 
 	Keyboard Keyboard;
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
@@ -29,12 +23,12 @@ int main()
 		error::show_box("Can't initialize the SDL2.");
 		return exit_game();
 	}
-	Rendering Rendering;
-	if(!Rendering.initialized)
+	Graphics Graphics;
+	if(!Graphics.initialized)
 	{
 		return exit_game();
 	}
-	Level Cosmic(&Rendering, "background_level");
+	Level Cosmic(&Graphics, "background_level");
 	if(!Cosmic.initialized)
 	{
 		return exit_game();
@@ -42,17 +36,16 @@ int main()
 
 	for(;;)
 	{
-		Rendering.start_fps_count();
+		Graphics.start_fps_count();
 
 		if(Menu.mode == Menu.primary_enabled) // Opened by default.
 		{
-			if(!Menu.primary(&Rendering, &Keyboard))
+			if(!Menu.primary(&Graphics, &Keyboard))
 			{
 				return exit_game();
 			}
-			Fader.primary_menu_to_level(&Rendering, &Menu, &Cosmic);
 		}
-		if(!Rendering.render_level(&Cosmic))
+		if(!Graphics.render_level(&Cosmic, false))
 		{
 			return exit_game();
 		}
@@ -61,19 +54,27 @@ int main()
 		{
 			return exit_game();
 		}
+		physics::move_enemies(&Cosmic);
+		physics::check_model_pos(Cosmic.Ufo);
+
+		for(std::size_t idx = 0; idx < Cosmic.enemies_amount; idx++)
+		{
+			physics::check_model_pos(Cosmic.Enemies[idx]);
+		}
+
 		if(Menu.mode == Menu.pause_enabled)
 		{
-			if(!Menu.pause(&Rendering, &Keyboard))
+			if(!Menu.pause(&Graphics, &Keyboard, &Cosmic))
 			{
 				return exit_game();
 			}
 			SDL_Delay(500);
 		}
-		if(SDL_RenderClear(Rendering.Renderer) != SDL2_SUCCESS)
+		if(SDL_RenderClear(Graphics.Renderer) != SDL2_SUCCESS)
 		{
 			return exit_game();
 		}
-		if(!Rendering.count_fps())
+		if(!Graphics.count_fps())
 		{
 			return exit_game();
 		}

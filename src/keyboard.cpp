@@ -1,6 +1,6 @@
 #include "keyboard.hpp"
 #include "menu.hpp"
-#include "rendering.hpp"
+#include "graphics.hpp"
 #include "level.hpp"
 #include "player.hpp"
 #include "slowdown.hpp"
@@ -89,8 +89,6 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		}
 		Level->Ufo->Slowdowns[dir_idx]->set_direction(Level->Ufo);
 	}
-	Level->check_player_pos();
-
 	return true;
 }
 

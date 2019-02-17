@@ -6,7 +6,7 @@
 class Background: public Model
 {
 	public:
-	Background(Rendering* Rendering, const std::string name);
+	Background(Graphics* Graphics, const std::string name);
 };
 
 

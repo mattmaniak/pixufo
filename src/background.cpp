@@ -1,8 +1,7 @@
-#include "model.hpp"
 #include "background.hpp"
 
-Background::Background(Rendering* Rendering, const std::string name):
-Model(Rendering, name, 0.0f)
+Background::Background(Graphics* Graphics, const std::string name):
+Model(Graphics, name, 0.0f)
 {
 	min_x = -Geometry.w;
 	min_y = -Geometry.h;

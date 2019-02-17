@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include <array>
+
 #include "model.hpp"
 
 class Player_slowdown;
@@ -11,11 +12,11 @@ class Player_slowdown;
 class Player: public Model
 {
 	public:
-	std::size_t current_slowdowns_amount;
-
+	std::size_t                                     current_slowdowns_amount;
 	std::array<Player_slowdown*, DIRECTIONS_AMOUNT> Slowdowns;
+	SDL_Rect                                        Hitbox;
 
-	Player(Rendering* Rendering, const std::string name,
+	Player(Graphics* Graphics, const std::string name,
 	       const float passed_max_speed);
 	~Player();
 };

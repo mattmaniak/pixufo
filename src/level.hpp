@@ -4,30 +4,30 @@
 #include <string>
 #include <vector>
 
-class Rendering;
+class Graphics;
 class Player_slowdown;
 
 class Background;
 class Player;
-class Enemy;
+class Entity;
 class Model;
 
 class Level
 {
 	public:
-	bool                initialized;
-	const int           width;
-	const int           height;
-	std::size_t         enemies_amount;
-	Player*             Ufo;
-	Player_slowdown*    Player_levitation;
-	Background*         Space;
-	std::vector<Enemy*> Enemies;
+	bool                 initialized;
+	const unsigned int   width;
+	const unsigned int   height;
+	Background*          Space;
 
-	Level(Rendering* Rendering, const std::string bg_name);
+	Player*              Ufo;
+	Player_slowdown*     Player_levitation;
+
+	std::size_t          enemies_amount;
+	std::vector<Entity*> Enemies;
+
+	Level(Graphics* Graphics, const std::string bg_name);
 	~Level();
-
-	void check_player_pos(); // Move the player if out the level.
 };
 
 #endif

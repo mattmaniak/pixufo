@@ -1,13 +1,13 @@
-#include "rendering.hpp"
+#include "graphics.hpp"
 #include "error.hpp"
 #include "level.hpp"
 #include "background.hpp"
 #include "player.hpp"
 #include "menu.hpp"
 #include "button.hpp"
-#include "enemy.hpp"
+#include "entity.hpp"
 
-Rendering::Rendering()
+Graphics::Graphics()
 {
 	const int unused_sz      = 0;
 	const int default_driver = -1;
@@ -65,7 +65,7 @@ Rendering::Rendering()
 	initialized = true;
 }
 
-Rendering::~Rendering()
+Graphics::~Graphics()
 {
 	if(Renderer != nullptr)
 	{
@@ -77,7 +77,7 @@ Rendering::~Rendering()
 	}
 }
 
-SDL_Surface* Rendering::load_image(const std::string name)
+SDL_Surface* Graphics::load_image(const std::string name)
 {
 	const std::string directory = "textures";
 	const std::string extension = "bmp";
@@ -103,7 +103,7 @@ SDL_Surface* Rendering::load_image(const std::string name)
 	return image;
 }
 
-SDL_Texture* Rendering::load_texture(const std::string name)
+SDL_Texture* Graphics::load_texture(const std::string name)
 {
 	SDL_Surface* Image = load_image(name);
 	SDL_Texture* Texture;
@@ -124,7 +124,7 @@ SDL_Texture* Rendering::load_texture(const std::string name)
 	return Texture;
 }
 
-float Rendering::pixelart_pixel_sz()
+float Graphics::pixelart_px_sz()
 {
 	if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
 	{
@@ -134,12 +134,12 @@ float Rendering::pixelart_pixel_sz()
 	return Display.w / PIXELART_DISPLAY_WIDTH;
 }
 
-void Rendering::start_fps_count()
+void Graphics::start_fps_count()
 {
 	frame_start_time = SDL_GetTicks();
 }
 
-bool Rendering::count_fps()
+bool Graphics::count_fps()
 {
 	fps++;
 
@@ -160,7 +160,7 @@ bool Rendering::count_fps()
 	return true;
 }
 
-bool Rendering::tile_background(Background* Space)
+bool Graphics::tile_render_background(Background* Space)
 {
 	// + 1 - extra one for scrolling.
 	unsigned int tiles_x = (Display.w / Space->Geometry.w) + 1;
@@ -214,7 +214,7 @@ bool Rendering::tile_background(Background* Space)
 	return true;
 }
 
-bool Rendering::render_level(Level* Level)
+bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 {
 	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
 	{
@@ -222,21 +222,20 @@ bool Rendering::render_level(Level* Level)
 		return false;
 	}
 
-	// Level->Space->pos_x -= 0.25f;
+	// Level->Space->pos_x -= 0.5f;
 	// Level->Space->pos_y -= 0.25f;
 
-	tile_background(Level->Space);
+	Level->Space->convert_pos();
+	Level->Space->step = Level->Space->speed * delta_time
+	                     * pixelart_px_sz();
 
-	Level->Space->Geometry.x = Level->Space->pos_x;
-	Level->Space->Geometry.y = Level->Space->pos_y;
+	tile_render_background(Level->Space);
 
-	Level->Space->step = Level->Space->max_speed * delta_time
-	                     * pixelart_pixel_sz();
-
-	for(size_t idx = 0; idx < Level->Enemies.size(); idx++)
+	for(size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
-		Level->Enemies[idx]->Geometry.x = Level->Enemies[idx]->pos_x;
-		Level->Enemies[idx]->Geometry.y = Level->Enemies[idx]->pos_y;
+		Level->Enemies[idx]->convert_pos();
+		Level->Enemies[idx]->step = Level->Enemies[idx]->speed * delta_time
+		                            * pixelart_px_sz();
 
 		if(SDL_RenderCopy(Renderer, Level->Enemies[idx]->Texture, nullptr,
 		   &Level->Enemies[idx]->Geometry) != SDL2_SUCCESS)
@@ -244,13 +243,10 @@ bool Rendering::render_level(Level* Level)
 			error::show_box("Can't render the enemy's texture.");
 			return false;
 		}
-
-		Level->Enemies[idx]->step = Level->Enemies[idx]->max_speed * delta_time
-		                            * pixelart_pixel_sz();
 	}
 
-	Level->Ufo->Geometry.x = Level->Ufo->pos_x;
-	Level->Ufo->Geometry.y = Level->Ufo->pos_y;
+	Level->Ufo->convert_pos();
+	Level->Ufo->step = Level->Ufo->speed * delta_time * pixelart_px_sz();
 
 	if(SDL_RenderCopy(Renderer, Level->Ufo->Texture, nullptr,
 	   &Level->Ufo->Geometry) != SDL2_SUCCESS)
@@ -259,13 +255,14 @@ bool Rendering::render_level(Level* Level)
 		return false;
 	}
 
-	Level->Ufo->step = Level->Ufo->max_speed * delta_time * pixelart_pixel_sz();
-	SDL_RenderPresent(Renderer);
-
+	if(!as_pause_menu_background)
+	{
+		SDL_RenderPresent(Renderer);
+	}
 	return true;
 }
 
-bool Rendering::render_primary_menu(Menu* Menu)
+bool Graphics::render_primary_menu(Menu* Menu)
 {
 	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
 	{
@@ -273,13 +270,12 @@ bool Rendering::render_primary_menu(Menu* Menu)
 		return false;
 	}
 
-	// Menu->Menu_background->pos_x -= 0.25f;
-	// Menu->Menu_background->pos_y -= 0.25f;
+	Menu->Menu_background->pos_x += 0.5f;
+	Menu->Menu_background->pos_y += 0.25f;
 
-	tile_background(Menu->Menu_background);
+	tile_render_background(Menu->Menu_background);
 
-	Menu->Menu_background->Geometry.x = Menu->Menu_background->pos_x;
-	Menu->Menu_background->Geometry.y = Menu->Menu_background->pos_y;
+	Menu->Menu_background->convert_pos();
 
 	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
@@ -294,7 +290,7 @@ bool Rendering::render_primary_menu(Menu* Menu)
 		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
 		{
 			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
-			                                  * pixelart_pixel_sz();
+			                                  * pixelart_px_sz();
 		}
 
 		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,
@@ -310,13 +306,9 @@ bool Rendering::render_primary_menu(Menu* Menu)
 	return true;
 }
 
-bool Rendering::render_pause_menu(Menu* Menu)
+bool Graphics::render_pause_menu(Menu* Menu, Level* Level)
 {
-	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
-	{
-		error::show_box("Can't clean the renderer in the pause menu.");
-		return false;
-	}
+	render_level(Level, true);
 
 	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
@@ -331,7 +323,7 @@ bool Rendering::render_pause_menu(Menu* Menu)
 		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
 		{
 			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
-			                                  * pixelart_pixel_sz();
+			                                  * pixelart_px_sz();
 		}
 
 		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Texture, nullptr,

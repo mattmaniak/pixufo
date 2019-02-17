@@ -4,10 +4,12 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-class Button;
+#include "background.hpp"
+#include "button.hpp"
+
 class Keyboard;
-class Rendering;
-class Background;
+class Graphics;
+class Level;
 
 class Menu
 {
@@ -27,8 +29,8 @@ class Menu
 
 	Menu();
 
-	bool primary(Rendering* Rendering, Keyboard* Keyboard);
-	bool pause(Rendering* Rendering, Keyboard* Keyboard);
+	bool primary(Graphics* Graphics, Keyboard* Keyboard);
+	bool pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level);
 };
 
 #endif

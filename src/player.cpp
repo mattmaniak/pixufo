@@ -1,9 +1,9 @@
 #include "player.hpp"
 #include "slowdown.hpp"
 
-Player::Player(Rendering* Rendering, const std::string name,
+Player::Player(Graphics* Graphics, const std::string name,
                const float passed_max_speed):
-Model(Rendering, name, passed_max_speed)
+Model(Graphics, name, passed_max_speed)
 {
 	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
 	{

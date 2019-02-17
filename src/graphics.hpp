@@ -1,5 +1,5 @@
-#ifndef RENDERING_HPP
-#define RENDERING_HPP
+#ifndef GRAPHICS_HPP
+#define GRAPHICS_HPP
 
 #include <iostream>
 #include <limits>
@@ -19,7 +19,7 @@ class Background;
 class Enemy;
 class Menu;
 
-class Rendering
+class Graphics
 {
 	Uint32 frame_start_time;
 	Uint32 frame_elapsed_time;
@@ -32,19 +32,19 @@ class Rendering
 	SDL_Renderer*   Renderer;
 	float           delta_time; // A single frame period.
 
-	Rendering();
-	~Rendering();
+	Graphics();
+	~Graphics();
 
 	SDL_Surface* load_image(const std::string name);
 	SDL_Texture* load_texture(const std::string name);
-	float        pixelart_pixel_sz();
+	float        pixelart_px_sz();
 	void         start_fps_count();
 	bool         count_fps();
 
-	bool         tile_background(Background* Space);
-	bool         render_level(Level* Level);
+	bool         tile_render_background(Background* Space);
+	bool         render_level(Level* Level, bool as_pause_menu_background);
 	bool         render_primary_menu(Menu* Menu);
-	bool         render_pause_menu(Menu* Menu);
+	bool         render_pause_menu(Menu* Menu, Level* Level);
 };
 
 #endif

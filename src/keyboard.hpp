@@ -7,7 +7,7 @@
 
 class Player;
 class Menu;
-class Rendering;
+class Graphics;
 class Level;
 
 class Keyboard

@@ -5,8 +5,8 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-class Rendering;
-class Keyboard;
+#include "error.hpp"
+#include "graphics.hpp"
 
 class Model
 {
@@ -14,13 +14,13 @@ class Model
 	const std::string name;
 	bool              initialized;
 
-	SDL_Texture*      Texture;   // Driver-specific representation of data.
-	SDL_Rect          Geometry;  // Texture's position and size.
+	SDL_Texture*      Texture;  // Driver-specific representation of data.
+	SDL_Rect          Geometry; // Texture's position and size.
 
-	const float       max_speed; // Pixel position move in a one second.
-	float             step;      // Pixel position move in a one frame.
-	float             pos_x;     // Virtual Y-position to use with a delta.
-	float             pos_y;     // Virtual X-position to use with a delta.
+	const float       speed;    // Pixel position move in a one second.
+	float             step;     // Pixel position move in a one frame.
+	float             pos_x;    // Virtual Y-position to use with a delta.
+	float             pos_y;    // Virtual X-position to use with a delta.
 
 	// TODO: CONST?
 	int               min_x;
@@ -28,9 +28,11 @@ class Model
 	int               min_y;
 	int               max_y;
 
-	Model(Rendering* Rendering, const std::string passed_name,
-	      const float passed_max_speed);
+	Model(Graphics* Graphics, const std::string passed_name,
+	      const float passed_speed);
 	~Model();
+
+	void convert_pos();
 };
 
 #endif

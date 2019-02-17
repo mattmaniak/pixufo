@@ -1,13 +1,9 @@
 #include "model.hpp"
-#include "error.hpp"
-#include "rendering.hpp"
-#include "keyboard.hpp"
 
-Model::Model(Rendering* Rendering, const std::string passed_name,
-             const float passed_max_speed): name(passed_name),
-             max_speed(passed_max_speed)
+Model::Model(Graphics* Graphics, const std::string passed_name,
+             const float passed_speed): name(passed_name), speed(passed_speed)
 {
-	Texture = Rendering->load_texture(name);
+	Texture = Graphics->load_texture(name);
 	if(Texture == nullptr)
 	{
 		initialized = false;
@@ -22,8 +18,8 @@ Model::Model(Rendering* Rendering, const std::string passed_name,
 		return;
 	}
 
-	Geometry.w *= Rendering->pixelart_pixel_sz();
-	Geometry.h *= Rendering->pixelart_pixel_sz();
+	Geometry.w *= Graphics->pixelart_px_sz();
+	Geometry.h *= Graphics->pixelart_px_sz();
 	Geometry.x  = Geometry.y = pos_x = pos_y = 0.0f;
 
 	min_x = max_x = min_y = max_y = 0; // Reanitialized in derived models.
@@ -36,4 +32,11 @@ Model::Model(Rendering* Rendering, const std::string passed_name,
 Model::~Model()
 {
 	SDL_DestroyTexture(Texture);
+}
+
+void Model::convert_pos()
+{
+	// Converts virtual ones to the rendered position.
+	Geometry.x = pos_x;
+	Geometry.y = pos_y;
 }
