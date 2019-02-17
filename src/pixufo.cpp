@@ -68,7 +68,7 @@ int main()
 			{
 				return exit_game();
 			}
-			SDL_Delay(500);
+			// SDL_Delay(500);
 		}
 		if(SDL_RenderClear(Graphics.Renderer) != SDL2_SUCCESS)
 		{

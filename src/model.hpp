@@ -1,6 +1,7 @@
 #ifndef MODELS_HPP
 #define MODELS_HPP
 
+#include <array>
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <string>
@@ -8,11 +9,14 @@
 #include "error.hpp"
 #include "graphics.hpp"
 
+#define MAX_FRAMES_AMOUNT 6
+
 class Model
 {
 	public:
-	const std::string name;
 	bool              initialized;
+	const std::string name;
+	bool              animated;
 
 	SDL_Texture*      Texture;  // Driver-specific representation of data.
 	SDL_Rect          Geometry; // Texture's position and size.

@@ -160,7 +160,7 @@ bool Graphics::count_fps()
 	return true;
 }
 
-bool Graphics::tile_render_background(Background* Space)
+bool Graphics::render_tiled_background(Background* Space)
 {
 	// + 1 - extra one for scrolling.
 	unsigned int tiles_x = (Display.w / Space->Geometry.w) + 1;
@@ -226,10 +226,9 @@ bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 	// Level->Space->pos_y -= 0.25f;
 
 	Level->Space->convert_pos();
-	Level->Space->step = Level->Space->speed * delta_time
-	                     * pixelart_px_sz();
+	Level->Space->step = Level->Space->speed * delta_time * pixelart_px_sz();
 
-	tile_render_background(Level->Space);
+	render_tiled_background(Level->Space);
 
 	for(size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
@@ -270,10 +269,10 @@ bool Graphics::render_primary_menu(Menu* Menu)
 		return false;
 	}
 
-	Menu->Menu_background->pos_x += 0.5f;
+	Menu->Menu_background->pos_x -= 0.5f;
 	Menu->Menu_background->pos_y += 0.25f;
 
-	tile_render_background(Menu->Menu_background);
+	render_tiled_background(Menu->Menu_background);
 
 	Menu->Menu_background->convert_pos();
 
