@@ -42,7 +42,7 @@ int main()
 			{
 				return exit_game();
 			}
-			Graphics.start_fps_count(); // Prevent entities speed-up.
+			Graphics.start_fps_count(); // Ignored at the first time.
 		}
 		if(!Graphics.render_level(&Cosmic, false))
 		{

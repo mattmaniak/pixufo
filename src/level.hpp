@@ -17,7 +17,7 @@ class Level
 	public:
 	bool                 initialized;
 
-	Background*          Space;
+	Background*          Space_bg;
 	Player*              Ufo;
 	std::vector<Entity*> Enemies;
 	std::size_t          enemies_amount;
@@ -29,6 +29,8 @@ class Level
 	private:
 	const unsigned int width;
 	const unsigned int height;
+
+	void set_model_borders(Graphics* Graphics, Model* Model);
 };
 
 #endif

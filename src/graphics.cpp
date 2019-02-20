@@ -58,23 +58,17 @@ Graphics::Graphics()
 		initialized = false;
 		return;
 	}
-	delta_time_s         = 0.0f;
+	delta_time_s          = 0.0f;
 	frame_elapsed_time_ms = 0.0f;
-	fps                = 0;
+	fps                   = 0;
 
 	initialized = true;
 }
 
 Graphics::~Graphics()
 {
-	if(Renderer != nullptr)
-	{
-		SDL_DestroyRenderer(Renderer);
-	}
-	if(Window != nullptr)
-	{
-		SDL_DestroyWindow(Window);
-	}
+	SDL_DestroyRenderer(Renderer);
+	SDL_DestroyWindow(Window);
 }
 
 SDL_Surface* Graphics::load_image(const std::string name)
@@ -146,23 +140,22 @@ bool Graphics::count_fps()
 		error::show_box("Too many frames per second.");
 		return false;
 	}
-
 	delta_time_s = (SDL_GetTicks() - frame_start_time_ms) / 1000.0f;
 	frame_elapsed_time_ms += delta_time_s * 1000.0f;
 
 	if(frame_elapsed_time_ms >= 1000.0f)
 	{
-		fps                = 0;
 		frame_elapsed_time_ms = 0.0f;
+		fps                   = 0;
 	}
 	return true;
 }
 
-bool Graphics::render_tiled_background(Background* Space)
+bool Graphics::render_tiled_background(Background* Bg)
 {
 	// + 1 - extra one for scrolling.
-	unsigned int tiles_x = (Display.w / Space->Geometry.w) + 1;
-	unsigned int tiles_y = (Display.h / Space->Geometry.h) + 1;
+	unsigned int tiles_x = (Display.w / Bg->Geometry.w) + 1;
+	unsigned int tiles_y = (Display.h / Bg->Geometry.h) + 1;
 
 	if((tiles_x >= std::numeric_limits<unsigned int>::max())
 	   || (tiles_y >= std::numeric_limits<unsigned int>::max()))
@@ -170,39 +163,17 @@ bool Graphics::render_tiled_background(Background* Space)
 		error::show_box("Too many tiles in the background.");
 		return false;
 	}
+	Bg->inf_scroll();
 
-	// Infinite scrolling.
-	if(Space->pos_x > Space->max_x) // Space shifted right.
-	{
-		// Move the background one tile left.
-		Space->pos_x -= Space->Geometry.w;
-	}
-	else if(Space->pos_x < Space->min_x) // Space shifted left.
-	{
-		// Move the background one tile right.
-		Space->pos_x += Space->Geometry.w;
-	}
-	if(Space->pos_y > Space->max_y) // Space shifted down.
-	{
-		// Move the background one tile up.
-		Space->pos_y -= Space->Geometry.h;
-	}
-	else if(Space->pos_y < Space->min_y) // Space shifted up.
-	{
-		// Move the background one tile down.
-		Space->pos_y += Space->Geometry.h;
-	}
-
-	// Tiling.
-	for(unsigned int y = 0; y <= tiles_y; y++)
+	for(unsigned int y = 0; y <= tiles_y; y++) // Tiling.
 	{
 		for(unsigned int x = 0; x <= tiles_x; x++)
 		{
-			Space->Geometry.x = Space->pos_x + (x * Space->Geometry.w);
-			Space->Geometry.y = Space->pos_y + (y * Space->Geometry.h);
+			Bg->Geometry.x = Bg->pos_x + (x * Bg->Geometry.w);
+			Bg->Geometry.y = Bg->pos_y + (y * Bg->Geometry.h);
 
-			if(SDL_RenderCopy(Renderer, Space->Textures[0], nullptr,
-			   &Space->Geometry) != SDL2_SUCCESS)
+			if(SDL_RenderCopy(Renderer, Bg->Textures[0], nullptr,
+			   &Bg->Geometry) != SDL2_SUCCESS)
 			{
 				error::show_box("Can't render the tiled background texture.");
 				return false;
@@ -218,11 +189,8 @@ bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
 	{
 		return false;
 	}
-	// Level->Space->pos_x -= 0.5f;
-	// Level->Space->pos_y -= 0.25f;
-
-	Level->Space->calc_pos(this);
-	render_tiled_background(Level->Space);
+	Level->Space_bg->calc_pos(this);
+	render_tiled_background(Level->Space_bg);
 
 	for(std::size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
@@ -260,11 +228,10 @@ bool Graphics::render_primary_menu(Menu* Menu)
 	{
 		return false;
 	}
-	// Menu->Menu_background->pos_x -= 0.5f;
-	// Menu->Menu_background->pos_y += 0.25f;
+	Menu->Space_bg->move(this, -5.0f, 2.5f);
 
-	Menu->Menu_background->calc_pos(this);
-	render_tiled_background(Menu->Menu_background);
+	Menu->Space_bg->calc_pos(this);
+	render_tiled_background(Menu->Space_bg);
 
 	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{

@@ -11,10 +11,10 @@ Menu::Menu(): mode(primary_enabled)
 
 bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 {
-	// Menu_background = new Background(Graphics, "planet_menu");
+	// Space_bg = new Background(Graphics, "planet_menu");
 
-	Menu_background = new Background(Graphics, "background_primary_menu");
-	if(!Menu_background->initialized)
+	Space_bg = new Background(Graphics, "background_primary_menu");
+	if(!Space_bg->initialized)
 	{
 		return false;
 	}
@@ -39,21 +39,24 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 
 	while(mode == primary_enabled)
 	{
+		Graphics->start_fps_count();
+
 		if(!Graphics->render_primary_menu(this))
 		{
 			Buttons.clear();
-			delete Menu_background;
+			delete Space_bg;
 			return false;
 		}
 		if(!Keyboard->menu(this))
 		{
 			Buttons.clear();
-			delete Menu_background;
+			delete Space_bg;
 			return false;
 		}
+		Graphics->count_fps();
 	}
 	Buttons.clear();
-	delete Menu_background;
+	delete Space_bg;
 
 	return true;
 }

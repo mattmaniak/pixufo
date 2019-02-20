@@ -25,7 +25,7 @@ class Menu
 	unsigned int         max_button_idx;
 	unsigned int         selected_button_idx;
 	std::vector<Button*> Buttons;
-	Background*          Menu_background;
+	Background*          Space_bg;
 
 	Menu();
 

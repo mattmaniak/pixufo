@@ -17,38 +17,29 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 		initialized = false;
 		return;
 	}
-	Ufo->min_x = Graphics->pixelart_px_sz() - Ufo->Geometry.w;
-	Ufo->max_x = width - Graphics->pixelart_px_sz();
-	Ufo->min_y = Graphics->pixelart_px_sz() - Ufo->Geometry.h;
-	Ufo->max_y = height - Graphics->pixelart_px_sz();
+	set_model_borders(Graphics, Ufo);
 
 	// Set the player's default position;
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
 
-	Space = new Background(Graphics, bg_name);
-	if(!Space->initialized)
+	Space_bg = new Background(Graphics, bg_name);
+	if(!Space_bg->initialized)
 	{
 		initialized = false;
 		return;
 	}
 
-	// Create all enemies.
-	for(std::size_t idx = 0; idx < enemies_amount; idx++)
+	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
-		Enemies.push_back(new Entity(Graphics, "enemy_nebula_medium", 50.0f,
-		                             120));
+		Enemies.push_back(new Entity(Graphics, "nebula_medium", 50.0f, 120));
 
 		if(!Enemies[idx]->initialized)
 		{
 			initialized = false;
 			return;
 		}
-		Enemies[idx]->min_x = Graphics->pixelart_px_sz() - Enemies[idx]->Geometry.w;
-		Enemies[idx]->max_x = width - Graphics->pixelart_px_sz();
-		Enemies[idx]->min_y = Graphics->pixelart_px_sz() - Enemies[idx]->Geometry.h;
-		Enemies[idx]->max_y = height - Graphics->pixelart_px_sz();
-
+		set_model_borders(Graphics, Enemies[idx]);
 		Enemies[idx]->randomize_initial_pos();
 	}
 	initialized = true;
@@ -57,11 +48,19 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 Level::~Level()
 {
 	delete Ufo;
-	delete Space;
+	delete Space_bg;
 
 	for(std::size_t idx = 0; idx < Enemies.size(); idx++)
 	{
 		delete Enemies[idx];
 	}
 	Enemies.clear();
+}
+
+void Level::set_model_borders(Graphics* Graphics, Model* Model)
+{
+	Model->min_x = Graphics->pixelart_px_sz() - Model->Geometry.w;
+	Model->max_x = width - Graphics->pixelart_px_sz();
+	Model->min_y = Graphics->pixelart_px_sz() - Model->Geometry.h;
+	Model->max_y = height - Graphics->pixelart_px_sz();
 }
