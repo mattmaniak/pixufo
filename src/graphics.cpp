@@ -58,8 +58,8 @@ Graphics::Graphics()
 		initialized = false;
 		return;
 	}
-	delta_time         = 0.0f;
-	frame_elapsed_time = 0.0f;
+	delta_time_s         = 0.0f;
+	frame_elapsed_time_ms = 0.0f;
 	fps                = 0;
 
 	initialized = true;
@@ -134,7 +134,7 @@ float Graphics::pixelart_px_sz()
 
 void Graphics::start_fps_count()
 {
-	frame_start_time = SDL_GetTicks();
+	frame_start_time_ms = SDL_GetTicks();
 }
 
 bool Graphics::count_fps()
@@ -147,13 +147,13 @@ bool Graphics::count_fps()
 		return false;
 	}
 
-	delta_time = (SDL_GetTicks() - frame_start_time) / 1000.0f;
-	frame_elapsed_time += delta_time * 1000.0f;
+	delta_time_s = (SDL_GetTicks() - frame_start_time_ms) / 1000.0f;
+	frame_elapsed_time_ms += delta_time_s * 1000.0f;
 
-	if(frame_elapsed_time >= 1000.0f)
+	if(frame_elapsed_time_ms >= 1000.0f)
 	{
 		fps                = 0;
-		frame_elapsed_time = 0.0f;
+		frame_elapsed_time_ms = 0.0f;
 	}
 	return true;
 }
@@ -171,7 +171,7 @@ bool Graphics::render_tiled_background(Background* Space)
 		return false;
 	}
 
-	// Scrolling.
+	// Infinite scrolling.
 	if(Space->pos_x > Space->max_x) // Space shifted right.
 	{
 		// Move the background one tile left.
@@ -204,7 +204,7 @@ bool Graphics::render_tiled_background(Background* Space)
 			if(SDL_RenderCopy(Renderer, Space->Textures[0], nullptr,
 			   &Space->Geometry) != SDL2_SUCCESS)
 			{
-				error::show_box("Can't render the background texture.");
+				error::show_box("Can't render the tiled background texture.");
 				return false;
 			}
 		}
@@ -212,29 +212,22 @@ bool Graphics::render_tiled_background(Background* Space)
 	return true;
 }
 
-bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
+bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
 {
-	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	if(!clean_renderer())
 	{
-		error::show_box("Can't clean the renderer.");
 		return false;
 	}
-
 	// Level->Space->pos_x -= 0.5f;
 	// Level->Space->pos_y -= 0.25f;
 
-	Level->Space->convert_pos();
-	Level->Space->step = Level->Space->speed * delta_time * pixelart_px_sz();
-
+	Level->Space->calc_pos(this);
 	render_tiled_background(Level->Space);
 
-	for(size_t idx = 0; idx < Level->enemies_amount; idx++)
+	for(std::size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
-		Level->Enemies[idx]->convert_pos();
 		Level->Enemies[idx]->animate(this);
-
-		Level->Enemies[idx]->step = Level->Enemies[idx]->speed * delta_time
-		                            * pixelart_px_sz();
+		Level->Enemies[idx]->calc_pos(this);
 
 		if(SDL_RenderCopy(Renderer,
 		   Level->Enemies[idx]->Textures[Level->Enemies[idx]->current_frame_idx],
@@ -244,9 +237,7 @@ bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 			return false;
 		}
 	}
-
-	Level->Ufo->convert_pos();
-	Level->Ufo->step = Level->Ufo->speed * delta_time * pixelart_px_sz();
+	Level->Ufo->calc_pos(this);
 
 	if(SDL_RenderCopy(Renderer, Level->Ufo->Textures[0], nullptr,
 	   &Level->Ufo->Geometry) != SDL2_SUCCESS)
@@ -255,8 +246,9 @@ bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 		return false;
 	}
 
-	if(!as_pause_menu_background)
+	if(!pause_menu_bg)
 	{
+		delta_time_s = 0.0f; // Disable animations
 		SDL_RenderPresent(Renderer);
 	}
 	return true;
@@ -264,18 +256,15 @@ bool Graphics::render_level(Level* Level, bool as_pause_menu_background)
 
 bool Graphics::render_primary_menu(Menu* Menu)
 {
-	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	if(!clean_renderer())
 	{
-		error::show_box("Can't clean the renderer in the primary menu.");
 		return false;
 	}
+	// Menu->Menu_background->pos_x -= 0.5f;
+	// Menu->Menu_background->pos_y += 0.25f;
 
-	Menu->Menu_background->pos_x -= 0.5f;
-	Menu->Menu_background->pos_y += 0.25f;
-
+	Menu->Menu_background->calc_pos(this);
 	render_tiled_background(Menu->Menu_background);
-
-	Menu->Menu_background->convert_pos();
 
 	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
@@ -336,5 +325,15 @@ bool Graphics::render_pause_menu(Menu* Menu, Level* Level)
 	}
 	SDL_RenderPresent(Renderer);
 
+	return true;
+}
+
+bool Graphics::clean_renderer()
+{
+	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't clean the renderer.");
+		return false;
+	}
 	return true;
 }

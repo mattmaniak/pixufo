@@ -13,16 +13,19 @@ class Level;
 class Keyboard
 {
 	public:
-	SDL_Event    Event;
-	const Uint8* keys;
-	size_t       pressed_keys_amount;
-
 	Keyboard();
 
-	void count_keys();
 	bool move_player(Level* Level, Menu* Menu);
 	bool menu(Menu* Menu);
 	bool pause(Menu* Menu);
+
+	private:
+	SDL_Event    Event;
+	const Uint8* keys;
+	std::size_t  pressed_keys_amount;
+
+	void count_keys();
+
 };
 
 #endif

@@ -1,14 +1,24 @@
 #include "entity.hpp"
 
 Entity::Entity(Graphics* Graphics, const std::string name,
-               const float passed_speed, const bool passed_animated):
-Model(Graphics, name, passed_speed, passed_animated)
+               const float passed_speed,
+               const Uint32 passed_single_frame_time_ms):
+Model(Graphics, name, passed_speed, passed_single_frame_time_ms)
 {
 
 }
 
 void Entity::randomize_initial_pos()
 {
-	pos_x = std::rand() % static_cast<int>((max_x - min_x + 1.0f) + min_x);
-	pos_y = std::rand() % static_cast<int>((max_y - min_y + 1.0f) + min_y);
+	std::mt19937 prng;
+	prng.seed(std::random_device()());
+
+	std::uniform_int_distribution<std::mt19937::result_type>
+	distributor_x(min_x, max_x);
+
+	std::uniform_int_distribution<std::mt19937::result_type>
+	distributor_y(min_y, max_y);
+
+	pos_x = distributor_x(prng);
+	pos_y = distributor_y(prng);
 }

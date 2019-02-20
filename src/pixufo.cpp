@@ -13,8 +13,6 @@ int exit_game()
 
 int main()
 {
-	std::srand(time(nullptr));
-
 	Menu Menu;
 
 	Keyboard Keyboard;
@@ -28,7 +26,7 @@ int main()
 	{
 		return exit_game();
 	}
-	Level Cosmic(&Graphics, "background_level");
+	Level Cosmic(&Graphics, "background_level", 2);
 	if(!Cosmic.initialized)
 	{
 		return exit_game();
@@ -44,6 +42,7 @@ int main()
 			{
 				return exit_game();
 			}
+			Graphics.start_fps_count(); // Prevent entities speed-up.
 		}
 		if(!Graphics.render_level(&Cosmic, false))
 		{
@@ -68,11 +67,12 @@ int main()
 			{
 				return exit_game();
 			}
-			// SDL_Delay(500);
+			SDL_Delay(500);
+			Graphics.start_fps_count(); // Prevent entities speed-up.
 		}
-		if(SDL_RenderClear(Graphics.Renderer) != SDL2_SUCCESS)
+		if(!Graphics.clean_renderer())
 		{
-			return exit_game();
+			return false;
 		}
 		if(!Graphics.count_fps())
 		{

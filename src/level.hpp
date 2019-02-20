@@ -16,15 +16,19 @@ class Level
 {
 	public:
 	bool                 initialized;
-	const unsigned int   width;
-	const unsigned int   height;
+
 	Background*          Space;
 	Player*              Ufo;
-	std::size_t          enemies_amount;
 	std::vector<Entity*> Enemies;
+	std::size_t          enemies_amount;
 
-	Level(Graphics* Graphics, const std::string bg_name);
+	Level(Graphics* Graphics, const std::string bg_name,
+	      const unsigned int passed_enemies_amount);
 	~Level();
+
+	private:
+	const unsigned int width;
+	const unsigned int height;
 };
 
 #endif

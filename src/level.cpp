@@ -6,9 +6,10 @@
 #include "player.hpp"
 #include "slowdown.hpp"
 
-Level::Level(Graphics* Graphics, const std::string bg_name):
-             width(Graphics->Display.w), height(Graphics->Display.h),
-             enemies_amount(2)
+Level::Level(Graphics* Graphics, const std::string bg_name,
+             const unsigned int passed_enemies_amount):
+             enemies_amount(passed_enemies_amount), width(Graphics->Display.w),
+             height(Graphics->Display.h)
 {
 	Ufo = new Player(Graphics, "ufo", 100.0f);
 	if(!Ufo->initialized)
@@ -35,8 +36,8 @@ Level::Level(Graphics* Graphics, const std::string bg_name):
 	// Create all enemies.
 	for(std::size_t idx = 0; idx < enemies_amount; idx++)
 	{
-		Enemies.push_back(new Entity(Graphics, "enemy_nebula_medium", 40.0f,
-		                             true));
+		Enemies.push_back(new Entity(Graphics, "enemy_nebula_medium", 50.0f,
+		                             120));
 
 		if(!Enemies[idx]->initialized)
 		{

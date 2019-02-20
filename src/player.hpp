@@ -12,7 +12,6 @@ class Player_slowdown;
 class Player: public Model
 {
 	public:
-	std::size_t                                     current_slowdowns_amount;
 	std::array<Player_slowdown*, DIRECTIONS_AMOUNT> Slowdowns;
 	SDL_Rect                                        Hitbox;
 

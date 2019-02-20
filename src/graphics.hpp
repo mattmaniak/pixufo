@@ -23,30 +23,32 @@ class Menu;
 
 class Graphics
 {
-	Uint32 frame_start_time;
-	Uint32 frame_elapsed_time;
-	Uint32 fps;
-
 	public:
 	bool            initialized;
 	SDL_DisplayMode Display;
-	SDL_Window*     Window;
-	SDL_Renderer*   Renderer;
-	float           delta_time; // A single frame period.
+	float           delta_time_s; // A single frame period.
 
 	Graphics();
 	~Graphics();
 
-	SDL_Surface* load_image(const std::string name);
 	SDL_Texture* load_texture(const std::string name);
 	float        pixelart_px_sz();
 	void         start_fps_count();
 	bool         count_fps();
-
-	bool         render_tiled_background(Background* Space);
-	bool         render_level(Level* Level, bool as_pause_menu_background);
+	bool         render_level(Level* Level, const bool pause_menu_bg);
 	bool         render_primary_menu(Menu* Menu);
 	bool         render_pause_menu(Menu* Menu, Level* Level);
+	bool         clean_renderer();
+
+	private:
+	SDL_Window*   Window;
+	SDL_Renderer* Renderer;
+	Uint32        frame_start_time_ms;
+	Uint32        frame_elapsed_time_ms;
+	Uint32        fps;
+
+	SDL_Surface* load_image(const std::string name);
+	bool         render_tiled_background(Background* Space);
 };
 
 #endif

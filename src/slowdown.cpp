@@ -8,15 +8,15 @@ Player_slowdown::Player_slowdown(const float passed_max_time):
 
 }
 
-void Player_slowdown::activate(slowdown_direction passed_direction)
+void Player_slowdown::activate(dir_t passed_direction)
 {
-	current_time = SDL_GetTicks();
-	direction    = passed_direction;
+	start_time = SDL_GetTicks();
+	direction  = passed_direction;
 }
 
-void Player_slowdown::set_direction(Player* Ufo)
+void Player_slowdown::fly(Player* Ufo)
 {
-	elapsed_time = SDL_GetTicks() - current_time;
+	elapsed_time = SDL_GetTicks() - start_time;
 
 	if(elapsed_time < max_time)
 	{

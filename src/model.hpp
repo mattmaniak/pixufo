@@ -9,7 +9,7 @@
 #include "error.hpp"
 #include "graphics.hpp"
 
-#define MAX_FRAMES_AMOUNT 6
+#define FRAMES_AMOUNT 6
 
 class Model
 {
@@ -17,34 +17,33 @@ class Model
 	bool              initialized;
 	const std::string name;
 
-	bool              animated;
-	Uint32            animation_period;
-	std::size_t       current_frame_idx;
-	Uint32            animation_elapsed_time;
+	std::array<SDL_Texture*, FRAMES_AMOUNT> Textures;
+	std::size_t                             current_frame_idx;
 
-	std::array<SDL_Texture*, MAX_FRAMES_AMOUNT> Textures;
-
-	// SDL_Texture*      Textures;  // Driver-specific representation of data.
-	SDL_Rect          Geometry; // Textures's position and size.
-
-	const float       speed;    // Pixel position move in a one second.
-	float             step;     // Pixel position move in a one frame.
-	float             pos_x;    // Virtual Y-position to use with a delta.
-	float             pos_y;    // Virtual X-position to use with a delta.
+	SDL_Rect    Geometry; // Textures's position and size.
+	const float speed;    // Pixel position move in a one second.
+	float       step;     // Pixel position move in a one frame.
+	float       pos_x;    // Virtual Y-position to use with the delta time.
+	float       pos_y;    // Virtual X-position to use with the delta time.
 
 	// TODO: CONST?
-	int               min_x;
-	int               max_x;
-	int               min_y;
-	int               max_y;
+	int min_x;
+	int max_x;
+	int min_y;
+	int max_y;
 
 	Model(Graphics* Graphics, const std::string passed_name,
-	      const float passed_speed, const bool passed_animated);
+	      const float passed_speed, const Uint32 passed_single_frame_time_ms);
 	~Model();
 
-	void convert_pos();
-	bool load_animation_files(Graphics* Graphics);
+	void calc_pos(Graphics* Graphics);
 	void animate(Graphics* Graphics);
+
+	private:
+	const Uint32 single_frame_time_ms;
+	Uint32       frame_elapsed_time_ms;
+
+	bool load_animation(Graphics* Graphics);
 };
 
 #endif

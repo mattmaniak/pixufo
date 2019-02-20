@@ -46,7 +46,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 	SDL_PumpEvents();
 	count_keys();
 
-	if(pressed_keys_amount >= 2)
+	if(pressed_keys_amount == 2)
 	{
 		Level->Ufo->step /= std::sqrt(2.0f);
 	}
@@ -76,7 +76,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		Menu->mode = Menu->pause_enabled;
 	}
 
-	for(std::size_t dir_idx = 0; dir_idx < 4; dir_idx++)
+	for(std::size_t dir_idx = 0; dir_idx < DIRECTIONS_AMOUNT; dir_idx++)
 	{
 		if(Level->Ufo->Slowdowns[dir_idx]->active)
 		{
@@ -87,7 +87,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 		{
 			Level->Ufo->step /= std::sqrt(2.0f);
 		}
-		Level->Ufo->Slowdowns[dir_idx]->set_direction(Level->Ufo);
+		Level->Ufo->Slowdowns[dir_idx]->fly(Level->Ufo);
 	}
 	return true;
 }
