@@ -6,10 +6,12 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
              name(passed_name), speed(passed_speed),
              single_frame_time_ms(passed_single_frame_time_ms)
 {
+	current_frame_idx = 0;
+
 	if(single_frame_time_ms == 0) // No animation.
 	{
-		Textures[0] = Graphics->load_texture(name);
-		if(Textures[0] == nullptr)
+		Textures[current_frame_idx] = Graphics->load_texture(name);
+		if(Textures[current_frame_idx] == nullptr)
 		{
 			initialized = false;
 			return;
@@ -22,13 +24,12 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
 			initialized = false;
 			return;
 		}
-		current_frame_idx = 0;
 	}
 
 	/* As there is only the first texture size check, trying to load animation
 	with various texture sizes may brake it's rendering. */
-	if(SDL_QueryTexture(Textures[0], nullptr, nullptr, &Geometry.w, &Geometry.h)
-	   != SDL2_SUCCESS)
+	if(SDL_QueryTexture(Textures[current_frame_idx], nullptr, nullptr,
+	   &Geometry.w, &Geometry.h) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the size of the texture: " + name);
 		initialized = false;
@@ -92,15 +93,18 @@ bool Model::load_animation(Graphics* Graphics)
 
 void Model::animate(Graphics* Graphics)
 {
-	frame_elapsed_time_ms += Graphics->delta_time_s * 1000.0f;
+	if(single_frame_time_ms > 0)
+	{
+		frame_elapsed_time_ms += Graphics->delta_time_s * 1000.0f;
 
-	if(frame_elapsed_time_ms >= single_frame_time_ms)
-	{
-		frame_elapsed_time_ms = 0;
-		current_frame_idx++;
-	}
-	if(current_frame_idx >= FRAMES_AMOUNT)
-	{
-		current_frame_idx = 0;
+		if(frame_elapsed_time_ms >= single_frame_time_ms)
+		{
+			frame_elapsed_time_ms = 0;
+			current_frame_idx++;
+		}
+		if(current_frame_idx >= FRAMES_AMOUNT)
+		{
+			current_frame_idx = 0;
+		}
 	}
 }

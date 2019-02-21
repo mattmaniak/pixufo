@@ -20,6 +20,7 @@ class Level;
 class Background;
 class Enemy;
 class Menu;
+class Model;
 
 class Graphics
 {
@@ -49,6 +50,7 @@ class Graphics
 
 	SDL_Surface* load_image(const std::string name);
 	bool         render_tiled_background(Background* Space);
+	bool         render_model(Model* Model);
 };
 
 #endif

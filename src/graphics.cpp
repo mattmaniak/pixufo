@@ -172,10 +172,8 @@ bool Graphics::render_tiled_background(Background* Bg)
 			Bg->Geometry.x = Bg->pos_x + (x * Bg->Geometry.w);
 			Bg->Geometry.y = Bg->pos_y + (y * Bg->Geometry.h);
 
-			if(SDL_RenderCopy(Renderer, Bg->Textures[0], nullptr,
-			   &Bg->Geometry) != SDL2_SUCCESS)
+			if(!render_model(Bg))
 			{
-				error::show_box("Can't render the tiled background texture.");
 				return false;
 			}
 		}
@@ -194,26 +192,19 @@ bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
 
 	for(std::size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
-		Level->Enemies[idx]->animate(this);
 		Level->Enemies[idx]->calc_pos(this);
 
-		if(SDL_RenderCopy(Renderer,
-		   Level->Enemies[idx]->Textures[Level->Enemies[idx]->current_frame_idx],
-		   nullptr, &Level->Enemies[idx]->Geometry) != SDL2_SUCCESS)
+		if(!render_model(Level->Enemies[idx]))
 		{
-			error::show_box("Can't render the enemy's texture.");
 			return false;
 		}
 	}
 	Level->Ufo->calc_pos(this);
 
-	if(SDL_RenderCopy(Renderer, Level->Ufo->Textures[0], nullptr,
-	   &Level->Ufo->Geometry) != SDL2_SUCCESS)
+	if(!render_model(Level->Ufo))
 	{
-		error::show_box("Can't render the player's texture.");
 		return false;
 	}
-
 	if(!pause_menu_bg)
 	{
 		delta_time_s = 0.0f; // Disable animations
@@ -224,36 +215,55 @@ bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
 
 bool Graphics::render_primary_menu(Menu* Menu)
 {
+	const float padding = 20.0f * pixelart_px_sz();
+
 	if(!clean_renderer())
 	{
 		return false;
 	}
 	Menu->Space_bg->move(this, -5.0f, 2.5f);
-
 	Menu->Space_bg->calc_pos(this);
-	render_tiled_background(Menu->Space_bg);
+
+	if(!render_tiled_background(Menu->Space_bg))
+	{
+		return false;
+	}
+
+	Menu->Logo->pos_x = Menu->Logo->pos_y = padding;
+	Menu->Logo->calc_pos(this);
+
+	if(!render_model(Menu->Logo))
+	{
+		return false;
+	}
 
 	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
 	{
 		Menu->Buttons[idx]->Geometry.x = (Display.w
-		                                 - Menu->Buttons[idx]->Geometry.w) / 2;
+		                                 - Menu->Buttons[idx]->Geometry.w)
+		                                 - padding;
 
-		Menu->Buttons[idx]->Geometry.y = (Display.h / 2)
+		Menu->Buttons[idx]->Geometry.y = Display.h
+		                                 - (Menu->Buttons[idx]->Geometry.h
+		                                 * (Menu->max_button_idx + 1))
 		                                 + (Menu->Buttons[idx]->idx
-		                                 * Menu->Buttons[idx]->Geometry.h);
+		                                 * Menu->Buttons[idx]->Geometry.h)
+		                                 - padding;
 
 		// Selected button shift.
 		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
 		{
-			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
-			                                  * pixelart_px_sz();
-		}
+			Menu->Select_arrow->Geometry.x = Menu->Buttons[idx]->Geometry.x
+			                                 - Menu->Select_arrow->Geometry.w;
 
-		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Textures[0], nullptr,
-		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
+			Menu->Select_arrow->Geometry.y = Menu->Buttons[idx]->Geometry.y;
+		}
+		if(!render_model(Menu->Select_arrow))
 		{
-			error::show_box("Can't copy the button's texture: "
-			                + Menu->Buttons[idx]->name + " to the renderer.");
+			return false;
+		}
+		if(!render_model(Menu->Buttons[idx]))
+		{
 			return false;
 		}
 	}
@@ -281,12 +291,8 @@ bool Graphics::render_pause_menu(Menu* Menu, Level* Level)
 			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
 			                                  * pixelart_px_sz();
 		}
-
-		if(SDL_RenderCopy(Renderer, Menu->Buttons[idx]->Textures[0], nullptr,
-		   &Menu->Buttons[idx]->Geometry) != SDL2_SUCCESS)
+		if(!render_model(Menu->Buttons[idx]))
 		{
-			error::show_box("Can't copy the button's texture: "
-			                + Menu->Buttons[idx]->name + " to the renderer.");
 			return false;
 		}
 	}
@@ -300,6 +306,20 @@ bool Graphics::clean_renderer()
 	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't clean the renderer.");
+		return false;
+	}
+	return true;
+}
+
+bool Graphics::render_model(Model* Model)
+{
+	Model->animate(this);
+
+	if(SDL_RenderCopy(Renderer, Model->Textures[Model->current_frame_idx],
+	   nullptr, &Model->Geometry) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't copy the texture: " + Model->name
+		                + " to the renderer.");
 		return false;
 	}
 	return true;

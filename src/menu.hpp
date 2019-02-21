@@ -22,10 +22,12 @@ class Menu
 	}
 	mode;
 
+	Model*               Select_arrow;
+	Background*          Space_bg;
+	Model*               Logo;
 	unsigned int         max_button_idx;
 	unsigned int         selected_button_idx;
 	std::vector<Button*> Buttons;
-	Background*          Space_bg;
 
 	Menu();
 

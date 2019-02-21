@@ -26,6 +26,5 @@ void physics::move_enemies(Level* Level)
 	for(std::size_t idx = 0; idx < Level->enemies_amount; idx++)
 	{
 		Level->Enemies[idx]->pos_x -= Level->Enemies[idx]->step;
-		// Level->Enemies[idx]->pos_y += Level->Enemies[idx]->step;
 	}
 }

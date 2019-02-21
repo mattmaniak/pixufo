@@ -11,17 +11,31 @@ Menu::Menu(): mode(primary_enabled)
 
 bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 {
-	// Space_bg = new Background(Graphics, "planet_menu");
+	Select_arrow = new Model(Graphics, "ufo", 0.0f, 0);
+	if(!Select_arrow->initialized)
+	{
+		return false;
+	}
+
+	Logo = new Model(Graphics, "title", 0.0f, 0);
+	if(!Logo->initialized)
+	{
+		delete Select_arrow;
+		return false;
+	}
 
 	Space_bg = new Background(Graphics, "background_primary_menu");
 	if(!Space_bg->initialized)
 	{
+		delete Select_arrow;
 		return false;
 	}
 
 	Button Play(Graphics, "button_play", 0);
 	if(!Play.initialized)
 	{
+		delete Select_arrow;
+		delete Space_bg;
 		return false;
 	}
 	Buttons.push_back(&Play);
@@ -29,6 +43,8 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 	Button Quit(Graphics, "button_quit", 1);
 	if(!Quit.initialized)
 	{
+		delete Select_arrow;
+		delete Space_bg;
 		Buttons.clear();
 		return false;
 	}
@@ -43,20 +59,26 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 
 		if(!Graphics->render_primary_menu(this))
 		{
+			delete Logo;
 			Buttons.clear();
 			delete Space_bg;
+			delete Select_arrow;
 			return false;
 		}
 		if(!Keyboard->menu(this))
 		{
+			delete Logo;
 			Buttons.clear();
 			delete Space_bg;
+			delete Select_arrow;
 			return false;
 		}
 		Graphics->count_fps();
 	}
-	Buttons.clear();
+	delete Logo;
 	delete Space_bg;
+	delete Select_arrow;
+	Buttons.clear();
 
 	return true;
 }
