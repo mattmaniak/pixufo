@@ -85,9 +85,16 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 
 bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
 {
+	Select_arrow = new Model(Graphics, "ufo", 0.0f, 0);
+	if(!Select_arrow->initialized)
+	{
+		return false;
+	}
+
 	Button Continue(Graphics, "button_continue", 0);
 	if(!Continue.initialized)
 	{
+		delete Select_arrow;
 		return false;
 	}
 	Buttons.push_back(&Continue);
@@ -95,6 +102,7 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
 	Button Main_menu(Graphics, "button_main_menu", 1);
 	if(!Main_menu.initialized)
 	{
+		delete Select_arrow;
 		Buttons.clear();
 		return false;
 	}
@@ -107,15 +115,18 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
 	{
 		if(!Graphics->render_pause_menu(this, Level))
 		{
+			delete Select_arrow;
 			Buttons.clear();
 			return false;
 		}
 		if(!Keyboard->pause(this))
 		{
+			delete Select_arrow;
 			Buttons.clear();
 			return false;
 		}
 	}
+	delete Select_arrow;
 	Buttons.clear();
 
 	return true;

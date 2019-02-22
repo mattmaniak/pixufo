@@ -9,8 +9,6 @@
 #define CURRENT_DISPLAY 0
 #define PIXELART_DISPLAY_WIDTH 640.0f
 
-#define SELECTED_BUTTON_SHIFT 32
-
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
@@ -51,6 +49,7 @@ class Graphics
 	SDL_Surface* load_image(const std::string name);
 	bool         render_tiled_background(Background* Space);
 	bool         render_model(Model* Model);
+	bool         render_buttons(Menu* Menu);
 };
 
 #endif

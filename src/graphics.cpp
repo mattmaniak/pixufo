@@ -236,37 +236,7 @@ bool Graphics::render_primary_menu(Menu* Menu)
 	{
 		return false;
 	}
-
-	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
-	{
-		Menu->Buttons[idx]->Geometry.x = (Display.w
-		                                 - Menu->Buttons[idx]->Geometry.w)
-		                                 - padding;
-
-		Menu->Buttons[idx]->Geometry.y = Display.h
-		                                 - (Menu->Buttons[idx]->Geometry.h
-		                                 * (Menu->max_button_idx + 1))
-		                                 + (Menu->Buttons[idx]->idx
-		                                 * Menu->Buttons[idx]->Geometry.h)
-		                                 - padding;
-
-		// Selected button shift.
-		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
-		{
-			Menu->Select_arrow->Geometry.x = Menu->Buttons[idx]->Geometry.x
-			                                 - Menu->Select_arrow->Geometry.w;
-
-			Menu->Select_arrow->Geometry.y = Menu->Buttons[idx]->Geometry.y;
-		}
-		if(!render_model(Menu->Select_arrow))
-		{
-			return false;
-		}
-		if(!render_model(Menu->Buttons[idx]))
-		{
-			return false;
-		}
-	}
+	render_buttons(Menu);
 	SDL_RenderPresent(Renderer);
 
 	return true;
@@ -275,27 +245,8 @@ bool Graphics::render_primary_menu(Menu* Menu)
 bool Graphics::render_pause_menu(Menu* Menu, Level* Level)
 {
 	render_level(Level, true);
+	render_buttons(Menu);
 
-	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
-	{
-		Menu->Buttons[idx]->Geometry.x = (Display.w
-		                                 - Menu->Buttons[idx]->Geometry.w) / 2;
-
-		Menu->Buttons[idx]->Geometry.y = (Display.h / 2)
-		                                 + (Menu->Buttons[idx]->idx
-		                                 * Menu->Buttons[idx]->Geometry.h);
-
-		// Selected button shift.
-		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
-		{
-			Menu->Buttons[idx]->Geometry.x += SELECTED_BUTTON_SHIFT
-			                                  * pixelart_px_sz();
-		}
-		if(!render_model(Menu->Buttons[idx]))
-		{
-			return false;
-		}
-	}
 	SDL_RenderPresent(Renderer);
 
 	return true;
@@ -321,6 +272,43 @@ bool Graphics::render_model(Model* Model)
 		error::show_box("Can't copy the texture: " + Model->name
 		                + " to the renderer.");
 		return false;
+	}
+	return true;
+}
+
+bool Graphics::render_buttons(Menu* Menu)
+{
+	const float padding = 20.0f * pixelart_px_sz();
+
+	for(std::size_t idx = 0; idx <= Menu->max_button_idx; idx++)
+	{
+		Menu->Buttons[idx]->Geometry.x = (Display.w
+		                                 - Menu->Buttons[idx]->Geometry.w)
+		                                 - padding;
+
+		Menu->Buttons[idx]->Geometry.y = Display.h
+		                                 - (Menu->Buttons[idx]->Geometry.h
+		                                 * (Menu->max_button_idx + 1))
+		                                 + (Menu->Buttons[idx]->idx
+		                                 * Menu->Buttons[idx]->Geometry.h)
+		                                 - padding;
+
+		if(!render_model(Menu->Buttons[idx]))
+		{
+			return false;
+		}
+
+		if(Menu->Buttons[idx]->idx == Menu->selected_button_idx)
+		{
+			Menu->Select_arrow->Geometry.x = Menu->Buttons[idx]->Geometry.x
+			                                 - Menu->Select_arrow->Geometry.w;
+
+			Menu->Select_arrow->Geometry.y = Menu->Buttons[idx]->Geometry.y;
+		}
+		if(!render_model(Menu->Select_arrow))
+		{
+			return false;
+		}
 	}
 	return true;
 }

@@ -17,7 +17,7 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 		initialized = false;
 		return;
 	}
-	set_model_borders(Graphics, Ufo);
+	set_model_borders(Ufo);
 
 	// Set the player's default position;
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
@@ -39,7 +39,7 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 			initialized = false;
 			return;
 		}
-		set_model_borders(Graphics, Enemies[idx]);
+		set_model_borders(Enemies[idx]);
 		Enemies[idx]->randomize_initial_pos();
 	}
 	initialized = true;
@@ -57,10 +57,29 @@ Level::~Level()
 	Enemies.clear();
 }
 
-void Level::set_model_borders(Graphics* Graphics, Model* Model)
+void Level::reset()
 {
-	Model->min_x = Graphics->pixelart_px_sz() - Model->Geometry.w;
-	Model->max_x = width - Graphics->pixelart_px_sz();
-	Model->min_y = Graphics->pixelart_px_sz() - Model->Geometry.h;
-	Model->max_y = height - Graphics->pixelart_px_sz();
+	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
+	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
+
+	for(std::size_t dir_idx = 0; dir_idx < DIRECTIONS_AMOUNT; dir_idx++)
+	{
+		Ufo->Slowdowns[dir_idx]->deactivate();
+	}
+	for(std::size_t idx = 0; idx < enemies_amount; idx++)
+	{
+		Enemies[idx]->randomize_initial_pos();
+	}
+}
+
+void Level::set_model_borders(Model* Model)
+{
+	// Model->min_x = -Model->Geometry.w / 2;
+	// Model->max_x = width - (Model->Geometry.w / 2);
+	// Model->min_y = -Model->Geometry.h / 2;
+	// Model->max_y = height - (Model->Geometry.h / 2);
+
+	Model->min_x = Model->min_y = 0;
+	Model->max_x = width - Model->Geometry.w;
+	Model->max_y = height - Model->Geometry.h;
 }

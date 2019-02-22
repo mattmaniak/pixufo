@@ -8,19 +8,26 @@ Player_slowdown::Player_slowdown(const float passed_max_time):
 
 }
 
-void Player_slowdown::activate(dir_t passed_direction)
+void Player_slowdown::activate(dir passed_direction)
 {
+	is_active  = true;
 	start_time = SDL_GetTicks();
 	direction  = passed_direction;
 }
 
+void Player_slowdown::deactivate()
+{
+	is_active    = false;
+	elapsed_time = max_time;
+}
+
 void Player_slowdown::fly(Player* Ufo)
 {
-	elapsed_time = SDL_GetTicks() - start_time;
-
-	if(elapsed_time < max_time)
+	if(is_active)
 	{
-		if(elapsed_time > 0.0f)
+		elapsed_time = SDL_GetTicks() - start_time;
+
+		if((elapsed_time > 0.0f) && (elapsed_time < max_time))
 		{
 			switch(direction)
 			{
@@ -40,10 +47,6 @@ void Player_slowdown::fly(Player* Ufo)
 				Ufo->pos_x += count_step_length(Ufo);
 			}
 		}
-	}
-	else
-	{
-		elapsed_time = 0.0f;
 	}
 }
 

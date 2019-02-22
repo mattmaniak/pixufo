@@ -78,7 +78,7 @@ bool Keyboard::move_player(Level* Level, Menu* Menu)
 
 	for(std::size_t dir_idx = 0; dir_idx < DIRECTIONS_AMOUNT; dir_idx++)
 	{
-		if(Level->Ufo->Slowdowns[dir_idx]->active)
+		if(Level->Ufo->Slowdowns[dir_idx]->is_active)
 		{
 			slowdowns_amount++;
 		}

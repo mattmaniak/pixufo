@@ -42,6 +42,7 @@ int main()
 			{
 				return exit_game();
 			}
+			Cosmic.reset();
 			Graphics.start_fps_count(); // Ignored at the first time.
 		}
 		if(!Graphics.render_level(&Cosmic, false))

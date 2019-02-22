@@ -14,10 +14,10 @@ void Entity::randomize_initial_pos()
 	prng.seed(std::random_device()());
 
 	std::uniform_int_distribution<std::mt19937::result_type>
-	distributor_x(static_cast<int>(min_x), static_cast<int>(max_x));
+	distributor_x(min_x, max_x);
 
 	std::uniform_int_distribution<std::mt19937::result_type>
-	distributor_y(static_cast<int>(min_y), static_cast<int>(max_y));
+	distributor_y(min_y, max_y);
 
 	pos_x = distributor_x(prng);
 	pos_y = distributor_y(prng);

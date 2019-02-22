@@ -26,11 +26,13 @@ class Level
 	      const unsigned int passed_enemies_amount);
 	~Level();
 
+	void reset();
+
 	private:
 	const unsigned int width;
 	const unsigned int height;
 
-	void set_model_borders(Graphics* Graphics, Model* Model);
+	void set_model_borders(Model* Model);
 };
 
 #endif
