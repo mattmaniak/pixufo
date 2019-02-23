@@ -50,7 +50,7 @@ int main()
 			return exit_game();
 		}
 
-		if(!Keyboard.move_player(&Cosmic, &Menu))
+		if(!Keyboard.move_player(&Cosmic, &Menu, &Graphics))
 		{
 			return exit_game();
 		}
@@ -69,7 +69,7 @@ int main()
 				return exit_game();
 			}
 			SDL_Delay(500);
-			Graphics.start_fps_count(); // Prevent entities speed-up.
+			Graphics.start_fps_count(); // Prevent entities speed-ups.
 		}
 		if(!Graphics.clean_renderer())
 		{

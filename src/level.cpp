@@ -62,10 +62,6 @@ void Level::reset()
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
 
-	for(std::size_t dir_idx = 0; dir_idx < DIRECTIONS_AMOUNT; dir_idx++)
-	{
-		Ufo->Slowdowns[dir_idx]->deactivate();
-	}
 	for(std::size_t idx = 0; idx < enemies_amount; idx++)
 	{
 		Enemies[idx]->randomize_initial_pos();

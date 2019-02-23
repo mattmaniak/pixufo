@@ -20,11 +20,11 @@ class Model
 	std::array<SDL_Texture*, FRAMES_AMOUNT> Textures;
 	std::size_t                             current_frame_idx;
 
-	SDL_Rect    Geometry; // Textures's position and size.
-	const float speed;    // Pixel position move in a one second.
-	float       step;     // Pixel position move in a one frame.
-	float       pos_x;    // Virtual Y-position to use with the delta time.
-	float       pos_y;    // Virtual X-position to use with the delta time.
+	SDL_Rect    Geometry;  // Textures's position and size.
+	const float max_speed; // Pixel position move in a one second.
+	float       step;      // Pixel position move in a one frame.
+	float       pos_x;     // Virtual Y-position to use with the delta time.
+	float       pos_y;     // Virtual X-position to use with the delta time.
 
 	// TODO: CONST?
 	int min_x;

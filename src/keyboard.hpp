@@ -15,7 +15,7 @@ class Keyboard
 	public:
 	Keyboard();
 
-	bool move_player(Level* Level, Menu* Menu);
+	bool move_player(Level* Level, Menu* Menu, Graphics* Graphics);
 	bool menu(Menu* Menu);
 	bool pause(Menu* Menu);
 

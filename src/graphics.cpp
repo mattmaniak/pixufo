@@ -205,9 +205,13 @@ bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
 	{
 		return false;
 	}
-	if(!pause_menu_bg)
+
+	if(pause_menu_bg)
 	{
 		delta_time_s = 0.0f; // Disable animations
+	}
+	else
+	{
 		SDL_RenderPresent(Renderer);
 	}
 	return true;

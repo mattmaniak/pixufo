@@ -3,7 +3,7 @@
 Model::Model(Graphics* Graphics, const std::string passed_name,
              const float passed_speed,
              const Uint32 passed_single_frame_time_ms):
-             name(passed_name), speed(passed_speed),
+             name(passed_name), max_speed(passed_speed),
              single_frame_time_ms(passed_single_frame_time_ms)
 {
 	current_frame_idx = 0;
@@ -64,7 +64,7 @@ void Model::calc_pos(Graphics* Graphics)
 	Geometry.x = pos_x;
 	Geometry.y = pos_y;
 
-	step = speed * Graphics->delta_time_s * Graphics->pixelart_px_sz();
+	step = max_speed * Graphics->delta_time_s * Graphics->pixelart_px_sz();
 }
 
 bool Model::load_animation(Graphics* Graphics)
