@@ -34,7 +34,7 @@ void Keyboard::count_keys()
 
 bool Keyboard::move_player(Level* Level, Menu* Menu, Graphics* Graphics)
 {
-	std::size_t slowdowns_amount = 0;
+	// std::size_t slowdowns_amount = 0;
 
 	SDL_PollEvent(&Event);
 	switch(Event.type)

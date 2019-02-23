@@ -27,7 +27,8 @@ class Player_slowdown
 	public:
 	dir direction;
 	const float max_time_s;
-	float       elapsed_time_s;
+	float       elapsed_time_x_s;
+	float       elapsed_time_y_s;
 
 	Player_slowdown(const float);
 
