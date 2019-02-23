@@ -16,13 +16,13 @@ Graphics::Graphics()
 	if(icon == nullptr)
 	{
 		error::show_box("Can't load the icon.");
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	if(SDL_GetDesktopDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the desktop size.");
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
@@ -31,13 +31,13 @@ Graphics::Graphics()
 	if(Window == nullptr)
 	{
 		error::show_box("Can't create the window.");
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
 		error::show_box("At least the HD display resolution is required.");
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	SDL_SetWindowIcon(Window, icon);
@@ -49,20 +49,20 @@ Graphics::Graphics()
 	if(Renderer == nullptr)
 	{
 		error::show_box("Can't create the renderer.");
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't hide the mouse pointer.");
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	delta_time_s          = 0.0f;
 	frame_elapsed_time_ms = 0.0f;
 	fps                   = 0;
 
-	initialized = true;
+	is_initialized = true;
 }
 
 Graphics::~Graphics()
@@ -121,7 +121,7 @@ float Graphics::pixelart_px_sz()
 	if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the current display size.");
-		initialized = false;
+		is_initialized = false;
 	}
 	return Display.w / PIXELART_DISPLAY_WIDTH;
 }
@@ -181,7 +181,7 @@ bool Graphics::render_tiled_background(Background* Bg)
 	return true;
 }
 
-bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
+bool Graphics::render_level(Level* Level, const bool as_pause_menu_bg)
 {
 	if(!clean_renderer())
 	{
@@ -206,7 +206,7 @@ bool Graphics::render_level(Level* Level, const bool pause_menu_bg)
 		return false;
 	}
 
-	if(pause_menu_bg)
+	if(as_pause_menu_bg)
 	{
 		delta_time_s = 0.0f; // Disable animations
 	}

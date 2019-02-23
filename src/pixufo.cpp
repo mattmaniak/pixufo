@@ -22,12 +22,12 @@ int main()
 		return exit_game();
 	}
 	Graphics Graphics;
-	if(!Graphics.initialized)
+	if(!Graphics.is_initialized)
 	{
 		return exit_game();
 	}
 	Level Cosmic(&Graphics, "background_level", 2);
-	if(!Cosmic.initialized)
+	if(!Cosmic.is_initialized)
 	{
 		return exit_game();
 	}
@@ -50,7 +50,7 @@ int main()
 			return exit_game();
 		}
 
-		if(!Keyboard.move_player(&Cosmic, &Menu, &Graphics))
+		if(!Keyboard.move_player(Cosmic.Ufo, &Menu, &Graphics))
 		{
 			return exit_game();
 		}

@@ -14,7 +14,7 @@
 class Model
 {
 	public:
-	bool              initialized;
+	bool              is_initialized;
 	const std::string name;
 
 	std::array<SDL_Texture*, FRAMES_AMOUNT> Textures;
@@ -32,18 +32,17 @@ class Model
 	int min_y;
 	int max_y;
 
-	Model(Graphics* Graphics, const std::string passed_name,
-	      const float passed_speed, const Uint32 passed_single_frame_time_ms);
+	Model(Graphics*, const std::string, const float, const Uint32);
 	~Model();
 
-	void calc_pos(Graphics* Graphics);
-	void animate(Graphics* Graphics);
+	void calc_pos(Graphics*);
+	void animate(Graphics*);
 
 	private:
 	const Uint32 single_frame_time_ms;
 	Uint32       frame_elapsed_time_ms;
 
-	bool load_animation(Graphics* Graphics);
+	bool load_animation(Graphics*);
 };
 
 #endif

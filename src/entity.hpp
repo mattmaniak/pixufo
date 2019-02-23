@@ -21,10 +21,7 @@ class Entity: public Model
 	}
 	direction;
 
-	SDL_Rect Hitbox;
-
-	Entity(Graphics* Graphics, const std::string name,
-	      const float passed_speed, const Uint32 passed_single_frame_time_ms);
+	Entity(Graphics*, const std::string, const float, const Uint32);
 
 	void randomize_initial_pos();
 };

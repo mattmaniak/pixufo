@@ -10,67 +10,37 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 
 }
 
-void Keyboard::count_keys()
+bool Keyboard::move_player(Player* Ufo, Menu* Menu, Graphics* Graphics)
 {
-	pressed_keys_amount = 0;
-
-	if(keys[SDL_SCANCODE_UP])
-	{
-		pressed_keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_DOWN])
-	{
-		pressed_keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_LEFT])
-	{
-		pressed_keys_amount++;
-	}
-	if(keys[SDL_SCANCODE_RIGHT])
-	{
-		pressed_keys_amount++;
-	}
-}
-
-bool Keyboard::move_player(Level* Level, Menu* Menu, Graphics* Graphics)
-{
-	// std::size_t slowdowns_amount = 0;
-
 	SDL_PollEvent(&Event);
 	switch(Event.type)
 	{
 		case SDL_QUIT:
 		return false;
 	}
-	count_keys();
-
-	if(pressed_keys_amount == 2)
-	{
-		Level->Ufo->step /= std::sqrt(2.0f);
-	}
 
 	if(keys[SDL_SCANCODE_UP])
 	{
-		Level->Ufo->Slowdowns[vertical]->activate(Graphics, Level->Ufo, up);
+		Ufo->Slowdowns[vertical]->activate(Graphics, up);
 	}
 	if(keys[SDL_SCANCODE_DOWN])
 	{
-		Level->Ufo->Slowdowns[vertical]->activate(Graphics, Level->Ufo, down);
+		Ufo->Slowdowns[vertical]->activate(Graphics, down);
 	}
 	if(keys[SDL_SCANCODE_LEFT])
 	{
-		Level->Ufo->Slowdowns[horizontal]->activate(Graphics, Level->Ufo, left);
+		Ufo->Slowdowns[horizontal]->activate(Graphics, left);
 	}
 	if(keys[SDL_SCANCODE_RIGHT])
 	{
-		Level->Ufo->Slowdowns[horizontal]->activate(Graphics, Level->Ufo, right);
+		Ufo->Slowdowns[horizontal]->activate(Graphics, right);
 	}
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
 		Menu->mode = Menu->pause_enabled;
 	}
-	Level->Ufo->Slowdowns[vertical]->fly(Level->Ufo, Graphics);
-	Level->Ufo->Slowdowns[horizontal]->fly(Level->Ufo, Graphics);
+	Ufo->Slowdowns[vertical]->fly(Ufo, Graphics);
+	Ufo->Slowdowns[horizontal]->fly(Ufo, Graphics);
 
 	return true;
 }

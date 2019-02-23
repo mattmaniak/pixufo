@@ -15,17 +15,13 @@ class Keyboard
 	public:
 	Keyboard();
 
-	bool move_player(Level* Level, Menu* Menu, Graphics* Graphics);
-	bool menu(Menu* Menu);
-	bool pause(Menu* Menu);
+	bool move_player(Player*, Menu*, Graphics*);
+	bool menu(Menu*);
+	bool pause(Menu*);
 
 	private:
 	SDL_Event    Event;
 	const Uint8* keys;
-	std::size_t  pressed_keys_amount;
-
-	void count_keys();
-
 };
 
 #endif

@@ -12,9 +12,9 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
              height(Graphics->Display.h)
 {
 	Ufo = new Player(Graphics, "ufo", 100.0f);
-	if(!Ufo->initialized)
+	if(!Ufo->is_initialized)
 	{
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	set_model_borders(Ufo);
@@ -24,9 +24,9 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
 
 	Space_bg = new Background(Graphics, bg_name);
-	if(!Space_bg->initialized)
+	if(!Space_bg->is_initialized)
 	{
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 
@@ -34,15 +34,15 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 	{
 		Enemies.push_back(new Entity(Graphics, "nebula_medium", 50.0f, 120));
 
-		if(!Enemies[idx]->initialized)
+		if(!Enemies[idx]->is_initialized)
 		{
-			initialized = false;
+			is_initialized = false;
 			return;
 		}
 		set_model_borders(Enemies[idx]);
 		Enemies[idx]->randomize_initial_pos();
 	}
-	initialized = true;
+	is_initialized = true;
 }
 
 Level::~Level()

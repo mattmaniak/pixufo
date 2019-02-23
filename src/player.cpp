@@ -7,7 +7,7 @@ Model(Graphics, name, passed_max_speed, 0)
 {
 	for(std::size_t axis_idx = 0; axis_idx < AXES_AMOUNT; axis_idx++)
 	{
-		Slowdowns[axis_idx] = new Player_slowdown(2.0f);
+		Slowdowns[axis_idx] = new Player_slowdown(1.0f);
 	}
 }
 

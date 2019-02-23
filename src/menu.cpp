@@ -12,27 +12,27 @@ Menu::Menu(): mode(primary_enabled)
 bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 {
 	Select_arrow = new Model(Graphics, "ufo", 0.0f, 0);
-	if(!Select_arrow->initialized)
+	if(!Select_arrow->is_initialized)
 	{
 		return false;
 	}
 
 	Logo = new Model(Graphics, "title", 0.0f, 0);
-	if(!Logo->initialized)
+	if(!Logo->is_initialized)
 	{
 		delete Select_arrow;
 		return false;
 	}
 
 	Space_bg = new Background(Graphics, "background_primary_menu");
-	if(!Space_bg->initialized)
+	if(!Space_bg->is_initialized)
 	{
 		delete Select_arrow;
 		return false;
 	}
 
 	Button Play(Graphics, "button_play", 0);
-	if(!Play.initialized)
+	if(!Play.is_initialized)
 	{
 		delete Select_arrow;
 		delete Space_bg;
@@ -41,7 +41,7 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 	Buttons.push_back(&Play);
 
 	Button Quit(Graphics, "button_quit", 1);
-	if(!Quit.initialized)
+	if(!Quit.is_initialized)
 	{
 		delete Select_arrow;
 		delete Space_bg;
@@ -86,13 +86,13 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
 {
 	Select_arrow = new Model(Graphics, "ufo", 0.0f, 0);
-	if(!Select_arrow->initialized)
+	if(!Select_arrow->is_initialized)
 	{
 		return false;
 	}
 
 	Button Continue(Graphics, "button_continue", 0);
-	if(!Continue.initialized)
+	if(!Continue.is_initialized)
 	{
 		delete Select_arrow;
 		return false;
@@ -100,7 +100,7 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
 	Buttons.push_back(&Continue);
 
 	Button Main_menu(Graphics, "button_main_menu", 1);
-	if(!Main_menu.initialized)
+	if(!Main_menu.is_initialized)
 	{
 		delete Select_arrow;
 		Buttons.clear();

@@ -23,20 +23,20 @@ class Model;
 class Graphics
 {
 	public:
-	bool            initialized;
+	bool            is_initialized;
 	SDL_DisplayMode Display;
 	float           delta_time_s; // A single frame period.
 
 	Graphics();
 	~Graphics();
 
-	SDL_Texture* load_texture(const std::string name);
+	SDL_Texture* load_texture(const std::string);
 	float        pixelart_px_sz();
 	void         start_fps_count();
 	bool         count_fps();
-	bool         render_level(Level* Level, const bool pause_menu_bg);
-	bool         render_primary_menu(Menu* Menu);
-	bool         render_pause_menu(Menu* Menu, Level* Level);
+	bool         render_level(Level*, const bool);
+	bool         render_primary_menu(Menu*);
+	bool         render_pause_menu(Menu*, Level*);
 	bool         clean_renderer();
 
 	private:
@@ -46,10 +46,10 @@ class Graphics
 	Uint32        frame_elapsed_time_ms;
 	Uint32        fps;
 
-	SDL_Surface* load_image(const std::string name);
-	bool         render_tiled_background(Background* Space);
-	bool         render_model(Model* Model);
-	bool         render_buttons(Menu* Menu);
+	SDL_Surface* load_image(const std::string);
+	bool         render_tiled_background(Background*);
+	bool         render_model(Model*);
+	bool         render_buttons(Menu*);
 };
 
 #endif

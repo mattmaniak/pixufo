@@ -9,7 +9,7 @@
 
 namespace error
 {
-	void show_box(const std::string message);
+	void show_box(const std::string);
 }
 
 #endif

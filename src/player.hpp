@@ -12,15 +12,15 @@ class Player_slowdown;
 class Player: public Model
 {
 	public:
-	float current_speed;
-	float current_speed_x;
-	float current_speed_y;
+	float horizontal_speed;
+	float vertical_speed;
+	float horizontal_step;
+	float vertical_step;
 
 	std::array<Player_slowdown*, AXES_AMOUNT> Slowdowns;
 	SDL_Rect                                  Hitbox;
 
-	Player(Graphics* Graphics, const std::string name,
-	       const float passed_max_speed);
+	Player(Graphics*, const std::string, const float);
 	~Player();
 };
 

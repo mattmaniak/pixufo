@@ -31,8 +31,8 @@ class Menu
 
 	Menu();
 
-	bool primary(Graphics* Graphics, Keyboard* Keyboard);
-	bool pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level);
+	bool primary(Graphics*, Keyboard*);
+	bool pause(Graphics*, Keyboard*, Level*);
 };
 
 #endif

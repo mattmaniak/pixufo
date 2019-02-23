@@ -15,15 +15,14 @@ class Model;
 class Level
 {
 	public:
-	bool                 initialized;
+	bool                 is_initialized;
 
 	Background*          Space_bg;
 	Player*              Ufo;
 	std::vector<Entity*> Enemies;
 	std::size_t          enemies_amount;
 
-	Level(Graphics* Graphics, const std::string bg_name,
-	      const unsigned int passed_enemies_amount);
+	Level(Graphics*, const std::string, const unsigned int);
 	~Level();
 
 	void reset();
@@ -32,7 +31,7 @@ class Level
 	const unsigned int width;
 	const unsigned int height;
 
-	void set_model_borders(Model* Model);
+	void set_model_borders(Model*);
 };
 
 #endif

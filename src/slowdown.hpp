@@ -25,14 +25,14 @@ enum dir
 class Player_slowdown
 {
 	public:
-	dir direction;
+	dir         direction;
 	const float max_time_s;
 	float       elapsed_time_x_s;
 	float       elapsed_time_y_s;
 
 	Player_slowdown(const float);
 
-	void activate(Graphics*, Player*, dir);
+	void activate(Graphics*, dir);
 	void fly(Player*, Graphics*);
 };
 

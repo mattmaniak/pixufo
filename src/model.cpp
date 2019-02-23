@@ -13,7 +13,7 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
 		Textures[current_frame_idx] = Graphics->load_texture(name);
 		if(Textures[current_frame_idx] == nullptr)
 		{
-			initialized = false;
+			is_initialized = false;
 			return;
 		}
 	}
@@ -21,7 +21,7 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
 	{
 		if(!load_animation(Graphics))
 		{
-			initialized = false;
+			is_initialized = false;
 			return;
 		}
 	}
@@ -32,14 +32,14 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
 	   &Geometry.w, &Geometry.h) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the size of the texture: " + name);
-		initialized = false;
+		is_initialized = false;
 		return;
 	}
 	Geometry.w *= Graphics->pixelart_px_sz();
 	Geometry.h *= Graphics->pixelart_px_sz();
 	step        = 0.0f;
 
-	initialized = true;
+	is_initialized = true;
 }
 
 Model::~Model()
