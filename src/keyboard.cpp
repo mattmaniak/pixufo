@@ -10,13 +10,14 @@ Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 
 bool Keyboard::move_player(Player& Ufo, Menu& Menu, Graphics& Graphics)
 {
+	Ufo.directions_amount = 0;
+
 	SDL_PollEvent(&Event);
 	switch(Event.type)
 	{
 		case SDL_QUIT:
 		return false;
 	}
-
 	if(keys[SDL_SCANCODE_LEFT])
 	{
 		Ufo.Slowdowns[horizontal]->count_ratio(Graphics, left);
@@ -37,6 +38,12 @@ bool Keyboard::move_player(Player& Ufo, Menu& Menu, Graphics& Graphics)
 	{
 		Menu.mode = Menu.pause_enabled;
 	}
+
+	if((Ufo.horizontal_speed != 0.0f) && (Ufo.vertical_speed != 0.0f))
+	{
+		Ufo.directions_amount = 2;
+	}
+
 	Ufo.Slowdowns[vertical]->move(Graphics, Ufo);
 	Ufo.Slowdowns[horizontal]->move(Graphics, Ufo);
 

@@ -14,6 +14,11 @@ class Player: public Model
 	float horizontal_speed;
 	float vertical_speed;
 
+	float horizontal_step;
+	float vertical_step;
+
+	std::size_t directions_amount;
+
 	std::array<Player_slowdown*, AXES_AMOUNT> Slowdowns;
 
 	Player(Graphics&, const std::string, const float);
