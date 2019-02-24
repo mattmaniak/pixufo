@@ -21,7 +21,7 @@ class Level
 	std::vector<Entity*> Enemies;
 	std::size_t          enemies_amount;
 
-	Level(Graphics*, const std::string, const unsigned int);
+	Level(Graphics&, const std::string, const unsigned int);
 	~Level();
 
 	void reset();

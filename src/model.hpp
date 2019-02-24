@@ -32,17 +32,17 @@ class Model
 	int min_y;
 	int max_y;
 
-	Model(Graphics*, const std::string, const float, const Uint32);
+	Model(Graphics&, const std::string, const float, const Uint32);
 	~Model();
 
-	void calc_pos(Graphics*);
-	void animate(Graphics*);
+	void calc_pos(Graphics&);
+	void animate(const Graphics&);
 
 	private:
 	const Uint32 single_frame_time_ms;
 	Uint32       frame_elapsed_time_ms;
 
-	bool load_animation(Graphics*);
+	bool load_animation(Graphics&);
 };
 
 #endif

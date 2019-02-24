@@ -1,6 +1,6 @@
 #include "entity.hpp"
 
-Entity::Entity(Graphics* Graphics, const std::string name,
+Entity::Entity(Graphics& Graphics, const std::string name,
                const float passed_speed,
                const Uint32 passed_single_frame_time_ms):
 Model(Graphics, name, passed_speed, passed_single_frame_time_ms)

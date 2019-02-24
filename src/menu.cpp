@@ -5,7 +5,7 @@ Menu::Menu(): mode(primary_enabled)
 
 }
 
-bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
+bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 {
 	Select_arrow = new Model(Graphics, "ufo", 0.0f, 0);
 	if(!Select_arrow->is_initialized)
@@ -51,9 +51,9 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 
 	while(mode == primary_enabled)
 	{
-		Graphics->start_fps_count();
+		Graphics.start_fps_count();
 
-		if(!Graphics->render_primary_menu(this))
+		if(!Graphics.render_primary_menu(*this))
 		{
 			delete Logo;
 			Buttons.clear();
@@ -61,7 +61,7 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 			delete Select_arrow;
 			return false;
 		}
-		if(!Keyboard->menu(this))
+		if(!Keyboard.menu(*this))
 		{
 			delete Logo;
 			Buttons.clear();
@@ -69,7 +69,7 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 			delete Select_arrow;
 			return false;
 		}
-		Graphics->count_fps();
+		Graphics.count_fps();
 	}
 	delete Logo;
 	delete Space_bg;
@@ -79,7 +79,7 @@ bool Menu::primary(Graphics* Graphics, Keyboard* Keyboard)
 	return true;
 }
 
-bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
+bool Menu::pause(Graphics& Graphics, Keyboard& Keyboard, Level& Level)
 {
 	Select_arrow = new Model(Graphics, "ufo", 0.0f, 0);
 	if(!Select_arrow->is_initialized)
@@ -109,13 +109,13 @@ bool Menu::pause(Graphics* Graphics, Keyboard* Keyboard, Level* Level)
 
 	while(mode == pause_enabled)
 	{
-		if(!Graphics->render_pause_menu(this, Level))
+		if(!Graphics.render_pause_menu(*this, Level))
 		{
 			delete Select_arrow;
 			Buttons.clear();
 			return false;
 		}
-		if(!Keyboard->pause(this))
+		if(!Keyboard.pause(*this))
 		{
 			delete Select_arrow;
 			Buttons.clear();

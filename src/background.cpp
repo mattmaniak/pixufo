@@ -1,6 +1,6 @@
 #include "background.hpp"
 
-Background::Background(Graphics* Graphics, const std::string name):
+Background::Background(Graphics& Graphics, const std::string name):
 Model(Graphics, name, 0.0f, 0)
 {
 	min_x = -Geometry.w;
@@ -28,9 +28,9 @@ void Background::inf_scroll()
 	}
 }
 
-void Background::move(Graphics* Graphics, const float offset_x,
+void Background::move(Graphics& Graphics, const float offset_x,
                       const float offset_y)
 {
-	pos_x += offset_x * Graphics->delta_time_s * Graphics->pixelart_px_sz();
-	pos_y += offset_y * Graphics->delta_time_s * Graphics->pixelart_px_sz();
+	pos_x += offset_x * Graphics.delta_time_s * Graphics.pixelart_px_sz();
+	pos_y += offset_y * Graphics.delta_time_s * Graphics.pixelart_px_sz();
 }

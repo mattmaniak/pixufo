@@ -14,9 +14,9 @@ class Keyboard
 	public:
 	Keyboard();
 
-	bool move_player(Player*, Menu*, Graphics*);
-	bool menu(Menu*);
-	bool pause(Menu*);
+	bool move_player(Player&, Menu&, Graphics&);
+	bool menu(Menu&);
+	bool pause(Menu&);
 
 	private:
 	SDL_Event    Event;

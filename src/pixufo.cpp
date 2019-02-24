@@ -26,7 +26,7 @@ int main()
 	{
 		return exit_game();
 	}
-	Level Cosmic(&Graphics, "background_level", 2);
+	Level Cosmic(Graphics, "background_level", 2);
 	if(!Cosmic.is_initialized)
 	{
 		return exit_game();
@@ -38,19 +38,19 @@ int main()
 
 		if(Menu.mode == Menu.primary_enabled) // Opened by default.
 		{
-			if(!Menu.primary(&Graphics, &Keyboard))
+			if(!Menu.primary(Graphics, Keyboard))
 			{
 				return exit_game();
 			}
 			Cosmic.reset();
 			Graphics.start_fps_count(); // Ignored at the first time.
 		}
-		if(!Graphics.render_level(&Cosmic, false))
+		if(!Graphics.render_level(Cosmic, false))
 		{
 			return exit_game();
 		}
 
-		if(!Keyboard.move_player(Cosmic.Ufo, &Menu, &Graphics))
+		if(!Keyboard.move_player(*Cosmic.Ufo, Menu, Graphics))
 		{
 			return exit_game();
 		}
@@ -64,7 +64,7 @@ int main()
 
 		if(Menu.mode == Menu.pause_enabled)
 		{
-			if(!Menu.pause(&Graphics, &Keyboard, &Cosmic))
+			if(!Menu.pause(Graphics, Keyboard, Cosmic))
 			{
 				return exit_game();
 			}

@@ -8,7 +8,7 @@ class Button: public Model
 	public:
 	const unsigned int idx;
 
-	Button(Graphics*, const std::string, const unsigned int);
+	Button(Graphics&, const std::string, const unsigned int);
 };
 
 #endif

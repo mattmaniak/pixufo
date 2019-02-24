@@ -1,9 +1,9 @@
 #include "level.hpp"
 
-Level::Level(Graphics* Graphics, const std::string bg_name,
+Level::Level(Graphics& Graphics, const std::string bg_name,
              const unsigned int passed_enemies_amount):
-             enemies_amount(passed_enemies_amount), width(Graphics->Display.w),
-             height(Graphics->Display.h)
+             enemies_amount(passed_enemies_amount), width(Graphics.Display.w),
+             height(Graphics.Display.h)
 {
 	Ufo = new Player(Graphics, "ufo", 100.0f);
 	if(!Ufo->is_initialized)

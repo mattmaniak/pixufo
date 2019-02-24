@@ -6,10 +6,10 @@
 class Background: public Model
 {
 	public:
-	Background(Graphics*, const std::string);
+	Background(Graphics&, const std::string);
 
 	void inf_scroll();
-	void move(Graphics*, const float, const float);
+	void move(Graphics&, const float, const float);
 };
 
 

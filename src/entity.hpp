@@ -22,7 +22,7 @@ class Entity: public Model
 	}
 	direction;
 
-	Entity(Graphics*, const std::string, const float, const Uint32);
+	Entity(Graphics&, const std::string, const float, const Uint32);
 
 	void randomize_initial_pos();
 };

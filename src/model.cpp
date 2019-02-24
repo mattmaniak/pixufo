@@ -1,6 +1,6 @@
 #include "model.hpp"
 
-Model::Model(Graphics* Graphics, const std::string passed_name,
+Model::Model(Graphics& Graphics, const std::string passed_name,
              const float passed_speed,
              const Uint32 passed_single_frame_time_ms):
              name(passed_name), max_speed(passed_speed),
@@ -10,7 +10,7 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
 
 	if(single_frame_time_ms == 0) // No animation.
 	{
-		Textures[current_frame_idx] = Graphics->load_texture(name);
+		Textures[current_frame_idx] = Graphics.load_texture(name);
 		if(Textures[current_frame_idx] == nullptr)
 		{
 			is_initialized = false;
@@ -35,8 +35,8 @@ Model::Model(Graphics* Graphics, const std::string passed_name,
 		is_initialized = false;
 		return;
 	}
-	Geometry.w *= Graphics->pixelart_px_sz();
-	Geometry.h *= Graphics->pixelart_px_sz();
+	Geometry.w *= Graphics.pixelart_px_sz();
+	Geometry.h *= Graphics.pixelart_px_sz();
 	step        = 0.0f;
 
 	is_initialized = true;
@@ -58,16 +58,16 @@ Model::~Model()
 	Textures.empty();
 }
 
-void Model::calc_pos(Graphics* Graphics)
+void Model::calc_pos(Graphics& Graphics)
 {
 	// Converts virtual ones to the rendered position.
 	Geometry.x = pos_x;
 	Geometry.y = pos_y;
 
-	step = max_speed * Graphics->delta_time_s * Graphics->pixelart_px_sz();
+	step = max_speed * Graphics.delta_time_s * Graphics.pixelart_px_sz();
 }
 
-bool Model::load_animation(Graphics* Graphics)
+bool Model::load_animation(Graphics& Graphics)
 {
 #ifdef _WIN32
 	const std::string separator = "\\";
@@ -81,8 +81,8 @@ bool Model::load_animation(Graphics* Graphics)
 
 	for(std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++)
 	{
-		Textures[idx] = Graphics->load_texture(name + separator
-		                                       + std::to_string(idx));
+		Textures[idx] = Graphics.load_texture(name + separator
+		                                      + std::to_string(idx));
 		if(Textures[idx] == nullptr)
 		{
 			return false;
@@ -91,11 +91,11 @@ bool Model::load_animation(Graphics* Graphics)
 	return true;
 }
 
-void Model::animate(Graphics* Graphics)
+void Model::animate(const Graphics& Graphics)
 {
 	if(single_frame_time_ms > 0)
 	{
-		frame_elapsed_time_ms += Graphics->delta_time_s * 1000.0f;
+		frame_elapsed_time_ms += Graphics.delta_time_s * 1000.0f;
 
 		if(frame_elapsed_time_ms >= single_frame_time_ms)
 		{

@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player::Player(Graphics* Graphics, const std::string name,
+Player::Player(Graphics& Graphics, const std::string name,
                const float passed_max_speed):
 Model(Graphics, name, passed_max_speed, 0)
 {

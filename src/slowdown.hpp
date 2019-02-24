@@ -33,8 +33,8 @@ class Player_slowdown
 
 	Player_slowdown();
 
-	void count_ratio(Graphics*, dir);
-	void move(Graphics*, Player*);
+	void count_ratio(Graphics&, dir);
+	void move(Graphics&, Player&);
 };
 
 #endif

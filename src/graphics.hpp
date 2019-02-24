@@ -36,9 +36,9 @@ class Graphics
 	float        pixelart_px_sz();
 	void         start_fps_count();
 	bool         count_fps();
-	bool         render_level(Level*, const bool);
-	bool         render_primary_menu(Menu*);
-	bool         render_pause_menu(Menu*, Level*);
+	bool         render_level(Level&, const bool);
+	bool         render_primary_menu(Menu&);
+	bool         render_pause_menu(Menu&, Level&);
 	bool         clean_renderer();
 
 	private:
@@ -49,9 +49,9 @@ class Graphics
 	Uint32        fps;
 
 	SDL_Surface* load_image(const std::string);
-	bool         render_tiled_background(Background*);
-	bool         render_model(Model*);
-	bool         render_buttons(Menu*);
+	bool         render_tiled_background(Background&);
+	bool         render_model(Model&);
+	bool         render_buttons(Menu&);
 };
 
 #endif

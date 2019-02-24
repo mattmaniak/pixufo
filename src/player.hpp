@@ -16,7 +16,7 @@ class Player: public Model
 
 	std::array<Player_slowdown*, AXES_AMOUNT> Slowdowns;
 
-	Player(Graphics*, const std::string, const float);
+	Player(Graphics&, const std::string, const float);
 	~Player();
 };
 
