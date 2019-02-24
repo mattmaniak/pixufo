@@ -35,8 +35,8 @@ Model::Model(Graphics& Graphics, const std::string passed_name,
 		is_initialized = false;
 		return;
 	}
-	Geometry.w *= Graphics.pixelart_px_sz();
-	Geometry.h *= Graphics.pixelart_px_sz();
+	Geometry.w *= Graphics.pixelart_px_sz;
+	Geometry.h *= Graphics.pixelart_px_sz;
 	step        = 0.0f;
 
 	is_initialized = true;
@@ -60,15 +60,21 @@ Model::~Model()
 
 void Model::calc_pos(Graphics& Graphics)
 {
-	// Converts virtual ones to the rendered position.
-	Geometry.x = pos_x;
+	Geometry.x = pos_x; // Converts virtual position to the rendered position.
 	Geometry.y = pos_y;
 
-	step = max_speed * Graphics.delta_time_s * Graphics.pixelart_px_sz();
+	step = max_speed * Graphics.delta_time_s * Graphics.pixelart_px_sz;
+}
+
+void Model::move(Graphics& Graphics, const float offset_x, const float offset_y)
+{
+	pos_x += offset_x * Graphics.delta_time_s * Graphics.pixelart_px_sz;
+	pos_y += offset_y * Graphics.delta_time_s * Graphics.pixelart_px_sz;
 }
 
 bool Model::load_animation(Graphics& Graphics)
 {
+
 #ifdef _WIN32
 	const std::string separator = "\\";
 

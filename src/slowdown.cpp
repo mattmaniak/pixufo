@@ -44,8 +44,7 @@ void Player_slowdown::count_ratio(Graphics& Graphics, dir passed_direction)
 void Player_slowdown::move(Graphics& Graphics, Player& Ufo)
 {
 	float vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0f)
-	                                + std::pow(Ufo.vertical_speed, 2.0f))
-                          / 100.0f;
+	                                + std::pow(Ufo.vertical_speed, 2.0f));
 
 	switch(direction)
 	{
@@ -54,7 +53,7 @@ void Player_slowdown::move(Graphics& Graphics, Player& Ufo)
 		Ufo.horizontal_speed = Ufo.max_speed * (elapsed_time_s / max_time_s);
 
 		Ufo.horizontal_step = Ufo.horizontal_speed * Graphics.delta_time_s
-		                      * Graphics.pixelart_px_sz();
+		                      * Graphics.pixelart_px_sz;
 		break;
 
 		case up:
@@ -62,14 +61,14 @@ void Player_slowdown::move(Graphics& Graphics, Player& Ufo)
 		Ufo.vertical_speed = Ufo.max_speed * (elapsed_time_s / max_time_s);
 
 		Ufo.vertical_step = Ufo.vertical_speed * Graphics.delta_time_s
-		                    * Graphics.pixelart_px_sz();
+		                    * Graphics.pixelart_px_sz;
 	}
 
-	// Prevent diagonal speed-ups.
+	// Prevents diagonal speed-ups.
 	if((Ufo.directions_amount == 2) && (vector_length > 1.0f))
 	{
-		Ufo.horizontal_step /= vector_length;
-		Ufo.vertical_step   /= vector_length;
+		Ufo.horizontal_step /= vector_length / 100.0f;
+		Ufo.vertical_step   /= vector_length / 100.0f;
 	}
 	switch(direction)
 	{

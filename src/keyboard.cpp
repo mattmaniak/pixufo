@@ -43,7 +43,6 @@ bool Keyboard::move_player(Player& Ufo, Menu& Menu, Graphics& Graphics)
 	{
 		Ufo.directions_amount = 2;
 	}
-
 	Ufo.Slowdowns[vertical]->move(Graphics, Ufo);
 	Ufo.Slowdowns[horizontal]->move(Graphics, Ufo);
 

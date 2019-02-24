@@ -51,8 +51,14 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 
 	while(mode == primary_enabled)
 	{
-		Graphics.start_fps_count();
-
+		if(!Graphics.init_frame())
+		{
+			delete Logo;
+			Buttons.clear();
+			delete Space_bg;
+			delete Select_arrow;
+			return false;
+		}
 		if(!Graphics.render_primary_menu(*this))
 		{
 			delete Logo;

@@ -6,7 +6,6 @@
 namespace physics
 {
 	void check_model_pos(Model&);
-	void move_enemies(Level&);
 }
 
 #endif

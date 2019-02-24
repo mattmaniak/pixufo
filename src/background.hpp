@@ -9,7 +9,6 @@ class Background: public Model
 	Background(Graphics&, const std::string);
 
 	void inf_scroll();
-	void move(Graphics&, const float, const float);
 };
 
 

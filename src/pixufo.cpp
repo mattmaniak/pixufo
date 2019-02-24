@@ -34,7 +34,10 @@ int main()
 
 	for(;;)
 	{
-		Graphics.start_fps_count();
+		if(!Graphics.init_frame())
+		{
+			return false;
+		}
 
 		if(Menu.mode == Menu.primary_enabled) // Opened by default.
 		{
@@ -43,7 +46,10 @@ int main()
 				return exit_game();
 			}
 			Cosmic.reset();
-			Graphics.start_fps_count(); // Ignored at the first time.
+			if(!Graphics.init_frame()) // Ignored at the first time.
+			{
+				return false;
+			}
 		}
 		if(!Graphics.render_level(Cosmic, false))
 		{
@@ -54,7 +60,6 @@ int main()
 		{
 			return exit_game();
 		}
-		physics::move_enemies(Cosmic);
 		physics::check_model_pos(*Cosmic.Ufo);
 
 		for(std::size_t idx = 0; idx < Cosmic.enemies_amount; idx++)
@@ -69,7 +74,7 @@ int main()
 				return exit_game();
 			}
 			SDL_Delay(500);
-			Graphics.start_fps_count(); // Prevent entities speed-ups.
+			Graphics.init_frame(); // Prevent entities speed-ups.
 		}
 		if(!Graphics.clean_renderer())
 		{

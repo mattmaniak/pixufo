@@ -36,6 +36,7 @@ class Model
 	~Model();
 
 	void calc_pos(Graphics&);
+	void move(Graphics&, const float, const float);
 	void animate(const Graphics&);
 
 	private:

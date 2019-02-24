@@ -27,10 +27,3 @@ void Background::inf_scroll()
 		pos_y += Geometry.h; // Move the background one tile down.
 	}
 }
-
-void Background::move(Graphics& Graphics, const float offset_x,
-                      const float offset_y)
-{
-	pos_x += offset_x * Graphics.delta_time_s * Graphics.pixelart_px_sz();
-	pos_y += offset_y * Graphics.delta_time_s * Graphics.pixelart_px_sz();
-}

@@ -20,11 +20,3 @@ void physics::check_model_pos(Model& Model)
 		Model.pos_y = Model.min_y;
 	}
 }
-
-void physics::move_enemies(Level& Level)
-{
-	for(std::size_t idx = 0; idx < Level.enemies_amount; idx++)
-	{
-		Level.Enemies[idx]->pos_x -= Level.Enemies[idx]->step;
-	}
-}

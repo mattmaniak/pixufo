@@ -57,6 +57,11 @@ Graphics::Graphics()
 	frame_elapsed_time_ms = 0.0f;
 	fps                   = 0;
 
+	pixelart_px_sz = get_pixelart_px_sz();
+	if(pixelart_px_sz == 0.0f)
+	{
+		is_initialized = false;
+	}
 	is_initialized = true;
 }
 
@@ -111,19 +116,31 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-float Graphics::pixelart_px_sz()
+float Graphics::get_pixelart_px_sz()
 {
 	if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the current display size.");
-		is_initialized = false;
+		return 0.0f;
+	}
+	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
+	{
+		error::show_box("Current game display mode is to small.");
+		return 0.0f;
 	}
 	return Display.w / PIXELART_DISPLAY_WIDTH;
 }
 
-void Graphics::start_fps_count()
+bool Graphics::init_frame()
 {
 	frame_start_time_ms = SDL_GetTicks();
+
+	pixelart_px_sz = get_pixelart_px_sz();
+	if(pixelart_px_sz == 0.0f)
+	{
+		return false;
+	}
+	return true;
 }
 
 bool Graphics::count_fps()
@@ -193,6 +210,7 @@ bool Graphics::render_level(Level& Level, const bool as_pause_menu_bg)
 		{
 			return false;
 		}
+		Level.Enemies[idx]->move(*this, -Level.Enemies[idx]->max_speed, 0.0f);
 	}
 	Level.Ufo->calc_pos(*this);
 
@@ -214,19 +232,19 @@ bool Graphics::render_level(Level& Level, const bool as_pause_menu_bg)
 
 bool Graphics::render_primary_menu(Menu& Menu)
 {
-	const float padding = 20.0f * pixelart_px_sz();
+	const float padding = 20.0f * pixelart_px_sz;
 
 	if(!clean_renderer())
 	{
 		return false;
 	}
-	Menu.Space_bg->move(*this, -5.0f, 2.5f);
 	Menu.Space_bg->calc_pos(*this);
 
 	if(!render_tiled_background(*Menu.Space_bg))
 	{
 		return false;
 	}
+	Menu.Space_bg->move(*this, -5.0f, 2.5f);
 
 	Menu.Logo->pos_x = Menu.Logo->pos_y = padding;
 	Menu.Logo->calc_pos(*this);
@@ -283,7 +301,7 @@ bool Graphics::render_model(Model& Model)
 
 bool Graphics::render_buttons(Menu& Menu)
 {
-	const float padding = 20.0f * pixelart_px_sz();
+	const float padding = 20.0f * pixelart_px_sz;
 
 	for(std::size_t idx = 0; idx <= Menu.max_button_idx; idx++)
 	{
