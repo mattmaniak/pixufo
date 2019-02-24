@@ -2,6 +2,7 @@
 #define PIXUFO_HPP
 
 #include "error.hpp"
+#include "font.hpp"
 #include "graphics.hpp"
 #include "model.hpp"
 #include "menu.hpp"

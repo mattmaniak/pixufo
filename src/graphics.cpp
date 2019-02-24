@@ -299,6 +299,18 @@ bool Graphics::render_model(Model& Model)
 	return true;
 }
 
+bool Graphics::render_font(Font& Font)
+{
+	if(SDL_RenderCopy(Renderer, Font.Texture, nullptr, &Font.Geometry)
+	   != SDL2_SUCCESS)
+	{
+		error::show_box("Can't copy the texture: " + Font.name
+		                + " to the renderer.");
+		return false;
+	}
+	return true;
+}
+
 bool Graphics::render_buttons(Menu& Menu)
 {
 	const float padding = 20.0f * pixelart_px_sz;
@@ -316,7 +328,7 @@ bool Graphics::render_buttons(Menu& Menu)
 		                                * Menu.Buttons[idx]->Geometry.h)
 		                                - padding;
 
-		if(!render_model(*Menu.Buttons[idx]))
+		if(!render_font(*Menu.Buttons[idx]))
 		{
 			return false;
 		}

@@ -1,0 +1,31 @@
+#ifndef FONT_HPP
+#define FONT_HPP
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <string>
+
+#include "error.hpp"
+#include "graphics.hpp"
+
+class Font
+{
+	public:
+	bool              is_initialized;
+	const std::string name;
+
+	TTF_Font*         Font_ttf;
+	const std::string text;
+	const int         sz;
+	SDL_Color         Color;
+	SDL_Texture*      Texture;
+
+	SDL_Rect Geometry;  // Textures's position and size.
+	float    pos_x;
+	float    pos_y;
+
+	Font(Graphics&, const std::string, const int);
+	~Font();
+};
+
+#endif

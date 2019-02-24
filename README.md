@@ -1,7 +1,7 @@
 # PixUfo
 ## Requirements:
 - HD display resolution,
-- Windows or GNU/Linux with a graphical user interface,
+- 64-bit OS: Windows or GNU/Linux with the graphical user interface,
 - [development-only] g++ (gcc with libstdc++) with version >= 4.8.1.
 
 ## Development guide
@@ -31,14 +31,14 @@ PixUfo.exe
 ### Linux-based OS (TL:DR for Ubuntu):
 ```
 sudo apt update &&
-sudo apt install git gcc g++ make libsdl2-dev &&
+sudo apt install git gcc g++ make libsdl2-dev libsdl2-ttf-dev &&
 git clone https://gitlab.com/mattmaniak/pixufo.git &&
 cd pixufo &&
 make &&
 ./PixUfo
 ```
 
-### Remove a compilation trash
+### Remove object files
 #### GNU/Linux
 ```
 make clean

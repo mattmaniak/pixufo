@@ -21,6 +21,7 @@ class Background;
 class Enemy;
 class Menu;
 class Model;
+class Font;
 
 class Graphics
 {
@@ -29,6 +30,7 @@ class Graphics
 	float           delta_time_s;
 	float           pixelart_px_sz;
 	SDL_DisplayMode Display;
+	SDL_Renderer*   Renderer;
 
 	Graphics();
 	~Graphics();
@@ -42,16 +44,16 @@ class Graphics
 	bool         clean_renderer();
 
 	private:
-	SDL_Window*   Window;
-	SDL_Renderer* Renderer;
-	Uint32        frame_start_time_ms;
-	Uint32        frame_elapsed_time_ms;
-	Uint32        fps;
+	SDL_Window* Window;
+	Uint32      frame_start_time_ms;
+	Uint32      frame_elapsed_time_ms;
+	Uint32      fps;
 
 	SDL_Surface* load_image(const std::string);
 	float        get_pixelart_px_sz();
 	bool         render_tiled_background(Background&);
 	bool         render_model(Model&);
+	bool         render_font(Font&);
 	bool         render_buttons(Menu&);
 };
 

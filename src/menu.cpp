@@ -27,7 +27,7 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 		return false;
 	}
 
-	Button Play(Graphics, "button_play", 0);
+	Button Play(Graphics, "Play", 150, 0);
 	if(!Play.is_initialized)
 	{
 		delete Select_arrow;
@@ -36,7 +36,7 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 	}
 	Buttons.push_back(&Play);
 
-	Button Quit(Graphics, "button_quit", 1);
+	Button Quit(Graphics, "Quit", 150, 1);
 	if(!Quit.is_initialized)
 	{
 		delete Select_arrow;
@@ -93,7 +93,7 @@ bool Menu::pause(Graphics& Graphics, Keyboard& Keyboard, Level& Level)
 		return false;
 	}
 
-	Button Continue(Graphics, "button_continue", 0);
+	Button Continue(Graphics, "Continue", 150, 0);
 	if(!Continue.is_initialized)
 	{
 		delete Select_arrow;
@@ -101,7 +101,7 @@ bool Menu::pause(Graphics& Graphics, Keyboard& Keyboard, Level& Level)
 	}
 	Buttons.push_back(&Continue);
 
-	Button Main_menu(Graphics, "button_main_menu", 1);
+	Button Main_menu(Graphics, "Main menu", 150, 1);
 	if(!Main_menu.is_initialized)
 	{
 		delete Select_arrow;

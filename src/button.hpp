@@ -1,14 +1,14 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
-#include "model.hpp"
+#include "font.hpp"
 
-class Button: public Model
+class Button: public Font
 {
 	public:
 	const unsigned int idx;
 
-	Button(Graphics&, const std::string, const unsigned int);
+	Button(Graphics&, const std::string, const int, const unsigned int);
 };
 
 #endif

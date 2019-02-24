@@ -7,20 +7,27 @@
 
 int exit_game()
 {
+	TTF_Quit();
 	SDL_Quit();
 	return 0;
 }
 
 int main()
 {
-	Menu Menu;
-
-	Keyboard Keyboard;
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2.");
 		return exit_game();
 	}
+	if(TTF_Init() != SDL2_SUCCESS)
+	{
+		error::show_box("Can't initialize the SDL2 ttf module.");
+		return exit_game();
+	}
+
+	Menu Menu;
+	Keyboard Keyboard;
+
 	Graphics Graphics;
 	if(!Graphics.is_initialized)
 	{

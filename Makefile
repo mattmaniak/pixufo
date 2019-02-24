@@ -2,7 +2,7 @@ TARGET =
 
 CC = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
-LDFLAGS = -lSDL2
+LDFLAGS = -lSDL2 -lSDL2_ttf
 ASAN_FLAGS =
 
 SRC_DIR = src
