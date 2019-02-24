@@ -8,7 +8,6 @@
 class Player;
 class Menu;
 class Graphics;
-class Level;
 
 class Keyboard
 {

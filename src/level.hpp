@@ -4,13 +4,12 @@
 #include <string>
 #include <vector>
 
-class Graphics;
-class Player_slowdown;
-
-class Background;
-class Player;
-class Entity;
-class Model;
+#include "error.hpp"
+#include "graphics.hpp"
+#include "entity.hpp"
+#include "background.hpp"
+#include "player.hpp"
+#include "slowdown.hpp"
 
 class Level
 {

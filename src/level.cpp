@@ -1,10 +1,4 @@
 #include "level.hpp"
-#include "error.hpp"
-#include "graphics.hpp"
-#include "entity.hpp"
-#include "background.hpp"
-#include "player.hpp"
-#include "slowdown.hpp"
 
 Level::Level(Graphics* Graphics, const std::string bg_name,
              const unsigned int passed_enemies_amount):
@@ -32,7 +26,8 @@ Level::Level(Graphics* Graphics, const std::string bg_name,
 
 	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
-		Enemies.push_back(new Entity(Graphics, "nebula_medium", 50.0f, 120));
+		// Enemies.push_back(new Entity(Graphics, "nebula_medium", 50.0f, 120));
+		Enemies.push_back(new Entity(Graphics, "nebula_wasp", 70.0f, 100));
 
 		if(!Enemies[idx]->is_initialized)
 		{
@@ -70,11 +65,6 @@ void Level::reset()
 
 void Level::set_model_borders(Model* Model)
 {
-	// Model->min_x = -Model->Geometry.w / 2;
-	// Model->max_x = width - (Model->Geometry.w / 2);
-	// Model->min_y = -Model->Geometry.h / 2;
-	// Model->max_y = height - (Model->Geometry.h / 2);
-
 	Model->min_x = Model->min_y = 0;
 	Model->max_x = width - Model->Geometry.w;
 	Model->max_y = height - Model->Geometry.h;

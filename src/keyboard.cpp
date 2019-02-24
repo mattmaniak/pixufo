@@ -1,9 +1,7 @@
 #include "keyboard.hpp"
 #include "menu.hpp"
 #include "graphics.hpp"
-#include "level.hpp"
 #include "player.hpp"
-#include "slowdown.hpp"
 
 Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
 {
@@ -19,28 +17,28 @@ bool Keyboard::move_player(Player* Ufo, Menu* Menu, Graphics* Graphics)
 		return false;
 	}
 
-	if(keys[SDL_SCANCODE_UP])
-	{
-		Ufo->Slowdowns[vertical]->activate(Graphics, up);
-	}
-	if(keys[SDL_SCANCODE_DOWN])
-	{
-		Ufo->Slowdowns[vertical]->activate(Graphics, down);
-	}
 	if(keys[SDL_SCANCODE_LEFT])
 	{
-		Ufo->Slowdowns[horizontal]->activate(Graphics, left);
+		Ufo->Slowdowns[horizontal]->count_ratio(Graphics, left);
 	}
 	if(keys[SDL_SCANCODE_RIGHT])
 	{
-		Ufo->Slowdowns[horizontal]->activate(Graphics, right);
+		Ufo->Slowdowns[horizontal]->count_ratio(Graphics, right);
+	}
+	if(keys[SDL_SCANCODE_UP])
+	{
+		Ufo->Slowdowns[vertical]->count_ratio(Graphics, up);
+	}
+	if(keys[SDL_SCANCODE_DOWN])
+	{
+		Ufo->Slowdowns[vertical]->count_ratio(Graphics, down);
 	}
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
 		Menu->mode = Menu->pause_enabled;
 	}
-	Ufo->Slowdowns[vertical]->fly(Ufo, Graphics);
-	Ufo->Slowdowns[horizontal]->fly(Ufo, Graphics);
+	Ufo->Slowdowns[vertical]->move(Graphics, Ufo);
+	Ufo->Slowdowns[horizontal]->move(Graphics, Ufo);
 
 	return true;
 }

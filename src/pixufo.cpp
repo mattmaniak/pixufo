@@ -54,12 +54,12 @@ int main()
 		{
 			return exit_game();
 		}
-		physics::move_enemies(&Cosmic);
-		physics::check_model_pos(Cosmic.Ufo);
+		physics::move_enemies(Cosmic);
+		physics::check_model_pos(*Cosmic.Ufo);
 
 		for(std::size_t idx = 0; idx < Cosmic.enemies_amount; idx++)
 		{
-			physics::check_model_pos(Cosmic.Enemies[idx]);
+			physics::check_model_pos(*Cosmic.Enemies[idx]);
 		}
 
 		if(Menu.mode == Menu.pause_enabled)

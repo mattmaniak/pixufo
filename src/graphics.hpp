@@ -6,6 +6,8 @@
 #include <SDL2/SDL.h>
 #include <string>
 
+#include "error.hpp"
+
 #define CURRENT_DISPLAY 0
 #define PIXELART_DISPLAY_WIDTH 640.0f
 

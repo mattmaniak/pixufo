@@ -1,8 +1,4 @@
 #include "menu.hpp"
-#include "error.hpp"
-#include "graphics.hpp"
-#include "keyboard.hpp"
-#include "level.hpp"
 
 Menu::Menu(): mode(primary_enabled)
 {

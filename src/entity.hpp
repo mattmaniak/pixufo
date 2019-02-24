@@ -2,6 +2,7 @@
 #define ENTITY_HPP
 
 #include <random>
+
 #include "model.hpp"
 
 class Entity: public Model

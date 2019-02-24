@@ -4,11 +4,12 @@
 #include <cmath>
 #include <iostream>
 #include <SDL2/SDL.h>
+
 #include "graphics.hpp"
 
 class Player;
 
-enum axes
+enum axis
 {
 	horizontal,
 	vertical
@@ -16,10 +17,10 @@ enum axes
 
 enum dir
 {
-	up,
-	down,
 	left,
-	right
+	right,
+	up,
+	down
 };
 
 class Player_slowdown
@@ -27,13 +28,13 @@ class Player_slowdown
 	public:
 	dir         direction;
 	const float max_time_s;
-	float       elapsed_time_x_s;
-	float       elapsed_time_y_s;
+	float       elapsed_horizontal_time_s;
+	float       elapsed_vertical_time_s;
 
-	Player_slowdown(const float);
+	Player_slowdown();
 
-	void activate(Graphics*, dir);
-	void fly(Player*, Graphics*);
+	void count_ratio(Graphics*, dir);
+	void move(Graphics*, Player*);
 };
 
 #endif

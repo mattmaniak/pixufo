@@ -4,12 +4,12 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
+#include "error.hpp"
 #include "background.hpp"
 #include "button.hpp"
-
-class Keyboard;
-class Graphics;
-class Level;
+#include "graphics.hpp"
+#include "keyboard.hpp"
+#include "level.hpp"
 
 class Menu
 {

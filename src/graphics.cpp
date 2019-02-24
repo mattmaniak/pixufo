@@ -1,11 +1,6 @@
 #include "graphics.hpp"
-#include "error.hpp"
-#include "level.hpp"
-#include "background.hpp"
-#include "player.hpp"
 #include "menu.hpp"
-#include "button.hpp"
-#include "entity.hpp"
+#include "level.hpp"
 
 Graphics::Graphics()
 {
