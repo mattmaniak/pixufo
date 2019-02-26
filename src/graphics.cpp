@@ -53,15 +53,17 @@ Graphics::Graphics()
 		is_initialized = false;
 		return;
 	}
-	delta_time_s          = 0.0f;
-	frame_elapsed_time_ms = 0.0f;
+	delta_time_s          = 0.0;
+	frame_elapsed_time_ms = 0.0;
 	fps                   = 0;
 
-	pixelart_px_sz = get_pixelart_px_sz();
-	if(pixelart_px_sz == 0.0f)
+	if(!get_pixelart_px_sz())
 	{
 		is_initialized = false;
+		return;
 	}
+	old_pixelart_px_sz = 0.0;
+
 	is_initialized = true;
 }
 
@@ -116,30 +118,44 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-float Graphics::get_pixelart_px_sz()
+bool Graphics::get_pixelart_px_sz()
 {
 	if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the current display size.");
-		return 0.0f;
+		return false;
 	}
 	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
-		error::show_box("Current game display mode is to small.");
-		return 0.0f;
+		error::show_box("Current display resolution is smaller than HD.");
+		return false;
 	}
-	return Display.w / PIXELART_DISPLAY_WIDTH;
+	pixelart_px_sz = Display.w / PIXELART_DISPLAY_WIDTH;
+
+	return true;
 }
 
-bool Graphics::init_frame()
+bool Graphics::init_frame(Level& Level)
 {
 	frame_start_time_ms = SDL_GetTicks();
 
-	pixelart_px_sz = get_pixelart_px_sz();
-	if(pixelart_px_sz == 0.0f)
+	if(!get_pixelart_px_sz())
 	{
 		return false;
 	}
+	if(pixelart_px_sz != old_pixelart_px_sz) // Game resolution has changed.
+	{
+		if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
+		{
+			error::show_box("Can't check the current game resolution.");
+			return false;
+		}
+		Level.width  = Display.w;
+		Level.height = Display.h;
+		Level.set_entities_borders();
+	}
+	old_pixelart_px_sz = pixelart_px_sz;
+
 	return true;
 }
 
@@ -152,12 +168,12 @@ bool Graphics::count_fps()
 		error::show_box("Too many frames per second.");
 		return false;
 	}
-	delta_time_s = (SDL_GetTicks() - frame_start_time_ms) / 1000.0f;
-	frame_elapsed_time_ms += delta_time_s * 1000.0f;
+	delta_time_s = (SDL_GetTicks() - frame_start_time_ms) / 1000.0;
+	frame_elapsed_time_ms += delta_time_s * 1000.0;
 
-	if(frame_elapsed_time_ms >= 1000.0f)
+	if(frame_elapsed_time_ms >= 1000.0)
 	{
-		frame_elapsed_time_ms = 0.0f;
+		frame_elapsed_time_ms = 0.0;
 		fps                   = 0;
 	}
 	return true;
@@ -210,7 +226,7 @@ bool Graphics::render_level(Level& Level, const bool as_pause_menu_bg)
 		{
 			return false;
 		}
-		Level.Enemies[idx]->move(*this, -Level.Enemies[idx]->max_speed, 0.0f);
+		Level.Enemies[idx]->move(*this, -Level.Enemies[idx]->max_speed, 0.0);
 	}
 	Level.Ufo->calc_pos(*this);
 
@@ -221,7 +237,7 @@ bool Graphics::render_level(Level& Level, const bool as_pause_menu_bg)
 
 	if(as_pause_menu_bg)
 	{
-		delta_time_s = 0.0f; // Disable animations
+		delta_time_s = 0.0; // Disable animations
 	}
 	else
 	{
@@ -232,7 +248,7 @@ bool Graphics::render_level(Level& Level, const bool as_pause_menu_bg)
 
 bool Graphics::render_primary_menu(Menu& Menu)
 {
-	const float padding = 20.0f * pixelart_px_sz;
+	const double padding = 20.0 * pixelart_px_sz;
 
 	if(!clean_renderer())
 	{
@@ -244,7 +260,7 @@ bool Graphics::render_primary_menu(Menu& Menu)
 	{
 		return false;
 	}
-	Menu.Space_bg->move(*this, -5.0f, 2.5f);
+	Menu.Space_bg->move(*this, -5.0, 2.5f);
 
 	Menu.Logo->pos_x = Menu.Logo->pos_y = padding;
 	Menu.Logo->calc_pos(*this);
@@ -313,7 +329,7 @@ bool Graphics::render_font(Font& Font)
 
 bool Graphics::render_buttons(Menu& Menu)
 {
-	const float padding = 20.0f * pixelart_px_sz;
+	const double padding = 20.0 * pixelart_px_sz;
 
 	for(std::size_t idx = 0; idx <= Menu.max_button_idx; idx++)
 	{

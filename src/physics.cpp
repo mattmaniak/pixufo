@@ -20,3 +20,16 @@ void physics::check_model_pos(Model& Model)
 		Model.pos_y = Model.min_y;
 	}
 }
+
+bool physics::check_player_collision(Level& Level)
+{
+	for(std::size_t idx = 0; idx < Level.enemies_amount; idx++)
+	{
+		if(SDL_HasIntersection(&Level.Ufo->Geometry,
+		                       &Level.Enemies[idx]->Geometry) == SDL_TRUE)
+		{
+			return true;
+		}
+	}
+	return false;
+}

@@ -1,7 +1,7 @@
 #include "model.hpp"
 
 Model::Model(Graphics& Graphics, const std::string passed_name,
-             const float passed_speed,
+             const double passed_speed,
              const Uint32 passed_single_frame_time_ms):
              name(passed_name), max_speed(passed_speed),
              single_frame_time_ms(passed_single_frame_time_ms)
@@ -37,7 +37,7 @@ Model::Model(Graphics& Graphics, const std::string passed_name,
 	}
 	Geometry.w *= Graphics.pixelart_px_sz;
 	Geometry.h *= Graphics.pixelart_px_sz;
-	step        = 0.0f;
+	step        = 0.0;
 
 	is_initialized = true;
 }
@@ -66,7 +66,7 @@ void Model::calc_pos(Graphics& Graphics)
 	step = max_speed * Graphics.delta_time_s * Graphics.pixelart_px_sz;
 }
 
-void Model::move(Graphics& Graphics, const float offset_x, const float offset_y)
+void Model::move(Graphics& Graphics, const double offset_x, const double offset_y)
 {
 	pos_x += offset_x * Graphics.delta_time_s * Graphics.pixelart_px_sz;
 	pos_y += offset_y * Graphics.delta_time_s * Graphics.pixelart_px_sz;
@@ -101,7 +101,7 @@ void Model::animate(const Graphics& Graphics)
 {
 	if(single_frame_time_ms > 0)
 	{
-		frame_elapsed_time_ms += Graphics.delta_time_s * 1000.0f;
+		frame_elapsed_time_ms += Graphics.delta_time_s * 1000.0;
 
 		if(frame_elapsed_time_ms >= single_frame_time_ms)
 		{

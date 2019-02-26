@@ -23,8 +23,8 @@ class Font
 	SDL_Texture*      Texture;
 
 	SDL_Rect Geometry; // Textures's position and size.
-	float    pos_x;
-	float    pos_y;
+	double    pos_x;
+	double    pos_y;
 
 	Font(Graphics&, const std::string, const int);
 	~Font();

@@ -16,15 +16,16 @@ class Game
 	public:
 	bool is_initialized;
 
-	Graphics* Gfx;
-	Menu*     Menus;
-	Keyboard* Kboard;
-	Level*    Cosmic;
-
-	bool loop();
-
 	Game();
 	~Game();
+
+	void loop();
+
+	private:
+	Graphics* Gfx_;
+	Menu*     Menus_;
+	Keyboard* Kboard_;
+	Level*    Cosmic_;
 };
 
 #endif

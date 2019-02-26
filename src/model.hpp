@@ -21,10 +21,10 @@ class Model
 	std::size_t                             current_frame_idx;
 
 	SDL_Rect    Geometry;  // Textures's position and size.
-	const float max_speed; // Pixel position move in a one second.
-	float       step;      // Pixel position move in a one frame.
-	float       pos_x;     // Virtual Y-position to use with the delta time.
-	float       pos_y;     // Virtual X-position to use with the delta time.
+	const double max_speed; // Pixel position move in a one second.
+	double       step;      // Pixel position move in a one frame.
+	double       pos_x;     // Virtual Y-position to use with the delta time.
+	double       pos_y;     // Virtual X-position to use with the delta time.
 
 	// TODO: CONST?
 	int min_x;
@@ -32,11 +32,11 @@ class Model
 	int min_y;
 	int max_y;
 
-	Model(Graphics&, const std::string, const float, const Uint32);
+	Model(Graphics&, const std::string, const double, const Uint32);
 	~Model();
 
 	void calc_pos(Graphics&);
-	void move(Graphics&, const float, const float);
+	void move(Graphics&, const double, const double);
 	void animate(const Graphics&);
 
 	private:

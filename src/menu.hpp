@@ -14,6 +14,8 @@
 class Menu
 {
 	public:
+	bool is_initialized;
+
 	enum
 	{
 		primary_enabled,
@@ -29,7 +31,8 @@ class Menu
 	unsigned int         selected_button_idx;
 	std::vector<Button*> Buttons;
 
-	Menu();
+	Menu(Graphics&);
+	~Menu();
 
 	bool primary(Graphics&, Keyboard&);
 	bool pause(Graphics&, Keyboard&, Level&);

@@ -27,8 +27,9 @@ class Graphics
 {
 	public:
 	bool            is_initialized;
-	float           delta_time_s;
-	float           pixelart_px_sz;
+	double          delta_time_s;
+	double          old_pixelart_px_sz;
+	double          pixelart_px_sz;
 	SDL_DisplayMode Display;
 	SDL_Renderer*   Renderer;
 
@@ -36,7 +37,7 @@ class Graphics
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string);
-	bool         init_frame();
+	bool         init_frame(Level& Level);
 	bool         count_fps();
 	bool         render_level(Level&, const bool);
 	bool         render_primary_menu(Menu&);
@@ -45,12 +46,14 @@ class Graphics
 
 	private:
 	SDL_Window* Window;
+	int         width;
+	int         height;
 	Uint32      frame_start_time_ms;
 	Uint32      frame_elapsed_time_ms;
 	Uint32      fps;
 
 	SDL_Surface* load_image(const std::string);
-	float        get_pixelart_px_sz();
+	bool         get_pixelart_px_sz();
 	bool         render_tiled_background(Background&);
 	bool         render_model(Model&);
 	bool         render_font(Font&);

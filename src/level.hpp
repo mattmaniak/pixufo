@@ -9,12 +9,14 @@
 #include "entity.hpp"
 #include "background.hpp"
 #include "player.hpp"
-#include "slowdown.hpp"
 
 class Level
 {
 	public:
-	bool                 is_initialized;
+	bool is_initialized;
+
+	unsigned int width;
+	unsigned int height;
 
 	Background*          Space_bg;
 	Player*              Ufo;
@@ -25,11 +27,9 @@ class Level
 	~Level();
 
 	void reset();
+	void set_entities_borders();
 
 	private:
-	const unsigned int width;
-	const unsigned int height;
-
 	void set_model_borders(Model*);
 };
 

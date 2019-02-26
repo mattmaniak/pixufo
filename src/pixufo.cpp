@@ -20,94 +20,123 @@ Game::Game()
 		return;
 	}
 
-	Gfx = new Graphics;
-	if(!Gfx->is_initialized)
+	Gfx_ = new Graphics;
+	if(!Gfx_->is_initialized)
 	{
 		is_initialized = false;
 		return;
 	}
 
-	Menus  = new Menu;
-	Kboard = new Keyboard;
+	Menus_ = new Menu(*Gfx_);
+	if(!Menus_->is_initialized)
+	{
+		is_initialized = false;
+		return;
+	}
+	Kboard_ = new Keyboard;
 
+	Cosmic_ = new Level(*Gfx_, "background_level", 2);
+	if(!Cosmic_->is_initialized)
+	{
+		is_initialized = false;
+		return;
+	}
 	is_initialized = true;
+
 }
 
 Game::~Game()
 {
-	if(Gfx->is_initialized)
+	if(Gfx_->is_initialized)
 	{
-		delete Gfx;
+		delete Gfx_;
 	}
-	delete Menus;
-	delete Kboard;
+	if(Cosmic_->is_initialized)
+	{
+		delete Cosmic_;
+	}
+	if(!Menus_->is_initialized)
+	{
+		delete Menus_;
+	}
+	delete Kboard_;
 
 	TTF_Quit();
 	SDL_Quit();
 }
 
+void Game::loop()
+{
+	for(;;)
+	{
+		if(!Gfx_->init_frame(*Cosmic_))
+		{
+			return;
+		}
+		if(Menus_->mode == Menus_->primary_enabled) // Opened by default.
+		{
+			if(!Menus_->primary(*Gfx_, *Kboard_))
+			{
+				return;
+			}
+			Cosmic_->reset();
+			if(!Gfx_->init_frame(*Cosmic_)) // Ignored at the first time.
+			{
+				return;
+			}
+		}
+		if(!Gfx_->render_level(*Cosmic_, false))
+		{
+			return;
+		}
+		if(!Kboard_->move_player(*Cosmic_->Ufo, *Menus_, *Gfx_))
+		{
+			return;
+		}
+
+		physics::check_model_pos(*Cosmic_->Ufo);
+		if(physics::check_player_collision(*Cosmic_))
+		{
+			SDL_Delay(2000);
+			return;
+		}
+
+		for(std::size_t idx = 0; idx < Cosmic_->enemies_amount; idx++)
+		{
+			physics::check_model_pos(*Cosmic_->Enemies[idx]);
+		}
+		if(Menus_->mode == Menus_->pause_enabled)
+		{
+			if(!Menus_->pause(*Gfx_, *Kboard_, *Cosmic_))
+			{
+				return;
+			}
+			SDL_Delay(500);
+			if(!Gfx_->init_frame(*Cosmic_)) // Prevent entities speed-ups.
+			{
+				return;
+			}
+		}
+		if(!Gfx_->clean_renderer())
+		{
+			return;
+		}
+		if(!Gfx_->count_fps())
+		{
+			return;
+		}
+	}
+}
+
 int main()
 {
 	Game Pixufo;
+
 	if(!Pixufo.is_initialized)
 	{
 		return 0;
 	}
-	Level Cosmic(*Pixufo.Gfx, "background_level", 2);
-	if(!Cosmic.is_initialized)
-	{
-		return 0;
-	}
+	Pixufo.loop();
 
-	for(;;)
-	{
-		if(!Pixufo.Gfx->init_frame())
-		{
-			return false;
-		}
-		if(Pixufo.Menus->mode == Pixufo.Menus->primary_enabled) // Opened by default.
-		{
-			if(!Pixufo.Menus->primary(*Pixufo.Gfx, *Pixufo.Kboard))
-			{
-				return 0;
-			}
-			Cosmic.reset();
-			if(!Pixufo.Gfx->init_frame()) // Ignored at the first time.
-			{
-				return false;
-			}
-		}
-		if(!Pixufo.Gfx->render_level(Cosmic, false))
-		{
-			return 0;
-		}
-		if(!Pixufo.Kboard->move_player(*Cosmic.Ufo, *Pixufo.Menus, *Pixufo.Gfx))
-		{
-			return 0;
-		}
-		physics::check_model_pos(*Cosmic.Ufo);
-
-		for(std::size_t idx = 0; idx < Cosmic.enemies_amount; idx++)
-		{
-			physics::check_model_pos(*Cosmic.Enemies[idx]);
-		}
-		if(Pixufo.Menus->mode == Pixufo.Menus->pause_enabled)
-		{
-			if(!Pixufo.Menus->pause(*Pixufo.Gfx, *Pixufo.Kboard, Cosmic))
-			{
-				return 0;
-			}
-			SDL_Delay(500);
-			Pixufo.Gfx->init_frame(); // Prevent entities speed-ups.
-		}
-		if(!Pixufo.Gfx->clean_renderer())
-		{
-			return 0;
-		}
-		if(!Pixufo.Gfx->count_fps())
-		{
-			return 0;
-		}
-	}
 	return 0;
 }

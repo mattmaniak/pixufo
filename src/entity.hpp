@@ -8,21 +8,7 @@
 class Entity: public Model
 {
 	public:
-	enum
-	{
-		up,
-		down,
-		left,
-		right,
-
-		right_up,
-		right_down,
-		left_down,
-		left_up
-	}
-	direction;
-
-	Entity(Graphics&, const std::string, const float, const Uint32);
+	Entity(Graphics&, const std::string, const double, const Uint32);
 
 	void randomize_initial_pos();
 };

@@ -6,6 +6,7 @@
 namespace physics
 {
 	void check_model_pos(Model&);
+	bool check_player_collision(Level&);
 }
 
 #endif
