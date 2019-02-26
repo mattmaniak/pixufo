@@ -1,7 +1,7 @@
 #include "slowdown.hpp"
 #include "player.hpp"
 
-Player_slowdown::Player_slowdown(): max_time_s(0.6f)
+Player_slowdown::Player_slowdown(): max_time_s(0.4f)
 {
 	elapsed_time_s = 0.0f;
 }
@@ -44,7 +44,8 @@ void Player_slowdown::count_ratio(Graphics& Graphics, dir passed_direction)
 void Player_slowdown::move(Graphics& Graphics, Player& Ufo)
 {
 	float vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0f)
-	                                + std::pow(Ufo.vertical_speed, 2.0f));
+	                                + std::pow(Ufo.vertical_speed, 2.0f))
+	                       / Ufo.max_speed;
 
 	switch(direction)
 	{
@@ -67,8 +68,8 @@ void Player_slowdown::move(Graphics& Graphics, Player& Ufo)
 	// Prevents diagonal speed-ups.
 	if((Ufo.directions_amount == 2) && (vector_length > 1.0f))
 	{
-		Ufo.horizontal_step /= vector_length / 100.0f;
-		Ufo.vertical_step   /= vector_length / 100.0f;
+		Ufo.horizontal_step /= vector_length;
+		Ufo.vertical_step   /= vector_length;
 	}
 	switch(direction)
 	{

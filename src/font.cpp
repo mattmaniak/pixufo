@@ -1,7 +1,7 @@
 #include "font.hpp"
 
 Font::Font(Graphics& Graphics, const std::string passed_text,
-           const int passed_sz): name("Blox2.ttf"), text(passed_text),
+           const int passed_sz): name(FONTNAME), text(passed_text),
            sz(passed_sz)
 {
 	const std::string directory = "font";

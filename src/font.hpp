@@ -8,6 +8,8 @@
 #include "error.hpp"
 #include "graphics.hpp"
 
+#define FONTNAME "Blox2.ttf"
+
 class Font
 {
 	public:
@@ -20,7 +22,7 @@ class Font
 	SDL_Color         Color;
 	SDL_Texture*      Texture;
 
-	SDL_Rect Geometry;  // Textures's position and size.
+	SDL_Rect Geometry; // Textures's position and size.
 	float    pos_x;
 	float    pos_y;
 

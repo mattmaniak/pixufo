@@ -12,11 +12,11 @@
 2. Clone the repository with Git and enter it's directory.
 
 3. Download SDL2 development libraries.
-[SDL2-devel-2.*.*-mingw.tar.gz](https://www.libsdl.org/download-2.0.php)
-Extract the SDL2-devel-2.*.*-mingw.tar.gz to SDL2-devel-2.*.*-mingw.tar and
-then to a normal directory. If You have got 32-bit compiler, copy the
-"i686-w64-mingw32", otherwise (64-bit) copy the "x86_64-w64-mingw32" and paste
-it to Your's TDM-GCC installation directory.
+[SDL2-devel-2.0.*-mingw.tar.gz](https://www.libsdl.org/download-2.0.php)
+[SDL2_ttf-devel-2.0.*-mingw.tar.gz](https://www.libsdl.org/projects/SDL_ttf/)
+Extract the SDL2-devel-2.0.*-mingw.tar.gz to SDL2-devel-2.*.*-mingw.tar and
+then to a normal directory. Copy the "x86_64-w64-mingw32" and paste it to Your's
+TDM-GCC-64 installation directory.
 
 Asterisk sign is the placeholder for minor and patch version numbers. They can
 be vary between.

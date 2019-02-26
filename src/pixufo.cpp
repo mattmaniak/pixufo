@@ -5,67 +5,85 @@
 #undef main
 #endif
 
-int exit_game()
-{
-	TTF_Quit();
-	SDL_Quit();
-	return 0;
-}
-
-int main()
+Game::Game()
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2.");
-		return exit_game();
+		is_initialized = false;
+		return;
 	}
 	if(TTF_Init() != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2 ttf module.");
-		return exit_game();
+		is_initialized = false;
+		return;
 	}
 
-	Menu Menu;
-	Keyboard Keyboard;
-
-	Graphics Graphics;
-	if(!Graphics.is_initialized)
+	Gfx = new Graphics;
+	if(!Gfx->is_initialized)
 	{
-		return exit_game();
+		is_initialized = false;
+		return;
 	}
-	Level Cosmic(Graphics, "background_level", 2);
+
+	Menus  = new Menu;
+	Kboard = new Keyboard;
+
+	is_initialized = true;
+}
+
+Game::~Game()
+{
+	if(Gfx->is_initialized)
+	{
+		delete Gfx;
+	}
+	delete Menus;
+	delete Kboard;
+
+	TTF_Quit();
+	SDL_Quit();
+}
+
+int main()
+{
+	Game Pixufo;
+	if(!Pixufo.is_initialized)
+	{
+		return 0;
+	}
+	Level Cosmic(*Pixufo.Gfx, "background_level", 2);
 	if(!Cosmic.is_initialized)
 	{
-		return exit_game();
+		return 0;
 	}
 
 	for(;;)
 	{
-		if(!Graphics.init_frame())
+		if(!Pixufo.Gfx->init_frame())
 		{
 			return false;
 		}
-
-		if(Menu.mode == Menu.primary_enabled) // Opened by default.
+		if(Pixufo.Menus->mode == Pixufo.Menus->primary_enabled) // Opened by default.
 		{
-			if(!Menu.primary(Graphics, Keyboard))
+			if(!Pixufo.Menus->primary(*Pixufo.Gfx, *Pixufo.Kboard))
 			{
-				return exit_game();
+				return 0;
 			}
 			Cosmic.reset();
-			if(!Graphics.init_frame()) // Ignored at the first time.
+			if(!Pixufo.Gfx->init_frame()) // Ignored at the first time.
 			{
 				return false;
 			}
 		}
-		if(!Graphics.render_level(Cosmic, false))
+		if(!Pixufo.Gfx->render_level(Cosmic, false))
 		{
-			return exit_game();
+			return 0;
 		}
-
-		if(!Keyboard.move_player(*Cosmic.Ufo, Menu, Graphics))
+		if(!Pixufo.Kboard->move_player(*Cosmic.Ufo, *Pixufo.Menus, *Pixufo.Gfx))
 		{
-			return exit_game();
+			return 0;
 		}
 		physics::check_model_pos(*Cosmic.Ufo);
 
@@ -73,24 +91,23 @@ int main()
 		{
 			physics::check_model_pos(*Cosmic.Enemies[idx]);
 		}
-
-		if(Menu.mode == Menu.pause_enabled)
+		if(Pixufo.Menus->mode == Pixufo.Menus->pause_enabled)
 		{
-			if(!Menu.pause(Graphics, Keyboard, Cosmic))
+			if(!Pixufo.Menus->pause(*Pixufo.Gfx, *Pixufo.Kboard, Cosmic))
 			{
-				return exit_game();
+				return 0;
 			}
 			SDL_Delay(500);
-			Graphics.init_frame(); // Prevent entities speed-ups.
+			Pixufo.Gfx->init_frame(); // Prevent entities speed-ups.
 		}
-		if(!Graphics.clean_renderer())
+		if(!Pixufo.Gfx->clean_renderer())
 		{
-			return false;
+			return 0;
 		}
-		if(!Graphics.count_fps())
+		if(!Pixufo.Gfx->count_fps())
 		{
-			return exit_game();
+			return 0;
 		}
 	}
-	return exit_game();
+	return 0;
 }

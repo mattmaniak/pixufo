@@ -11,4 +11,20 @@
 #include "player.hpp"
 #include "physics.hpp"
 
+class Game
+{
+	public:
+	bool is_initialized;
+
+	Graphics* Gfx;
+	Menu*     Menus;
+	Keyboard* Kboard;
+	Level*    Cosmic;
+
+	bool loop();
+
+	Game();
+	~Game();
+};
+
 #endif
