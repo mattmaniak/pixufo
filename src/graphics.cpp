@@ -7,31 +7,44 @@ Graphics::Graphics()
 	const int unused_sz      = 0;
 	const int default_driver = -1;
 
-	SDL_Surface* icon = load_image("icon");
-	if(icon == nullptr)
+	SDL_Surface* icon;
+
+	// if(SDL_GetDesktopDisplayMode(CURRENT_SCREEN_IDX, &Display_mode)
+	//    != SDL2_SUCCESS)
+	// {
+	// 	error::show_box("Can't get the screen size at the initialization.");
+	// 	is_initialized = false;
+	// 	return;
+	// }
+	if(SDL_GetDisplayBounds(CURRENT_SCREEN_IDX, &Display) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't load the icon.");
+		error::show_box("Can't get the screen size at the initialization.");
 		is_initialized = false;
 		return;
 	}
-	if(SDL_GetDesktopDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
+
+	if((Display.w < MIN_DISPLAY_WIDTH)
+	   || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
-		error::show_box("Can't get the desktop size.");
+		error::show_box("At least the HD screen resolution is required.");
 		is_initialized = false;
 		return;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
 	                          SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
 	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
+
 	if(Window == nullptr)
 	{
 		error::show_box("Can't create the window.");
 		is_initialized = false;
 		return;
 	}
-	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
+
+	icon = load_image("icon");
+	if(icon == nullptr)
 	{
-		error::show_box("At least the HD display resolution is required.");
+		error::show_box("Can't load the window icon.");
 		is_initialized = false;
 		return;
 	}
@@ -39,8 +52,7 @@ Graphics::Graphics()
 	SDL_FreeSurface(icon);
 
 	Renderer = SDL_CreateRenderer(Window, default_driver,
-	                              SDL_RENDERER_ACCELERATED
-	                              | SDL_RENDERER_PRESENTVSYNC);
+	                              SDL_RENDERER_ACCELERATED);
 	if(Renderer == nullptr)
 	{
 		error::show_box("Can't create the renderer.");
@@ -62,7 +74,8 @@ Graphics::Graphics()
 		is_initialized = false;
 		return;
 	}
-	old_pixelart_px_sz = 0.0;
+	// Prev_display_mode = Display_mode;
+	Prev_display = Display;
 
 	is_initialized = true;
 }
@@ -120,16 +133,24 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 
 bool Graphics::get_pixelart_px_sz()
 {
-	if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
+	if(SDL_GetDisplayBounds(CURRENT_SCREEN_IDX, &Display)
+	   != SDL2_SUCCESS)
 	{
-		error::show_box("Can't get the current display size.");
+		error::show_box("Can't get the screen size at the initialization.");
 		return false;
 	}
-	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
-	{
-		error::show_box("Current display resolution is smaller than HD.");
-		return false;
-	}
+	// if(SDL_GetDesktopDisplayMode(CURRENT_SCREEN_IDX, &Display_mode)
+	//    != SDL2_SUCCESS)
+	// {
+	// 	error::show_box("Can't get the current display size.");
+	// 	return false;
+	// }
+	// if((Display_mode.w < MIN_DISPLAY_WIDTH)
+	//    || (Display_mode.h < MIN_DISPLAY_HEIGHT))
+	// {
+	// 	error::show_box("Current screen resolution is smaller than HD.");
+	// 	return false;
+	// }
 	pixelart_px_sz = Display.w / PIXELART_DISPLAY_WIDTH;
 
 	return true;
@@ -139,22 +160,42 @@ bool Graphics::init_frame(Level& Level)
 {
 	frame_start_time_ms = SDL_GetTicks();
 
+	// Prev_display_mode = Display_mode;
+
 	if(!get_pixelart_px_sz())
 	{
 		return false;
 	}
-	if(pixelart_px_sz != old_pixelart_px_sz) // Game resolution has changed.
+	if(SDL_GetDisplayUsableBounds(CURRENT_SCREEN_IDX, &Display)
+	   != SDL2_SUCCESS)
 	{
-		if(SDL_GetCurrentDisplayMode(CURRENT_DISPLAY, &Display) != SDL2_SUCCESS)
+		error::show_box("Can't get the screen size at the initialization.");
+		return false;
+	}
+	if((Display.w != Prev_display.w) // Game resolution has changed.
+	   || (Display.h != Prev_display.h))
+	{
+		std::cout << "DODO" << std::endl;
+
+		if(SDL_GetDisplayBounds(CURRENT_SCREEN_IDX, &Display)
+		   != SDL2_SUCCESS)
 		{
-			error::show_box("Can't check the current game resolution.");
+			error::show_box("Can't get the screen size at the initialization.");
 			return false;
 		}
-		Level.width  = Display.w;
-		Level.height = Display.h;
-		Level.set_entities_borders();
+		Level.set_entities_borders(*this);
+
+		if(SDL_GetDisplayUsableBounds(CURRENT_SCREEN_IDX, &Display)
+		   != SDL2_SUCCESS)
+		{
+			error::show_box("Can't get the screen size at the initialization.");
+			return false;
+		}
 	}
-	old_pixelart_px_sz = pixelart_px_sz;
+	Prev_display = Display;
+
+	std::cout << "DM: " << Display.w << ' ' << Display.h
+	<< " PV: " << Prev_display.w << ' ' << Prev_display.h << std::endl;
 
 	return true;
 }
@@ -173,6 +214,11 @@ bool Graphics::count_fps()
 
 	if(frame_elapsed_time_ms >= 1000.0)
 	{
+
+#ifdef DEBUG_ON_LINUX
+		std::cout << "FPS: " << fps << std::endl;
+#endif
+
 		frame_elapsed_time_ms = 0.0;
 		fps                   = 0;
 	}
@@ -333,11 +379,11 @@ bool Graphics::render_buttons(Menu& Menu)
 
 	for(std::size_t idx = 0; idx <= Menu.max_button_idx; idx++)
 	{
-		Menu.Buttons[idx]->Geometry.x = (Display.w
+		Menu.Buttons[idx]->Geometry.x = (1920
 		                                - Menu.Buttons[idx]->Geometry.w)
 		                                - padding;
 
-		Menu.Buttons[idx]->Geometry.y = Display.h
+		Menu.Buttons[idx]->Geometry.y = 1080
 		                                - (Menu.Buttons[idx]->Geometry.h
 		                                * (Menu.max_button_idx + 1))
 		                                + (Menu.Buttons[idx]->idx

@@ -8,7 +8,7 @@
 
 #include "error.hpp"
 
-#define CURRENT_DISPLAY 0
+#define CURRENT_SCREEN_IDX 0
 #define PIXELART_DISPLAY_WIDTH 640.0f
 
 #define MIN_DISPLAY_WIDTH  1280
@@ -28,9 +28,13 @@ class Graphics
 	public:
 	bool            is_initialized;
 	double          delta_time_s;
-	double          old_pixelart_px_sz;
 	double          pixelart_px_sz;
-	SDL_DisplayMode Display;
+	// SDL_DisplayMode Display_mode;
+	// SDL_DisplayMode Prev_display_mode;
+
+	SDL_Rect        Display;
+	SDL_Rect        Prev_display;
+
 	SDL_Renderer*   Renderer;
 
 	Graphics();
@@ -46,8 +50,6 @@ class Graphics
 
 	private:
 	SDL_Window* Window;
-	int         width;
-	int         height;
 	Uint32      frame_start_time_ms;
 	Uint32      frame_elapsed_time_ms;
 	Uint32      fps;

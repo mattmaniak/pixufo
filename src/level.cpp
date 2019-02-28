@@ -66,8 +66,11 @@ void Level::reset()
 	}
 }
 
-void Level::set_entities_borders()
+void Level::set_entities_borders(Graphics& Graphics)
 {
+	width  = Graphics.Display.w;
+	height = Graphics.Display.h;
+
 	set_model_borders(Ufo);
 
 	for(std::size_t idx = 0; idx < enemies_amount; idx++)

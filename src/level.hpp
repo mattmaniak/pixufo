@@ -27,7 +27,7 @@ class Level
 	~Level();
 
 	void reset();
-	void set_entities_borders();
+	void set_entities_borders(Graphics&);
 
 	private:
 	void set_model_borders(Model*);

@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 #include <array>
+#include <cmath>
 
 #include "model.hpp"
 #include "graphics.hpp"

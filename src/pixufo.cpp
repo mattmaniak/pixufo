@@ -132,11 +132,8 @@ int main()
 {
 	Game Pixufo;
 
-	if(!Pixufo.is_initialized)
+	if(Pixufo.is_initialized)
 	{
-		return 0;
+		Pixufo.loop();
 	}
-	Pixufo.loop();
-
-	return 0;
 }
