@@ -22,7 +22,7 @@ class Player: public Model
 
 	std::size_t directions_amount;
 
-	std::array<Player_movement*, AXES_AMOUNT> Slowdowns;
+	std::array<Player_movement*, AXES_AMOUNT> Movements;
 
 	Player(Graphics&);
 	~Player();

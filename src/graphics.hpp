@@ -29,8 +29,6 @@ class Graphics
 	bool            is_initialized;
 	double          delta_time_s;
 	double          pixelart_px_sz;
-	// SDL_DisplayMode Display_mode;
-	// SDL_DisplayMode Prev_display_mode;
 
 	SDL_Rect        Display;
 	SDL_Rect        Prev_display;

@@ -54,8 +54,8 @@ Level::~Level()
 
 void Level::reset()
 {
-	Ufo->Slowdowns[horizontal]->elapsed_time_s = 0.0;
-	Ufo->Slowdowns[vertical]->elapsed_time_s   = 0.0;
+	Ufo->Movements[horizontal]->elapsed_time_s = 0.0;
+	Ufo->Movements[vertical]->elapsed_time_s   = 0.0;
 
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;

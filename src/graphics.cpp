@@ -9,13 +9,6 @@ Graphics::Graphics()
 
 	SDL_Surface* icon;
 
-	// if(SDL_GetDesktopDisplayMode(CURRENT_SCREEN_IDX, &Display_mode)
-	//    != SDL2_SUCCESS)
-	// {
-	// 	error::show_box("Can't get the screen size at the initialization.");
-	// 	is_initialized = false;
-	// 	return;
-	// }
 	if(SDL_GetDisplayBounds(CURRENT_SCREEN_IDX, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the screen size at the initialization.");
@@ -23,8 +16,7 @@ Graphics::Graphics()
 		return;
 	}
 
-	if((Display.w < MIN_DISPLAY_WIDTH)
-	   || (Display.h < MIN_DISPLAY_HEIGHT))
+	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
 		error::show_box("At least the HD screen resolution is required.");
 		is_initialized = false;
@@ -74,9 +66,6 @@ Graphics::Graphics()
 		is_initialized = false;
 		return;
 	}
-	// Prev_display_mode = Display_mode;
-	Prev_display = Display;
-
 	is_initialized = true;
 }
 
@@ -133,24 +122,8 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 
 bool Graphics::get_pixelart_px_sz()
 {
-	if(SDL_GetDisplayBounds(CURRENT_SCREEN_IDX, &Display)
-	   != SDL2_SUCCESS)
-	{
-		error::show_box("Can't get the screen size at the initialization.");
-		return false;
-	}
-	// if(SDL_GetDesktopDisplayMode(CURRENT_SCREEN_IDX, &Display_mode)
-	//    != SDL2_SUCCESS)
-	// {
-	// 	error::show_box("Can't get the current display size.");
-	// 	return false;
-	// }
-	// if((Display_mode.w < MIN_DISPLAY_WIDTH)
-	//    || (Display_mode.h < MIN_DISPLAY_HEIGHT))
-	// {
-	// 	error::show_box("Current screen resolution is smaller than HD.");
-	// 	return false;
-	// }
+	SDL_GetWindowSize(Window, &Display.w, &Display.h);
+
 	pixelart_px_sz = Display.w / PIXELART_DISPLAY_WIDTH;
 
 	return true;
@@ -160,43 +133,16 @@ bool Graphics::init_frame(Level& Level)
 {
 	frame_start_time_ms = SDL_GetTicks();
 
-	// Prev_display_mode = Display_mode;
+	Prev_display = Display;
 
 	if(!get_pixelart_px_sz())
 	{
 		return false;
 	}
-	if(SDL_GetDisplayUsableBounds(CURRENT_SCREEN_IDX, &Display)
-	   != SDL2_SUCCESS)
+	if((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
 	{
-		error::show_box("Can't get the screen size at the initialization.");
-		return false;
-	}
-	if((Display.w != Prev_display.w) // Game resolution has changed.
-	   || (Display.h != Prev_display.h))
-	{
-		std::cout << "DODO" << std::endl;
-
-		if(SDL_GetDisplayBounds(CURRENT_SCREEN_IDX, &Display)
-		   != SDL2_SUCCESS)
-		{
-			error::show_box("Can't get the screen size at the initialization.");
-			return false;
-		}
 		Level.set_entities_borders(*this);
-
-		if(SDL_GetDisplayUsableBounds(CURRENT_SCREEN_IDX, &Display)
-		   != SDL2_SUCCESS)
-		{
-			error::show_box("Can't get the screen size at the initialization.");
-			return false;
-		}
 	}
-	Prev_display = Display;
-
-	std::cout << "DM: " << Display.w << ' ' << Display.h
-	<< " PV: " << Prev_display.w << ' ' << Prev_display.h << std::endl;
-
 	return true;
 }
 
@@ -379,11 +325,11 @@ bool Graphics::render_buttons(Menu& Menu)
 
 	for(std::size_t idx = 0; idx <= Menu.max_button_idx; idx++)
 	{
-		Menu.Buttons[idx]->Geometry.x = (1920
+		Menu.Buttons[idx]->Geometry.x = (Display.w
 		                                - Menu.Buttons[idx]->Geometry.w)
 		                                - padding;
 
-		Menu.Buttons[idx]->Geometry.y = 1080
+		Menu.Buttons[idx]->Geometry.y = Display.h
 		                                - (Menu.Buttons[idx]->Geometry.h
 		                                * (Menu.max_button_idx + 1))
 		                                + (Menu.Buttons[idx]->idx

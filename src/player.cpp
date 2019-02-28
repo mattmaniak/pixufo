@@ -12,7 +12,7 @@ Player::Player(Graphics& Graphics): Model(Graphics, "ufo", 150.0, 0)
 
 	for(std::size_t axis_idx = 0; axis_idx < AXES_AMOUNT; axis_idx++)
 	{
-		Slowdowns[axis_idx] = new Player_movement;
+		Movements[axis_idx] = new Player_movement;
 	}
 }
 
@@ -20,7 +20,7 @@ Player::~Player()
 {
 	for(std::size_t axis_idx = 0; axis_idx < AXES_AMOUNT; axis_idx++)
 	{
-		delete Slowdowns[axis_idx];
+		delete Movements[axis_idx];
 	}
 }
 
