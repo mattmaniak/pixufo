@@ -5,17 +5,15 @@
 #include <vector>
 
 #include "error.hpp"
-#include "background.hpp"
+#include "scene.hpp"
 #include "button.hpp"
 #include "graphics.hpp"
 #include "keyboard.hpp"
 #include "level.hpp"
 
-class Menu
+class Menu: public Scene
 {
 	public:
-	bool is_initialized;
-
 	enum
 	{
 		primary_enabled,
@@ -24,9 +22,8 @@ class Menu
 	}
 	mode;
 
-	Model*               Select_arrow;
-	Background*          Space_bg;
-	Model*               Logo;
+	Sprite*              Select_arrow;
+	Sprite*              Logo;
 	unsigned int         max_button_idx;
 	unsigned int         selected_button_idx;
 	std::vector<Button*> Buttons;

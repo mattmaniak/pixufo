@@ -3,9 +3,9 @@
 
 #include <random>
 
-#include "model.hpp"
+#include "sprite.hpp"
 
-class Entity: public Model
+class Entity: public Sprite
 {
 	public:
 	Entity(Graphics&, const std::string, const double, const Uint32);

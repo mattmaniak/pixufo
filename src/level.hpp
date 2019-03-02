@@ -6,19 +6,19 @@
 
 #include "error.hpp"
 #include "graphics.hpp"
+#include "scene.hpp"
 #include "entity.hpp"
-#include "background.hpp"
 #include "player.hpp"
 
-class Level
+class Level: public Scene
 {
 	public:
-	bool is_initialized;
-
-	int width;
-	int height;
-
-	Background*          Space_bg;
+	// bool is_initialized;
+	//
+	// int width;
+	// int height;
+	//
+	// Background*          Space_bg;
 	Player*              Ufo;
 	std::vector<Entity*> Enemies;
 	std::size_t          enemies_amount;
@@ -30,7 +30,7 @@ class Level
 	void set_entities_borders(Graphics&);
 
 	private:
-	void set_model_borders(Model*);
+	void set_model_borders(Sprite&);
 };
 
 #endif

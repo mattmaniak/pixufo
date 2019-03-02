@@ -1,7 +1,7 @@
 TARGET =
 
 CC = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
+CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic
 LDFLAGS = -lSDL2 -lSDL2_ttf
 ASAN_FLAGS =
 
@@ -36,16 +36,20 @@ OBJS = $(patsubst $(SRC_DIR)/%.cpp, \
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
 	$(MKDIR_OBJ)
 	$(CC) -c -o $@ $< \
-	$(CXXFLAGS) \
+	$(CPPFLAGS) \
 
 # Builds the binary by linking object files.
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $^ \
-	$(CXXFLAGS) \
+	$(CPPFLAGS) \
 	$(LDFLAGS)
 
 address: LDFLAGS += $(ASAN_FLAGS)
 address: $(TARGET)
+
+debug: CPPFLAGS += -DDEBUG
+debug: clean
+debug: $(TARGET)
 
 .PHONY: clean
 

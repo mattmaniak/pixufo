@@ -20,22 +20,22 @@ Game::Game()
 		return;
 	}
 
-	Gfx_ = new Graphics;
-	if(!Gfx_->is_initialized)
+	Graphics_ = new Graphics;
+	if(!Graphics_->is_initialized)
 	{
 		is_initialized = false;
 		return;
 	}
 
-	Menus_ = new Menu(*Gfx_);
-	if(!Menus_->is_initialized)
+	Menu_ = new Menu(*Graphics_);
+	if(!Menu_->is_initialized)
 	{
 		is_initialized = false;
 		return;
 	}
-	Kboard_ = new Keyboard;
+	Keyboard_ = new Keyboard;
 
-	Cosmic_ = new Level(*Gfx_, "background_level", 2);
+	Cosmic_ = new Level(*Graphics_, "background_level", 2);
 	if(!Cosmic_->is_initialized)
 	{
 		is_initialized = false;
@@ -47,19 +47,19 @@ Game::Game()
 
 Game::~Game()
 {
-	if(Gfx_->is_initialized)
+	if(Graphics_->is_initialized)
 	{
-		delete Gfx_;
+		delete Graphics_;
 	}
 	if(Cosmic_->is_initialized)
 	{
 		delete Cosmic_;
 	}
-	if(!Menus_->is_initialized)
+	if(Menu_->is_initialized)
 	{
-		delete Menus_;
+		delete Menu_;
 	}
-	delete Kboard_;
+	delete Keyboard_;
 
 	TTF_Quit();
 	SDL_Quit();
@@ -69,33 +69,33 @@ void Game::loop()
 {
 	for(;;)
 	{
-		if(!Gfx_->init_frame(*Cosmic_))
+		if(!Graphics_->init_frame(*Cosmic_))
 		{
 			return;
 		}
-		if(Menus_->mode == Menus_->primary_enabled) // Opened by default.
+		if(Menu_->mode == Menu_->primary_enabled) // Opened by default.
 		{
-			if(!Menus_->primary(*Gfx_, *Kboard_))
+			if(!Menu_->primary(*Graphics_, *Keyboard_))
 			{
 				return;
 			}
 			Cosmic_->reset();
-			if(!Gfx_->init_frame(*Cosmic_)) // Ignored at the first time.
+			if(!Graphics_->init_frame(*Cosmic_)) // Ignored at the first time.
 			{
 				return;
 			}
 		}
-		if(!Gfx_->render_level(*Cosmic_, false))
+		if(!Graphics_->render_level(*Cosmic_, false))
 		{
 			return;
 		}
-		if(!Kboard_->move_player(*Cosmic_->Ufo, *Menus_, *Gfx_))
+		if(!Keyboard_->move_player(*Cosmic_->Ufo, *Menu_, *Graphics_))
 		{
 			return;
 		}
 
 		physics::check_model_pos(*Cosmic_->Ufo);
-		if(physics::check_player_collision(*Cosmic_))
+		if(physics::check_player_collision(*Graphics_, *Cosmic_))
 		{
 			SDL_Delay(2000);
 			return;
@@ -105,23 +105,23 @@ void Game::loop()
 		{
 			physics::check_model_pos(*Cosmic_->Enemies[idx]);
 		}
-		if(Menus_->mode == Menus_->pause_enabled)
+		if(Menu_->mode == Menu_->pause_enabled)
 		{
-			if(!Menus_->pause(*Gfx_, *Kboard_, *Cosmic_))
+			if(!Menu_->pause(*Graphics_, *Keyboard_, *Cosmic_))
 			{
 				return;
 			}
 			SDL_Delay(500);
-			if(!Gfx_->init_frame(*Cosmic_)) // Prevent entities speed-ups.
+			if(!Graphics_->init_frame(*Cosmic_)) // Prevent entities speed-ups.
 			{
 				return;
 			}
 		}
-		if(!Gfx_->clean_renderer())
+		if(!Graphics_->clean_renderer())
 		{
 			return;
 		}
-		if(!Gfx_->count_fps())
+		if(!Graphics_->count_fps())
 		{
 			return;
 		}

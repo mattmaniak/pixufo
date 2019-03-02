@@ -6,6 +6,7 @@
 #include <string>
 
 #include "error.hpp"
+#include "os.hpp"
 #include "graphics.hpp"
 
 #define FONTNAME "Blox2.ttf"
@@ -23,8 +24,8 @@ class Font
 	SDL_Texture*      Texture;
 
 	SDL_Rect Geometry; // Textures's position and size.
-	double    pos_x;
-	double    pos_y;
+	double   pos_x;
+	double   pos_y;
 
 	Font(Graphics&, const std::string, const int);
 	~Font();

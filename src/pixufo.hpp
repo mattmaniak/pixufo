@@ -4,7 +4,7 @@
 #include "error.hpp"
 #include "font.hpp"
 #include "graphics.hpp"
-#include "model.hpp"
+#include "sprite.hpp"
 #include "menu.hpp"
 #include "keyboard.hpp"
 #include "level.hpp"
@@ -22,9 +22,9 @@ class Game
 	void loop();
 
 	private:
-	Graphics* Gfx_;
-	Menu*     Menus_;
-	Keyboard* Kboard_;
+	Graphics* Graphics_;
+	Menu*     Menu_;
+	Keyboard* Keyboard_;
 	Level*    Cosmic_;
 };
 

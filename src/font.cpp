@@ -5,18 +5,7 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
            sz(passed_sz)
 {
 	const std::string directory = "font";
-
-#ifdef _WIN32
-	const std::string separator = "\\";
-
-#else
-#ifdef __linux__
-	const std::string separator = "/";
-#endif
-
-#endif
-
-	const std::string path = directory + separator + name;
+	const std::string path      = directory + SEPARATOR + name;
 
 	Font_ttf = TTF_OpenFont(path.c_str(), sz);
 	if(Font_ttf == nullptr)

@@ -1,15 +1,18 @@
 #ifndef BACKGROUND_HPP
 #define BACKGROUND_HPP
 
-#include "model.hpp"
+#include <limits>
+#include "sprite.hpp"
 
-class Background: public Model
+class Background: public Sprite
 {
 	public:
 	Background(Graphics&, const std::string);
 
-	void inf_scroll();
-};
+	bool tile_and_render(Graphics&);
 
+	private:
+	void inf_scroll_();
+};
 
 #endif

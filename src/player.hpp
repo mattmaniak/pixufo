@@ -4,14 +4,14 @@
 #include <array>
 #include <cmath>
 
-#include "model.hpp"
+#include "sprite.hpp"
 #include "graphics.hpp"
 
 #define AXES_AMOUNT 2
 
 class Player_movement;
 
-class Player: public Model
+class Player: public Sprite
 {
 	public:
 	double horizontal_speed;
@@ -22,7 +22,7 @@ class Player: public Model
 
 	std::size_t directions_amount;
 
-	std::array<Player_movement*, AXES_AMOUNT> Movements;
+	std::array<Player_movement*, AXES_AMOUNT> Movement;
 
 	Player(Graphics&);
 	~Player();
@@ -45,7 +45,7 @@ enum dir
 class Player_movement
 {
 	public:
-	dir         direction;
+	dir          direction;
 	const double max_time_s;
 	double       elapsed_time_s;
 

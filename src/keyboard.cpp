@@ -20,19 +20,19 @@ bool Keyboard::move_player(Player& Ufo, Menu& Menu, Graphics& Graphics)
 	}
 	if(keys[SDL_SCANCODE_LEFT])
 	{
-		Ufo.Movements[horizontal]->count_ratio(Graphics, left);
+		Ufo.Movement[horizontal]->count_ratio(Graphics, left);
 	}
 	if(keys[SDL_SCANCODE_RIGHT])
 	{
-		Ufo.Movements[horizontal]->count_ratio(Graphics, right);
+		Ufo.Movement[horizontal]->count_ratio(Graphics, right);
 	}
 	if(keys[SDL_SCANCODE_UP])
 	{
-		Ufo.Movements[vertical]->count_ratio(Graphics, up);
+		Ufo.Movement[vertical]->count_ratio(Graphics, up);
 	}
 	if(keys[SDL_SCANCODE_DOWN])
 	{
-		Ufo.Movements[vertical]->count_ratio(Graphics, down);
+		Ufo.Movement[vertical]->count_ratio(Graphics, down);
 	}
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
@@ -43,8 +43,8 @@ bool Keyboard::move_player(Player& Ufo, Menu& Menu, Graphics& Graphics)
 	{
 		Ufo.directions_amount = 2;
 	}
-	Ufo.Movements[vertical]->move(Graphics, Ufo);
-	Ufo.Movements[horizontal]->move(Graphics, Ufo);
+	Ufo.Movement[vertical]->move(Graphics, Ufo);
+	Ufo.Movement[horizontal]->move(Graphics, Ufo);
 
 	return true;
 }

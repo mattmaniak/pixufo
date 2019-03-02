@@ -7,8 +7,9 @@
 #include <string>
 
 #include "error.hpp"
+#include "os.hpp"
 
-#define CURRENT_SCREEN_IDX 0
+#define CURRENT_DISPLAY_IDX 0
 #define PIXELART_DISPLAY_WIDTH 640.0f
 
 #define MIN_DISPLAY_WIDTH  1280
@@ -20,7 +21,7 @@ class Level;
 class Background;
 class Enemy;
 class Menu;
-class Model;
+class Sprite;
 class Font;
 
 class Graphics
@@ -54,8 +55,6 @@ class Graphics
 
 	SDL_Surface* load_image(const std::string);
 	bool         get_pixelart_px_sz();
-	bool         render_tiled_background(Background&);
-	bool         render_model(Model&);
 	bool         render_font(Font&);
 	bool         render_buttons(Menu&);
 };

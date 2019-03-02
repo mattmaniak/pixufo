@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player::Player(Graphics& Graphics): Model(Graphics, "ufo", 150.0, 0)
+Player::Player(Graphics& Graphics): Sprite(Graphics, "ufo", 150.0, 0)
 {
 	horizontal_speed = 0.0;
 	vertical_speed   = 0.0;
@@ -12,7 +12,7 @@ Player::Player(Graphics& Graphics): Model(Graphics, "ufo", 150.0, 0)
 
 	for(std::size_t axis_idx = 0; axis_idx < AXES_AMOUNT; axis_idx++)
 	{
-		Movements[axis_idx] = new Player_movement;
+		Movement[axis_idx] = new Player_movement;
 	}
 }
 
@@ -20,7 +20,7 @@ Player::~Player()
 {
 	for(std::size_t axis_idx = 0; axis_idx < AXES_AMOUNT; axis_idx++)
 	{
-		delete Movements[axis_idx];
+		delete Movement[axis_idx];
 	}
 }
 
