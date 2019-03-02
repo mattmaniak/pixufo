@@ -33,8 +33,8 @@ bool physics::check_player_collision(Graphics& Graphics, Level& Level)
 		{
 			for(std::size_t pl_hb_idx = 0; pl_hb_idx < Level.Ufo->Hitbox_parts.size(); pl_hb_idx++)
 			{
-				Player_hbox_part.w = Level.Ufo->Hitbox_parts[pl_hb_idx].w * Graphics.pixelart_px_sz;
-				Player_hbox_part.h = Level.Ufo->Hitbox_parts[pl_hb_idx].h * Graphics.pixelart_px_sz;
+				Player_hbox_part.w = Level.Ufo->Hitbox_parts[pl_hb_idx].w;
+				Player_hbox_part.h = Level.Ufo->Hitbox_parts[pl_hb_idx].h;
 				Player_hbox_part.x = Level.Ufo->pos_x + (Level.Ufo->Hitbox_parts[pl_hb_idx].x * Graphics.pixelart_px_sz);
 				Player_hbox_part.y = Level.Ufo->pos_y + (Level.Ufo->Hitbox_parts[pl_hb_idx].y * Graphics.pixelart_px_sz);
 

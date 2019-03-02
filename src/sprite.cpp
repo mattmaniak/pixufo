@@ -72,7 +72,7 @@ bool Sprite::load_hitbox()
 {
 	std::size_t rects_amount = 0;
 
-	std::string path_to_file = path + SEPARATOR + "hitbox";
+	std::string path_to_file = path + SEPARATOR + "hitbox.txt";
 
 	FILE* Hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
 
