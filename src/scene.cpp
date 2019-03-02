@@ -2,10 +2,12 @@
 
 Scene::Scene(Graphics& Graphics, const std::string bg_name)
 {
+	is_initialized = false;
+
 	Bg = new Background(Graphics, bg_name);
 	if(!Bg->is_initialized)
 	{
-		is_initialized = false;
+		return;
 	}
 	is_initialized = true;
 }

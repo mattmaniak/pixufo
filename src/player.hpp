@@ -4,14 +4,14 @@
 #include <array>
 #include <cmath>
 
-#include "sprite.hpp"
+#include "entity.hpp"
 #include "graphics.hpp"
 
 #define AXES_AMOUNT 2
 
 class Player_movement;
 
-class Player: public Sprite
+class Player: public Entity
 {
 	public:
 	double horizontal_speed;

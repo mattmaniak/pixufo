@@ -2,11 +2,11 @@
 #define OS_HPP
 
 #ifdef _WIN32
-#define SEPARATOR "\\"
+const std::string SEPARATOR = "\\";
 
 #else
 #ifdef __linux__
-#define SEPARATOR "/"
+const std::string SEPARATOR = "/";
 #endif
 
 #endif

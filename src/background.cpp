@@ -1,7 +1,7 @@
 #include "background.hpp"
 
 Background::Background(Graphics& Graphics, const std::string name):
-Sprite(Graphics, name, 0.0, 0)
+Sprite(Graphics, name, 0)
 {
 
 }
@@ -12,7 +12,7 @@ void Background::inf_scroll_()
 	{
 		pos_x -= Geometry.w; // Move the background one tile left.
 	}
-	else if(pos_x < -Geometry.h) // Background shifted left.
+	else if(pos_x < -Geometry.w) // Background shifted left.
 	{
 		pos_x += Geometry.w; // Move the background one tile right.
 	}

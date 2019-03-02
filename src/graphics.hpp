@@ -21,7 +21,6 @@ class Level;
 class Background;
 class Enemy;
 class Menu;
-class Sprite;
 class Font;
 
 class Graphics

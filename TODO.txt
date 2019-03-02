@@ -2,7 +2,6 @@ Delete if done:
 - hitboxes for all textures,
 - all Nebulas animations
 - new Ufo texture,
-- Nebula boss,
 - simplify graphics.cpp,
 - faders,
 - settings menu.

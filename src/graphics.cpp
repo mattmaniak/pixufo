@@ -9,17 +9,16 @@ Graphics::Graphics()
 
 	SDL_Surface* icon;
 
+	is_initialized = false;
+
 	if(SDL_GetDisplayBounds(CURRENT_DISPLAY_IDX, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the screen size at the initialization.");
-		is_initialized = false;
 		return;
 	}
-
 	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
 		error::show_box("At least the HD screen resolution is required.");
-		is_initialized = false;
 		return;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
@@ -29,7 +28,6 @@ Graphics::Graphics()
 	if(Window == nullptr)
 	{
 		error::show_box("Can't create the window.");
-		is_initialized = false;
 		return;
 	}
 
@@ -37,7 +35,6 @@ Graphics::Graphics()
 	if(icon == nullptr)
 	{
 		error::show_box("Can't load the window icon.");
-		is_initialized = false;
 		return;
 	}
 	SDL_SetWindowIcon(Window, icon);
@@ -48,20 +45,17 @@ Graphics::Graphics()
 	if(Renderer == nullptr)
 	{
 		error::show_box("Can't create the renderer.");
-		is_initialized = false;
 		return;
 	}
 	if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
 	   != SDL2_SUCCESS)
 	{
-		error::show_box("Can't set the renderer blend mode.");
-		is_initialized = false;
+		error::show_box("Can't enable the renderer blend mode.");
 		return;
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't hide the mouse pointer.");
-		is_initialized = false;
 		return;
 	}
 	delta_time_s          = 0.0;
@@ -70,7 +64,6 @@ Graphics::Graphics()
 
 	if(!get_pixelart_px_sz())
 	{
-		is_initialized = false;
 		return;
 	}
 	is_initialized = true;
@@ -84,14 +77,13 @@ Graphics::~Graphics()
 
 SDL_Surface* Graphics::load_image(const std::string name)
 {
-	const std::string directory = "textures";
-	const std::string path      = directory + SEPARATOR + name + FILE_EXTENSION;
+	const std::string path = "textures" + SEPARATOR + name + FILE_EXTENSION;
 
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
 
 	if(image == nullptr)
 	{
-		error::show_box("Can't load the image: " + path);
+		error::show_box("Can't load the image: " + name);
 	}
 	return image;
 }
@@ -135,7 +127,8 @@ bool Graphics::init_frame(Level& Level)
 	{
 		return false;
 	}
-	if((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
+	if(((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
+	   && ((Display.w != 1) && (Display.h != 1))) // Minimized here.
 	{
 		Level.set_entities_borders(*this);
 	}

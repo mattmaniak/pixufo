@@ -7,11 +7,12 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 	const std::string directory = "font";
 	const std::string path      = directory + SEPARATOR + name;
 
+	is_initialized = false;
+
 	Font_ttf = TTF_OpenFont(path.c_str(), sz);
 	if(Font_ttf == nullptr)
 	{
 		error::show_box("Can't load the font: " + path);
-		is_initialized = false;
 		return;
 	}
 	Color.r = 120;
@@ -23,7 +24,6 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 	if(Surface == nullptr)
 	{
 		error::show_box("Can't create the surface from the font: " + path);
-		is_initialized = false;
 		return;
 	}
 	TTF_CloseFont(Font_ttf);
@@ -32,7 +32,6 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 	if(Texture == nullptr)
 	{
 		error::show_box("Can't create the texture from the font: " + path);
-		is_initialized = false;
 		return;
 	}
 	SDL_FreeSurface(Surface);
@@ -41,7 +40,6 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 	  != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the size of the texture: " + name);
-		is_initialized = false;
 		return;
 	}
 	is_initialized = true;

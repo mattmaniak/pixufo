@@ -1,12 +1,11 @@
 #include "player.hpp"
 
-Player::Player(Graphics& Graphics): Sprite(Graphics, "ufo", 150.0, 0)
+Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 100.0, 0)
 {
 	horizontal_speed = 0.0;
 	vertical_speed   = 0.0;
-
-	horizontal_step = 0.0;
-	vertical_step   = 0.0;
+	horizontal_step  = 0.0;
+	vertical_step    = 0.0;
 
 	directions_amount = 0;
 
@@ -24,7 +23,7 @@ Player::~Player()
 	}
 }
 
-Player_movement::Player_movement(): max_time_s(0.4)
+Player_movement::Player_movement(): max_time_s(0.5)
 {
 	elapsed_time_s = 0.0;
 }

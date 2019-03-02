@@ -9,7 +9,6 @@
 #include "keyboard.hpp"
 #include "level.hpp"
 #include "player.hpp"
-#include "physics.hpp"
 
 class Game
 {

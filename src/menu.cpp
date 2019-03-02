@@ -3,13 +3,14 @@
 Menu::Menu(Graphics& Graphics):
 Scene(Graphics, "background_primary_menu"), mode(primary_enabled)
 {
+	is_initialized = false;
+
 	width  = Graphics.Display.w;
 	height = Graphics.Display.h;
 
-	Select_arrow = new Sprite(Graphics, "planet_orange", 0.0, 0);
+	Select_arrow = new Sprite(Graphics, "planet_orange", 0);
 	if(!Select_arrow->is_initialized)
 	{
-		is_initialized = false;
 		return;
 	}
 	is_initialized = true;
@@ -25,7 +26,7 @@ Menu::~Menu()
 
 bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 {
-	Logo = new Sprite(Graphics, "title", 0.0, 0);
+	Logo = new Sprite(Graphics, "title", 0);
 	if(!Logo->is_initialized)
 	{
 		return false;
@@ -102,6 +103,5 @@ bool Menu::pause(Graphics& Graphics, Keyboard& Keyboard, Level& Level)
 			return false;
 		}
 	}
-
 	return true;
 }

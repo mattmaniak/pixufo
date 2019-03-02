@@ -7,30 +7,28 @@
 
 Game::Game()
 {
+	is_initialized = false;
+
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2.");
-		is_initialized = false;
 		return;
 	}
 	if(TTF_Init() != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2 ttf module.");
-		is_initialized = false;
 		return;
 	}
 
 	Graphics_ = new Graphics;
 	if(!Graphics_->is_initialized)
 	{
-		is_initialized = false;
 		return;
 	}
 
 	Menu_ = new Menu(*Graphics_);
 	if(!Menu_->is_initialized)
 	{
-		is_initialized = false;
 		return;
 	}
 	Keyboard_ = new Keyboard;
@@ -38,7 +36,6 @@ Game::Game()
 	Cosmic_ = new Level(*Graphics_, "background_level", 2);
 	if(!Cosmic_->is_initialized)
 	{
-		is_initialized = false;
 		return;
 	}
 	is_initialized = true;
@@ -94,17 +91,17 @@ void Game::loop()
 			return;
 		}
 
-		physics::check_model_pos(*Cosmic_->Ufo);
-		if(physics::check_player_collision(*Graphics_, *Cosmic_))
+		for(std::size_t idx = 0; idx < Cosmic_->enemies_amount; idx++)
+		{
+			Cosmic_->check_entity_pos(*Cosmic_->Enemies[idx]);
+		}
+		Cosmic_->check_entity_pos(*Cosmic_->Ufo);
+		if(Cosmic_->check_player_collision(*Graphics_))
 		{
 			SDL_Delay(2000);
 			return;
 		}
 
-		for(std::size_t idx = 0; idx < Cosmic_->enemies_amount; idx++)
-		{
-			physics::check_model_pos(*Cosmic_->Enemies[idx]);
-		}
 		if(Menu_->mode == Menu_->pause_enabled)
 		{
 			if(!Menu_->pause(*Graphics_, *Keyboard_, *Cosmic_))
