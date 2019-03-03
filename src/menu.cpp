@@ -31,14 +31,14 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 	{
 		return false;
 	}
-	Button Play(Graphics, "Play", 150, 0);
+	Button Play(Graphics, "Play", 40, 0);
 	if(!Play.is_initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Play);
 
-	Button Quit(Graphics, "Quit", 150, 1);
+	Button Quit(Graphics, "Quit", 40, 1);
 	if(!Quit.is_initialized)
 	{
 		return false;
@@ -50,11 +50,7 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 
 	while(mode == primary_enabled)
 	{
-		// if(!Graphics.init_frame())
-		// {
-		// 	delete Logo;
-		// 	return false;
-		// }
+		Graphics.set_up_new_frame();
 		if(!Graphics.render_primary_menu(*this))
 		{
 			delete Logo;
@@ -65,7 +61,7 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 			delete Logo;
 			return false;
 		}
-		// Graphics.count_fps();
+		Graphics.count_fps();
 	}
 	delete Logo;
 
@@ -74,14 +70,14 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 
 bool Menu::pause(Graphics& Graphics, Keyboard& Keyboard, Level& Level)
 {
-	Button Continue(Graphics, "Continue", 150, 0);
+	Button Continue(Graphics, "Continue", 40, 0);
 	if(!Continue.is_initialized)
 	{
 		return false;
 	}
 	Buttons.push_back(&Continue);
 
-	Button Main_menu(Graphics, "Main menu", 150, 1);
+	Button Main_menu(Graphics, "Main menu", 40, 1);
 	if(!Main_menu.is_initialized)
 	{
 		Buttons.clear();

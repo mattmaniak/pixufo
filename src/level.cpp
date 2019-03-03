@@ -22,7 +22,7 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 
 	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
-		Enemies.push_back(new Entity(Graphics, "nebula_big", 00.0, 120));
+		Enemies.push_back(new Entity(Graphics, "nebula_wasp", 00.0, 120));
 
 		if(!Enemies[idx]->is_initialized)
 		{

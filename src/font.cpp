@@ -42,6 +42,9 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 		error::show_box("Can't get the size of the texture: " + name);
 		return;
 	}
+	Geometry.w *= Graphics.pixelart_px_sz;
+	Geometry.h *= Graphics.pixelart_px_sz;
+
 	is_initialized = true;
 }
 

@@ -39,7 +39,7 @@ class Graphics
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string);
-	bool         init_frame(Level& Level);
+	bool         set_up_new_frame();
 	bool         count_fps();
 	bool         render_level(Level&, const bool);
 	bool         render_primary_menu(Menu&);
@@ -53,7 +53,7 @@ class Graphics
 	Uint32      fps;
 
 	SDL_Surface* load_image(const std::string);
-	bool         get_pixelart_px_sz();
+	void         get_pixelart_px_sz();
 	bool         render_font(Font&);
 	bool         render_buttons(Menu&);
 };

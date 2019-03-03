@@ -16,7 +16,7 @@ Game::Game()
 	}
 	if(TTF_Init() != SDL2_SUCCESS)
 	{
-		error::show_box("Can't initialize the SDL2 ttf module.");
+		error::show_box("Can't initialize the SDL2 true type fonts.");
 		return;
 	}
 
@@ -66,10 +66,30 @@ void Game::loop()
 {
 	for(;;)
 	{
-		if(!Graphics_->init_frame(*Cosmic_))
+		if(!Graphics_->set_up_new_frame())
+		{
+			Cosmic_->set_entities_borders(*Graphics_);
+		}
+		if(!Graphics_->clean_renderer())
 		{
 			return;
 		}
+
+		switch(Menu_->mode)
+		{
+			case Menu_->primary_enabled:
+
+			break;
+
+			case Menu_->pause_enabled:
+
+			break;
+
+			case Menu_->all_disabled:
+
+			break;
+		}
+
 		if(Menu_->mode == Menu_->primary_enabled) // Opened by default.
 		{
 			if(!Menu_->primary(*Graphics_, *Keyboard_))
@@ -77,9 +97,9 @@ void Game::loop()
 				return;
 			}
 			Cosmic_->reset();
-			if(!Graphics_->init_frame(*Cosmic_)) // Ignored at the first time.
+			if(!Graphics_->set_up_new_frame()) // Ignored at the first time.
 			{
-				return;
+				Cosmic_->set_entities_borders(*Graphics_);
 			}
 		}
 		if(!Graphics_->render_level(*Cosmic_, false))
@@ -109,14 +129,10 @@ void Game::loop()
 				return;
 			}
 			SDL_Delay(500);
-			if(!Graphics_->init_frame(*Cosmic_)) // Prevent entities speed-ups.
+			if(!Graphics_->set_up_new_frame()) // Prevent entities speed-ups.
 			{
-				return;
+				Cosmic_->set_entities_borders(*Graphics_);
 			}
-		}
-		if(!Graphics_->clean_renderer())
-		{
-			return;
 		}
 		if(!Graphics_->count_fps())
 		{

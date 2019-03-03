@@ -62,10 +62,7 @@ Graphics::Graphics()
 	frame_elapsed_time_ms = 0.0;
 	fps                   = 0;
 
-	if(!get_pixelart_px_sz())
-	{
-		return;
-	}
+	get_pixelart_px_sz();
 	is_initialized = true;
 }
 
@@ -108,31 +105,27 @@ SDL_Texture* Graphics::load_texture(const std::string name)
 	return Texture;
 }
 
-bool Graphics::get_pixelart_px_sz()
+void Graphics::get_pixelart_px_sz()
 {
 	SDL_GetWindowSize(Window, &Display.w, &Display.h);
 
 	pixelart_px_sz = Display.w / PIXELART_DISPLAY_WIDTH;
 
-	return true;
 }
 
-bool Graphics::init_frame(Level& Level)
+bool Graphics::set_up_new_frame()
 {
 	frame_start_time_ms = SDL_GetTicks();
 
 	Prev_display = Display;
+	get_pixelart_px_sz();
 
-	if(!get_pixelart_px_sz())
-	{
-		return false;
-	}
 	if(((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
 	   && ((Display.w != 1) && (Display.h != 1))) // Minimized here.
 	{
-		Level.set_entities_borders(*this);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 bool Graphics::count_fps()
@@ -207,7 +200,7 @@ bool Graphics::render_primary_menu(Menu& Menu)
 	{
 		return false;
 	}
-	// Menu.Bg->move(*this, -5.0, 2.5);
+	Menu.Bg->move(*this, -5.0, 2.5);
 
 	Menu.Logo->pos_x = Menu.Logo->pos_y = padding;
 
