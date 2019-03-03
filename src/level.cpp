@@ -22,8 +22,7 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 
 	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
-		Enemies.push_back(new Entity(Graphics, "nebula_medium", 50.0, 120));
-		// Enemies.push_back(new Entity(Graphics, "nebula_wasp", 000.0, 100));
+		Enemies.push_back(new Entity(Graphics, "nebula_big", 00.0, 120));
 
 		if(!Enemies[idx]->is_initialized)
 		{
@@ -58,7 +57,7 @@ void Level::reset()
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
 
-	for(std::size_t idx = 0; idx < enemies_amount; idx++)
+	for(std::size_t idx = 0; idx < Enemies.size(); idx++)
 	{
 		Enemies[idx]->randomize_initial_pos();
 	}
@@ -71,7 +70,7 @@ void Level::set_entities_borders(Graphics& Graphics)
 
 	set_model_borders(*Ufo);
 
-	for(std::size_t idx = 0; idx < enemies_amount; idx++)
+	for(std::size_t idx = 0; idx < Enemies.size(); idx++)
 	{
 		set_model_borders(*Enemies[idx]);
 	}
