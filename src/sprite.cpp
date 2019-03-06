@@ -5,10 +5,7 @@ Sprite::Sprite(Graphics& Graphics, const std::string passed_name,
                name(passed_name),
                single_frame_time_ms(passed_single_frame_time_ms)
 {
-	is_initialized = false;
-
-	path = "textures" + SEPARATOR + name;
-
+	is_initialized    = false;
 	current_frame_idx = 0;
 
 	if(single_frame_time_ms == 0) // No animation.
@@ -59,7 +56,8 @@ Sprite::~Sprite()
 	}
 }
 
-void Sprite::move(Graphics& Graphics, const double offset_x, const double offset_y)
+void Sprite::move(Graphics& Graphics, const double offset_x,
+                  const double offset_y)
 {
 	pos_x += offset_x * Graphics.delta_time_s * Graphics.pixelart_px_sz;
 	pos_y += offset_y * Graphics.delta_time_s * Graphics.pixelart_px_sz;

@@ -12,7 +12,7 @@
 
 class Game
 {
-	public:
+public:
 	bool is_initialized;
 
 	Game();
@@ -20,7 +20,7 @@ class Game
 
 	void loop();
 
-	private:
+private:
 	Graphics* Graphics_;
 	Menu*     Menu_;
 	Keyboard* Keyboard_;

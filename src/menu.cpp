@@ -1,4 +1,22 @@
 #include "menu.hpp"
+#include "level.hpp"
+
+New_menu::New_menu(Graphics& Graphics):
+Scene(Graphics, "background_primary_menu")
+{
+
+}
+
+New_menu::~New_menu()
+{
+
+}
+
+bool Main_menu::render()
+{
+
+	return true;
+}
 
 Menu::Menu(Graphics& Graphics):
 Scene(Graphics, "background_primary_menu"), mode(primary_enabled)
@@ -45,24 +63,18 @@ bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 	}
 	Buttons.push_back(&Quit);
 
-	max_button_idx      = 1;
 	selected_button_idx = 0;
 
-	while(mode == primary_enabled)
-	{
+	// while(mode == primary_enabled)
+	// {
 		Graphics.set_up_new_frame();
 		if(!Graphics.render_primary_menu(*this))
 		{
 			delete Logo;
 			return false;
 		}
-		if(!Keyboard.menu(*this))
-		{
-			delete Logo;
-			return false;
-		}
-		Graphics.count_fps();
-	}
+	// }
+	Buttons.clear();
 	delete Logo;
 
 	return true;
@@ -85,19 +97,13 @@ bool Menu::pause(Graphics& Graphics, Keyboard& Keyboard, Level& Level)
 	}
 	Buttons.push_back(&Main_menu);
 
-	max_button_idx      = 1;
 	selected_button_idx = 0;
 
-	while(mode == pause_enabled)
+	if(!Graphics.render_pause_menu(*this, Level))
 	{
-		if(!Graphics.render_pause_menu(*this, Level))
-		{
-			return false;
-		}
-		if(!Keyboard.pause(*this))
-		{
-			return false;
-		}
+		return false;
 	}
+	Buttons.clear();
+
 	return true;
 }

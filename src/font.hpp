@@ -6,14 +6,14 @@
 #include <string>
 
 #include "error.hpp"
-#include "os.hpp"
+#include "os_env.hpp"
 #include "graphics.hpp"
 
 #define FONTNAME "Blox2.ttf"
 
 class Font
 {
-	public:
+public:
 	bool              is_initialized;
 	const std::string name;
 

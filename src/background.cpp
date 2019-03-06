@@ -50,7 +50,7 @@ bool Background::tile_and_render(Graphics& Graphics)
 			if(SDL_RenderCopy(Graphics.Renderer, Textures[current_frame_idx],
 			   nullptr, &Geometry) != SDL2_SUCCESS)
 			{
-				error::show_box("Can't render the: " + path
+				error::show_box("Can't render the: " + name
 				                + " as the tile background.");
 				return false;
 			}

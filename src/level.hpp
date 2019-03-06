@@ -12,7 +12,7 @@
 
 class Level: public Scene
 {
-	public:
+public:
 	Player*              Ufo;
 	std::vector<Entity*> Enemies;
 	std::size_t          enemies_amount;
@@ -24,8 +24,9 @@ class Level: public Scene
 	void set_entities_borders(Graphics&);
 	bool check_player_collision(Graphics&);
 	void check_entity_pos(Entity&);
+	bool render(Graphics&);
 
-	private:
+private:
 	void set_model_borders(Entity&);
 };
 

@@ -5,7 +5,7 @@
 
 class Button: public Font
 {
-	public:
+public:
 	const unsigned int idx;
 
 	Button(Graphics&, const std::string, const int, const unsigned int);

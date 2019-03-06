@@ -39,7 +39,6 @@ Game::Game()
 		return;
 	}
 	is_initialized = true;
-
 }
 
 Game::~Game()
@@ -74,65 +73,59 @@ void Game::loop()
 		{
 			return;
 		}
-
 		switch(Menu_->mode)
 		{
 			case Menu_->primary_enabled:
-
-			break;
-
-			case Menu_->pause_enabled:
-
-			break;
-
-			case Menu_->all_disabled:
-
-			break;
-		}
-
-		if(Menu_->mode == Menu_->primary_enabled) // Opened by default.
-		{
 			if(!Menu_->primary(*Graphics_, *Keyboard_))
 			{
 				return;
 			}
-			Cosmic_->reset();
-			if(!Graphics_->set_up_new_frame()) // Ignored at the first time.
+			if(!Keyboard_->menu(*Menu_))
 			{
-				Cosmic_->set_entities_borders(*Graphics_);
+				return;
 			}
-		}
-		if(!Graphics_->render_level(*Cosmic_, false))
-		{
-			return;
-		}
-		if(!Keyboard_->move_player(*Cosmic_->Ufo, *Menu_, *Graphics_))
-		{
-			return;
-		}
+			Graphics_->count_fps();
+			Cosmic_->reset();
+			break;
 
-		for(std::size_t idx = 0; idx < Cosmic_->enemies_amount; idx++)
-		{
-			Cosmic_->check_entity_pos(*Cosmic_->Enemies[idx]);
-		}
-		Cosmic_->check_entity_pos(*Cosmic_->Ufo);
-		if(Cosmic_->check_player_collision(*Graphics_))
-		{
-			SDL_Delay(2000);
-			return;
-		}
-
-		if(Menu_->mode == Menu_->pause_enabled)
-		{
+			case Menu_->pause_enabled:
 			if(!Menu_->pause(*Graphics_, *Keyboard_, *Cosmic_))
 			{
 				return;
 			}
-			SDL_Delay(500);
+			if(!Keyboard_->pause(*Menu_))
+			{
+				return;
+			}
+			// SDL_Delay(500);
 			if(!Graphics_->set_up_new_frame()) // Prevent entities speed-ups.
 			{
 				Cosmic_->set_entities_borders(*Graphics_);
 			}
+			break;
+
+			case Menu_->all_disabled:
+			if(!Cosmic_->Ufo->keyboard_steering(*Menu_, *Graphics_))
+			{
+				return;
+			}
+
+			for(std::size_t idx = 0; idx < Cosmic_->Enemies.size(); idx++)
+			{
+				Cosmic_->check_entity_pos(*Cosmic_->Enemies[idx]);
+			}
+			Cosmic_->check_entity_pos(*Cosmic_->Ufo);
+
+			if(Cosmic_->check_player_collision(*Graphics_))
+			{
+				SDL_Delay(2000);
+				return;
+			}
+			if(!Cosmic_->render(*Graphics_))
+			{
+				return;
+			}
+			break;
 		}
 		if(!Graphics_->count_fps())
 		{

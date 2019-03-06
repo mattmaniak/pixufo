@@ -63,6 +63,7 @@ Graphics::Graphics()
 	fps                   = 0;
 
 	get_pixelart_px_sz();
+
 	is_initialized = true;
 }
 
@@ -74,7 +75,7 @@ Graphics::~Graphics()
 
 SDL_Surface* Graphics::load_image(const std::string name)
 {
-	const std::string path = "textures" + SEPARATOR + name + FILE_EXTENSION;
+	const std::string path = TEXTURES_PATH + name + FILE_EXTENSION;
 
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
 
@@ -142,49 +143,13 @@ bool Graphics::count_fps()
 
 	if(frame_elapsed_time_ms >= 1000.0)
 	{
-
-#ifdef DEBUG
 		std::cout << "FPS: " << fps << std::endl;
-#endif
 
 		frame_elapsed_time_ms = 0.0;
 		fps                   = 0;
 	}
-	return true;
-}
+	SDL_RenderPresent(Renderer);
 
-bool Graphics::render_level(Level& Level, const bool as_pause_menu_bg)
-{
-	if(!clean_renderer())
-	{
-		return false;
-	}
-	if(!Level.Bg->tile_and_render(*this))
-	{
-		return false;
-	}
-
-	for(std::size_t idx = 0; idx < Level.enemies_amount; idx++)
-	{
-		if(!Level.Enemies[idx]->render(*this))
-		{
-			return false;
-		}
-		Level.Enemies[idx]->move(*this, -Level.Enemies[idx]->max_speed, 0.0);
-	}
-	if(!Level.Ufo->render(*this))
-	{
-		return false;
-	}
-
-	if(as_pause_menu_bg)
-	{
-		delta_time_s = 0.0; // Disable animations
-	}
-	else
-	{
-		SDL_RenderPresent(Renderer);
-	}
 	return true;
 }
 
@@ -192,10 +157,6 @@ bool Graphics::render_primary_menu(Menu& Menu)
 {
 	const double padding = 20.0 * pixelart_px_sz;
 
-	if(!clean_renderer())
-	{
-		return false;
-	}
 	if(!Menu.Bg->tile_and_render(*this))
 	{
 		return false;
@@ -212,21 +173,21 @@ bool Graphics::render_primary_menu(Menu& Menu)
 	{
 		return false;
 	}
-	SDL_RenderPresent(Renderer);
-
 	return true;
 }
 
 bool Graphics::render_pause_menu(Menu& Menu, Level& Level)
 {
-	render_level(Level, true);
+	delta_time_s = 0.0; // Disable animations.
 
+	if(!Level.render(*this))
+	{
+		return false;
+	}
 	if(!render_buttons(Menu))
 	{
 		return false;
 	}
-	SDL_RenderPresent(Renderer);
-
 	return true;
 }
 
@@ -256,13 +217,13 @@ bool Graphics::render_buttons(Menu& Menu)
 {
 	const double padding = 20.0 * pixelart_px_sz;
 
-	for(std::size_t idx = 0; idx <= Menu.max_button_idx; idx++)
+	for(std::size_t idx = 0; idx < Menu.Buttons.size(); idx++)
 	{
 		Menu.Buttons[idx]->pos_x = (Display.w - Menu.Buttons[idx]->Geometry.w)
 		                           - padding;
 
 		Menu.Buttons[idx]->pos_y = Display.h - (Menu.Buttons[idx]->Geometry.h
-		                           * (Menu.max_button_idx + 1))
+		                           * Menu.Buttons.size())
 		                           + (Menu.Buttons[idx]->idx
 		                           * Menu.Buttons[idx]->Geometry.h) - padding;
 

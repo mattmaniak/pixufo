@@ -2,12 +2,11 @@
 #define ENTITY_HPP
 
 #include <random>
-
 #include "sprite.hpp"
 
 class Entity: public Sprite
 {
-	public:
+public:
 	int min_x;
 	int max_x;
 	int min_y;

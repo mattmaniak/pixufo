@@ -6,7 +6,7 @@
 
 class Scene
 {
-	public:
+public:
 	bool is_initialized;
 
 	int width;

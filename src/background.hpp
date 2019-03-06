@@ -6,12 +6,12 @@
 
 class Background: public Sprite
 {
-	public:
+public:
 	Background(Graphics&, const std::string);
 
 	bool tile_and_render(Graphics&);
 
-	private:
+private:
 	void inf_scroll_();
 };
 

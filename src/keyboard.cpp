@@ -1,53 +1,5 @@
 #include "keyboard.hpp"
 #include "menu.hpp"
-#include "graphics.hpp"
-#include "player.hpp"
-
-Keyboard::Keyboard(): keys(SDL_GetKeyboardState(nullptr))
-{
-
-}
-
-bool Keyboard::move_player(Player& Ufo, Menu& Menu, Graphics& Graphics)
-{
-	Ufo.directions_amount = 0;
-
-	SDL_PollEvent(&Event);
-	switch(Event.type)
-	{
-		case SDL_QUIT:
-		return false;
-	}
-	if(keys[SDL_SCANCODE_LEFT])
-	{
-		Ufo.Movement[horizontal]->count_ratio(Graphics, left);
-	}
-	if(keys[SDL_SCANCODE_RIGHT])
-	{
-		Ufo.Movement[horizontal]->count_ratio(Graphics, right);
-	}
-	if(keys[SDL_SCANCODE_UP])
-	{
-		Ufo.Movement[vertical]->count_ratio(Graphics, up);
-	}
-	if(keys[SDL_SCANCODE_DOWN])
-	{
-		Ufo.Movement[vertical]->count_ratio(Graphics, down);
-	}
-	if(keys[SDL_SCANCODE_ESCAPE])
-	{
-		Menu.mode = Menu.pause_enabled;
-	}
-
-	if((Ufo.horizontal_speed != 0.0f) && (Ufo.vertical_speed != 0.0f))
-	{
-		Ufo.directions_amount = 2;
-	}
-	Ufo.Movement[vertical]->move(Graphics, Ufo);
-	Ufo.Movement[horizontal]->move(Graphics, Ufo);
-
-	return true;
-}
 
 bool Keyboard::menu(Menu& Menu)
 {
@@ -69,7 +21,7 @@ bool Keyboard::menu(Menu& Menu)
 			break;
 
 			case SDLK_DOWN:
-			if(Menu.selected_button_idx < Menu.max_button_idx)
+			if(Menu.selected_button_idx < (Menu.Buttons.size() - 1))
 			{
 				Menu.selected_button_idx++;
 			}
@@ -109,7 +61,7 @@ bool Keyboard::pause(Menu& Menu)
 		break;
 
 		case SDLK_DOWN:
-		if(Menu.selected_button_idx < Menu.max_button_idx)
+		if(Menu.selected_button_idx < (Menu.Buttons.size() - 1))
 		{
 			Menu.selected_button_idx++;
 		}

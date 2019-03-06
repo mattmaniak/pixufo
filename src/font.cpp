@@ -2,10 +2,9 @@
 
 Font::Font(Graphics& Graphics, const std::string passed_text,
            const int passed_sz): name(FONTNAME), text(passed_text),
-           sz(passed_sz)
+           sz(passed_sz * Graphics.pixelart_px_sz)
 {
-	const std::string directory = "font";
-	const std::string path      = directory + SEPARATOR + name;
+	const std::string path = FONT_PATH + SEPARATOR + name;
 
 	is_initialized = false;
 
@@ -42,9 +41,6 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 		error::show_box("Can't get the size of the texture: " + name);
 		return;
 	}
-	Geometry.w *= Graphics.pixelart_px_sz;
-	Geometry.h *= Graphics.pixelart_px_sz;
-
 	is_initialized = true;
 }
 

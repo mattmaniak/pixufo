@@ -22,7 +22,7 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 
 	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
-		Enemies.push_back(new Entity(Graphics, "nebula_wasp", 00.0, 120));
+		Enemies.push_back(new Entity(Graphics, "nebula_big", 30.0, 180));
 
 		if(!Enemies[idx]->is_initialized)
 		{
@@ -51,8 +51,8 @@ Level::~Level()
 
 void Level::reset()
 {
-	Ufo->Movement[horizontal]->elapsed_time_s = 0.0;
-	Ufo->Movement[vertical]->elapsed_time_s   = 0.0;
+	Ufo->Movements["horizontal"]->elapsed_time_s = 0.0;
+	Ufo->Movements["vertical"]->elapsed_time_s   = 0.0;
 
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
@@ -147,4 +147,25 @@ void Level::check_entity_pos(Entity& Entity)
 	{
 		Entity.pos_y = Entity.min_y;
 	}
+}
+
+bool Level::render(Graphics& Graphics)
+{
+	if(!Bg->tile_and_render(Graphics))
+	{
+		return false;
+	}
+	for(std::size_t idx = 0; idx < enemies_amount; idx++)
+	{
+		if(!Enemies[idx]->render(Graphics))
+		{
+			return false;
+		}
+		Enemies[idx]->move(Graphics, -Enemies[idx]->max_speed, 0.0);
+	}
+	if(!Ufo->render(Graphics))
+	{
+		return false;
+	}
+	return true;
 }

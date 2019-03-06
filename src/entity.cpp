@@ -18,9 +18,8 @@ Sprite(Graphics, name, passed_single_frame_time_ms), max_speed(passed_speed)
 
 bool Entity::load_hitbox()
 {
-	std::size_t rects_amount = 0;
-
-	std::string path_to_file = path + SEPARATOR + "hitbox.txt";
+	const std::string path_to_file = HITBOXES_PATH + name;
+	std::size_t       rects_amount = 0;
 
 	FILE* Hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
 
@@ -42,10 +41,6 @@ bool Entity::load_hitbox()
 		            &Hitbox_parts[rects_amount].y,
 		            &Hitbox_parts[rects_amount].w,
 		            &Hitbox_parts[rects_amount].h);
-
-		// std::printf("(%d, %d) [%d, %d]\n",
-		//             Hitbox_parts[rects_amount].x, Hitbox_parts[rects_amount].y,
-		//             Hitbox_parts[rects_amount].w, Hitbox_parts[rects_amount].h);
 
 		if((Hitbox_parts[rects_amount].x == 0) // Empty file scenario.
 		   && (Hitbox_parts[rects_amount].y == 0)

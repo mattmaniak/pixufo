@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <stdexcept>
 #include <string>
 
 #define SDL2_SUCCESS 0
