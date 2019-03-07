@@ -26,19 +26,19 @@ class Font;
 class Graphics
 {
 public:
-	bool            is_initialized;
-	double          delta_time_s;
-	double          pixelart_px_sz;
+	double        delta_time_s;
+	double        pixelart_px_sz;
 
-	SDL_Rect        Display;
-	SDL_Rect        Prev_display;
+	SDL_Rect      Display;
+	SDL_Rect      Prev_display;
 
-	SDL_Renderer*   Renderer;
+	SDL_Renderer* Renderer;
 
 	Graphics();
 	~Graphics();
 
 	SDL_Texture* load_texture(const std::string);
+	SDL_Surface* load_image(const std::string);
 	bool         set_up_new_frame();
 	bool         count_fps();
 	bool         render_primary_menu(Menu&);
@@ -46,12 +46,15 @@ public:
 	bool         clean_renderer();
 
 private:
+	bool renderer_is_initialized;
+	bool window_is_initialized;
+
 	SDL_Window* Window;
 	Uint32      frame_start_time_ms;
 	Uint32      frame_elapsed_time_ms;
 	Uint32      fps;
 
-	SDL_Surface* load_image(const std::string);
+	bool init_window();
 	void         get_pixelart_px_sz();
 	bool         render_font(Font&);
 	bool         render_buttons(Menu&);

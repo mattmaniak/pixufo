@@ -2,8 +2,8 @@
 #define LEVEL_HPP
 
 #include <string>
+#include <memory>
 #include <vector>
-
 #include "error.hpp"
 #include "graphics.hpp"
 #include "scene.hpp"
@@ -13,6 +13,7 @@
 class Level: public Scene
 {
 public:
+	// std::unique_ptr<Player> Ufo;
 	Player*              Ufo;
 	std::vector<Entity*> Enemies;
 	std::size_t          enemies_amount;

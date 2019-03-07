@@ -2,24 +2,69 @@
 #include "menu.hpp"
 #include "level.hpp"
 
-Graphics::Graphics()
+Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
+                      renderer_is_initialized(false),
+                      window_is_initialized(false), Window(nullptr),
+                      frame_elapsed_time_ms(0.0), fps(0)
 {
-	const int unused_sz      = 0;
 	const int default_driver = -1;
 
-	SDL_Surface* icon;
+	if(!init_window())
+	{
+		throw std::runtime_error("DODO");
+	}
 
-	is_initialized = false;
+	Renderer = SDL_CreateRenderer(Window, default_driver,
+	                              SDL_RENDERER_ACCELERATED);
+	if(Renderer == nullptr)
+	{
+		error::show_box("Can't create the renderer.");
+		throw std::runtime_error("DODO");
+	}
+	renderer_is_initialized = true;
+
+	if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
+	   != SDL2_SUCCESS)
+	{
+		error::show_box("Can't enable the renderer blend mode.");
+		throw std::runtime_error("DIDI");
+	}
+	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't hide the mouse pointer.");
+		throw std::runtime_error("DODO");
+	}
+	get_pixelart_px_sz();
+}
+
+Graphics::~Graphics()
+{
+	if(renderer_is_initialized)
+	{
+		SDL_DestroyRenderer(Renderer);
+		renderer_is_initialized = false;
+	}
+	if(window_is_initialized)
+	{
+		SDL_DestroyWindow(Window);
+		window_is_initialized = false;
+	}
+}
+
+bool Graphics::init_window()
+{
+	const int    unused_sz = 0;
+	SDL_Surface* icon      = nullptr;
 
 	if(SDL_GetDisplayBounds(CURRENT_DISPLAY_IDX, &Display) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the screen size at the initialization.");
-		return;
+		return false;
 	}
 	if((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT))
 	{
 		error::show_box("At least the HD screen resolution is required.");
-		return;
+		return false;
 	}
 	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
 	                          SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
@@ -28,60 +73,32 @@ Graphics::Graphics()
 	if(Window == nullptr)
 	{
 		error::show_box("Can't create the window.");
-		return;
+		return false;
 	}
+	window_is_initialized = true;
 
 	icon = load_image("icon");
 	if(icon == nullptr)
 	{
-		error::show_box("Can't load the window icon.");
-		return;
+		return false;
 	}
 	SDL_SetWindowIcon(Window, icon);
 	SDL_FreeSurface(icon);
 
-	Renderer = SDL_CreateRenderer(Window, default_driver,
-	                              SDL_RENDERER_ACCELERATED);
-	if(Renderer == nullptr)
-	{
-		error::show_box("Can't create the renderer.");
-		return;
-	}
-	if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
-	   != SDL2_SUCCESS)
-	{
-		error::show_box("Can't enable the renderer blend mode.");
-		return;
-	}
-	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
-	{
-		error::show_box("Can't hide the mouse pointer.");
-		return;
-	}
-	delta_time_s          = 0.0;
-	frame_elapsed_time_ms = 0.0;
-	fps                   = 0;
-
-	get_pixelart_px_sz();
-
-	is_initialized = true;
-}
-
-Graphics::~Graphics()
-{
-	SDL_DestroyRenderer(Renderer);
-	SDL_DestroyWindow(Window);
+	return true;
 }
 
 SDL_Surface* Graphics::load_image(const std::string name)
 {
 	const std::string path = TEXTURES_PATH + name + FILE_EXTENSION;
 
+	std::cout << path << std::endl;
+
 	SDL_Surface* image = SDL_LoadBMP(path.c_str());
 
 	if(image == nullptr)
 	{
-		error::show_box("Can't load the image: " + name);
+		error::show_box("Can't load the image: " + path);
 	}
 	return image;
 }

@@ -23,6 +23,7 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
 		Enemies.push_back(new Entity(Graphics, "nebula_big", 30.0, 180));
+		// Enemies.push_back(new Entity(Graphics, "nebula_medium", 60.0, 100));
 
 		if(!Enemies[idx]->is_initialized)
 		{
@@ -51,8 +52,8 @@ Level::~Level()
 
 void Level::reset()
 {
-	Ufo->Movements["horizontal"]->elapsed_time_s = 0.0;
-	Ufo->Movements["vertical"]->elapsed_time_s   = 0.0;
+	Ufo->Movements["horizontal"]->keypress_time_s = 0.0;
+	Ufo->Movements["vertical"]->keypress_time_s   = 0.0;
 
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
 	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;

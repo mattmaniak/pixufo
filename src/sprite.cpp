@@ -8,6 +8,11 @@ Sprite::Sprite(Graphics& Graphics, const std::string passed_name,
 	is_initialized    = false;
 	current_frame_idx = 0;
 
+	// if(!load_textures(Graphics))
+	// {
+	// 	return;
+	// }
+
 	if(single_frame_time_ms == 0) // No animation.
 	{
 		Textures[current_frame_idx] = Graphics.load_texture(name);
@@ -61,6 +66,46 @@ void Sprite::move(Graphics& Graphics, const double offset_x,
 {
 	pos_x += offset_x * Graphics.delta_time_s * Graphics.pixelart_px_sz;
 	pos_y += offset_y * Graphics.delta_time_s * Graphics.pixelart_px_sz;
+}
+
+bool Sprite::load_textures(Graphics& Graphics)
+{
+	SDL_Surface* Image;
+
+	if(single_frame_time_ms == 0) // No animation.
+	{
+		Image = Graphics.load_image(name);
+		if(Image == nullptr)
+		{
+			return false;
+		}
+
+		Textures[current_frame_idx] = SDL_CreateTextureFromSurface(Graphics.Renderer, Image);
+		if(Textures[current_frame_idx] == nullptr)
+		{
+			error::show_box("Can't create the texture from the image: " + name);
+			return false;
+		}
+		SDL_FreeSurface(Image);
+	}
+	else // Dir with animations.
+	{
+		for(std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++)
+		{
+			Image = Graphics.load_image(name + SEPARATOR + std::to_string(idx));
+			if(Image == nullptr)
+			{
+				return false;
+			}
+			Textures[idx] = SDL_CreateTextureFromSurface(Graphics.Renderer, Image);
+			if(Textures[idx] == nullptr)
+			{
+				return false;
+			}
+			SDL_FreeSurface(Image);
+		}
+	}
+	return false;
 }
 
 bool Sprite::load_animation(Graphics& Graphics)

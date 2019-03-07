@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
-
 #include "error.hpp"
 #include "graphics.hpp"
 #include "os_env.hpp"
@@ -39,6 +38,7 @@ private:
 	const Uint32 single_frame_time_ms;
 	Uint32       frame_elapsed_time_ms;
 
+	bool load_textures(Graphics&);
 	bool load_animation(Graphics&);
 };
 

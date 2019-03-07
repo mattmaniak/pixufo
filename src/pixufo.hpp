@@ -13,8 +13,6 @@
 class Game
 {
 public:
-	bool is_initialized;
-
 	Game();
 	~Game();
 

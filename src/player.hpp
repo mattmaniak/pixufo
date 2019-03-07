@@ -54,7 +54,7 @@ namespace player
 	public:
 		dir          direction;
 		const double max_time_s;
-		double       elapsed_time_s;
+		double       keypress_time_s;
 
 		Movement();
 

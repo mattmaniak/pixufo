@@ -7,24 +7,20 @@
 
 Game::Game()
 {
-	is_initialized = false;
-
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2.");
 		return;
+		// throw std::runtime_error("EXC");
 	}
 	if(TTF_Init() != SDL2_SUCCESS)
 	{
 		error::show_box("Can't initialize the SDL2 true type fonts.");
 		return;
+		// throw std::runtime_error("EXC");
 	}
 
 	Graphics_ = new Graphics;
-	if(!Graphics_->is_initialized)
-	{
-		return;
-	}
 
 	Menu_ = new Menu(*Graphics_);
 	if(!Menu_->is_initialized)
@@ -38,15 +34,11 @@ Game::Game()
 	{
 		return;
 	}
-	is_initialized = true;
 }
 
 Game::~Game()
 {
-	if(Graphics_->is_initialized)
-	{
-		delete Graphics_;
-	}
+	delete Graphics_;
 	if(Cosmic_->is_initialized)
 	{
 		delete Cosmic_;
@@ -136,10 +128,13 @@ void Game::loop()
 
 int main()
 {
-	Game Pixufo;
-
-	if(Pixufo.is_initialized)
+	try
 	{
+		Game Pixufo;
 		Pixufo.loop();
+	}
+	catch(...)
+	{
+
 	}
 }
