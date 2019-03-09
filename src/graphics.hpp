@@ -15,7 +15,7 @@
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
-#define FILE_EXTENSION ".bmp"
+#define IMAGE_EXTENSION ".bmp"
 
 class Level;
 class Background;
@@ -37,8 +37,6 @@ public:
 	Graphics();
 	~Graphics();
 
-	SDL_Texture* load_texture(const std::string);
-	SDL_Surface* load_image(const std::string);
 	bool         set_up_new_frame();
 	bool         count_fps();
 	bool         render_primary_menu(Menu&);

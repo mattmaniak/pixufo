@@ -16,8 +16,6 @@ class Player;
 class New_menu: public Scene
 {
 public:
-	bool is_initialized;
-
 	enum
 	{
 		primary_enabled,
@@ -26,7 +24,7 @@ public:
 	}
 	mode;
 
-	std::size_t                   selected_button_idx;
+	std::size_t                    selected_button_idx;
 	std::vector<Button*>           Buttons;
 	std::map<std::string, Sprite*> Sprites;
 

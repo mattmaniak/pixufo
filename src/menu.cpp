@@ -2,10 +2,7 @@
 #include "level.hpp"
 
 New_menu::New_menu(Graphics& Graphics):
-Scene(Graphics, "background_primary_menu")
-{
-
-}
+Scene(Graphics, "background_primary_menu") {}
 
 New_menu::~New_menu()
 {
@@ -21,46 +18,43 @@ bool Main_menu::render()
 Menu::Menu(Graphics& Graphics):
 Scene(Graphics, "background_primary_menu"), mode(primary_enabled)
 {
-	is_initialized = false;
-
 	width  = Graphics.Display.w;
 	height = Graphics.Display.h;
 
-	Select_arrow = new Sprite(Graphics, "planet_orange", 0);
-	if(!Select_arrow->is_initialized)
+	try
 	{
-		return;
+		Select_arrow = new Sprite(Graphics, "planet_orange", 0);
 	}
-	is_initialized = true;
+	catch(...)
+	{
+		throw std::runtime_error("");
+	}
 }
 
 Menu::~Menu()
 {
-	if(Select_arrow->is_initialized)
-	{
-		delete Select_arrow;
-	}
+	delete Select_arrow;
 }
 
 bool Menu::primary(Graphics& Graphics, Keyboard& Keyboard)
 {
 	Logo = new Sprite(Graphics, "title", 0);
-	if(!Logo->is_initialized)
-	{
-		return false;
-	}
+	// if(!Logo->is_initialized)
+	// {
+	// 	return false;
+	// }
 	Button Play(Graphics, "Play", 40, 0);
-	if(!Play.is_initialized)
-	{
-		return false;
-	}
+	// if(!Play.is_initialized)
+	// {
+	// 	return false;
+	// }
 	Buttons.push_back(&Play);
 
 	Button Quit(Graphics, "Quit", 40, 1);
-	if(!Quit.is_initialized)
-	{
-		return false;
-	}
+	// if(!Quit.is_initialized)
+	// {
+	// 	return false;
+	// }
 	Buttons.push_back(&Quit);
 
 	selected_button_idx = 0;

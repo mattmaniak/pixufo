@@ -13,6 +13,14 @@
 class Game
 {
 public:
+	enum
+	{
+		main_menu,
+		pause_menu,
+		level
+	}
+	mode;
+
 	Game();
 	~Game();
 

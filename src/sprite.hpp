@@ -17,7 +17,6 @@
 class Sprite
 {
 public:
-	bool              is_initialized;
 	const std::string name;
 
 	std::array<SDL_Texture*, FRAMES_AMOUNT> Textures;
@@ -39,7 +38,6 @@ private:
 	Uint32       frame_elapsed_time_ms;
 
 	bool load_textures(Graphics&);
-	bool load_animation(Graphics&);
 };
 
 #endif

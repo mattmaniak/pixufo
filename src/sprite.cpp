@@ -2,31 +2,12 @@
 
 Sprite::Sprite(Graphics& Graphics, const std::string passed_name,
                const Uint32 passed_single_frame_time_ms):
-               name(passed_name),
+               name(passed_name), current_frame_idx(0),
                single_frame_time_ms(passed_single_frame_time_ms)
 {
-	is_initialized    = false;
-	current_frame_idx = 0;
-
-	// if(!load_textures(Graphics))
-	// {
-	// 	return;
-	// }
-
-	if(single_frame_time_ms == 0) // No animation.
+	if(!load_textures(Graphics))
 	{
-		Textures[current_frame_idx] = Graphics.load_texture(name);
-		if(Textures[current_frame_idx] == nullptr)
-		{
-			return;
-		}
-	}
-	else
-	{
-		if(!load_animation(Graphics))
-		{
-			return;
-		}
+		throw std::runtime_error("");
 	}
 
 	/* As there is only the first texture size check, trying to load animation
@@ -35,15 +16,13 @@ Sprite::Sprite(Graphics& Graphics, const std::string passed_name,
 	   &Geometry.w, &Geometry.h) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't get the size of the texture: " + name);
-		return;
+		throw std::runtime_error("");
 	}
 	pos_x = 0.0;
 	pos_y = 0.0;
 
 	Geometry.w *= Graphics.pixelart_px_sz;
 	Geometry.h *= Graphics.pixelart_px_sz;
-
-	is_initialized = true;
 }
 
 Sprite::~Sprite()
@@ -71,15 +50,17 @@ void Sprite::move(Graphics& Graphics, const double offset_x,
 bool Sprite::load_textures(Graphics& Graphics)
 {
 	SDL_Surface* Image;
+	std::string  path;
 
 	if(single_frame_time_ms == 0) // No animation.
 	{
-		Image = Graphics.load_image(name);
+		path = TEXTURES_PATH + name + IMAGE_EXTENSION;
+
+		Image = SDL_LoadBMP(path.c_str());
 		if(Image == nullptr)
 		{
 			return false;
 		}
-
 		Textures[current_frame_idx] = SDL_CreateTextureFromSurface(Graphics.Renderer, Image);
 		if(Textures[current_frame_idx] == nullptr)
 		{
@@ -92,7 +73,9 @@ bool Sprite::load_textures(Graphics& Graphics)
 	{
 		for(std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++)
 		{
-			Image = Graphics.load_image(name + SEPARATOR + std::to_string(idx));
+			path = TEXTURES_PATH + name + SEPARATOR + std::to_string(idx) + IMAGE_EXTENSION;
+
+			Image = SDL_LoadBMP(path.c_str());
 			if(Image == nullptr)
 			{
 				return false;
@@ -103,20 +86,6 @@ bool Sprite::load_textures(Graphics& Graphics)
 				return false;
 			}
 			SDL_FreeSurface(Image);
-		}
-	}
-	return false;
-}
-
-bool Sprite::load_animation(Graphics& Graphics)
-{
-	for(std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++)
-	{
-		Textures[idx] = Graphics.load_texture(name + SEPARATOR
-		                                      + std::to_string(idx));
-		if(Textures[idx] == nullptr)
-		{
-			return false;
 		}
 	}
 	return true;

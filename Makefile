@@ -18,15 +18,13 @@ ifeq ($(OS), Windows_NT)
 else ifeq ($(shell uname), Linux)
 	TARGET = PixUfo
 	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
-	-fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error \
-	-fstack-protector-all
+	-fsanitize-undefined-trap-on-error -fstack-protector-all
 
 	MKDIR_OBJ = mkdir -p $(OBJ_DIR)
 endif
 
 # All in the ./obj depending on the ./src.
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, \
-       $(OBJ_DIR)/%.o, \
+OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, \
        $(wildcard $(SRC_DIR)/*.cpp))
 
 # Compilation of object files depends on source files wnich depends on headers.
@@ -44,15 +42,15 @@ $(TARGET): $(OBJS)
 	$(CPPFLAGS) \
 	$(LDFLAGS)
 
-address: LDFLAGS += $(ASAN_FLAGS)
-address: $(TARGET)
+.PHONY: debug_on_linux
+debug_on_linux: LDFLAGS += $(ASAN_FLAGS)
+debug_on_linux: $(TARGET)
 
-debug: CPPFLAGS += -DDEBUG
-debug: clean
-debug: $(TARGET)
+.PHONY: windows_release
+windows_release: clean
+windows_release: $(TARGET)
 
 .PHONY: clean
-
 ifeq ($(OS), Windows_NT)
 clean:
 	del $(TARGET)

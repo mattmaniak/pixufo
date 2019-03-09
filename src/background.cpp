@@ -1,10 +1,7 @@
 #include "background.hpp"
 
 Background::Background(Graphics& Graphics, const std::string name):
-Sprite(Graphics, name, 0)
-{
-
-}
+Sprite(Graphics, name, 0) {}
 
 void Background::inf_scroll_()
 {

@@ -5,15 +5,11 @@ Entity::Entity(Graphics& Graphics, const std::string name,
                const Uint32 passed_single_frame_time_ms):
 Sprite(Graphics, name, passed_single_frame_time_ms), max_speed(passed_speed)
 {
-	is_initialized = false;
-
 	if(!load_hitbox())
 	{
-		return;
+		throw std::runtime_error("");
 	}
 	step = 0.0;
-
-	is_initialized = true;
 }
 
 bool Entity::load_hitbox()
@@ -42,17 +38,23 @@ bool Entity::load_hitbox()
 		            &Hitbox_parts[rects_amount].w,
 		            &Hitbox_parts[rects_amount].h);
 
-		if((Hitbox_parts[rects_amount].x == 0) // Empty file scenario.
+		if(((Hitbox_parts[rects_amount].x == 0) // Empty file scenario.
 		   && (Hitbox_parts[rects_amount].y == 0)
 		   && (Hitbox_parts[rects_amount].w == 0)
 		   && (Hitbox_parts[rects_amount].h == 0))
+		   || (Hitbox_parts[rects_amount].x < 0) // Wrong position or/and size.
+		   || (Hitbox_parts[rects_amount].y < 0)
+		   || (Hitbox_parts[rects_amount].w < 1)
+		   || (Hitbox_parts[rects_amount].h < 1))
 		{
-			Hitbox_parts[rects_amount] = {0, 0, Geometry.w, Geometry.h};
+			Hitbox_parts.clear();
+			Hitbox_parts.shrink_to_fit();
+			Hitbox_parts.push_back({0, 0, Geometry.w, Geometry.h});
+
 			std::fclose(Hitbox_parts_file);
 			has_custom_hitbox = false;
 			return true;
 		}
-
 		if(std::feof(Hitbox_parts_file))
 		{
 			break;
@@ -61,7 +63,7 @@ bool Entity::load_hitbox()
 
 		if(rects_amount > static_cast<std::size_t>(Geometry.w * Geometry.h))
 		{
-			error::show_box("Wrong hitbox for: " + name);
+			error::show_box("Too many hitbox parts for: " + name);
 			std::fclose(Hitbox_parts_file);
 			return false;
 		}

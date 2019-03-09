@@ -11,7 +11,7 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 
 	if(!init_window())
 	{
-		throw std::runtime_error("DODO");
+		throw std::runtime_error("");
 	}
 
 	Renderer = SDL_CreateRenderer(Window, default_driver,
@@ -19,7 +19,7 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 	if(Renderer == nullptr)
 	{
 		error::show_box("Can't create the renderer.");
-		throw std::runtime_error("DODO");
+		throw std::runtime_error("");
 	}
 	renderer_is_initialized = true;
 
@@ -27,12 +27,12 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 	   != SDL2_SUCCESS)
 	{
 		error::show_box("Can't enable the renderer blend mode.");
-		throw std::runtime_error("DIDI");
+		throw std::runtime_error("");
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
 	{
 		error::show_box("Can't hide the mouse pointer.");
-		throw std::runtime_error("DODO");
+		throw std::runtime_error("");
 	}
 	get_pixelart_px_sz();
 }
@@ -53,8 +53,9 @@ Graphics::~Graphics()
 
 bool Graphics::init_window()
 {
-	const int    unused_sz = 0;
-	SDL_Surface* icon      = nullptr;
+	const int         unused_sz = 0;
+	SDL_Surface*      Icon      = nullptr;
+	const std::string icon_path = TEXTURES_PATH + "icon" + IMAGE_EXTENSION;
 
 	if(SDL_GetDisplayBounds(CURRENT_DISPLAY_IDX, &Display) != SDL2_SUCCESS)
 	{
@@ -77,50 +78,15 @@ bool Graphics::init_window()
 	}
 	window_is_initialized = true;
 
-	icon = load_image("icon");
-	if(icon == nullptr)
+	Icon = SDL_LoadBMP(icon_path.c_str());
+	if(Icon == nullptr)
 	{
 		return false;
 	}
-	SDL_SetWindowIcon(Window, icon);
-	SDL_FreeSurface(icon);
+	SDL_SetWindowIcon(Window, Icon);
+	SDL_FreeSurface(Icon);
 
 	return true;
-}
-
-SDL_Surface* Graphics::load_image(const std::string name)
-{
-	const std::string path = TEXTURES_PATH + name + FILE_EXTENSION;
-
-	std::cout << path << std::endl;
-
-	SDL_Surface* image = SDL_LoadBMP(path.c_str());
-
-	if(image == nullptr)
-	{
-		error::show_box("Can't load the image: " + path);
-	}
-	return image;
-}
-
-SDL_Texture* Graphics::load_texture(const std::string name)
-{
-	SDL_Texture* Texture;
-	SDL_Surface* Image = load_image(name);
-
-	if(Image == nullptr)
-	{
-		return nullptr;
-	}
-
-	Texture = SDL_CreateTextureFromSurface(Renderer, Image);
-	if(Texture == nullptr)
-	{
-		error::show_box("Can't create the texture from the image: " + name);
-	}
-	SDL_FreeSurface(Image);
-
-	return Texture;
 }
 
 void Graphics::get_pixelart_px_sz()
@@ -139,7 +105,7 @@ bool Graphics::set_up_new_frame()
 	get_pixelart_px_sz();
 
 	if(((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
-	   && ((Display.w != 1) && (Display.h != 1))) // Minimized here.
+	   && ((Display.w != 1) && (Display.h != 1))) // Minimized window.
 	{
 		return true;
 	}
@@ -251,7 +217,7 @@ bool Graphics::render_buttons(Menu& Menu)
 		{
 			return false;
 		}
-		if(Menu.Buttons[idx]->idx == Menu.selected_button_idx)
+		if(idx == Menu.selected_button_idx)
 		{
 			Menu.Select_arrow->pos_x = Menu.Buttons[idx]->Geometry.x
 			                           - Menu.Select_arrow->Geometry.w;

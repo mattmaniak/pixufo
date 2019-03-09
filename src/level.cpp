@@ -4,15 +4,16 @@ Level::Level(Graphics& Graphics, const std::string bg_name,
              const unsigned int passed_enemies_amount):
 Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 {
-	is_initialized = false;
-
 	width  = Graphics.Display.w;
 	height = Graphics.Display.h;
 
-	Ufo = new Player(Graphics);
-	if(!Ufo->is_initialized)
+	try
 	{
-		return;
+		Ufo = new Player(Graphics);
+	}
+	catch(...)
+	{
+		throw std::runtime_error("");
 	}
 	set_model_borders(*Ufo);
 
@@ -22,32 +23,27 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 
 	for(std::size_t idx = 0; idx < enemies_amount; idx++) // Create all enemies.
 	{
-		Enemies.push_back(new Entity(Graphics, "nebula_big", 30.0, 180));
-		// Enemies.push_back(new Entity(Graphics, "nebula_medium", 60.0, 100));
-
-		if(!Enemies[idx]->is_initialized)
+		try
 		{
-			return;
+			// Enemies.push_back(new Entity(Graphics, "nebula_big", 30.0, 180));
+			Enemies.push_back(new Entity(Graphics, "nebula_medium", 60.0, 100));
+		}
+		catch(...)
+		{
+			throw std::runtime_error("");
 		}
 		set_model_borders(*Enemies[idx]);
 		Enemies[idx]->randomize_initial_pos();
 	}
-	is_initialized = true;
 }
 
 Level::~Level()
 {
-	if(Ufo->is_initialized)
-	{
-		delete Ufo;
-	}
 	for(std::size_t idx = 0; idx < Enemies.size(); idx++)
 	{
-		if(Enemies[idx]->is_initialized)
-		{
-			delete Enemies[idx];
-		}
+		delete Enemies[idx];
 	}
+	delete Ufo;
 }
 
 void Level::reset()

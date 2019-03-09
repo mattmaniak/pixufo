@@ -4,6 +4,8 @@
 bool Keyboard::menu(Menu& Menu)
 {
 	SDL_PollEvent(&Event);
+			std::cout << Menu.selected_button_idx << std::endl;
+			std::cout << Menu.Buttons.size() << std::endl;
 
 	switch(Event.type)
 	{

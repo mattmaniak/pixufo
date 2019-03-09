@@ -5,48 +5,29 @@
 #undef main
 #endif
 
-Game::Game()
+Game::Game(): mode(main_menu)
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't initialize the SDL2.");
-		return;
-		// throw std::runtime_error("EXC");
+		error::show_box("Can't initialize the SDL2 module.");
+		throw std::runtime_error("");
 	}
 	if(TTF_Init() != SDL2_SUCCESS)
 	{
-		error::show_box("Can't initialize the SDL2 true type fonts.");
-		return;
-		// throw std::runtime_error("EXC");
+		error::show_box("Can't initialize the SDL2 true type fonts module.");
+		throw std::runtime_error("");
 	}
-
 	Graphics_ = new Graphics;
-
-	Menu_ = new Menu(*Graphics_);
-	if(!Menu_->is_initialized)
-	{
-		return;
-	}
+	Menu_     = new Menu(*Graphics_);
 	Keyboard_ = new Keyboard;
-
-	Cosmic_ = new Level(*Graphics_, "background_level", 2);
-	if(!Cosmic_->is_initialized)
-	{
-		return;
-	}
+	Cosmic_   = new Level(*Graphics_, "background_level", 2);
 }
 
 Game::~Game()
 {
 	delete Graphics_;
-	if(Cosmic_->is_initialized)
-	{
-		delete Cosmic_;
-	}
-	if(Menu_->is_initialized)
-	{
-		delete Menu_;
-	}
+	delete Cosmic_;
+	delete Menu_;
 	delete Keyboard_;
 
 	TTF_Quit();
@@ -133,8 +114,5 @@ int main()
 		Game Pixufo;
 		Pixufo.loop();
 	}
-	catch(...)
-	{
-
-	}
+	catch(...) {}
 }
