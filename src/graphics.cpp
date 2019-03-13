@@ -3,8 +3,8 @@
 #include "level.hpp"
 
 Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
-                      renderer_is_initialized(false),
-                      window_is_initialized(false), Window(nullptr),
+                      renderer_initialized(false),
+                      window_initialized(false), Window(nullptr),
                       frame_elapsed_time_ms(0.0), fps(0)
 {
 	const int default_driver = -1;
@@ -21,7 +21,7 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 		error::show_box("Can't create the renderer.");
 		throw std::runtime_error("");
 	}
-	renderer_is_initialized = true;
+	renderer_initialized = true;
 
 	if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
 	   != SDL2_SUCCESS)
@@ -39,15 +39,15 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 
 Graphics::~Graphics()
 {
-	if(renderer_is_initialized)
+	if(renderer_initialized)
 	{
 		SDL_DestroyRenderer(Renderer);
-		renderer_is_initialized = false;
+		renderer_initialized = false;
 	}
-	if(window_is_initialized)
+	if(window_initialized)
 	{
 		SDL_DestroyWindow(Window);
-		window_is_initialized = false;
+		window_initialized = false;
 	}
 }
 
@@ -76,7 +76,7 @@ bool Graphics::init_window()
 		error::show_box("Can't create the window.");
 		return false;
 	}
-	window_is_initialized = true;
+	window_initialized = true;
 
 	Icon = SDL_LoadBMP(icon_path.c_str());
 	if(Icon == nullptr)
@@ -101,13 +101,18 @@ bool Graphics::set_up_new_frame()
 {
 	frame_start_time_ms = SDL_GetTicks();
 
+	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+	{
+		error::show_box("Can't clean the renderer.");
+		return false;
+	}
 	Prev_display = Display;
 	get_pixelart_px_sz();
 
 	if(((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
 	   && ((Display.w != 1) && (Display.h != 1))) // Minimized window.
 	{
-		return true;
+		return true; // Changed resolution.
 	}
 	return false;
 }
@@ -131,46 +136,48 @@ bool Graphics::count_fps()
 		frame_elapsed_time_ms = 0.0;
 		fps                   = 0;
 	}
+	return true;
+}
+
+bool Graphics::render_primary_menu(Menus& Menus)
+{
+	const double padding = 20.0 * pixelart_px_sz;
+
+	if(!Menus.Bg->tile_and_render(*this))
+	{
+		return false;
+	}
+	Menus.Bg->move(*this, -5.0, 2.5);
+
+	Menus.Logo->pos_x = Menus.Logo->pos_y = padding;
+
+	if(!Menus.Logo->render(*this))
+	{
+		return false;
+	}
+	if(!render_buttons(Menus))
+	{
+		return false;
+	}
 	SDL_RenderPresent(Renderer);
 
 	return true;
 }
 
-bool Graphics::render_primary_menu(Menu& Menu)
+bool Graphics::render_pause_menu(Menus& Menus, Level& Level)
 {
-	const double padding = 20.0 * pixelart_px_sz;
-
-	if(!Menu.Bg->tile_and_render(*this))
+	if(!Menus.Bg->tile_and_render(*this))
 	{
 		return false;
 	}
-	Menu.Bg->move(*this, -5.0, 2.5);
+	Menus.Bg->move(*this, -5.0, 2.5);
 
-	Menu.Logo->pos_x = Menu.Logo->pos_y = padding;
-
-	if(!Menu.Logo->render(*this))
+	if(!render_buttons(Menus))
 	{
 		return false;
 	}
-	if(!render_buttons(Menu))
-	{
-		return false;
-	}
-	return true;
-}
+	SDL_RenderPresent(Renderer);
 
-bool Graphics::render_pause_menu(Menu& Menu, Level& Level)
-{
-	delta_time_s = 0.0; // Disable animations.
-
-	if(!Level.render(*this))
-	{
-		return false;
-	}
-	if(!render_buttons(Menu))
-	{
-		return false;
-	}
 	return true;
 }
 
@@ -196,38 +203,38 @@ bool Graphics::render_font(Font& Font)
 	return true;
 }
 
-bool Graphics::render_buttons(Menu& Menu)
+bool Graphics::render_buttons(Menus& Menus)
 {
 	const double padding = 20.0 * pixelart_px_sz;
 
-	for(std::size_t idx = 0; idx < Menu.Buttons.size(); idx++)
+	for(std::size_t idx = 0; idx < Menus.Buttons.size(); idx++)
 	{
-		Menu.Buttons[idx]->pos_x = (Display.w - Menu.Buttons[idx]->Geometry.w)
+		Menus.Buttons[idx]->pos_x = (Display.w - Menus.Buttons[idx]->Geometry.w)
 		                           - padding;
 
-		Menu.Buttons[idx]->pos_y = Display.h - (Menu.Buttons[idx]->Geometry.h
-		                           * Menu.Buttons.size())
-		                           + (Menu.Buttons[idx]->idx
-		                           * Menu.Buttons[idx]->Geometry.h) - padding;
+		Menus.Buttons[idx]->pos_y = Display.h - (Menus.Buttons[idx]->Geometry.h
+		                           * Menus.Buttons.size())
+		                           + (Menus.Buttons[idx]->idx
+		                           * Menus.Buttons[idx]->Geometry.h) - padding;
 
-		Menu.Buttons[idx]->Geometry.x = Menu.Buttons[idx]->pos_x;
-		Menu.Buttons[idx]->Geometry.y = Menu.Buttons[idx]->pos_y;
+		Menus.Buttons[idx]->Geometry.x = Menus.Buttons[idx]->pos_x;
+		Menus.Buttons[idx]->Geometry.y = Menus.Buttons[idx]->pos_y;
 
-		if(!render_font(*Menu.Buttons[idx]))
+		if(!render_font(*Menus.Buttons[idx]))
 		{
 			return false;
 		}
-		if(idx == Menu.selected_button_idx)
+		if(idx == Menus.selected_button_idx)
 		{
-			Menu.Select_arrow->pos_x = Menu.Buttons[idx]->Geometry.x
-			                           - Menu.Select_arrow->Geometry.w;
+			Menus.Select_arrow->pos_x = Menus.Buttons[idx]->Geometry.x
+			                           - Menus.Select_arrow->Geometry.w;
 
-			Menu.Select_arrow->pos_y = Menu.Buttons[idx]->Geometry.y;
+			Menus.Select_arrow->pos_y = Menus.Buttons[idx]->Geometry.y;
 		}
-		Menu.Buttons[idx]->Geometry.x = Menu.Buttons[idx]->pos_x;
-		Menu.Buttons[idx]->Geometry.y = Menu.Buttons[idx]->pos_y;
+		Menus.Buttons[idx]->Geometry.x = Menus.Buttons[idx]->pos_x;
+		Menus.Buttons[idx]->Geometry.y = Menus.Buttons[idx]->pos_y;
 
-		if(!Menu.Select_arrow->render(*this))
+		if(!Menus.Select_arrow->render(*this))
 		{
 			return false;
 		}

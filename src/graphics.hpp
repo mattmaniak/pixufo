@@ -20,7 +20,7 @@
 class Level;
 class Background;
 class Enemy;
-class Menu;
+class Menus;
 class Font;
 
 class Graphics
@@ -39,13 +39,13 @@ public:
 
 	bool         set_up_new_frame();
 	bool         count_fps();
-	bool         render_primary_menu(Menu&);
-	bool         render_pause_menu(Menu&, Level&);
+	bool         render_primary_menu(Menus&);
+	bool         render_pause_menu(Menus&, Level&);
 	bool         clean_renderer();
 
 private:
-	bool renderer_is_initialized;
-	bool window_is_initialized;
+	bool renderer_initialized;
+	bool window_initialized;
 
 	SDL_Window* Window;
 	Uint32      frame_start_time_ms;
@@ -55,7 +55,7 @@ private:
 	bool init_window();
 	void         get_pixelart_px_sz();
 	bool         render_font(Font&);
-	bool         render_buttons(Menu&);
+	bool         render_buttons(Menus&);
 };
 
 #endif

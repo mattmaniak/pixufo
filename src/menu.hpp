@@ -13,44 +13,35 @@
 class Level;
 class Player;
 
-class New_menu: public Scene
+class Menu: public Scene
 {
 public:
-	enum
-	{
-		primary_enabled,
-		pause_enabled,
-		all_disabled
-	}
-	mode;
-
-	std::size_t                    selected_button_idx;
 	std::vector<Button*>           Buttons;
 	std::map<std::string, Sprite*> Sprites;
 
-	New_menu(Graphics&);
-	~New_menu();
+	Menu(Graphics&);
+	~Menu();
 
 	virtual bool keyboard_steering() = 0;
 	virtual bool render()            = 0;
 };
 
 
-class Main_menu: public New_menu
+class Main_menu: public Menu
 {
 public:
 	bool keyboard_steering();
 	bool render();
 };
 
-class Pause_menu: public New_menu
+class Pause_menu: public Menu
 {
 public:
 	bool keyboard_steering();
 	bool render();
 };
 
-class Menu: public Scene
+class Menus: public Scene
 {
 public:
 	enum
@@ -61,13 +52,16 @@ public:
 	}
 	mode;
 
-	Sprite*              Select_arrow;
+	std::size_t         selected_button_idx;
+
+	Sprite*                        Select_arrow;
+	std::map<std::string, Sprite*> Sprites;
+
 	Sprite*              Logo;
-	unsigned int         selected_button_idx;
 	std::vector<Button*> Buttons;
 
-	Menu(Graphics&);
-	~Menu();
+	Menus(Graphics&);
+	~Menus();
 
 	bool primary(Graphics&, Keyboard&);
 	bool pause(Graphics&, Keyboard&, Level&);

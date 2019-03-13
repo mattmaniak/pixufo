@@ -164,5 +164,7 @@ bool Level::render(Graphics& Graphics)
 	{
 		return false;
 	}
+	SDL_RenderPresent(Graphics.Renderer);
+
 	return true;
 }

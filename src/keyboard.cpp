@@ -1,11 +1,9 @@
 #include "keyboard.hpp"
 #include "menu.hpp"
 
-bool Keyboard::menu(Menu& Menu)
+bool Keyboard::menu(Menus& Menus)
 {
 	SDL_PollEvent(&Event);
-			std::cout << Menu.selected_button_idx << std::endl;
-			std::cout << Menu.Buttons.size() << std::endl;
 
 	switch(Event.type)
 	{
@@ -16,24 +14,24 @@ bool Keyboard::menu(Menu& Menu)
 		switch(Event.key.keysym.sym)
 		{
 			case SDLK_UP:
-			if(Menu.selected_button_idx > 0)
+			if(Menus.selected_button_idx > 0)
 			{
-				Menu.selected_button_idx--;
+				Menus.selected_button_idx--;
 			}
 			break;
 
 			case SDLK_DOWN:
-			if(Menu.selected_button_idx < (Menu.Buttons.size() - 1))
+			if(Menus.selected_button_idx < (Menus.Buttons.size() - 1))
 			{
-				Menu.selected_button_idx++;
+				Menus.selected_button_idx++;
 			}
 			break;
 
 			case SDLK_RETURN:
-			switch(Menu.selected_button_idx)
+			switch(Menus.selected_button_idx)
 			{
 				case 0:
-				Menu.mode = Menu.all_disabled;
+				Menus.mode = Menus.all_disabled;
 				break;
 
 				case 1:
@@ -44,7 +42,7 @@ bool Keyboard::menu(Menu& Menu)
 	return true;
 }
 
-bool Keyboard::pause(Menu& Menu)
+bool Keyboard::pause(Menus& Menus)
 {
 	SDL_PollEvent(&Event);
 
@@ -56,34 +54,32 @@ bool Keyboard::pause(Menu& Menu)
 	switch(Event.key.keysym.sym)
 	{
 		case SDLK_UP:
-		if(Menu.selected_button_idx > 0)
+		if(Menus.selected_button_idx > 0)
 		{
-			Menu.selected_button_idx--;
+			Menus.selected_button_idx--;
 		}
 		break;
 
 		case SDLK_DOWN:
-		if(Menu.selected_button_idx < (Menu.Buttons.size() - 1))
+		if(Menus.selected_button_idx < (Menus.Buttons.size() - 1))
 		{
-			Menu.selected_button_idx++;
+			Menus.selected_button_idx++;
 		}
 		break;
 
 		case SDLK_RETURN:
-		switch(Menu.selected_button_idx)
+		switch(Menus.selected_button_idx)
 		{
 			case 0:
-			Menu.mode = Menu.all_disabled;
+			Menus.mode = Menus.all_disabled;
 			break;
 
 			case 1:
-			Menu.mode = Menu.primary_enabled;
+			Menus.mode = Menus.primary_enabled;
 		}
-		break;
-
 		// TODO: DELAY/FADER.
 		// case SDLK_ESCAPE:
-		// Menu.mode = Menu.all_disabled;
+		// Menus.mode = Menus.all_disabled;
 	}
 	return true;
 }

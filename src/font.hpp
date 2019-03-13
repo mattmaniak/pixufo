@@ -14,7 +14,6 @@
 class Font
 {
 public:
-	bool              is_initialized;
 	const std::string name;
 
 	TTF_Font*         Font_ttf;

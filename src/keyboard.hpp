@@ -5,13 +5,13 @@
 #include <limits>
 #include <SDL2/SDL.h>
 
-class Menu;
+class Menus;
 
 class Keyboard
 {
 public:
-	bool menu(Menu&);
-	bool pause(Menu&);
+	bool menu(Menus&);
+	bool pause(Menus&);
 
 private:
 	SDL_Event    Event;

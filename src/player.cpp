@@ -23,7 +23,7 @@ Player::~Player()
 	Movements.erase("vertical");
 }
 
-bool Player::keyboard_steering(Menu& Menu, Graphics& Graphics)
+bool Player::keyboard_steering(Menus& Menus, Graphics& Graphics)
 {
 	directions_amount = 0;
 
@@ -51,7 +51,7 @@ bool Player::keyboard_steering(Menu& Menu, Graphics& Graphics)
 	}
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
-		Menu.mode = Menu.pause_enabled;
+		Menus.mode = Menus.pause_enabled;
 	}
 
 	if((horizontal_speed != 0.0f) && (vertical_speed != 0.0f))
@@ -64,10 +64,7 @@ bool Player::keyboard_steering(Menu& Menu, Graphics& Graphics)
 	return true;
 }
 
-player::Movement::Movement(): max_time_s(0.4)
-{
-	keypress_time_s = 0.0;
-}
+player::Movement::Movement(): max_time_s(0.4), keypress_time_s(0.0) {}
 
 void player::Movement::count_ratio(Graphics& Graphics, dir passed_direction)
 {

@@ -13,14 +13,6 @@
 class Game
 {
 public:
-	enum
-	{
-		main_menu,
-		pause_menu,
-		level
-	}
-	mode;
-
 	Game();
 	~Game();
 
@@ -28,7 +20,7 @@ public:
 
 private:
 	Graphics* Graphics_;
-	Menu*     Menu_;
+	Menus*    Menus_;
 	Keyboard* Keyboard_;
 	Level*    Cosmic_;
 };

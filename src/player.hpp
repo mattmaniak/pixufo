@@ -32,7 +32,7 @@ public:
 	Player(Graphics&);
 	~Player();
 
-	bool keyboard_steering(Menu&, Graphics&);
+	bool keyboard_steering(Menus&, Graphics&);
 
 private:
 	SDL_Event    Event;
