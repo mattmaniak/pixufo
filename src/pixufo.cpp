@@ -5,7 +5,7 @@
 #undef main
 #endif
 
-Game::Game()
+Game::Game(): state(main_menu)
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
@@ -18,74 +18,132 @@ Game::Game()
 		throw std::runtime_error("");
 	}
 	Graphics_ = new Graphics;
-	Menus_     = new Menus(*Graphics_);
-	Keyboard_ = new Keyboard;
-	Cosmic_   = new Level(*Graphics_, "background_level", 2);
+	Level_    = new Level(*Graphics_, "background_level", 2);
 }
 
 Game::~Game()
 {
 	delete Graphics_;
-	delete Cosmic_;
-	delete Menus_;
-	delete Keyboard_;
+	delete Level_;
 
 	TTF_Quit();
-	SDL_Quit();
+	SDL_Quit(); // 38 memleaks here.
 }
 
-void Game::loop()
+bool Game::level_loop()
 {
-	for(;;)
+	while(state == level)
 	{
-		if(!Graphics_->set_up_new_frame())
+		if(Graphics_->set_up_new_frame())
 		{
-			Cosmic_->set_entities_borders(*Graphics_);
+			Level_->set_entities_borders(*Graphics_); // Changed resolution.
 		}
-		if(Menus_->mode == Menus_->primary_enabled)
+		if(!Level_->Ufo->keyboard_steering(*Graphics_, state))
 		{
-			if(!Menus_->primary(*Graphics_, *Keyboard_))
-			{
-				return;
-			}
-			Cosmic_->reset();
-			SDL_Delay(500);
-			Graphics_->count_fps();
-		}
-		if(!Cosmic_->Ufo->keyboard_steering(*Menus_, *Graphics_))
-		{
-			return;
+			return false;
 		}
 
-		for(std::size_t idx = 0; idx < Cosmic_->Enemies.size(); idx++)
+		for(std::size_t idx = 0; idx < Level_->Enemies.size(); idx++)
 		{
-			Cosmic_->check_entity_pos(*Cosmic_->Enemies[idx]);
+			Level_->check_entity_pos(*Level_->Enemies[idx]);
 		}
-		Cosmic_->check_entity_pos(*Cosmic_->Ufo);
+		Level_->check_entity_pos(*Level_->Ufo);
 
-		if(Cosmic_->check_player_collision(*Graphics_))
+		if(Level_->check_player_collision(*Graphics_))
 		{
 			SDL_Delay(2000);
-			return;
+			return false;
 		}
-		if(!Cosmic_->render(*Graphics_))
+		if(!Level_->render(*Graphics_))
 		{
-			return;
-		}
-		if(Menus_->mode == Menus_->pause_enabled)
-		{
-			SDL_Delay(500);
-			if(!Menus_->pause(*Graphics_, *Keyboard_, *Cosmic_))
-			{
-				return;
-			}
-			SDL_Delay(500);
+			return false;
 		}
 		if(!Graphics_->count_fps())
 		{
-			return;
+			return false;
 		}
 	}
+	return true;
+}
+
+bool Game::main_menu_loop()
+{
+	Main_menu M_menu(*Graphics_);
+
+	while(state == main_menu)
+	{
+		if(Graphics_->set_up_new_frame())
+		{
+			// Level_->set_entities_borders(*Graphics_); // Changed resolution.
+		}
+		if(!M_menu.render(*Graphics_))
+		{
+			return false;
+		}
+		if(!M_menu.keyboard_steering(state))
+		{
+			return false;
+		}
+		if(!Graphics_->count_fps())
+		{
+			return false;
+		}
+	}
+	Level_->reset();
+
+	return true;
+}
+
+bool Game::pause_menu_loop()
+{
+	Pause_menu M_menu(*Graphics_);
+
+	while(state == pause_menu)
+	{
+		if(Graphics_->set_up_new_frame())
+		{
+			// Level_->set_entities_borders(*Graphics_); // Changed resolution.
+		}
+		if(!M_menu.render(*Graphics_))
+		{
+			return false;
+		}
+		if(!M_menu.keyboard_steering(state))
+		{
+			return false;
+		}
+		if(!Graphics_->count_fps())
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Game::credits_menu_loop()
+{
+	Credits_menu M_menu(*Graphics_);
+
+	while(state == credits_menu)
+	{
+		if(Graphics_->set_up_new_frame())
+		{
+			// Level_->set_entities_borders(*Graphics_); // Changed resolution.
+		}
+		if(!M_menu.render(*Graphics_))
+		{
+			return false;
+		}
+		if(!M_menu.keyboard_steering(state))
+		{
+			return false;
+		}
+		if(!Graphics_->count_fps())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 int main()
@@ -93,7 +151,46 @@ int main()
 	try
 	{
 		Game Pixufo;
-		Pixufo.loop();
+
+		for(;;)
+		{
+			switch(Pixufo.state)
+			{
+			case level:
+				if(!Pixufo.level_loop())
+				{
+					return 0;
+				}
+				break;
+
+			case main_menu:
+				if(!Pixufo.main_menu_loop())
+				{
+					return 0;
+				}
+				break;
+
+			case settings_menu:
+				if(!Pixufo.level_loop())
+				{
+					return 0;
+				}
+				break;
+
+			case credits_menu:
+				if(!Pixufo.credits_menu_loop())
+				{
+					return 0;
+				}
+				break;
+
+			case pause_menu:
+				if(!Pixufo.pause_menu_loop())
+				{
+					return 0;
+				}
+			}
+		}
 	}
 	catch(...) {}
 }

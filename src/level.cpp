@@ -152,13 +152,13 @@ bool Level::render(Graphics& Graphics)
 	{
 		return false;
 	}
-	for(std::size_t idx = 0; idx < enemies_amount; idx++)
+	for(auto& Enemy: Enemies)
 	{
-		if(!Enemies[idx]->render(Graphics))
+		if(!Enemy->render(Graphics))
 		{
 			return false;
 		}
-		Enemies[idx]->move(Graphics, -Enemies[idx]->max_speed, 0.0);
+		Enemy->move(Graphics, -Enemy->max_speed, 0.0);
 	}
 	if(!Ufo->render(Graphics))
 	{

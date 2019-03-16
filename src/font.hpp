@@ -16,18 +16,20 @@ class Font
 public:
 	const std::string name;
 
-	TTF_Font*         Font_ttf;
-	const std::string text;
-	const int         sz;
-	SDL_Color         Color;
-	SDL_Texture*      Texture;
+	TTF_Font*          Font_ttf;
+	const std::string  text;
+	const unsigned int sz;
+	SDL_Color          Color;
+	SDL_Texture*       Texture;
 
 	SDL_Rect Geometry; // Textures's position and size.
 	double   pos_x;
 	double   pos_y;
 
-	Font(Graphics&, const std::string, const int);
+	Font(Graphics&, const std::string, const unsigned int);
 	~Font();
+
+	bool render(Graphics&);
 };
 
 #endif

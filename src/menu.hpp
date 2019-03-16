@@ -6,9 +6,11 @@
 #include <vector>
 #include "error.hpp"
 #include "scene.hpp"
-#include "button.hpp"
 #include "graphics.hpp"
-#include "keyboard.hpp"
+#include "font.hpp"
+#include "states.hpp"
+
+#define PADDING (20.0 * Graphics.pixelart_px_sz)
 
 class Level;
 class Player;
@@ -16,55 +18,46 @@ class Player;
 class Menu: public Scene
 {
 public:
-	std::vector<Button*>           Buttons;
+	std::size_t                    selected_button_idx;
+	bool                           selection_arrow_focused;
+	std::vector<Font*>             Buttons;
 	std::map<std::string, Sprite*> Sprites;
+	std::vector<Font*>             Text_lines;
+	bool                           has_text;
 
 	Menu(Graphics&);
 	~Menu();
 
-	virtual bool keyboard_steering() = 0;
-	virtual bool render()            = 0;
+	bool         render(Graphics&);
+	virtual bool keyboard_steering(states&) = 0;
 };
 
 
 class Main_menu: public Menu
 {
 public:
-	bool keyboard_steering();
-	bool render();
+	Main_menu(Graphics&);
+	~Main_menu();
+
+	bool keyboard_steering(states&);
 };
 
 class Pause_menu: public Menu
 {
 public:
-	bool keyboard_steering();
-	bool render();
+	Pause_menu(Graphics&);
+	~Pause_menu();
+
+	bool keyboard_steering(states&);
 };
 
-class Menus: public Scene
+class Credits_menu: public Menu
 {
 public:
-	enum
-	{
-		primary_enabled,
-		pause_enabled,
-		all_disabled
-	}
-	mode;
+	Credits_menu(Graphics&);
+	~Credits_menu();
 
-	std::size_t         selected_button_idx;
-
-	Sprite*                        Select_arrow;
-	std::map<std::string, Sprite*> Sprites;
-
-	Sprite*              Logo;
-	std::vector<Button*> Buttons;
-
-	Menus(Graphics&);
-	~Menus();
-
-	bool primary(Graphics&, Keyboard&);
-	bool pause(Graphics&, Keyboard&, Level&);
+	bool keyboard_steering(states&);
 };
 
 #endif

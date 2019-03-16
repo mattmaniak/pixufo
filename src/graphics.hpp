@@ -15,6 +15,10 @@
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
+#define MAX_DISPLAY_WIDTH  16384
+#define MAX_DISPLAY_HEIGHT 16384
+
+
 #define IMAGE_EXTENSION ".bmp"
 
 class Level;
@@ -39,8 +43,6 @@ public:
 
 	bool         set_up_new_frame();
 	bool         count_fps();
-	bool         render_primary_menu(Menus&);
-	bool         render_pause_menu(Menus&, Level&);
 	bool         clean_renderer();
 
 private:
@@ -52,10 +54,8 @@ private:
 	Uint32      frame_elapsed_time_ms;
 	Uint32      fps;
 
-	bool init_window();
-	void         get_pixelart_px_sz();
-	bool         render_font(Font&);
-	bool         render_buttons(Menus&);
+	bool         init_window();
+	bool         get_pixelart_px_sz();
 };
 
 #endif

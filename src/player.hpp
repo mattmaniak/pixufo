@@ -8,6 +8,7 @@
 #include "entity.hpp"
 #include "graphics.hpp"
 #include "menu.hpp"
+#include "states.hpp"
 
 #define AXES_AMOUNT 2
 
@@ -32,11 +33,7 @@ public:
 	Player(Graphics&);
 	~Player();
 
-	bool keyboard_steering(Menus&, Graphics&);
-
-private:
-	SDL_Event    Event;
-	const Uint8* keys;
+	bool keyboard_steering(Graphics&, states&);
 };
 
 enum dir

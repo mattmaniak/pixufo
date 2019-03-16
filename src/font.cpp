@@ -1,7 +1,7 @@
 #include "font.hpp"
 
 Font::Font(Graphics& Graphics, const std::string passed_text,
-           const int passed_sz): name(FONTNAME), text(passed_text),
+           const unsigned int passed_sz): name(FONTNAME), text(passed_text),
            sz(passed_sz * Graphics.pixelart_px_sz)
 {
 	const std::string path = FONT_PATH + SEPARATOR + name;
@@ -45,4 +45,19 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 Font::~Font()
 {
 	SDL_DestroyTexture(Texture);
+}
+
+bool Font::render(Graphics& Graphics)
+{
+	Geometry.x = pos_x;
+	Geometry.y = pos_y;
+
+	if(SDL_RenderCopy(Graphics.Renderer, Texture, nullptr, &Geometry)
+	   != SDL2_SUCCESS)
+	{
+		error::show_box("Can't copy the texture: " + name
+		                + " to the renderer.");
+		return false;
+	}
+	return true;
 }

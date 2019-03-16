@@ -1,7 +1,6 @@
 #include "player.hpp"
 
-Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 100.0, 0),
-               keys(SDL_GetKeyboardState(nullptr))
+Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 100.0, 0)
 {
 	horizontal_speed = 0.0;
 	vertical_speed   = 0.0;
@@ -19,15 +18,19 @@ Player::~Player()
 	delete Movements["horizontal"];
 	delete Movements["vertical"];
 
-	Movements.erase("horizontal");
-	Movements.erase("vertical");
+	Movements.clear();
 }
 
-bool Player::keyboard_steering(Menus& Menus, Graphics& Graphics)
+bool Player::keyboard_steering(Graphics& Graphics, states& state)
 {
+	SDL_Event    Event;
+	const Uint8* keys;
+
+	keys = SDL_GetKeyboardState(nullptr);
+	SDL_PollEvent(&Event);
+
 	directions_amount = 0;
 
-	SDL_PollEvent(&Event);
 	switch(Event.type)
 	{
 		case SDL_QUIT:
@@ -51,7 +54,7 @@ bool Player::keyboard_steering(Menus& Menus, Graphics& Graphics)
 	}
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
-		Menus.mode = Menus.pause_enabled;
+		state = pause_menu;
 	}
 
 	if((horizontal_speed != 0.0f) && (vertical_speed != 0.0f))
@@ -72,28 +75,28 @@ void player::Movement::count_ratio(Graphics& Graphics, dir passed_direction)
 
 	switch(direction)
 	{
-		case left:
+	case left:
 		if((keypress_time_s - Graphics.delta_time_s) >= -max_time_s)
 		{
 			keypress_time_s -= Graphics.delta_time_s;
 		}
 		break;
 
-		case right:
+	case right:
 		if((keypress_time_s + Graphics.delta_time_s) <= max_time_s)
 		{
 			keypress_time_s += Graphics.delta_time_s;
 		}
 		break;
 
-		case up:
+	case up:
 		if((keypress_time_s - Graphics.delta_time_s) >= -max_time_s)
 		{
 			keypress_time_s -= Graphics.delta_time_s;
 		}
 		break;
 
-		case down:
+	case down:
 		if((keypress_time_s + Graphics.delta_time_s) <= max_time_s)
 		{
 			keypress_time_s += Graphics.delta_time_s;
@@ -109,16 +112,16 @@ void player::Movement::move(Graphics& Graphics, Player& Ufo)
 
 	switch(direction)
 	{
-		case left:
-		case right:
+	case left:
+	case right:
 		Ufo.horizontal_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
 
 		Ufo.horizontal_step = Ufo.horizontal_speed * Graphics.delta_time_s
 		                      * Graphics.pixelart_px_sz;
 		break;
 
-		case up:
-		case down:
+	case up:
+	case down:
 		Ufo.vertical_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
 
 		Ufo.vertical_step = Ufo.vertical_speed * Graphics.delta_time_s
@@ -133,13 +136,13 @@ void player::Movement::move(Graphics& Graphics, Player& Ufo)
 	}
 	switch(direction)
 	{
-		case left:
-		case right:
+	case left:
+	case right:
 		Ufo.pos_x += Ufo.horizontal_step;
 		break;
 
-		case up:
-		case down:
+	case up:
+	case down:
 		Ufo.pos_y += Ufo.vertical_step;
 	}
 }

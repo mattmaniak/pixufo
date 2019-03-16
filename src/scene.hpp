@@ -7,8 +7,8 @@
 class Scene
 {
 public:
-	int width;
-	int height;
+	unsigned int width;
+	unsigned int height;
 
 	Background* Bg;
 
