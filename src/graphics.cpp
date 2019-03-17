@@ -18,21 +18,18 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 	                              SDL_RENDERER_ACCELERATED);
 	if(Renderer == nullptr)
 	{
-		error::show_box("Can't create the renderer.");
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't create the renderer.");
 	}
 	renderer_initialized = true;
 
 	if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
 	   != SDL2_SUCCESS)
 	{
-		error::show_box("Can't enable the renderer blend mode.");
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't enable the renderer blend mode.");
 	}
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't hide the mouse pointer.");
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't hide the mouse pointer.");
 	}
 	if(!get_pixelart_px_sz())
 	{

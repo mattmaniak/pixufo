@@ -12,16 +12,14 @@ public:
 	int min_y;
 	int max_y;
 
-	bool has_custom_hitbox;
-
-	const double max_speed; // Pixel position move in a one second.
-	double       step;      // Pixel position move in a one frame.
+	const double          max_speed; // Pixel position move in a one second.
+	double                step;      // Pixel position move in a one frame.
 	std::vector<SDL_Rect> Hitbox_parts;
 
 	Entity(Graphics&, const std::string, const double, const Uint32);
 
 	void randomize_initial_pos();
-	bool load_hitbox();
+	bool load_hitbox(Graphics&);
 	bool render(Graphics&);
 };
 

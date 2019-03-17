@@ -9,16 +9,21 @@ Game::Game(): state(main_menu)
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't initialize the SDL2 module.");
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't initialize the SDL2.");
 	}
 	if(TTF_Init() != SDL2_SUCCESS)
 	{
-		error::show_box("Can't initialize the SDL2 true type fonts module.");
+		throw error::Exception_box("Can't initialize the SDL2 ttf module.");
+	}
+	try
+	{
+		Graphics_ = new Graphics;
+		Level_    = new Level(*Graphics_, "background_level", 2);
+	}
+	catch(...)
+	{
 		throw std::runtime_error("");
 	}
-	Graphics_ = new Graphics;
-	Level_    = new Level(*Graphics_, "background_level", 2);
 }
 
 Game::~Game()
@@ -72,10 +77,8 @@ bool Game::main_menu_loop()
 
 	while(state == main_menu)
 	{
-		if(Graphics_->set_up_new_frame())
-		{
-			// Level_->set_entities_borders(*Graphics_); // Changed resolution.
-		}
+		Graphics_->set_up_new_frame();
+
 		if(!M_menu.render(*Graphics_))
 		{
 			return false;
@@ -100,10 +103,8 @@ bool Game::pause_menu_loop()
 
 	while(state == pause_menu)
 	{
-		if(Graphics_->set_up_new_frame())
-		{
-			// Level_->set_entities_borders(*Graphics_); // Changed resolution.
-		}
+		Graphics_->set_up_new_frame();
+
 		if(!M_menu.render(*Graphics_))
 		{
 			return false;
@@ -126,10 +127,8 @@ bool Game::credits_menu_loop()
 
 	while(state == credits_menu)
 	{
-		if(Graphics_->set_up_new_frame())
-		{
-			// Level_->set_entities_borders(*Graphics_); // Changed resolution.
-		}
+		Graphics_->set_up_new_frame();
+
 		if(!M_menu.render(*Graphics_))
 		{
 			return false;
@@ -165,13 +164,6 @@ int main()
 
 			case main_menu:
 				if(!Pixufo.main_menu_loop())
-				{
-					return 0;
-				}
-				break;
-
-			case settings_menu:
-				if(!Pixufo.level_loop())
 				{
 					return 0;
 				}

@@ -15,8 +15,8 @@ Sprite::Sprite(Graphics& Graphics, const std::string passed_name,
 	if(SDL_QueryTexture(Textures[current_frame_idx], nullptr, nullptr,
 	   &Geometry.w, &Geometry.h) != SDL2_SUCCESS)
 	{
-		error::show_box("Can't get the size of the texture: " + name);
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't get the size of the texture: "
+		                           + name);
 	}
 	pos_x = 0.0;
 	pos_y = 0.0;

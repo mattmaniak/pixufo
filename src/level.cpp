@@ -4,8 +4,10 @@ Level::Level(Graphics& Graphics, const std::string bg_name,
              const unsigned int passed_enemies_amount):
 Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 {
-	width  = Graphics.Display.w;
-	height = Graphics.Display.h;
+	const double size_to_screen_width_ratio = 1.0;
+
+	width  = Graphics.Display.w * size_to_screen_width_ratio;
+	height = Graphics.Display.h * size_to_screen_width_ratio;
 
 	try
 	{
@@ -15,7 +17,7 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 	{
 		throw std::runtime_error("");
 	}
-	set_model_borders(*Ufo);
+	set_model_borders(Graphics, *Ufo);
 
 	// Set the player's default position;
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w) / 2;
@@ -32,7 +34,7 @@ Scene(Graphics, bg_name), enemies_amount(passed_enemies_amount)
 		{
 			throw std::runtime_error("");
 		}
-		set_model_borders(*Enemies[idx]);
+		set_model_borders(Graphics, *Enemies[idx]);
 		Enemies[idx]->randomize_initial_pos();
 	}
 }
@@ -65,11 +67,11 @@ void Level::set_entities_borders(Graphics& Graphics)
 	width  = Graphics.Display.w;
 	height = Graphics.Display.h;
 
-	set_model_borders(*Ufo);
+	set_model_borders(Graphics, *Ufo);
 
 	for(std::size_t idx = 0; idx < Enemies.size(); idx++)
 	{
-		set_model_borders(*Enemies[idx]);
+		set_model_borders(Graphics, *Enemies[idx]);
 	}
 }
 
@@ -83,30 +85,23 @@ bool Level::check_player_collision(Graphics& Graphics)
 		if(SDL_HasIntersection(&Ufo->Geometry,
 		                       &Enemies[en_idx]->Geometry))
 		{
-			for(std::size_t pl_hb_idx = 0; pl_hb_idx < Ufo->Hitbox_parts.size(); pl_hb_idx++)
+			for(std::size_t pl_hb_idx = 0; pl_hb_idx < Ufo->Hitbox_parts.size();
+			    pl_hb_idx++)
 			{
-				Player_hbox_part.w = Ufo->Hitbox_parts[pl_hb_idx].w * Graphics.pixelart_px_sz;
-				Player_hbox_part.h = Ufo->Hitbox_parts[pl_hb_idx].h * Graphics.pixelart_px_sz;
-				Player_hbox_part.x = Ufo->pos_x + (Ufo->Hitbox_parts[pl_hb_idx].x * Graphics.pixelart_px_sz);
-				Player_hbox_part.y = Ufo->pos_y + (Ufo->Hitbox_parts[pl_hb_idx].y * Graphics.pixelart_px_sz);
+				Player_hbox_part.w = Ufo->Hitbox_parts[pl_hb_idx].w;
+				Player_hbox_part.h = Ufo->Hitbox_parts[pl_hb_idx].h;
+				Player_hbox_part.x = Ufo->pos_x + (Ufo->Hitbox_parts[pl_hb_idx].x);
+				Player_hbox_part.y = Ufo->pos_y + (Ufo->Hitbox_parts[pl_hb_idx].y);
 
-				if(!Ufo->has_custom_hitbox)
+				for(std::size_t en_hb_idx = 0;
+				    en_hb_idx < Enemies[en_idx]->Hitbox_parts.size();
+				    en_hb_idx++)
 				{
-					Player_hbox_part.w /= Graphics.pixelart_px_sz;
-					Player_hbox_part.h /= Graphics.pixelart_px_sz;
-				}
-				for(std::size_t en_hb_idx = 0; en_hb_idx < Enemies[en_idx]->Hitbox_parts.size(); en_hb_idx++)
-				{
-					Enemy_hbox_part.w = Enemies[en_idx]->Hitbox_parts[en_hb_idx].w * Graphics.pixelart_px_sz;
-					Enemy_hbox_part.h = Enemies[en_idx]->Hitbox_parts[en_hb_idx].h * Graphics.pixelart_px_sz;
-					Enemy_hbox_part.x = Enemies[en_idx]->pos_x + (Enemies[en_idx]->Hitbox_parts[en_hb_idx].x * Graphics.pixelart_px_sz);
-					Enemy_hbox_part.y = Enemies[en_idx]->pos_y + (Enemies[en_idx]->Hitbox_parts[en_hb_idx].y * Graphics.pixelart_px_sz);
+					Enemy_hbox_part.w = Enemies[en_idx]->Hitbox_parts[en_hb_idx].w;
+					Enemy_hbox_part.h = Enemies[en_idx]->Hitbox_parts[en_hb_idx].h;
+					Enemy_hbox_part.x = Enemies[en_idx]->pos_x + (Enemies[en_idx]->Hitbox_parts[en_hb_idx].x);
+					Enemy_hbox_part.y = Enemies[en_idx]->pos_y + (Enemies[en_idx]->Hitbox_parts[en_hb_idx].y);
 
-					if(!Enemies[en_idx]->has_custom_hitbox)
-					{
-						Enemy_hbox_part.w /= Graphics.pixelart_px_sz;
-						Enemy_hbox_part.h /= Graphics.pixelart_px_sz;
-					}
 					if(SDL_HasIntersection(&Player_hbox_part, &Enemy_hbox_part))
 					{
 						return true;
@@ -118,11 +113,12 @@ bool Level::check_player_collision(Graphics& Graphics)
 	return false;
 }
 
-void Level::set_model_borders(Entity& Entity)
+void Level::set_model_borders(Graphics& Graphics, Entity& Entity)
 {
-	Entity.min_x = Entity.min_y = 0;
-	Entity.max_x = width - Entity.Geometry.w;
-	Entity.max_y = height - Entity.Geometry.h;
+	Entity.min_x = Graphics.pixelart_px_sz - Entity.Geometry.w;
+	Entity.min_y = Graphics.pixelart_px_sz - Entity.Geometry.h;
+	Entity.max_x = width - Graphics.pixelart_px_sz;
+	Entity.max_y = height - Graphics.pixelart_px_sz;
 }
 
 void Level::check_entity_pos(Entity& Entity)

@@ -10,8 +10,7 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 	Font_ttf = TTF_OpenFont(path.c_str(), sz);
 	if(Font_ttf == nullptr)
 	{
-		error::show_box("Can't load the font: " + path);
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't load the font: " + path);
 	}
 	Color.r = 120;
 	Color.g = 244;
@@ -21,24 +20,24 @@ Font::Font(Graphics& Graphics, const std::string passed_text,
 	Surface = TTF_RenderUTF8_Blended(Font_ttf, text.c_str(), Color);
 	if(Surface == nullptr)
 	{
-		error::show_box("Can't create the surface from the font: " + path);
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't create the surface from the font: "
+		                           + path);
 	}
 	TTF_CloseFont(Font_ttf);
 
 	Texture = SDL_CreateTextureFromSurface(Graphics.Renderer, Surface);
 	if(Texture == nullptr)
 	{
-		error::show_box("Can't create the texture from the font: " + path);
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't create the texture from the font: "
+		                           + path);
 	}
 	SDL_FreeSurface(Surface);
 
 	if(SDL_QueryTexture(Texture, nullptr, nullptr, &Geometry.w, &Geometry.h)
 	  != SDL2_SUCCESS)
 	{
-		error::show_box("Can't get the size of the texture: " + name);
-		throw std::runtime_error("");
+		throw error::Exception_box("Can't get the size of the texture: "
+		                           + name);
 	}
 }
 

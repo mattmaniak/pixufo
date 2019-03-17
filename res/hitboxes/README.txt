@@ -20,7 +20,7 @@ x - horizontal position from the left side.
 y - vertical one from up.
 Above values can't be negative.
 
-Separator between ')' and "[" is at least one space.
+Space separator is optional.
 
 Width and height must be placed in the square brackets. Separated same as x and
 y.

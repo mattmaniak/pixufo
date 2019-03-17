@@ -28,7 +28,7 @@ public:
 	bool render(Graphics&);
 
 private:
-	void set_model_borders(Entity&);
+	void set_model_borders(Graphics&, Entity&);
 };
 
 #endif

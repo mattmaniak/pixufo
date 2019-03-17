@@ -5,28 +5,25 @@ Entity::Entity(Graphics& Graphics, const std::string name,
                const Uint32 passed_single_frame_time_ms):
 Sprite(Graphics, name, passed_single_frame_time_ms), max_speed(passed_speed)
 {
-	if(!load_hitbox())
+	if(!load_hitbox(Graphics))
 	{
 		throw std::runtime_error("");
 	}
 	step = 0.0;
 }
 
-bool Entity::load_hitbox()
+bool Entity::load_hitbox(Graphics& Graphics)
 {
 	const std::string path_to_file = HITBOXES_PATH + name;
 	std::size_t       rects_amount = 0;
+	double            tmp_sz;
 
 	FILE* Hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
 
 	if(Hitbox_parts_file == nullptr)
 	{
-		// error::show_box("Can't load the hitbox file for: " + name);
-		// return false;
-
-		Hitbox_parts.push_back({0, 0, Geometry.w, Geometry.h});
-		has_custom_hitbox = false;
-		return true;
+		error::show_box("Can't load the hitbox file for: " + name);
+		return false;
 	}
 	for(;;)
 	{
@@ -38,6 +35,19 @@ bool Entity::load_hitbox()
 		            &Hitbox_parts[rects_amount].w,
 		            &Hitbox_parts[rects_amount].h);
 
+		// Upscale.
+		tmp_sz = Hitbox_parts[rects_amount].w * Graphics.pixelart_px_sz;
+		Hitbox_parts[rects_amount].w = tmp_sz;
+
+		tmp_sz = Hitbox_parts[rects_amount].h * Graphics.pixelart_px_sz;
+		Hitbox_parts[rects_amount].h = tmp_sz;
+
+		tmp_sz = Hitbox_parts[rects_amount].x * Graphics.pixelart_px_sz;
+		Hitbox_parts[rects_amount].x = tmp_sz;
+
+		tmp_sz = Hitbox_parts[rects_amount].y * Graphics.pixelart_px_sz;
+		Hitbox_parts[rects_amount].y = tmp_sz;
+
 		if(((Hitbox_parts[rects_amount].x == 0) // Empty file scenario.
 		   && (Hitbox_parts[rects_amount].y == 0)
 		   && (Hitbox_parts[rects_amount].w == 0)
@@ -47,13 +57,8 @@ bool Entity::load_hitbox()
 		   || (Hitbox_parts[rects_amount].w < 1)
 		   || (Hitbox_parts[rects_amount].h < 1))
 		{
-			Hitbox_parts.clear();
-			Hitbox_parts.shrink_to_fit();
-			Hitbox_parts.push_back({0, 0, Geometry.w, Geometry.h});
-
-			std::fclose(Hitbox_parts_file);
-			has_custom_hitbox = false;
-			return true;
+			error::show_box("Wrong hitbox for the: " + name);
+			return false;
 		}
 		if(std::feof(Hitbox_parts_file))
 		{
@@ -69,7 +74,6 @@ bool Entity::load_hitbox()
 		}
 	}
 	std::fclose(Hitbox_parts_file);
-	has_custom_hitbox = true;
 
 	return true;
 }
@@ -108,16 +112,11 @@ bool Entity::render(Graphics& Graphics)
 	}
 	for(std::size_t idx = 0; idx < Hitbox_parts.size(); idx++)
 	{
-		Hbox_part.w = Hitbox_parts[idx].w * Graphics.pixelart_px_sz;
-		Hbox_part.h = Hitbox_parts[idx].h * Graphics.pixelart_px_sz;
-		Hbox_part.x = pos_x + (Hitbox_parts[idx].x * Graphics.pixelart_px_sz);
-		Hbox_part.y = pos_y + (Hitbox_parts[idx].y * Graphics.pixelart_px_sz);
+		Hbox_part.w = Hitbox_parts[idx].w;
+		Hbox_part.h = Hitbox_parts[idx].h;
+		Hbox_part.x = pos_x + Hitbox_parts[idx].x;
+		Hbox_part.y = pos_y + Hitbox_parts[idx].y;
 
-		if(!has_custom_hitbox)
-		{
-			Hbox_part.w /= Graphics.pixelart_px_sz;
-			Hbox_part.h /= Graphics.pixelart_px_sz;
-		}
 		if(SDL_SetRenderDrawColor(Graphics.Renderer, 0, 255, 0, 100)
 		   != SDL2_SUCCESS)
 		{
