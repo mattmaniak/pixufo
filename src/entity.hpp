@@ -12,6 +12,8 @@ public:
 	int min_y;
 	int max_y;
 
+	Uint32 hidden_timeout_ms;
+
 	const double          max_speed; // Pixel position move in a one second.
 	double                step;      // Pixel position move in a one frame.
 	std::vector<SDL_Rect> Hitbox_parts;

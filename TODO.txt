@@ -1,8 +1,0 @@
-Delete if done:
-- errors handling in constructors/destructors,
-- hitboxes for all textures,
-- all Nebulas animations
-- new Ufo texture,
-- simplify graphics.cpp,
-- faders,
-- settings menu.

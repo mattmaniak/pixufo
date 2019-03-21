@@ -47,16 +47,20 @@ bool Game::level_loop()
 		{
 			return false;
 		}
+		Level_->check_enemies_pos(*Graphics_);
+		Level_->check_player_pos();
 
-		for(std::size_t idx = 0; idx < Level_->Enemies.size(); idx++)
-		{
-			Level_->check_entity_pos(*Level_->Enemies[idx]);
-		}
-		Level_->check_entity_pos(*Level_->Ufo);
-
-		if(Level_->check_player_collision(*Graphics_))
+		if(Level_->check_player_collision())
 		{
 			SDL_Delay(2000);
+			state = main_menu;
+			return true;
+		}
+
+		Level_->score_points += Graphics_->delta_time_s * 130.0;
+		if(Level_->score_points >= std::numeric_limits<unsigned int>::max())
+		{
+			throw error::Exception_box("You've reached the score limit.");
 			return false;
 		}
 		if(!Level_->render(*Graphics_))
@@ -73,17 +77,17 @@ bool Game::level_loop()
 
 bool Game::main_menu_loop()
 {
-	Main_menu M_menu(*Graphics_);
+	Main_menu Current_menu(*Graphics_);
 
 	while(state == main_menu)
 	{
 		Graphics_->set_up_new_frame();
 
-		if(!M_menu.render(*Graphics_))
+		if(!Current_menu.render(*Graphics_))
 		{
 			return false;
 		}
-		if(!M_menu.keyboard_steering(state))
+		if(!Current_menu.keyboard_steering(state))
 		{
 			return false;
 		}
@@ -99,17 +103,17 @@ bool Game::main_menu_loop()
 
 bool Game::pause_menu_loop()
 {
-	Pause_menu M_menu(*Graphics_);
+	Pause_menu Current_menu(*Graphics_);
 
 	while(state == pause_menu)
 	{
 		Graphics_->set_up_new_frame();
 
-		if(!M_menu.render(*Graphics_))
+		if(!Current_menu.render(*Graphics_))
 		{
 			return false;
 		}
-		if(!M_menu.keyboard_steering(state))
+		if(!Current_menu.keyboard_steering(state))
 		{
 			return false;
 		}
@@ -123,17 +127,17 @@ bool Game::pause_menu_loop()
 
 bool Game::credits_menu_loop()
 {
-	Credits_menu M_menu(*Graphics_);
+	Credits_menu Current_menu(*Graphics_);
 
 	while(state == credits_menu)
 	{
 		Graphics_->set_up_new_frame();
 
-		if(!M_menu.render(*Graphics_))
+		if(!Current_menu.render(*Graphics_))
 		{
 			return false;
 		}
-		if(!M_menu.keyboard_steering(state))
+		if(!Current_menu.keyboard_steering(state))
 		{
 			return false;
 		}

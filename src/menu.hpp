@@ -12,6 +12,9 @@
 
 #define PADDING (20.0 * Graphics.pixelart_px_sz)
 
+#define MAIN_FONT_SZ 36 // Same as the meteor.bmp height.
+#define TEXT_FONT_SZ 24
+
 class Level;
 class Player;
 

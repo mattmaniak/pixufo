@@ -6,8 +6,7 @@ Menu::Menu(Graphics& Graphics): Scene(Graphics, "background_primary_menu"),
 {
 	Sprites.insert(std::make_pair("title", new Sprite(Graphics, "title", 0)));
 	Sprites.insert(std::make_pair("selection_arrow", new Sprite(Graphics,
-	                                                            "planet_orange",
-	                                                            0)));
+	                                                            "meteor", 0)));
 	has_text                = false;
 	selection_arrow_focused = true;
 }
@@ -26,10 +25,8 @@ bool Menu::render(Graphics& Graphics)
 	{
 		return false;
 	}
-	Bg->move(Graphics, -5.0, 2.5);
 
 	Sprites["title"]->pos_x = Sprites["title"]->pos_y = PADDING;
-
 	if(!Sprites["title"]->render(Graphics))
 	{
 		return false;
@@ -86,9 +83,9 @@ Main_menu::Main_menu(Graphics& Graphics): Menu(Graphics)
 {
 	try
 	{
-		Buttons.push_back(new Font(Graphics, "Play", 40));
-		Buttons.push_back(new Font(Graphics, "Credits", 40));
-		Buttons.push_back(new Font(Graphics, "Quit", 40));
+		Buttons.push_back(new Font(Graphics, "Play", MAIN_FONT_SZ));
+		Buttons.push_back(new Font(Graphics, "Credits", MAIN_FONT_SZ));
+		Buttons.push_back(new Font(Graphics, "Quit", MAIN_FONT_SZ));
 	}
 	catch(...)
 	{
@@ -154,8 +151,8 @@ Pause_menu::Pause_menu(Graphics& Graphics): Menu(Graphics)
 {
 	try
 	{
-		Buttons.push_back(new Font(Graphics, "Continue", 40));
-		Buttons.push_back(new Font(Graphics, "Return to main menu", 40));
+		Buttons.push_back(new Font(Graphics, "Continue", MAIN_FONT_SZ));
+		Buttons.push_back(new Font(Graphics, "Break", MAIN_FONT_SZ));
 	}
 	catch(...)
 	{
@@ -213,15 +210,17 @@ bool Pause_menu::keyboard_steering(states& state)
 
 Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 {
+	const double text_leading = 1.5;
+
 	try
 	{
-		Buttons.push_back(new Font(Graphics, "Return", 40));
+		Buttons.push_back(new Font(Graphics, "Return", MAIN_FONT_SZ));
 
-		Text_lines.push_back(new Font(Graphics, "Authors", 40));
-		Text_lines.push_back(new Font(Graphics, "Programming", 30));
-		Text_lines.push_back(new Font(Graphics, "mattmaniak", 20));
-		Text_lines.push_back(new Font(Graphics, "Graphics", 30));
-		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Mieszczak", 20));
+		Text_lines.push_back(new Font(Graphics, "Programming", TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(Graphics, "mattmaniak", TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(Graphics, "Graphics", TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Mieszczak",
+		                              TEXT_FONT_SZ));
 
 		// Center the lines.
 		for(std::size_t idx = 0; idx < Text_lines.size(); idx++)
@@ -233,7 +232,7 @@ Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 			if(idx > 0)
 			{
 				Text_lines[idx]->pos_y = Text_lines[idx - 1]->pos_y
-				                         + (Text_lines[idx - 1]->sz * 1.5);
+				                         + (Text_lines[idx - 1]->sz * text_leading);
 			}
 		}
 		has_text = true;
