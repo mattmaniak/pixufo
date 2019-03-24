@@ -42,13 +42,10 @@ $(TARGET): $(OBJS)
 	$(CPPFLAGS) \
 	$(LDFLAGS)
 
-.PHONY: debug_on_linux
-debug_on_linux: LDFLAGS += $(ASAN_FLAGS)
-debug_on_linux: $(TARGET)
-
-.PHONY: windows_release
-windows_release: clean
-windows_release: $(TARGET)
+.PHONY: debug
+debug: CPPFLAGS += -DDEBUG
+debug: LDFLAGS += $(ASAN_FLAGS)
+debug: $(TARGET)
 
 .PHONY: clean
 ifeq ($(OS), Windows_NT)

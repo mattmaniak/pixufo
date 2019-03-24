@@ -9,7 +9,7 @@ class Background: public Sprite
 public:
 	Background(Graphics&, const std::string);
 
-	bool tile_and_render(Graphics&);
+	bool tile_and_render(Graphics&); // Of course infinite.
 
 private:
 	void inf_scroll_();

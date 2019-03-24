@@ -39,9 +39,9 @@ bool Game::level_loop()
 {
 	while(state == level)
 	{
-		if(Graphics_->set_up_new_frame())
+		if(!Graphics_->set_up_new_frame())
 		{
-			Level_->set_entities_borders(*Graphics_); // Changed resolution.
+			return false;
 		}
 		if(!Level_->Ufo->keyboard_steering(*Graphics_, state))
 		{
@@ -52,12 +52,19 @@ bool Game::level_loop()
 
 		if(Level_->check_player_collision())
 		{
+			/* Additional frame to fully cover both models when the collision
+			happens. */
+			if(!Level_->render(*Graphics_))
+			{
+				return false;
+			}
 			SDL_Delay(2000);
 			state = main_menu;
+
 			return true;
 		}
 
-		Level_->score_points += Graphics_->delta_time_s * 130.0;
+		Level_->score_points += Graphics_->delta_time_s * 100.0;
 		if(Level_->score_points >= std::numeric_limits<unsigned int>::max())
 		{
 			throw error::Exception_box("You've reached the score limit.");
@@ -81,8 +88,10 @@ bool Game::main_menu_loop()
 
 	while(state == main_menu)
 	{
-		Graphics_->set_up_new_frame();
-
+		if(!Graphics_->set_up_new_frame())
+		{
+			return false;
+		}
 		if(!Current_menu.render(*Graphics_))
 		{
 			return false;
@@ -107,8 +116,10 @@ bool Game::pause_menu_loop()
 
 	while(state == pause_menu)
 	{
-		Graphics_->set_up_new_frame();
-
+		if(!Graphics_->set_up_new_frame())
+		{
+			return false;
+		}
 		if(!Current_menu.render(*Graphics_))
 		{
 			return false;
@@ -131,8 +142,10 @@ bool Game::credits_menu_loop()
 
 	while(state == credits_menu)
 	{
-		Graphics_->set_up_new_frame();
-
+		if(!Graphics_->set_up_new_frame())
+		{
+			return false;
+		}
 		if(!Current_menu.render(*Graphics_))
 		{
 			return false;

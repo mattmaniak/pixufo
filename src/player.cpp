@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 100.0, 0)
+Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 110.0, 0)
 {
 	horizontal_speed = 0.0;
 	vertical_speed   = 0.0;
@@ -10,7 +10,7 @@ Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 100.0, 0)
 	directions_amount = 0;
 
 	Movements.insert(std::make_pair("horizontal", new player::Movement));
-	Movements.insert(std::make_pair("vertical", new player::Movement));
+	Movements.insert(std::make_pair("vertical",   new player::Movement));
 }
 
 Player::~Player()
@@ -67,7 +67,7 @@ bool Player::keyboard_steering(Graphics& Graphics, states& state)
 	return true;
 }
 
-player::Movement::Movement(): max_time_s(0.4), keypress_time_s(0.0) {}
+player::Movement::Movement(): max_time_s(0.6), keypress_time_s(0.0) {}
 
 void player::Movement::count_ratio(Graphics& Graphics, dir passed_direction)
 {
@@ -107,8 +107,7 @@ void player::Movement::count_ratio(Graphics& Graphics, dir passed_direction)
 void player::Movement::move(Graphics& Graphics, Player& Ufo)
 {
 	double vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0)
-	                                + std::pow(Ufo.vertical_speed, 2.0))
-	                       / Ufo.max_speed;
+	                       + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
 
 	switch(direction)
 	{

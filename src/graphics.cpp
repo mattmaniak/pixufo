@@ -1,20 +1,18 @@
 #include "graphics.hpp"
-#include "menu.hpp"
-#include "level.hpp"
 
 Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
                       renderer_initialized(false),
-                      window_initialized(false), Window(nullptr),
+                      window_initialized(false), Window_(nullptr),
                       frame_elapsed_time_ms(0.0), fps(0)
 {
 	const int default_driver = -1;
 
-	if(!init_window())
+	if(!init_window_())
 	{
 		throw std::runtime_error("");
 	}
 
-	Renderer = SDL_CreateRenderer(Window, default_driver,
+	Renderer = SDL_CreateRenderer(Window_, default_driver,
 	                              SDL_RENDERER_ACCELERATED);
 	if(Renderer == nullptr)
 	{
@@ -22,16 +20,19 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
 	}
 	renderer_initialized = true;
 
+#ifdef DEBUG
 	if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
 	   != SDL2_SUCCESS)
 	{
 		throw error::Exception_box("Can't enable the renderer blend mode.");
 	}
+#endif
+
 	if(SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS)
 	{
 		throw error::Exception_box("Can't hide the mouse pointer.");
 	}
-	if(!get_pixelart_px_sz())
+	if(!get_pixelart_px_sz_())
 	{
 		throw std::runtime_error("");
 	}
@@ -46,12 +47,12 @@ Graphics::~Graphics()
 	}
 	if(window_initialized)
 	{
-		SDL_DestroyWindow(Window);
+		SDL_DestroyWindow(Window_);
 		window_initialized = false;
 	}
 }
 
-bool Graphics::init_window()
+bool Graphics::init_window_()
 {
 	const int         unused_sz = 0;
 	SDL_Surface*      Icon      = nullptr;
@@ -67,11 +68,11 @@ bool Graphics::init_window()
 		error::show_box("At least the HD screen resolution is required.");
 		return false;
 	}
-	Window = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
-	                          SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
-	                          SDL_WINDOW_FULLSCREEN_DESKTOP);
+	Window_ = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
+	                           SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
+	                           SDL_WINDOW_FULLSCREEN_DESKTOP);
 
-	if(Window == nullptr)
+	if(Window_ == nullptr)
 	{
 		error::show_box("Can't create the window.");
 		return false;
@@ -83,15 +84,15 @@ bool Graphics::init_window()
 	{
 		return false;
 	}
-	SDL_SetWindowIcon(Window, Icon);
+	SDL_SetWindowIcon(Window_, Icon);
 	SDL_FreeSurface(Icon);
 
 	return true;
 }
 
-bool Graphics::get_pixelart_px_sz()
+bool Graphics::get_pixelart_px_sz_()
 {
-	SDL_GetWindowSize(Window, &Display.w, &Display.h);
+	SDL_GetWindowSize(Window_, &Display.w, &Display.h);
 
 	if((Display.w > MAX_DISPLAY_WIDTH) || (Display.h > MAX_DISPLAY_HEIGHT))
 	{
@@ -112,19 +113,11 @@ bool Graphics::set_up_new_frame()
 		error::show_box("Can't clean the renderer.");
 		return false;
 	}
-	Prev_display = Display;
-
-	if(!get_pixelart_px_sz())
+	if(!get_pixelart_px_sz_())
 	{
 		return false;
 	}
-
-	if(((Display.w != Prev_display.w) || (Display.h != Prev_display.h))
-	   && ((Display.w != 1) && (Display.h != 1))) // Minimized window.
-	{
-		return true; // Changed resolution.
-	}
-	return false;
+	return true;
 }
 
 bool Graphics::count_fps()
@@ -141,20 +134,12 @@ bool Graphics::count_fps()
 
 	if(frame_elapsed_time_ms >= 1000.0)
 	{
+#ifdef DEBUG
 		std::cout << "FPS: " << fps << std::endl;
+#endif
 
 		frame_elapsed_time_ms = 0.0;
 		fps                   = 0;
-	}
-	return true;
-}
-
-bool Graphics::clean_renderer()
-{
-	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
-	{
-		error::show_box("Can't clean the renderer.");
-		return false;
 	}
 	return true;
 }

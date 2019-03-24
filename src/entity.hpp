@@ -4,7 +4,7 @@
 #include <random>
 #include "sprite.hpp"
 
-class Entity: public Sprite
+class Entity: public Sprite // Just sprite but more physical - with hitbox.
 {
 public:
 	int min_x;
@@ -20,9 +20,12 @@ public:
 
 	Entity(Graphics&, const std::string, const double, const Uint32);
 
-	void randomize_initial_pos();
 	bool load_hitbox(Graphics&);
+	void randomize_initial_pos();
 	bool render(Graphics&);
+
+private:
+
 };
 
 #endif

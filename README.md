@@ -1,10 +1,19 @@
 # PixUfo
+## Purpose
+Make the game by learning C++ and random framework. In that case - SDL2.
+
 ## Requirements:
-- HD display resolution,
+- at least HD display resolution,
 - 64-bit OS: Windows or GNU/Linux with the graphical user interface,
 - [development-only] g++ (gcc with libstdc++) with version >= 4.8.1.
 
-## Development guide
+## Gameplay
+**Goal:** avoid the Nebulas (grey-red vechicles) by steering the Ufo using
+arrows. Note that there is no gravity. Menu buttons confirmation is done by
+clicking enter key and pausing the game by escape key. Unfortunately changing
+the system resolution with the game opened may break it's rendering.
+
+## Compilation
 ### Windows (example for cmd.exe - 64-bit only for now):
 1. Install the compilation environment choosing "TDM-GCC Recommended, C/C++".
 [TDM-GCC](http://tdm-gcc.tdragon.net/)
@@ -47,3 +56,7 @@ make clean
 ```
 mingw32-make clean
 ```
+
+## Development
+Coding style is Google' C++-like. It's written very amateur-like and lacks many
+features. I don't plan any big changes and any further development. Maybe fixes.

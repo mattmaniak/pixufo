@@ -25,7 +25,6 @@ public:
 
 private:
 	Graphics* Graphics_;
-	Menus*    Menus_;
 	Level*    Level_;
 };
 

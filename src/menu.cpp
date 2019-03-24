@@ -219,7 +219,7 @@ Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 		Text_lines.push_back(new Font(Graphics, "Programming", TEXT_FONT_SZ));
 		Text_lines.push_back(new Font(Graphics, "mattmaniak", TEXT_FONT_SZ));
 		Text_lines.push_back(new Font(Graphics, "Graphics", TEXT_FONT_SZ));
-		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Mieszczak",
+		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Miesizeczak",
 		                              TEXT_FONT_SZ));
 
 		// Center the lines.
@@ -232,7 +232,8 @@ Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 			if(idx > 0)
 			{
 				Text_lines[idx]->pos_y = Text_lines[idx - 1]->pos_y
-				                         + (Text_lines[idx - 1]->sz * text_leading);
+				                         + (Text_lines[idx - 1]->size
+				                         * text_leading);
 			}
 		}
 		has_text = true;

@@ -3,26 +3,6 @@
 Background::Background(Graphics& Graphics, const std::string name):
 Sprite(Graphics, name, 0) {}
 
-void Background::inf_scroll_()
-{
-	if(pos_x > 0.0) // Background shifted right.
-	{
-		pos_x -= Geometry.w; // Move the background one tile left.
-	}
-	else if(pos_x < -Geometry.w) // Background shifted left.
-	{
-		pos_x += Geometry.w; // Move the background one tile right.
-	}
-	if(pos_y > 0.0) // Background shifted down.
-	{
-		pos_y -= Geometry.h; // Move the background one tile up.
-	}
-	else if(pos_y < -Geometry.h) // Background shifted up.
-	{
-		pos_y += Geometry.h; // Move the background one tile down.
-	}
-}
-
 bool Background::tile_and_render(Graphics& Graphics)
 {
 	// + 1 - extra one for scrolling.
@@ -54,4 +34,24 @@ bool Background::tile_and_render(Graphics& Graphics)
 		}
 	}
 	return true;
+}
+
+void Background::inf_scroll_()
+{
+	if(pos_x > 0.0) // Background shifted right.
+	{
+		pos_x -= Geometry.w; // Move the background one tile left.
+	}
+	else if(pos_x < -Geometry.w) // Background shifted left.
+	{
+		pos_x += Geometry.w; // Move the background one tile right.
+	}
+	if(pos_y > 0.0) // Background shifted down.
+	{
+		pos_y -= Geometry.h; // Move the background one tile up.
+	}
+	else if(pos_y < -Geometry.h) // Background shifted up.
+	{
+		pos_y += Geometry.h; // Move the background one tile down.
+	}
 }

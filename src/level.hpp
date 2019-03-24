@@ -10,19 +10,16 @@
 #include "entity.hpp"
 #include "player.hpp"
 
-#define MIN_ENEMIES_AMOUNT 10
-#define MAX_ENEMIES_AMOUNT 20
+#define MIN_NEBULAS_AMOUNT 15
+#define MAX_NEBULAS_AMOUNT 20
 
-#define MAX_ENEMY_HIDDEN_TIMEOUT_MS 3000
+#define NEBULA_HIDDEN_TIMEOUT_MS 3000 // Time when the enemy is hidden.
 
 class Level: public Scene
 {
 public:
-	unsigned int         score_points;
-
-	Player*              Ufo;
-	std::vector<Entity*> Enemies;
-	std::size_t          enemies_amount;
+	unsigned int score_points;
+	Player*      Ufo;
 
 	Level(Graphics&, const std::string, const unsigned int);
 	~Level();
@@ -35,10 +32,13 @@ public:
 	bool render(Graphics&);
 
 private:
-	void set_model_borders(Graphics&, Entity&);
-	bool check_advanced_player_collision(const std::size_t);
-	void randomize_enemies_amount();
-	void randomize_enemy_type(Graphics&);
+	std::vector<Entity*> Nebulas_;
+	std::size_t          nebulas_amount_;
+
+	void set_model_borders_(Graphics&, Entity&);
+	bool check_advanced_player_collision_(const std::size_t);
+	void randomize_nebulas_amount_();
+	void randomize_nebula_type_(Graphics&);
 };
 
 #endif

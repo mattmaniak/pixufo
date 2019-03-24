@@ -15,47 +15,38 @@
 #define MIN_DISPLAY_WIDTH  1280
 #define MIN_DISPLAY_HEIGHT 720
 
-#define MAX_DISPLAY_WIDTH  16384
-#define MAX_DISPLAY_HEIGHT 16384
-
+#define MAX_DISPLAY_WIDTH  16384 // Same as in
+#define MAX_DISPLAY_HEIGHT 16384 // the SDL2.
 
 #define IMAGE_EXTENSION ".bmp"
-
-class Level;
-class Background;
-class Enemy;
-class Menus;
-class Font;
 
 class Graphics
 {
 public:
-	double        delta_time_s;
+	double delta_time_s; // Time to handle and render the single frame.
+
+	// Describes how big is the pixelart's pixel. Depends on the screen width;
 	double        pixelart_px_sz;
-
-	SDL_Rect      Display;
-	SDL_Rect      Prev_display;
-
-	SDL_Renderer* Renderer;
+	SDL_Rect      Display;  // Holds the screen size.
+	SDL_Renderer* Renderer; // Rendering context.
 
 	Graphics();
 	~Graphics();
 
-	bool         set_up_new_frame();
-	bool         count_fps();
-	bool         clean_renderer();
+	bool set_up_new_frame(); // Prepare the window to rendering.
+	bool count_fps();        // End the frame and count frames.
 
 private:
 	bool renderer_initialized;
 	bool window_initialized;
 
-	SDL_Window* Window;
-	Uint32      frame_start_time_ms;
-	Uint32      frame_elapsed_time_ms;
+	SDL_Window* Window_;
+	Uint32      frame_start_time_ms;   // Set at the beginning of the frame.
+	Uint32      frame_elapsed_time_ms; // As above but at the end of it.
 	Uint32      fps;
 
-	bool         init_window();
-	bool         get_pixelart_px_sz();
+	bool init_window_();
+	bool get_pixelart_px_sz_();
 };
 
 #endif
