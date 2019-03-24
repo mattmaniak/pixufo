@@ -92,7 +92,7 @@ void Level::randomize_enemy_type(Graphics& Graphics)
 			break;
 
 	    case 9:
-			Enemies.push_back(new Entity(Graphics, "nebula_umbrella", 50.0, 0));
+			Enemies.push_back(new Entity(Graphics, "nebula_umbrella", 50.0, 200));
 	    }
 	}
 	catch(...)
