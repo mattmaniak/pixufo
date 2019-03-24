@@ -47,10 +47,10 @@ bool Game::level_loop()
 		{
 			return false;
 		}
-		Level_->check_enemies_pos(*Graphics_);
-		Level_->check_player_pos();
+		Level_->check_nebulas_pos(*Graphics_);
+		Level_->check_ufo_pos();
 
-		if(Level_->check_player_collision())
+		if(Level_->check_ufo_collision())
 		{
 			/* Additional frame to fully cover both models when the collision
 			happens. */

@@ -2,11 +2,10 @@
 
 Player::Player(Graphics& Graphics): Entity(Graphics, "ufo", 110.0, 0)
 {
-	horizontal_speed = 0.0;
-	vertical_speed   = 0.0;
-	horizontal_step  = 0.0;
-	vertical_step    = 0.0;
-
+	horizontal_speed  = 0.0;
+	vertical_speed    = 0.0;
+	horizontal_step   = 0.0;
+	vertical_step     = 0.0;
 	directions_amount = 0;
 
 	Movements.insert(std::make_pair("horizontal", new player::Movement));

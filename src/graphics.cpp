@@ -3,7 +3,7 @@
 Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
                       renderer_initialized(false),
                       window_initialized(false), Window_(nullptr),
-                      frame_elapsed_time_ms(0.0), fps(0)
+                      frame_elapsed_time_ms_(0.0), fps_(0)
 {
 	const int default_driver = -1;
 
@@ -106,7 +106,7 @@ bool Graphics::get_pixelart_px_sz_()
 
 bool Graphics::set_up_new_frame()
 {
-	frame_start_time_ms = SDL_GetTicks();
+	frame_start_time_ms_ = SDL_GetTicks();
 
 	if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
 	{
@@ -122,24 +122,24 @@ bool Graphics::set_up_new_frame()
 
 bool Graphics::count_fps()
 {
-	fps++;
+	fps_++;
 
-	if(fps >= std::numeric_limits<Uint32>::max())
+	if(fps_ >= std::numeric_limits<Uint32>::max())
 	{
 		error::show_box("Too many frames per second.");
 		return false;
 	}
-	delta_time_s = (SDL_GetTicks() - frame_start_time_ms) / 1000.0;
-	frame_elapsed_time_ms += delta_time_s * 1000.0;
+	delta_time_s = (SDL_GetTicks() - frame_start_time_ms_) / 1000.0;
+	frame_elapsed_time_ms_ += delta_time_s * 1000.0;
 
-	if(frame_elapsed_time_ms >= 1000.0)
+	if(frame_elapsed_time_ms_ >= 1000.0)
 	{
 #ifdef DEBUG
-		std::cout << "FPS: " << fps << std::endl;
+		std::cout << "FPS: " << fps_ << std::endl;
 #endif
 
-		frame_elapsed_time_ms = 0.0;
-		fps                   = 0;
+		frame_elapsed_time_ms_ = 0.0;
+		fps_                   = 0;
 	}
 	return true;
 }

@@ -23,9 +23,6 @@ public:
 	bool load_hitbox(Graphics&);
 	void randomize_initial_pos();
 	bool render(Graphics&);
-
-private:
-
 };
 
 #endif

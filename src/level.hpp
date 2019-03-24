@@ -13,7 +13,7 @@
 #define MIN_NEBULAS_AMOUNT 15
 #define MAX_NEBULAS_AMOUNT 20
 
-#define NEBULA_HIDDEN_TIMEOUT_MS 3000 // Time when the enemy is hidden.
+#define NEBULA_HIDDEN_TIMEOUT_MS 2000 // Time when the enemy is hidden.
 
 class Level: public Scene
 {
@@ -26,19 +26,19 @@ public:
 
 	void reset();
 	void set_entities_borders(Graphics&);
-	bool check_player_collision(); // Checks the basic models' rects.
-	void check_player_pos();
-	void check_enemies_pos(Graphics&);
+	void check_ufo_pos();
+	bool check_ufo_collision(); // Checks the basic models' rects.
+	void check_nebulas_pos(Graphics&);
 	bool render(Graphics&);
 
 private:
 	std::vector<Entity*> Nebulas_;
 	std::size_t          nebulas_amount_;
 
-	void set_model_borders_(Graphics&, Entity&);
-	bool check_advanced_player_collision_(const std::size_t);
+	void set_entities_borders_(Graphics&, Entity&);
 	void randomize_nebulas_amount_();
 	void randomize_nebula_type_(Graphics&);
+	bool check_advanced_ufo_collision_(const std::size_t);
 };
 
 #endif

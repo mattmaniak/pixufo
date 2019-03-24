@@ -34,10 +34,10 @@ public:
 	virtual bool render(Graphics&);
 
 private:
-	const Uint32 single_frame_time_ms;
-	Uint32       frame_elapsed_time_ms;
+	const Uint32 current_frame_start_time_ms_;
+	Uint32       current_frame_elapsed_time_ms_;
 
-	bool load_textures(Graphics&);
+	bool load_textures_(Graphics&);
 };
 
 #endif

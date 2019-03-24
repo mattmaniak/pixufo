@@ -17,7 +17,7 @@ Scene(Graphics, bg_name), nebulas_amount_(passed_nebulas_amount)
 	{
 		throw std::runtime_error("");
 	}
-	set_model_borders_(Graphics, *Ufo);
+	set_entities_borders_(Graphics, *Ufo);
 
 	// Set the player's default position;
 	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w)  / 2;
@@ -35,7 +35,7 @@ Scene(Graphics, bg_name), nebulas_amount_(passed_nebulas_amount)
 		{
 			throw std::runtime_error("");
 		}
-		set_model_borders_(Graphics, *Nebulas_[idx]);
+		set_entities_borders_(Graphics, *Nebulas_[idx]);
 	}
 }
 
@@ -48,15 +48,137 @@ Level::~Level()
 	delete Ufo;
 }
 
+void Level::reset()
+{
+	Ufo->Movements["horizontal"]->keypress_time_s = 0.0;
+	Ufo->Movements["vertical"]->keypress_time_s   = 0.0;
+
+	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w)  / 2;
+	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
+
+	for(auto& Nebula: Nebulas_)
+	{
+		Nebula->randomize_initial_pos();
+	}
+	score_points = 0;
+}
+
+void Level::set_entities_borders(Graphics& Graphics)
+{
+	width  = Graphics.Display.w;
+	height = Graphics.Display.h;
+
+	for(auto& Nebula: Nebulas_)
+	{
+		set_entities_borders_(Graphics, *Nebula);
+	}
+	set_entities_borders_(Graphics, *Ufo);
+}
+
+void Level::check_ufo_pos()
+{
+	// If the model is out of the level, it will be moved to the mirrored place.
+	if(Ufo->pos_x < Ufo->min_x)
+	{
+		Ufo->pos_x = Ufo->max_x;
+	}
+	else if(Ufo->pos_x > Ufo->max_x)
+	{
+		Ufo->pos_x = Ufo->min_x;
+	}
+	else if(Ufo->pos_y < Ufo->min_y)
+	{
+		Ufo->pos_y = Ufo->max_y;
+	}
+	else if(Ufo->pos_y > Ufo->max_y)
+	{
+		Ufo->pos_y = Ufo->min_y;
+	}
+}
+
+bool Level::check_ufo_collision()
+{
+	for(std::size_t en_idx = 0; en_idx < Nebulas_.size(); en_idx++)
+	{
+		if(SDL_HasIntersection(&Ufo->Geometry, &Nebulas_[en_idx]->Geometry))
+		{
+			if(check_advanced_ufo_collision_(en_idx))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void Level::check_nebulas_pos(Graphics& Graphics)
+{
+	for(auto& Nebula: Nebulas_)
+	{
+		if((Nebula->pos_x < Nebula->min_x) || (Nebula->pos_x > Nebula->max_x))
+		{
+			Nebula->hidden_timeout_ms += Graphics.delta_time_s * 1000.0;
+		}
+		if(Nebula->hidden_timeout_ms > NEBULA_HIDDEN_TIMEOUT_MS)
+		{
+			Nebula->hidden_timeout_ms = 0;
+
+			Nebula->randomize_initial_pos();
+			Nebula->pos_x = Graphics.Display.w - Graphics.pixelart_px_sz;
+		}
+	}
+}
+
+bool Level::render(Graphics& Graphics)
+{
+	Font Score_font(Graphics, std::to_string(score_points), 30);
+	Score_font.pos_x = Score_font.pos_y = PADDING / 2.0; // Left, upper corner.
+
+	if(!Bg->tile_and_render(Graphics))
+	{
+		return false;
+	}
+	Bg->move(Graphics, -8.0, 0.0);
+
+	for(auto& Nebula: Nebulas_)
+	{
+		if(!Nebula->render(Graphics))
+		{
+			return false;
+		}
+		Nebula->move(Graphics, -Nebula->max_speed, 0.0); // Moving to the left.
+	}
+	if(!Ufo->render(Graphics))
+	{
+		return false;
+	}
+	if(!Score_font.render(Graphics))
+	{
+		return false;
+	}
+	SDL_RenderPresent(Graphics.Renderer);
+
+	return true;
+}
+
+void Level::set_entities_borders_(Graphics& Graphics, Entity& Entity)
+{
+	Entity.min_x = Graphics.pixelart_px_sz - Entity.Geometry.w;
+	Entity.min_y = Graphics.pixelart_px_sz - Entity.Geometry.h;
+	Entity.max_x = width  - Graphics.pixelart_px_sz;
+	Entity.max_y = height - Graphics.pixelart_px_sz;
+}
+
+
 void Level::randomize_nebulas_amount_()
 {
 	std::mt19937 prng;
 	prng.seed(std::random_device()());
 
 	std::uniform_int_distribution<std::mt19937::result_type>
-	distributor_enemies(MIN_NEBULAS_AMOUNT, MAX_NEBULAS_AMOUNT);
+	distributor_nebulas(MIN_NEBULAS_AMOUNT, MAX_NEBULAS_AMOUNT);
 
-	nebulas_amount_ = distributor_enemies(prng);
+	nebulas_amount_ = distributor_nebulas(prng);
 }
 
 void Level::randomize_nebula_type_(Graphics& Graphics)
@@ -103,49 +225,7 @@ void Level::randomize_nebula_type_(Graphics& Graphics)
 	}
 }
 
-void Level::reset()
-{
-	Ufo->Movements["horizontal"]->keypress_time_s = 0.0;
-	Ufo->Movements["vertical"]->keypress_time_s   = 0.0;
-
-	Ufo->Geometry.x = Ufo->pos_x = (width - Ufo->Geometry.w)  / 2;
-	Ufo->Geometry.y = Ufo->pos_y = (height - Ufo->Geometry.h) / 2;
-
-	for(auto& Nebula: Nebulas_)
-	{
-		Nebula->randomize_initial_pos();
-	}
-	score_points = 0;
-}
-
-void Level::set_entities_borders(Graphics& Graphics)
-{
-	width  = Graphics.Display.w;
-	height = Graphics.Display.h;
-
-	for(auto& Nebula: Nebulas_)
-	{
-		set_model_borders_(Graphics, *Nebula);
-	}
-	set_model_borders_(Graphics, *Ufo);
-}
-
-bool Level::check_player_collision()
-{
-	for(std::size_t en_idx = 0; en_idx < Nebulas_.size(); en_idx++)
-	{
-		if(SDL_HasIntersection(&Ufo->Geometry, &Nebulas_[en_idx]->Geometry))
-		{
-			if(check_advanced_player_collision_(en_idx))
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-bool Level::check_advanced_player_collision_(const std::size_t en_idx)
+bool Level::check_advanced_ufo_collision_(const std::size_t en_idx)
 {
 	SDL_Rect Player_hbox_part;
 	SDL_Rect Nebula_hbox_part;
@@ -179,83 +259,4 @@ bool Level::check_advanced_player_collision_(const std::size_t en_idx)
 		}
 	}
 	return false;
-}
-
-void Level::set_model_borders_(Graphics& Graphics, Entity& Entity)
-{
-	Entity.min_x = Graphics.pixelart_px_sz - Entity.Geometry.w;
-	Entity.min_y = Graphics.pixelart_px_sz - Entity.Geometry.h;
-	Entity.max_x = width  - Graphics.pixelart_px_sz;
-	Entity.max_y = height - Graphics.pixelart_px_sz;
-}
-
-void Level::check_enemies_pos(Graphics& Graphics)
-{
-	for(auto& Nebula: Nebulas_)
-	{
-		if((Nebula->pos_x < Nebula->min_x) || (Nebula->pos_x > Nebula->max_x))
-		{
-			Nebula->hidden_timeout_ms += Graphics.delta_time_s * 1000.0;
-		}
-		if(Nebula->hidden_timeout_ms > NEBULA_HIDDEN_TIMEOUT_MS)
-		{
-			Nebula->hidden_timeout_ms = 0;
-
-			Nebula->randomize_initial_pos();
-			Nebula->pos_x = Graphics.Display.w - Graphics.pixelart_px_sz;
-		}
-	}
-}
-
-void Level::check_player_pos()
-{
-	// If the model is out of the level, it will be moved to the mirrored place.
-	if(Ufo->pos_x < Ufo->min_x)
-	{
-		Ufo->pos_x = Ufo->max_x;
-	}
-	else if(Ufo->pos_x > Ufo->max_x)
-	{
-		Ufo->pos_x = Ufo->min_x;
-	}
-	else if(Ufo->pos_y < Ufo->min_y)
-	{
-		Ufo->pos_y = Ufo->max_y;
-	}
-	else if(Ufo->pos_y > Ufo->max_y)
-	{
-		Ufo->pos_y = Ufo->min_y;
-	}
-}
-
-bool Level::render(Graphics& Graphics)
-{
-	Font Score_font(Graphics, std::to_string(score_points), 30);
-	Score_font.pos_x = Score_font.pos_y = PADDING / 2.0; // Left, upper corner.
-
-	if(!Bg->tile_and_render(Graphics))
-	{
-		return false;
-	}
-	Bg->move(Graphics, -8.0, 0.0);
-
-	for(auto& Nebula: Nebulas_)
-	{
-		if(!Nebula->render(Graphics))
-		{
-			return false;
-		}
-		Nebula->move(Graphics, -Nebula->max_speed, 0.0); // Moving to the left.
-	}
-	if(!Ufo->render(Graphics))
-	{
-		return false;
-	}
-	if(!Score_font.render(Graphics))
-	{
-		return false;
-	}
-	SDL_RenderPresent(Graphics.Renderer);
-
-	return true;
 }

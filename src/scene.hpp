@@ -9,8 +9,7 @@ class Scene
 public:
 	unsigned int width;
 	unsigned int height;
-
-	Background* Bg;
+	Background*  Bg;
 
 	Scene(Graphics&, const std::string);
 	~Scene();

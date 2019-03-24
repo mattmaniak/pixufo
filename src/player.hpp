@@ -22,18 +22,17 @@ class Player: public Entity
 public:
 	double horizontal_speed;
 	double vertical_speed;
-
 	double horizontal_step;
 	double vertical_step;
 
-	std::size_t directions_amount;
-
+	std::size_t                              directions_amount;
 	std::map<std::string, player::Movement*> Movements;
 
 	Player(Graphics&);
 	~Player();
 
 	bool keyboard_steering(Graphics&, states&);
+
 };
 
 enum dir

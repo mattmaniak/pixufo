@@ -41,9 +41,9 @@ private:
 	bool window_initialized;
 
 	SDL_Window* Window_;
-	Uint32      frame_start_time_ms;   // Set at the beginning of the frame.
-	Uint32      frame_elapsed_time_ms; // As above but at the end of it.
-	Uint32      fps;
+	Uint32      frame_start_time_ms_;   // Set at the beginning of the frame.
+	Uint32      frame_elapsed_time_ms_; // As above but at the end of it.
+	Uint32      fps_;
 
 	bool init_window_();
 	bool get_pixelart_px_sz_();
