@@ -222,6 +222,9 @@ Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Miesizeczak",
 		                              TEXT_FONT_SZ));
 
+		Text_lines.push_back(new Font(Graphics, "gitlab com mattmaniak pixufo",
+                                      TEXT_FONT_SZ));
+
 		// Center the lines.
 		for(std::size_t idx = 0; idx < Text_lines.size(); idx++)
 		{

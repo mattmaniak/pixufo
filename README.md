@@ -13,6 +13,10 @@ arrows. Note that there is no gravity. Menu buttons confirmation is done by
 clicking enter key and pausing the game by escape key. Unfortunately changing
 the system resolution with the game opened may break it's rendering.
 
+## Disclaimer
+Works well on Linux. On Windows some fonts are blended and Nebulas (Enemies)
+position randomization doesn't work. Really don't know why.
+
 ## Compilation
 ### Windows (example for cmd.exe - 64-bit only for now):
 1. Install the compilation environment choosing "TDM-GCC Recommended, C/C++".
@@ -58,5 +62,6 @@ mingw32-make clean
 ```
 
 ## Development
-Coding style is Google' C++-like. It's written very amateur-like and lacks many
-features. I don't plan any big changes and any further development. Maybe fixes.
+Coding style is Google' C++-like. Indentation is 4 spaces It's written very
+amateur-like and lacks many features. I don't plan any big changes and any
+further development. Maybe fixes.

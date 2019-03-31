@@ -23,30 +23,30 @@
 class Graphics
 {
 public:
-	double delta_time_s; // Time to handle and render the single frame.
+    double delta_time_s; // Time to handle and render the single frame.
 
-	// Describes how big is the pixelart's pixel. Depends on the screen width;
-	double        pixelart_px_sz;
-	SDL_Rect      Display;  // Holds the screen size.
-	SDL_Renderer* Renderer; // Rendering context.
+    // Describes how big is the pixelart's pixel. Depends on the screen width;
+    double        pixelart_px_sz;
+    SDL_Rect      Display;  // Holds the screen size.
+    SDL_Renderer* Renderer; // Rendering context.
 
-	Graphics();
-	~Graphics();
+    Graphics();
+    ~Graphics();
 
-	bool set_up_new_frame(); // Prepare the window to rendering.
-	bool count_fps();        // End the frame and count frames.
+    bool set_up_new_frame(); // Prepare the window to rendering.
+    bool count_fps();        // End the frame and count frames.
 
 private:
-	bool renderer_initialized;
-	bool window_initialized;
+    bool renderer_initialized;
+    bool window_initialized;
 
-	SDL_Window* Window_;
-	Uint32      frame_start_time_ms_;   // Set at the beginning of the frame.
-	Uint32      frame_elapsed_time_ms_; // As above but at the end of it.
-	Uint32      fps_;
+    SDL_Window* Window_;
+    Uint32      frame_start_time_ms_;   // Set at the beginning of the frame.
+    Uint32      frame_elapsed_time_ms_; // As above but at the end of it.
+    Uint32      fps_;
 
-	bool init_window_();
-	bool get_pixelart_px_sz_();
+    bool init_window_();
+    bool get_pixelart_px_sz_();
 };
 
 #endif

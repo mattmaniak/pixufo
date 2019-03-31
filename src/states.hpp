@@ -3,10 +3,10 @@
 
 enum states
 {
-	level,
-	main_menu,
-	credits_menu,
-	pause_menu
+    level,
+    main_menu,
+    credits_menu,
+    pause_menu
 };
 
 #endif

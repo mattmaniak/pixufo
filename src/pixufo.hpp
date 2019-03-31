@@ -13,19 +13,19 @@
 class Game
 {
 public:
-	states state;
+    states state;
 
-	Game();
-	~Game();
+    Game();
+    ~Game();
 
-	bool level_loop();
-	bool main_menu_loop();
-	bool credits_menu_loop();
-	bool pause_menu_loop();
+    bool level_loop();
+    bool main_menu_loop();
+    bool credits_menu_loop();
+    bool pause_menu_loop();
 
 private:
-	Graphics* Graphics_;
-	Level*    Level_;
+    Graphics* Graphics_;
+    Level*    Level_;
 };
 
 #endif

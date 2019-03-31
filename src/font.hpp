@@ -14,22 +14,22 @@
 class Font
 {
 public:
-	const unsigned int size;
-	double             pos_x;
-	double             pos_y;
-	SDL_Rect           Geometry; // Textures's position and size.
+    const unsigned int size;
+    double             pos_x;
+    double             pos_y;
+    SDL_Rect           Geometry; // Textures's position and size.
 
-	Font(Graphics&, const std::string, const unsigned int);
-	~Font();
+    Font(Graphics&, const std::string, const unsigned int);
+    ~Font();
 
-	bool render(Graphics&);
+    bool render(Graphics&);
 
 private:
-	const std::string  name_;
-	TTF_Font*          Font_;
-	const std::string  text_;
-	SDL_Color          Color_;
-	SDL_Texture*       Texture_;
+    const std::string  name_;
+    TTF_Font*          Font_;
+    const std::string  text_;
+    SDL_Color          Color_;
+    SDL_Texture*       Texture_;
 };
 
 #endif
