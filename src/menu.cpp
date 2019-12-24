@@ -219,7 +219,7 @@ Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 		Text_lines.push_back(new Font(Graphics, "Programming", TEXT_FONT_SZ));
 		Text_lines.push_back(new Font(Graphics, "mattmaniak", TEXT_FONT_SZ));
 		Text_lines.push_back(new Font(Graphics, "Graphics", TEXT_FONT_SZ));
-		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Miesizeczak",
+		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Mieszczak",
 		                              TEXT_FONT_SZ));
 
 		Text_lines.push_back(new Font(Graphics, "gitlab com mattmaniak pixufo",
