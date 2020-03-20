@@ -16,7 +16,7 @@ public:
 
     const double          max_speed; // Pixel position move in a one second.
     double                step;      // Pixel position move in a one frame.
-    std::vector<SDL_Rect> Hitbox_parts;
+    std::vector<SDL_Rect> hitbox_parts;
 
     Entity(Graphics&, const std::string, const double, const Uint32);
 

@@ -17,7 +17,7 @@ public:
     const unsigned int size;
     double             pos_x;
     double             pos_y;
-    SDL_Rect           Geometry; // Textures's position and size.
+    SDL_Rect           geometry; // Textures's position and size.
 
     Font(Graphics&, const std::string, const unsigned int);
     ~Font();
@@ -25,11 +25,11 @@ public:
     bool render(Graphics&);
 
 private:
-    const std::string  name_;
-    TTF_Font*          Font_;
-    const std::string  text_;
-    SDL_Color          Color_;
-    SDL_Texture*       Texture_;
+    const std::string  _name;
+    TTF_Font*          _font;
+    const std::string  _text;
+    SDL_Color          _color;
+    SDL_Texture*       _texture;
 };
 
 #endif

@@ -1,11 +1,11 @@
 #include "menu.hpp"
 #include "level.hpp"
 
-Menu::Menu(Graphics& Graphics): Scene(Graphics, "background_primary_menu"),
+Menu::Menu(Graphics& graphics): Scene(graphics, "background_primary_menu"),
                                 selected_button_idx(0)
 {
-	Sprites.insert(std::make_pair("title", new Sprite(Graphics, "title", 0)));
-	Sprites.insert(std::make_pair("selection_arrow", new Sprite(Graphics,
+	Sprites.insert(std::make_pair("title", new Sprite(graphics, "title", 0)));
+	Sprites.insert(std::make_pair("selection_arrow", new Sprite(graphics,
 	                                                            "meteor", 0)));
 	has_text                = false;
 	selection_arrow_focused = true;
@@ -19,47 +19,47 @@ Menu::~Menu()
 	Sprites.clear();
 }
 
-bool Menu::render(Graphics& Graphics)
+bool Menu::render(Graphics& graphics)
 {
-	if(!Bg->tile_and_render(Graphics))
+	if(!Bg->tile_and_render(graphics))
 	{
 		return false;
 	}
 
 	Sprites["title"]->pos_x = Sprites["title"]->pos_y = PADDING;
-	if(!Sprites["title"]->render(Graphics))
+	if(!Sprites["title"]->render(graphics))
 	{
 		return false;
 	}
 
-	for(std::size_t idx = 0; idx < Buttons.size(); idx++)
+	for(std::size_t idx = 0; idx < buttons.size(); idx++)
 	{
-		Buttons[idx]->pos_x = PADDING;
-		Buttons[idx]->pos_y = Graphics.Display.h - (Buttons[idx]->Geometry.h
-		                      * Buttons.size()) + (idx
-		                      * Buttons[idx]->Geometry.h) - PADDING;
+		buttons[idx]->pos_x = PADDING;
+		buttons[idx]->pos_y = graphics.Display.h - (buttons[idx]->geometry.h
+		                      * buttons.size()) + (idx
+		                      * buttons[idx]->geometry.h) - PADDING;
 
-		Buttons[idx]->Geometry.x = Buttons[idx]->pos_x;
-		Buttons[idx]->Geometry.y = Buttons[idx]->pos_y;
+		buttons[idx]->geometry.x = buttons[idx]->pos_x;
+		buttons[idx]->geometry.y = buttons[idx]->pos_y;
 
-		if(!Buttons[idx]->render(Graphics))
+		if(!buttons[idx]->render(graphics))
 		{
 			return false;
 		}
 		if(idx == selected_button_idx)
 		{
-			Sprites["selection_arrow"]->pos_x = Buttons[idx]->Geometry.w
+			Sprites["selection_arrow"]->pos_x = buttons[idx]->geometry.w
 			                                    + PADDING;
 
-			Sprites["selection_arrow"]->pos_y = Buttons[idx]->Geometry.y;
+			Sprites["selection_arrow"]->pos_y = buttons[idx]->geometry.y;
 		}
-		Buttons[idx]->Geometry.x = Buttons[idx]->pos_x;
-		Buttons[idx]->Geometry.y = Buttons[idx]->pos_y;
+		buttons[idx]->geometry.x = buttons[idx]->pos_x;
+		buttons[idx]->geometry.y = buttons[idx]->pos_y;
 
 	}
 	if(selection_arrow_focused)
 	{
-		if(!Sprites["selection_arrow"]->render(Graphics))
+		if(!Sprites["selection_arrow"]->render(graphics))
 		{
 			return false;
 		}
@@ -68,24 +68,24 @@ bool Menu::render(Graphics& Graphics)
 	{
 		for(auto& Line: Text_lines)
 		{
-			if(!Line->render(Graphics))
+			if(!Line->render(graphics))
 			{
 				return false;
 			}
 		}
 	}
-	SDL_RenderPresent(Graphics.Renderer);
+	SDL_RenderPresent(graphics.renderer);
 
 	return true;
 }
 
-Main_menu::Main_menu(Graphics& Graphics): Menu(Graphics)
+Main_menu::Main_menu(Graphics& graphics): Menu(graphics)
 {
 	try
 	{
-		Buttons.push_back(new Font(Graphics, "Play", MAIN_FONT_SZ));
-		Buttons.push_back(new Font(Graphics, "Credits", MAIN_FONT_SZ));
-		Buttons.push_back(new Font(Graphics, "Quit", MAIN_FONT_SZ));
+		buttons.push_back(new Font(graphics, "Play", MAIN_FONT_SZ));
+		buttons.push_back(new Font(graphics, "Credits", MAIN_FONT_SZ));
+		buttons.push_back(new Font(graphics, "Quit", MAIN_FONT_SZ));
 	}
 	catch(...)
 	{
@@ -95,13 +95,13 @@ Main_menu::Main_menu(Graphics& Graphics): Menu(Graphics)
 
 Main_menu::~Main_menu()
 {
-	for(auto& Button: Buttons)
+	for(auto& Button: buttons)
 	{
 		delete Button;
 	}
 }
 
-bool Main_menu::keyboard_steering(states& state)
+bool Main_menu::keyboard_steering(State& state)
 {
 	SDL_Event Event;
 	SDL_PollEvent(&Event);
@@ -122,7 +122,7 @@ bool Main_menu::keyboard_steering(states& state)
 			break;
 
 		case SDLK_DOWN:
-			if(selected_button_idx < (Buttons.size() - 1))
+			if(selected_button_idx < (buttons.size() - 1))
 			{
 				selected_button_idx++;
 			}
@@ -147,12 +147,12 @@ bool Main_menu::keyboard_steering(states& state)
 	return true;
 }
 
-Pause_menu::Pause_menu(Graphics& Graphics): Menu(Graphics)
+Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics)
 {
 	try
 	{
-		Buttons.push_back(new Font(Graphics, "Continue", MAIN_FONT_SZ));
-		Buttons.push_back(new Font(Graphics, "Break", MAIN_FONT_SZ));
+		buttons.push_back(new Font(graphics, "Continue", MAIN_FONT_SZ));
+		buttons.push_back(new Font(graphics, "Break", MAIN_FONT_SZ));
 	}
 	catch(...)
 	{
@@ -162,13 +162,13 @@ Pause_menu::Pause_menu(Graphics& Graphics): Menu(Graphics)
 
 Pause_menu::~Pause_menu()
 {
-	for(auto& Button: Buttons)
+	for(auto& Button: buttons)
 	{
 		delete Button;
 	}
 }
 
-bool Pause_menu::keyboard_steering(states& state)
+bool Pause_menu::keyboard_steering(State& state)
 {
 	SDL_Event Event;
 	SDL_PollEvent(&Event);
@@ -188,7 +188,7 @@ bool Pause_menu::keyboard_steering(states& state)
 		break;
 
 	case SDLK_DOWN:
-		if(selected_button_idx < (Buttons.size() - 1))
+		if(selected_button_idx < (buttons.size() - 1))
 		{
 			selected_button_idx++;
 		}
@@ -208,28 +208,25 @@ bool Pause_menu::keyboard_steering(states& state)
 	return true;
 }
 
-Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
+Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics)
 {
 	const double text_leading = 1.5;
 
 	try
 	{
-		Buttons.push_back(new Font(Graphics, "Return", MAIN_FONT_SZ));
+		buttons.push_back(new Font(graphics, "Return", MAIN_FONT_SZ));
 
-		Text_lines.push_back(new Font(Graphics, "Programming", TEXT_FONT_SZ));
-		Text_lines.push_back(new Font(Graphics, "mattmaniak", TEXT_FONT_SZ));
-		Text_lines.push_back(new Font(Graphics, "Graphics", TEXT_FONT_SZ));
-		Text_lines.push_back(new Font(Graphics, "Jakub QooBooS Mieszczak",
+		Text_lines.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(graphics, "graphics", TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
 		                              TEXT_FONT_SZ));
-
-		Text_lines.push_back(new Font(Graphics, "gitlab com mattmaniak pixufo",
-                                      TEXT_FONT_SZ));
 
 		// Center the lines.
 		for(std::size_t idx = 0; idx < Text_lines.size(); idx++)
 		{
-			Text_lines[idx]->pos_x = Graphics.Display.w - PADDING
-			                         - Text_lines[idx]->Geometry.w;
+			Text_lines[idx]->pos_x = graphics.Display.w - PADDING
+			                         - Text_lines[idx]->geometry.w;
 
 			Text_lines[idx]->pos_y = PADDING;
 			if(idx > 0)
@@ -251,7 +248,7 @@ Credits_menu::Credits_menu(Graphics& Graphics): Menu(Graphics)
 
 Credits_menu::~Credits_menu()
 {
-	for(auto& Button: Buttons)
+	for(auto& Button: buttons)
 	{
 		delete Button;
 	}
@@ -259,12 +256,12 @@ Credits_menu::~Credits_menu()
 	{
 		delete Line;
 	}
-	Buttons.clear();
+	buttons.clear();
 	Text_lines.clear();
 }
 
 
-bool Credits_menu::keyboard_steering(states& state)
+bool Credits_menu::keyboard_steering(State& state)
 {
 	SDL_Event Event;
 	SDL_PollEvent(&Event);

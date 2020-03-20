@@ -12,7 +12,7 @@ public:
     bool tile_and_render(Graphics&); // Of course infinite.
 
 private:
-    void inf_scroll_();
+    void _scroll_endlessly();
 };
 
 #endif

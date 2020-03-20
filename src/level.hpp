@@ -25,21 +25,21 @@ public:
     ~Level();
 
     void reset();
-    void set_nebulas_borders(Graphics&);
+    void adjust_enemy_border(Graphics&);
     void check_ufo_pos();
     bool check_ufo_collision(); // Checks the basic models' rects.
-    void check_nebulas_pos(Graphics&);
+    void check_enemies_pos(Graphics&);
     bool render(Graphics&);
 
 private:
-    std::vector<Entity*> Nebulas_;
-    std::size_t          nebulas_amount_;
+    std::vector<Entity*> _enemies;
+    std::size_t          _enemies_number;
 
-    void set_nebulas_borders_(Graphics&, Entity&);
-    void randomize_nebulas_amount_();
-    void randomize_nebula_type_(Graphics&);
+    void _adjust_enemies_border(Graphics&, Entity&);
+    void randomize_enemies_amount_();
+    void randomize_enemy_type_(Graphics&);
     bool check_advanced_ufo_collision_(const std::size_t);
-    void randomize_nebulas_pos_();
+    void randomize_enemies_pos_();
 };
 
 #endif

@@ -1,7 +1,7 @@
-#ifndef STATES_HPP
-#define STATES_HPP
+#ifndef STATE_HPP
+#define STATE_HPP
 
-enum states
+enum State
 {
     level,
     main_menu,

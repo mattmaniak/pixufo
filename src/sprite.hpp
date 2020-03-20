@@ -19,10 +19,10 @@ class Sprite
 public:
     const std::string name;
 
-    std::array<SDL_Texture*, FRAMES_AMOUNT> Textures;
+    std::array<SDL_Texture*, FRAMES_AMOUNT> textures;
     std::size_t                             current_frame_idx;
 
-    SDL_Rect Geometry; // Textures's position and size.
+    SDL_Rect geometry; // Textures's position and size.
     double   pos_x;    // Theoretical (virtual) positions.
     double   pos_y;
 

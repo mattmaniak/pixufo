@@ -28,7 +28,7 @@ public:
     // Describes how big is the pixelart's pixel. Depends on the screen width;
     double        pixelart_px_sz;
     SDL_Rect      Display;  // Holds the screen size.
-    SDL_Renderer* Renderer; // Rendering context.
+    SDL_Renderer* renderer; // Rendering context.
 
     Graphics();
     ~Graphics();

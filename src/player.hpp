@@ -8,7 +8,7 @@
 #include "entity.hpp"
 #include "graphics.hpp"
 #include "menu.hpp"
-#include "states.hpp"
+#include "state.hpp"
 
 #define AXES_AMOUNT 2
 
@@ -31,7 +31,7 @@ public:
     Player(Graphics&);
     ~Player();
 
-    bool keyboard_steering(Graphics&, states&);
+    bool keyboard_steering(Graphics&, State&);
 
 };
 

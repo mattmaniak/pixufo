@@ -7,12 +7,14 @@
 class Scene
 {
 public:
-    unsigned int width;
-    unsigned int height;
     Background*  Bg;
 
     Scene(Graphics&, const std::string);
     ~Scene();
+
+protected:
+    unsigned int _width;
+    unsigned int _height;
 };
 
 #endif

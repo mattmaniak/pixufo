@@ -8,24 +8,27 @@
 #include "menu.hpp"
 #include "level.hpp"
 #include "player.hpp"
-#include "states.hpp"
+#include "state.hpp"
 
 class Game
 {
 public:
-    states state;
 
     Game();
     ~Game();
+
+    State get_state();
 
     bool level_loop();
     bool main_menu_loop();
     bool credits_menu_loop();
     bool pause_menu_loop();
 
+
 private:
-    Graphics* Graphics_;
-    Level*    Level_;
+    State _state;
+    Graphics* _graphics;
+    Level*    _level;
 };
 
 #endif

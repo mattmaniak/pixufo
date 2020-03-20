@@ -1,6 +1,6 @@
 #include "graphics.hpp"
 
-Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
+Graphics::Graphics(): delta_time_s(0.0), renderer(nullptr),
                       renderer_initialized(false),
                       window_initialized(false), Window_(nullptr),
                       frame_elapsed_time_ms_(0.0), fps_(0)
@@ -12,16 +12,16 @@ Graphics::Graphics(): delta_time_s(0.0), Renderer(nullptr),
         throw std::runtime_error("");
     }
 
-    Renderer = SDL_CreateRenderer(Window_, default_driver,
+    renderer = SDL_CreateRenderer(Window_, default_driver,
                                 SDL_RENDERER_ACCELERATED);
-    if(Renderer == nullptr)
+    if(renderer == nullptr)
     {
         throw error::Exception_box("Can't create the renderer.");
     }
     renderer_initialized = true;
 
 #ifdef DEBUG
-    if(SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
+    if(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
        != SDL2_SUCCESS)
     {
         throw error::Exception_box("Can't enable the renderer blend mode.");
@@ -42,7 +42,7 @@ Graphics::~Graphics()
 {
     if(renderer_initialized)
     {
-        SDL_DestroyRenderer(Renderer);
+        SDL_DestroyRenderer(renderer);
         renderer_initialized = false;
     }
     if(window_initialized)
@@ -108,7 +108,7 @@ bool Graphics::set_up_new_frame()
 {
     frame_start_time_ms_ = SDL_GetTicks();
 
-    if(SDL_RenderClear(Renderer) != SDL2_SUCCESS)
+    if(SDL_RenderClear(renderer) != SDL2_SUCCESS)
     {
         error::show_box("Can't clean the renderer.");
         return false;

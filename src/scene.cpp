@@ -1,10 +1,10 @@
 #include "scene.hpp"
 
-Scene::Scene(Graphics& Graphics, const std::string bg_name)
+Scene::Scene(Graphics& graphics, const std::string bg_name)
 {
     try
     {
-        Bg = new Background(Graphics, bg_name);
+        Bg = new Background(graphics, bg_name);
     }
     catch(...)
     {
