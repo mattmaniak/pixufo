@@ -19,7 +19,7 @@ public:
     double             pos_y;
     SDL_Rect           geometry; // Textures's position and size.
 
-    Font(Graphics&, const std::string, const unsigned int);
+    Font(Graphics&, std::string, unsigned int);
     ~Font();
 
     bool render(Graphics&);

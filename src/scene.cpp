@@ -1,12 +1,12 @@
 #include "scene.hpp"
 
-Scene::Scene(Graphics& graphics, const std::string bg_name)
+Scene::Scene(Graphics& graphics, std::string bg_name)
 {
     try
     {
         Bg = new Background(graphics, bg_name);
     }
-    catch(...)
+    catch(std::runtime_error)
     {
         throw std::runtime_error("");
     }

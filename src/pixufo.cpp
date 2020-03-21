@@ -20,7 +20,7 @@ Game::Game(): _state(main_menu)
         _graphics = new Graphics;
         _level    = new Level(*_graphics, "background_level", 2);
     }
-    catch(...)
+    catch(std::runtime_error)
     {
         throw std::runtime_error("");
     }
@@ -63,7 +63,7 @@ bool Game::level_loop()
             {
                 return false;
             }
-            SDL_Delay(2000);
+            SDL_Delay(2000); // Wait a moment after a player's death.
             _state = main_menu;
 
             return true;
@@ -72,7 +72,7 @@ bool Game::level_loop()
         _level->score_points += _graphics->delta_time_s * 1000.0;
         if(_level->score_points >= std::numeric_limits<unsigned int>::max())
         {
-            throw error::Exception_box("You've reached the score limit.");
+            error::show_box("You've reached the score limit.");
             return false;
         }
         if(!_level->render(*_graphics))
@@ -89,7 +89,7 @@ bool Game::level_loop()
 
 bool Game::main_menu_loop()
 {
-    Main_menu Current_menu(*_graphics);
+    Main_menu Current_menu(*_graphics); // Unhandled exceptions possible.
 
     while(_state == main_menu)
     {
@@ -117,7 +117,7 @@ bool Game::main_menu_loop()
 
 bool Game::pause_menu_loop()
 {
-    Pause_menu Current_menu(*_graphics);
+    Pause_menu Current_menu(*_graphics); // Unhandled exceptions possible.
 
     while(_state == pause_menu)
     {
@@ -143,7 +143,7 @@ bool Game::pause_menu_loop()
 
 bool Game::credits_menu_loop()
 {
-    Credits_menu Current_menu(*_graphics);
+    Credits_menu Current_menu(*_graphics); // Unhandled exceptions possible.
 
     while(_state == credits_menu)
     {
@@ -180,31 +180,35 @@ int main()
             case level:
                 if(!Pixufo.level_loop())
                 {
-                    return 0;
+                    return -1;
                 }
                 break;
 
             case main_menu:
                 if(!Pixufo.main_menu_loop())
                 {
-                    return 0;
+                    return -1;
                 }
                 break;
 
             case credits_menu:
                 if(!Pixufo.credits_menu_loop())
                 {
-                    return 0;
+                    return -1;
                 }
                 break;
 
             case pause_menu:
                 if(!Pixufo.pause_menu_loop())
                 {
-                    return 0;
+                    return -1;
                 }
             }
         }
     }
-    catch(...) {}
+    catch(std::runtime_error)
+    {
+        return -1;
+    }
+    return 0;
 }

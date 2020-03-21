@@ -1,6 +1,6 @@
 #include "background.hpp"
 
-Background::Background(Graphics& graphics, const std::string name):
+Background::Background(Graphics& graphics, std::string name):
 Sprite(graphics, name, 0) {}
 
 bool Background::tile_and_render(Graphics& graphics)
@@ -46,6 +46,7 @@ void Background::_scroll_endlessly()
     {
         pos_x += geometry.w; // Move the background one tile right.
     }
+
     if(pos_y > 0.0) // Background shifted down.
     {
         pos_y -= geometry.h; // Move the background one tile up.

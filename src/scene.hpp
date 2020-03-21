@@ -9,7 +9,7 @@ class Scene
 public:
     Background*  Bg;
 
-    Scene(Graphics&, const std::string);
+    Scene(Graphics&, std::string);
     ~Scene();
 
 protected:

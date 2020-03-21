@@ -1,6 +1,6 @@
 #include "sprite.hpp"
 
-Sprite::Sprite(Graphics& graphics, const std::string passed_name,
+Sprite::Sprite(Graphics& graphics, std::string passed_name,
                const Uint32 passed_single_frame_time_ms):
                name(passed_name), current_frame_idx(0),
                current_frame_start_time_ms_(passed_single_frame_time_ms)
@@ -40,14 +40,13 @@ Sprite::~Sprite()
     }
 }
 
-void Sprite::move(Graphics& graphics, const double offset_x,
-                  const double offset_y)
+void Sprite::move(Graphics& graphics, double offset_x, double offset_y)
 {
     pos_x += offset_x * graphics.delta_time_s * graphics.pixelart_px_sz;
     pos_y += offset_y * graphics.delta_time_s * graphics.pixelart_px_sz;
 }
 
-void Sprite::animate(const Graphics& graphics)
+void Sprite::animate(Graphics& graphics)
 {
     if(current_frame_start_time_ms_ > 0)
     {
@@ -96,7 +95,7 @@ bool Sprite::load_textures_(Graphics& graphics)
             return false;
         }
         textures[current_frame_idx] =
-        SDL_CreateTextureFromSurface(graphics.renderer, Image);
+            SDL_CreateTextureFromSurface(graphics.renderer, Image);
 
         if(textures[current_frame_idx] == nullptr)
         {

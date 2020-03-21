@@ -7,7 +7,7 @@
 class Background: public Sprite
 {
 public:
-    Background(Graphics&, const std::string);
+    Background(Graphics&, std::string);
 
     bool tile_and_render(Graphics&); // Of course infinite.
 

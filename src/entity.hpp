@@ -18,7 +18,7 @@ public:
     double                step;      // Pixel position move in a one frame.
     std::vector<SDL_Rect> hitbox_parts;
 
-    Entity(Graphics&, const std::string, const double, const Uint32);
+    Entity(Graphics&, std::string, double, Uint32);
 
     bool load_hitbox(Graphics&);
     void randomize_initial_pos();

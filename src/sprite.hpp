@@ -26,11 +26,11 @@ public:
     double   pos_x;    // Theoretical (virtual) positions.
     double   pos_y;
 
-    Sprite(Graphics&, const std::string, const Uint32);
+    Sprite(Graphics&, std::string, Uint32);
     virtual ~Sprite();
 
-    void         move(Graphics&, const double, const double);
-    void         animate(const Graphics&);
+    void         move(Graphics&, double, double);
+    void         animate(Graphics&);
     virtual bool render(Graphics&);
 
 private:

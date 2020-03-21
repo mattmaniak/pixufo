@@ -1,6 +1,6 @@
 #include "entity.hpp"
 
-Entity::Entity(Graphics& graphics, const std::string name,
+Entity::Entity(Graphics& graphics, std::string name,
                const double passed_speed,
                const Uint32 passed_single_frame_time_ms):
 Sprite(graphics, name, passed_single_frame_time_ms), max_speed(passed_speed)
@@ -19,12 +19,12 @@ bool Entity::load_hitbox(Graphics& graphics)
     std::size_t       rects_amount = 0;
 
     FILE* hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
-
     if(hitbox_parts_file == nullptr)
     {
         error::show_box("Can't load the hitbox file for: " + name);
         return false;
     }
+
     for(;;)
     {
         hitbox_parts.push_back({0, 0, 0, 0});

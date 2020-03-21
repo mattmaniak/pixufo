@@ -21,7 +21,7 @@ public:
     unsigned int score_points;
     Player*      Ufo;
 
-    Level(Graphics&, const std::string, const unsigned int);
+    Level(Graphics&, std::string, unsigned int);
     ~Level();
 
     void reset();
@@ -32,14 +32,14 @@ public:
     bool render(Graphics&);
 
 private:
-    std::vector<Entity*> _enemies;
+    std::vector<Entity*> _nebulas;
     std::size_t          _enemies_number;
 
     void _adjust_enemies_border(Graphics&, Entity&);
-    void randomize_enemies_amount_();
-    void randomize_enemy_type_(Graphics&);
-    bool check_advanced_ufo_collision_(const std::size_t);
-    void randomize_enemies_pos_();
+    void _randomize_enemies_amount();
+    void _randomize_enemy_type(Graphics&);
+    bool _check_advanced_ufo_collision(std::size_t);
+    void _randomize_enemies_pos();
 };
 
 #endif
