@@ -1,8 +1,8 @@
 #include "level.hpp"
 
 Level::Level(Graphics& graphics, std::string bg_name,
-             const unsigned int enemies_number):
-Scene(graphics, bg_name), _enemies_number(enemies_number)
+             unsigned int enemies_number):
+Scene(graphics, bg_name), _nebulas_number(enemies_number)
 {
     const double size_to_screen_width_ratio = 1.0;
 
@@ -13,11 +13,11 @@ Scene(graphics, bg_name), _enemies_number(enemies_number)
     {
         Ufo = new Player(graphics);
     }
-    catch(...)
+    catch(std::runtime_error)
     {
         throw std::runtime_error("");
     }
-    _adjust_enemies_border(graphics, *Ufo);
+    _adjust_enemies_borders(graphics, *Ufo);
 
     // Set the player's default position;
     Ufo->geometry.x = Ufo->pos_x = (_width - Ufo->geometry.w)  / 2;
@@ -25,17 +25,17 @@ Scene(graphics, bg_name), _enemies_number(enemies_number)
 
     _randomize_enemies_amount();
 
-    for(std::size_t idx = 0; idx < _enemies_number; idx++) // Create all enemies.
+    for(std::size_t idx = 0; idx < _nebulas_number; idx++) // Create all enemies.
     {
         try
         {
             _randomize_enemy_type(graphics);
         }
-        catch(...)
+        catch(std::runtime_error)
         {
             throw std::runtime_error("");
         }
-        _adjust_enemies_border(graphics, *_nebulas[idx]);
+        _adjust_enemies_borders(graphics, *_nebulas[idx]);
     }
 }
 
@@ -58,9 +58,9 @@ void Level::reset()
 
     // _randomize_enemies_pos();
 
-    for(auto& Nebula: _nebulas)
+    for(auto& nebula: _nebulas)
     {
-        Nebula->randomize_initial_pos();
+        nebula->randomize_initial_pos();
     }
     score_points = 0;
 }
@@ -72,9 +72,9 @@ void Level::adjust_enemy_border(Graphics& graphics)
 
     for(auto& Nebula: _nebulas)
     {
-        _adjust_enemies_border(graphics, *Nebula);
+        _adjust_enemies_borders(graphics, *Nebula);
     }
-    _adjust_enemies_border(graphics, *Ufo);
+    _adjust_enemies_borders(graphics, *Ufo);
 }
 
 void Level::check_ufo_pos()
@@ -163,7 +163,7 @@ bool Level::render(Graphics& graphics)
     return true;
 }
 
-void Level::_adjust_enemies_border(Graphics& graphics, Entity& Entity)
+void Level::_adjust_enemies_borders(Graphics& graphics, Entity& Entity)
 {
     Entity.min_x = graphics.pixelart_px_sz - Entity.geometry.w;
     Entity.min_y = graphics.pixelart_px_sz - Entity.geometry.h;
@@ -180,7 +180,7 @@ void Level::_randomize_enemies_amount()
     std::uniform_int_distribution<std::mt19937::result_type>
     distributor_enemies(MIN_NEBULAS_AMOUNT, MAX_NEBULAS_AMOUNT);
 
-    _enemies_number = distributor_enemies(prng);
+    _nebulas_number = distributor_enemies(prng);
 }
 
 void Level::_randomize_enemy_type(Graphics& graphics)
@@ -201,29 +201,29 @@ void Level::_randomize_enemy_type(Graphics& graphics)
         case 1:
         case 2:
         case 3:
-            _nebulas.push_back(new Entity(graphics, "enemy_wasp", 160.0, 80));
+            _nebulas.push_back(new Entity(graphics, "nebula_wasp", 160.0, 80));
             break;
 
         case 4:
         case 5:
         case 6:
-            _nebulas.push_back(new Entity(graphics, "enemy_medium", 120.0,
-                                         100));
+            _nebulas.push_back(new Entity(graphics, "nebula_medium", 120.0,
+                                          100));
             break;
 
         case 7:
         case 8:
-            _nebulas.push_back(new Entity(graphics, "enemy_big", 90.0, 160));
+            _nebulas.push_back(new Entity(graphics, "nebula_big", 90.0, 160));
             break;
 
         case 9:
-            _nebulas.push_back(new Entity(graphics, "enemy_umbrella", 50.0,
-                                         200));
+            _nebulas.push_back(new Entity(graphics, "nebula_umbrella", 50.0,
+                                          200));
         }
     }
     catch(std::runtime_error)
     {
-        std::runtime_error("");
+        throw std::runtime_error("");
     }
 }
 

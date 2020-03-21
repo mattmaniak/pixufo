@@ -8,6 +8,7 @@ Sprite(graphics, name, passed_single_frame_time_ms), max_speed(passed_speed)
     if(!load_hitbox(graphics))
     {
         throw std::runtime_error("");
+
     }
     step = 0.0;
     hidden_timeout_ms = 0;

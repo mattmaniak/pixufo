@@ -33,9 +33,9 @@ public:
 
 private:
     std::vector<Entity*> _nebulas;
-    std::size_t          _enemies_number;
+    std::size_t          _nebulas_number;
 
-    void _adjust_enemies_border(Graphics&, Entity&);
+    void _adjust_enemies_borders(Graphics&, Entity&);
     void _randomize_enemies_amount();
     void _randomize_enemy_type(Graphics&);
     bool _check_advanced_ufo_collision(std::size_t);
