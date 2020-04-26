@@ -1,6 +1,8 @@
 # PixUfo
 Enjoy the cosmic weightlessness and avoid enemies in a 2D space.
 
+![image](screenshot.webp "Gameplay in PixUfo")
+
 ## What so special?
 Author's weightlessness steering - realistic movement and space-like steering
 created from scratch.
