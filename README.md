@@ -1,14 +1,14 @@
 # PixUfo
 Enjoy the cosmic weightlessness and avoid enemies in a 2D space.
 
-![image](screenshot.webp "Gameplay in PixUfo")
+![image](screenshot.png "Gameplay in PixUfo")
 
 ## What so special?
 Author's weightlessness steering - realistic movement and space-like steering
 created from scratch.
 
 ## Purpose
-Make the game by learning C++ and random framework. In that case - SDL2.
+Make the game by learning C++ and random framework. In this case - SDL2.
 
 ## Warning
 **As it's the past educational project, may contain low quality code.**
