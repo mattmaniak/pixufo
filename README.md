@@ -1,4 +1,4 @@
-# PixUfo
+# <img src='icon.bmp' width='32'> PixUfo
 Enjoy the cosmic weightlessness and avoid enemies in a 2D space.
 
 ![image](screenshot.png "Gameplay in PixUfo")
