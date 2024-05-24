@@ -15,7 +15,7 @@ Make the game by learning C++ and random framework. In this case - SDL2.
 
 ## Requirements:
 - at least HD display resolution,
-- 64-bit OS: Windows or GNU/Linux with the graphical user interface,
+- 64-bit OS: Windows, GNU/Linux or macOS,
 - [development-only] g++ (gcc with libstdc++) with version >= 4.8.1.
 
 ## Gameplay
@@ -25,7 +25,7 @@ clicking enter key and pausing the game by escape key. Unfortunately changing
 the system resolution with the game opened may break it's rendering.
 
 ## Disclaimer
-Works well on Linux. On Windows some fonts are blended and Nebulas (Enemies)
+Works well on Linux. On Windows some fonts are blended and Nebulas (enemies)
 position randomization doesn't work. Really don't know why.
 
 ## Compilation
@@ -55,7 +55,17 @@ PixUfo.exe
 ### Linux-based OS (TL:DR for Ubuntu):
 ```
 sudo apt update &&
-sudo apt install git gcc g++ make libsdl2-dev libsdl2-ttf-dev &&
+sudo apt install git git-lfs gcc g++ make libsdl2-dev libsdl2-ttf-dev &&
+git clone https://gitlab.com/mattmaniak/pixufo.git &&
+cd pixufo &&
+make &&
+./PixUfo
+```
+
+### macOS with Homebrew:
+```
+brew update &&
+brew install git git-lfs gcc g++ make sdl2 sdl2_ttf &&
 git clone https://gitlab.com/mattmaniak/pixufo.git &&
 cd pixufo &&
 make &&
@@ -63,7 +73,7 @@ make &&
 ```
 
 ### Remove object files
-#### GNU/Linux
+#### GNU/Linux and macOS
 ```
 make clean
 ```

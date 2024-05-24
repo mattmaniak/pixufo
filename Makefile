@@ -2,6 +2,7 @@ TARGET =
 
 CC = g++
 CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic
+IFLAGS =
 LDFLAGS = -lSDL2 -lSDL2_ttf
 ASAN_FLAGS =
 
@@ -14,6 +15,20 @@ ifeq ($(OS), Windows_NT)
 	TARGET = PixUfo.exe
 	LDFLAGS += -lmingw32 -mwindows -lSDL2main
 	MKDIR_OBJ = if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
+
+else ifeq ($(shell uname), Darwin)
+	TARGET = PixUfo
+	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
+	-fsanitize-undefined-trap-on-error -fstack-protector-all
+
+#/opt/homebrew/Cellar/sdl2/2.30.3/
+	IFLAGS = -I $(wildcard /opt/homebrew/Cellar/sdl2/*/include)
+	IFLAGS += -I $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/include)
+
+	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2/*/lib)
+	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/lib)
+
+	MKDIR_OBJ = mkdir -p $(OBJ_DIR)
 
 else ifeq ($(shell uname), Linux)
 	TARGET = PixUfo
@@ -34,7 +49,8 @@ OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, \
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
 	$(MKDIR_OBJ)
 	$(CC) -c -o $@ $< \
-	$(CPPFLAGS) \
+	$(IFLAGS) \
+	$(CPPFLAGS) 
 
 # Builds the binary by linking object files.
 $(TARGET): $(OBJS)

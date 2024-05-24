@@ -4,6 +4,10 @@
 /* As the C++ doesn't like concatinating char* + char* (#define is like that),
 macros are replaced with global variables but at least constants. */
 
+#ifdef __APPLE__
+const std::string SEPARATOR = "/";
+
+#else
 #ifdef _WIN32
 const std::string SEPARATOR = "\\";
 
@@ -12,8 +16,9 @@ const std::string SEPARATOR = "\\";
 const std::string SEPARATOR = "/";
 
 #else
-#error GNU/Linux or Windows is required.
+#error Supported platforms: GNU/Linux, Windows and macOS.
 
+#endif
 #endif
 #endif
 
