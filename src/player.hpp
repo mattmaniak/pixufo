@@ -5,6 +5,7 @@
 #include <cmath>
 #include <map>
 #include <string>
+
 #include "entity.hpp"
 #include "graphics.hpp"
 #include "menu.hpp"
