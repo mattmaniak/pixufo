@@ -2,9 +2,14 @@
 #define ERROR_HPP
 
 #include <iostream>
-#include <SDL2/SDL.h>
 #include <stdexcept>
 #include <string>
+
+#ifndef __APPLE__
+    #include <SDL2/SDL.h>
+#else
+    #include <SDL.h>
+#endif
 
 #define SDL2_SUCCESS 0
 

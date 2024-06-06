@@ -2,8 +2,14 @@
 #define MENU_HPP
 
 #include <map>
-#include <SDL2/SDL.h>
 #include <vector>
+
+#ifndef __APPLE__
+    #include <SDL2/SDL.h>
+#else
+    #include <SDL.h>
+#endif
+
 #include "error.hpp"
 #include "scene.hpp"
 #include "graphics.hpp"

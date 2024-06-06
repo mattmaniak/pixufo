@@ -21,8 +21,7 @@ else ifeq ($(shell uname), Darwin)
 	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	-fsanitize-undefined-trap-on-error -fstack-protector-all
 
-#/opt/homebrew/Cellar/sdl2/2.30.3/
-	IFLAGS = -I $(wildcard /opt/homebrew/Cellar/sdl2/*/include)
+	IFLAGS = -I $(wildcard /opt/homebrew/Cellar/sdl2/*/include/SDL2)
 	IFLAGS += -I $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/include)
 
 	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2/*/lib)

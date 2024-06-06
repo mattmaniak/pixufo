@@ -4,10 +4,16 @@
 #include <array>
 #include <cstdio>
 #include <iostream>
-#include <SDL2/SDL.h>
 #include <string>
 #include <vector>
 #include <stdexcept>
+
+#ifndef __APPLE__
+    #include <SDL2/SDL.h>
+#else
+    #include <SDL.h>
+#endif
+
 #include "error.hpp"
 #include "graphics.hpp"
 #include "os_env.hpp"

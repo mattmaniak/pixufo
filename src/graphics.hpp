@@ -3,9 +3,15 @@
 
 #include <iostream>
 #include <limits>
-#include <SDL2/SDL.h>
 #include <string>
 #include <stdexcept>
+
+#ifndef __APPLE__
+    #include <SDL2/SDL.h>
+#else
+    #include <SDL.h>
+#endif
+
 #include "error.hpp"
 #include "os_env.hpp"
 

@@ -1,14 +1,13 @@
 #ifndef FONT_HPP
 #define FONT_HPP
 
-#include <SDL2/SDL.h>
-
 #ifndef __APPLE__
-    #include <SDL2/SDL_ttf.h>
+    #include <SDL2/SDL.h>
 #else
-    #include <SDL2/SDL_ttf.h>
+    #include <SDL.h>
 #endif
 
+#include <SDL2/SDL_ttf.h>
 #include <string>
 
 #include "error.hpp"
