@@ -26,7 +26,7 @@ public:
 
 
 private:
-    State _state;
+    State     _state;
     Graphics* _graphics;
     Level*    _level;
 };
