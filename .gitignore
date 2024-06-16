@@ -1,9 +1,8 @@
+*.app
+*.exe
 .DS_Store
 __MACOSX
-pixufo
-PixUfo
-pixufo.exe
-PixUfo.exe
+[Pp]ix[Uu]fo
 obj
 SDL2-2.*
 i686-w64-mingw32
