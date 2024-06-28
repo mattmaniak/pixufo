@@ -13,7 +13,7 @@ Graphics::Graphics(): delta_time_s(0.0), renderer(nullptr),
     }
 
     renderer = SDL_CreateRenderer(Window_, default_driver,
-                                SDL_RENDERER_ACCELERATED);
+                                  SDL_RENDERER_ACCELERATED);
     if(renderer == nullptr)
     {
         throw error::Exception_box("Can't create the renderer.");
@@ -68,6 +68,7 @@ bool Graphics::init_window_()
         error::show_box("At least the HD screen resolution is required.");
         return false;
     }
+    // This function is returns nullptr on macOS.
     Window_ = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
                                SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
                                SDL_WINDOW_FULLSCREEN_DESKTOP);

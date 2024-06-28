@@ -3,7 +3,7 @@ TARGET =
 CC = g++
 CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic
 IFLAGS =
-LDFLAGS = -L/opt/homebrew/lib -lSDL2 -lSDL2_ttf
+LDFLAGS = -lSDL2 -lSDL2_ttf
 ASAN_FLAGS =
 
 SRC_DIR = src
@@ -21,14 +21,14 @@ else ifeq ($(shell uname), Darwin)
 	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	-fsanitize-undefined-trap-on-error -fstack-protector-all
 
-	IFLAGS = -I $(wildcard /opt/homebrew/Cellar/sdl2/*/include/SDL2)
+	IFLAGS += -I $(wildcard /opt/homebrew/Cellar/sdl2/*/include/SDL2)
 	IFLAGS += -I $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/include)
 
-	# LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2/*/lib)
-	# LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/lib)
+	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2/*/lib)
+	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/lib)
 
 	# sdl2-config --static-libs but modified a little.
-	# LDFLAGS += -L/opt/homebrew/lib /opt/homebrew/lib/libSDL2-2.0.0.dylib /opt/homebrew/lib/libSDL2.dylib /opt/homebrew/lib/libSDL2_ttf-2.0.0.dylib /opt/homebrew/lib/libSDL2_ttf.dylib -lm -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-weak_framework,CoreHaptics -Wl,-weak_framework,GameController -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal
+	LDFLAGS += -L/opt/homebrew/lib /opt/homebrew/lib/libSDL2.a -lm -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-weak_framework,CoreHaptics -Wl,-weak_framework,GameController -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal
 
 	MKDIR_OBJ = mkdir -p $(OBJ_DIR)
 

@@ -1,9 +1,12 @@
 *.app
 *.exe
 .DS_Store
+.idea
+.vs
+.vscode
 __MACOSX
 [Pp]ix[Uu]fo
 obj
-SDL2-2.*
+SDL2*
 i686-w64-mingw32
 x86_64-w64-mingw32

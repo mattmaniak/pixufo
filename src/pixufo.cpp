@@ -22,7 +22,7 @@ Game::Game(): _state(main_menu)
     }
     catch(std::runtime_error)
     {
-        throw std::runtime_error("");
+        throw std::runtime_error("Unable to initialize Graphics and/or Level module.");
     }
 }
 
