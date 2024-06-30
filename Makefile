@@ -66,7 +66,7 @@ $(TARGET): $(OBJS)
 bundle: $(TARGET)
 	mkdir -p $(bundle_contents)/MacOS
 	mkdir -p $(bundle_contents)/Resources
-	touch $(bundle_contents)/Info.plist
+	cp Info.plist $(bundle_contents)/Info.plist
 	echo "APPL????" > $(bundle_contents)/PkgInfo
 	cp $(TARGET) $(bundle_contents)/MacOS/
 	# $(INSTALL_PROGRAM) $< $(bundle_contents)/MacOS/
