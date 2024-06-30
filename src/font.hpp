@@ -9,7 +9,7 @@
 #else
     #include <SDL.h>
 #endif
-#include <SDL2/SDL_ttf.h>
+#include <SDL_ttf.h>
 
 #include "error.hpp"
 #include "os_env.hpp"

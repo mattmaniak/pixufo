@@ -5,6 +5,7 @@ CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic
 IFLAGS =
 LDFLAGS = -lSDL2 -lSDL2_ttf
 ASAN_FLAGS =
+GCOV_FLAGS =
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -18,22 +19,22 @@ ifeq ($(OS), Windows_NT)
 
 else ifeq ($(shell uname), Darwin)
 	TARGET = PixUfo
-	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
+
+	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined \
 	-fsanitize-undefined-trap-on-error -fstack-protector-all
+	GCOV_FLAGS = -ftest-coverage -fprofile-arcs
 
-	IFLAGS += -I $(wildcard /opt/homebrew/Cellar/sdl2/*/include/SDL2)
-	IFLAGS += -I $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/include)
+	# Output of sdl2-config --cflags.
+	IFLAGS += -I /opt/homebrew/include/SDL2 -D_THREAD_SAFE
 
-	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2/*/lib)
-	LDFLAGS += -L $(wildcard /opt/homebrew/Cellar/sdl2_ttf/*/lib)
-
-	# sdl2-config --static-libs but modified a little.
-	LDFLAGS += -L/opt/homebrew/lib /opt/homebrew/lib/libSDL2.a -lm -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-weak_framework,CoreHaptics -Wl,-weak_framework,GameController -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal
+	LDFLAGS += -L /opt/homebrew/lib /opt/homebrew/lib/libSDL2.a -lm -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-weak_framework,CoreHaptics -Wl,-weak_framework,GameController -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal
 
 	MKDIR_OBJ = mkdir -p $(OBJ_DIR)
 
 else ifeq ($(shell uname), Linux)
 	TARGET = PixUfo
+
+	GCOV_FLAGS = -ftest-coverage -fprofile-arcs
 	ASAN_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	-fsanitize-undefined-trap-on-error -fstack-protector-all
 
@@ -72,7 +73,7 @@ bundle: $(TARGET)
 	# $(INSTALL_PROGRAM) $< $(bundle_contents)/MacOS/
 
 .PHONY: debug
-debug: CPPFLAGS += -DDEBUG
+debug: CPPFLAGS += -DDEBUG $(GCOV_FLAGS)
 debug: LDFLAGS += $(ASAN_FLAGS)
 debug: $(TARGET)
 
