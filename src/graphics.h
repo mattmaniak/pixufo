@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_HPP
-#define GRAPHICS_HPP
+#ifndef GRAPHICS_H_
+#define GRAPHICS_H_
 
 #include <iostream>
 #include <limits>
@@ -12,8 +12,8 @@
     #include <SDL2/SDL.h>
 #endif
 
-#include "error.hpp"
-#include "os_env.hpp"
+#include "error.h"
+#include "os_env.h"
 
 #define CURRENT_DISPLAY_IDX 0
 #define PIXELART_DISPLAY_WIDTH 640.0f
@@ -55,4 +55,4 @@ private:
     bool get_pixelart_px_sz_();
 };
 
-#endif
+#endif // GRAPHICS_H_

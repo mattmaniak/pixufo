@@ -1,5 +1,5 @@
-#ifndef FONT_HPP
-#define FONT_HPP
+#ifndef FONT_H_
+#define FONT_H_
 
 
 #include <string>
@@ -11,9 +11,9 @@
 #endif
 #include <SDL_ttf.h>
 
-#include "error.hpp"
-#include "os_env.hpp"
-#include "graphics.hpp"
+#include "error.h"
+#include "os_env.h"
+#include "graphics.h"
 
 #define FONTNAME "Blox2.ttf"
 
@@ -38,4 +38,4 @@ private:
     SDL_Texture*       _texture;
 };
 
-#endif
+#endif // FONT_H_

@@ -1,15 +1,15 @@
-#ifndef LEVEL_HPP
-#define LEVEL_HPP
+#ifndef LEVEL_H_
+#define LEVEL_H_
 
 #include <string>
 #include <memory>
 #include <vector>
 
-#include "error.hpp"
-#include "graphics.hpp"
-#include "scene.hpp"
-#include "entity.hpp"
-#include "player.hpp"
+#include "error.h"
+#include "graphics.h"
+#include "scene.h"
+#include "entity.h"
+#include "player.h"
 
 #define MIN_NEBULAS_AMOUNT 15
 #define MAX_NEBULAS_AMOUNT 20
@@ -43,4 +43,4 @@ private:
     void _randomize_enemies_pos();
 };
 
-#endif
+#endif // LEVEL_H_

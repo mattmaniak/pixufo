@@ -1,16 +1,14 @@
-#include "menu.hpp"
-#include "level.hpp"
+#include "menu.h"
+#include "level.h"
 
-Menu::Menu(Graphics& graphics): Scene(graphics, "background_primary_menu"),
-                                selected_button_idx(0)
+Menu::Menu(Graphics& graphics): Scene(graphics, "background_primary_menu"), selected_button_idx(0)
 {
 	try
 	{
 	Sprites.insert(std::make_pair("title", new Sprite(graphics, "title", 0)));
-	Sprites.insert(std::make_pair("selection_arrow", new Sprite(graphics,
-	                                                            "meteor", 0)));
+	Sprites.insert(std::make_pair("selection_arrow", new Sprite(graphics, "meteor", 0)));
 	}
-	catch(std::runtime_error)
+	catch (std::runtime_error)
 	{
 		throw std::runtime_error("");
 	}
@@ -28,54 +26,50 @@ Menu::~Menu()
 
 bool Menu::render(Graphics& graphics)
 {
-	if(!Bg->tile_and_render(graphics))
+	if (!Bg->tile_and_render(graphics))
 	{
 		return false;
 	}
 
 	Sprites["title"]->pos_x = Sprites["title"]->pos_y = PADDING;
-	if(!Sprites["title"]->render(graphics))
+	if (!Sprites["title"]->render(graphics))
 	{
 		return false;
 	}
 
-	for(std::size_t idx = 0; idx < buttons.size(); idx++)
+	for (std::size_t idx = 0; idx < buttons.size(); idx++)
 	{
 		buttons[idx]->pos_x = PADDING;
-		buttons[idx]->pos_y = graphics.Display.h - (buttons[idx]->geometry.h
-		                      * buttons.size()) + (idx
-		                      * buttons[idx]->geometry.h) - PADDING;
+		buttons[idx]->pos_y = graphics.Display.h - (buttons[idx]->geometry.h * buttons.size()) + (idx * buttons[idx]->geometry.h) - PADDING;
 
 		buttons[idx]->geometry.x = buttons[idx]->pos_x;
 		buttons[idx]->geometry.y = buttons[idx]->pos_y;
 
-		if(!buttons[idx]->render(graphics))
+		if (!buttons[idx]->render(graphics))
 		{
 			return false;
 		}
-		if(idx == selected_button_idx)
+		if (idx == selected_button_idx)
 		{
-			Sprites["selection_arrow"]->pos_x = buttons[idx]->geometry.w
-			                                    + PADDING;
-
+			Sprites["selection_arrow"]->pos_x = buttons[idx]->geometry.w + PADDING;
 			Sprites["selection_arrow"]->pos_y = buttons[idx]->geometry.y;
 		}
 		buttons[idx]->geometry.x = buttons[idx]->pos_x;
 		buttons[idx]->geometry.y = buttons[idx]->pos_y;
 
 	}
-	if(selection_arrow_focused)
+	if (selection_arrow_focused)
 	{
-		if(!Sprites["selection_arrow"]->render(graphics))
+		if (!Sprites["selection_arrow"]->render(graphics))
 		{
 			return false;
 		}
 	}
-	if(has_text)
+	if (has_text)
 	{
-		for(auto& Line: Text_lines)
+		for (auto& Line: Text_lines)
 		{
-			if(!Line->render(graphics))
+			if (!Line->render(graphics))
 			{
 				return false;
 			}
@@ -102,7 +96,7 @@ Main_menu::Main_menu(Graphics& graphics): Menu(graphics)
 
 Main_menu::~Main_menu()
 {
-	for(auto& Button: buttons)
+	for (auto& Button: buttons)
 	{
 		delete Button;
 	}
@@ -122,14 +116,14 @@ bool Main_menu::keyboard_steering(State& state)
 		switch(Event.key.keysym.sym)
 		{
 		case SDLK_UP:
-			if(selected_button_idx > 0)
+			if (selected_button_idx > 0)
 			{
 				selected_button_idx--;
 			}
 			break;
 
 		case SDLK_DOWN:
-			if(selected_button_idx < (buttons.size() - 1))
+			if (selected_button_idx < (buttons.size() - 1))
 			{
 				selected_button_idx++;
 			}
@@ -169,7 +163,7 @@ Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics)
 
 Pause_menu::~Pause_menu()
 {
-	for(auto& Button: buttons)
+	for (auto& Button: buttons)
 	{
 		delete Button;
 	}
@@ -188,14 +182,14 @@ bool Pause_menu::keyboard_steering(State& state)
 	switch(Event.key.keysym.sym)
 	{
 	case SDLK_UP:
-		if(selected_button_idx > 0)
+		if (selected_button_idx > 0)
 		{
 			selected_button_idx--;
 		}
 		break;
 
 	case SDLK_DOWN:
-		if(selected_button_idx < (buttons.size() - 1))
+		if (selected_button_idx < (buttons.size() - 1))
 		{
 			selected_button_idx++;
 		}
@@ -226,21 +220,17 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics)
 		Text_lines.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
 		Text_lines.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
 		Text_lines.push_back(new Font(graphics, "graphics", TEXT_FONT_SZ));
-		Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
-		                              TEXT_FONT_SZ));
+		Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak", TEXT_FONT_SZ));
 
 		// Center the lines.
-		for(std::size_t idx = 0; idx < Text_lines.size(); idx++)
+		for (std::size_t idx = 0; idx < Text_lines.size(); idx++)
 		{
-			Text_lines[idx]->pos_x = graphics.Display.w - PADDING
-			                         - Text_lines[idx]->geometry.w;
-
+			Text_lines[idx]->pos_x = graphics.Display.w - PADDING - Text_lines[idx]->geometry.w;
 			Text_lines[idx]->pos_y = PADDING;
-			if(idx > 0)
+
+			if (idx > 0)
 			{
-				Text_lines[idx]->pos_y = Text_lines[idx - 1]->pos_y
-				                         + (Text_lines[idx - 1]->size
-				                         * text_leading);
+				Text_lines[idx]->pos_y = Text_lines[idx - 1]->pos_y + (Text_lines[idx - 1]->size * text_leading);
 			}
 		}
 		has_text = true;
@@ -255,11 +245,11 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics)
 
 Credits_menu::~Credits_menu()
 {
-	for(auto& Button: buttons)
+	for (auto& Button: buttons)
 	{
 		delete Button;
 	}
-	for(auto& Line: Text_lines)
+	for (auto& Line: Text_lines)
 	{
 		delete Line;
 	}

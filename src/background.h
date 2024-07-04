@@ -1,8 +1,8 @@
-#ifndef BACKGROUND_HPP
-#define BACKGROUND_HPP
+#ifndef BACKGROUND_H_
+#define BACKGROUND_H_
 
 #include <limits>
-#include "sprite.hpp"
+#include "sprite.h"
 
 class Background: public Sprite
 {
@@ -15,4 +15,4 @@ private:
     void _scroll_endlessly();
 };
 
-#endif
+#endif // BACKGROUND_H_

@@ -1,8 +1,8 @@
-#ifndef ENTITY_HPP
-#define ENTITY_HPP
+#ifndef ENTITY_H_
+#define ENTITY_H_
 
 #include <random>
-#include "sprite.hpp"
+#include "sprite.h"
 
 class Entity: public Sprite // Just sprite but more physical - with hitbox.
 {
@@ -25,4 +25,4 @@ public:
     bool render(Graphics&);
 };
 
-#endif
+#endif // ENTITY_H_

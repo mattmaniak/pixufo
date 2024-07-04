@@ -1,8 +1,8 @@
-#ifndef SCENE_HPP
-#define SCENE_HPP
+#ifndef SCENE_H_
+#define SCENE_H_
 
-#include "background.hpp"
-#include "graphics.hpp"
+#include "background.h"
+#include "graphics.h"
 
 class Scene
 {
@@ -17,4 +17,4 @@ protected:
     unsigned int _height;
 };
 
-#endif
+#endif // SCENE_H_

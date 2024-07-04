@@ -1,15 +1,15 @@
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#ifndef PLAYER_H_
+#define PLAYER_H_
 
 #include <array>
 #include <cmath>
 #include <map>
 #include <string>
 
-#include "entity.hpp"
-#include "graphics.hpp"
-#include "menu.hpp"
-#include "state.hpp"
+#include "entity.h"
+#include "graphics.h"
+#include "menu.h"
+#include "state.h"
 
 #define AXES_AMOUNT 2
 
@@ -60,4 +60,4 @@ namespace player
     };
 }
 
-#endif
+#endif // PLAYER_H_

@@ -1,14 +1,14 @@
-#ifndef PIXUFO_HPP
-#define PIXUFO_HPP
+#ifndef PIXUFO_H_
+#define PIXUFO_H_
 
-#include "error.hpp"
-#include "font.hpp"
-#include "graphics.hpp"
-#include "sprite.hpp"
-#include "menu.hpp"
-#include "level.hpp"
-#include "player.hpp"
-#include "state.hpp"
+#include "error.h"
+#include "font.h"
+#include "graphics.h"
+#include "sprite.h"
+#include "menu.h"
+#include "level.h"
+#include "player.h"
+#include "state.h"
 
 class Game
 {
@@ -31,4 +31,4 @@ private:
     Level*    _level;
 };
 
-#endif
+#endif // PIXUFO_H_

@@ -1,5 +1,5 @@
-#ifndef OS_ENV_HPP
-#define OS_ENV_HPP
+#ifndef OS_ENV_H_
+#define OS_ENV_H_
 
 /* As the C++ doesn't like concatinating char* + char* (#define is like that),
 macros are replaced with global variables but at least constants. */
@@ -28,4 +28,4 @@ const std::string SEPARATOR = "/";
 #define HITBOXES_PATH RESOURCES_PATH + SEPARATOR + "hitboxes" + SEPARATOR
 #define FONT_PATH     RESOURCES_PATH + SEPARATOR + "font" + SEPARATOR
 
-#endif
+#endif // OS_ENV_H_

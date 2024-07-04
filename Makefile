@@ -42,14 +42,14 @@ else ifeq ($(shell uname), Linux)
 endif
 
 # All in the ./obj depending on the ./src.
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, \
-       $(wildcard $(SRC_DIR)/*.cpp))
+OBJS = $(patsubst $(SRC_DIR)/%.cc, $(OBJ_DIR)/%.o, \
+       $(wildcard $(SRC_DIR)/*.cc))
 
 # Compilation of object files depends on source files wnich depends on headers.
 # "$@" - alias to name on the left of ':', "$^" - on the right.
 # "$<" is a first item in the dependencies list.
 # "-c" generates the object file.
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc $(SRC_DIR)/%.h
 	$(MKDIR_OBJ)
 	$(CC) -c -o $@ $< \
 	$(IFLAGS) \

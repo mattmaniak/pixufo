@@ -1,5 +1,5 @@
-#ifndef MENU_HPP
-#define MENU_HPP
+#ifndef MENU_H_
+#define MENU_H_
 
 #include <map>
 #include <vector>
@@ -10,11 +10,11 @@
     #include <SDL2/SDL.h>
 #endif
 
-#include "error.hpp"
-#include "scene.hpp"
-#include "graphics.hpp"
-#include "font.hpp"
-#include "state.hpp"
+#include "error.h"
+#include "scene.h"
+#include "graphics.h"
+#include "font.h"
+#include "state.h"
 
 #define PADDING (20.0 * graphics.pixelart_px_sz)
 
@@ -69,4 +69,4 @@ public:
     bool keyboard_steering(State&);
 };
 
-#endif
+#endif // MENU_H_

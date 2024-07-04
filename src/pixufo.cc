@@ -1,4 +1,4 @@
-#include "pixufo.hpp"
+#include "pixufo.h"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
@@ -7,11 +7,11 @@
 
 Game::Game(): _state(main_menu)
 {
-    if(SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
+    if (SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS)
     {
         throw error::Exception_box("Can't initialize the SDL2.");
     }
-    if(TTF_Init() != SDL2_SUCCESS)
+    if (TTF_Init() != SDL2_SUCCESS)
     {
         throw error::Exception_box("Can't initialize the SDL2 ttf module.");
     }
@@ -42,24 +42,24 @@ State Game::get_state()
 
 bool Game::level_loop()
 {
-    while(_state == level)
+    while (_state == level)
     {
-        if(!_graphics->set_up_new_frame())
+        if (!_graphics->set_up_new_frame())
         {
             return false;
         }
-        if(!_level->Ufo->keyboard_steering(*_graphics, _state))
+        if (!_level->Ufo->keyboard_steering(*_graphics, _state))
         {
             return false;
         }
         _level->check_enemies_pos(*_graphics);
         _level->check_ufo_pos();
 
-        if(_level->check_ufo_collision())
+        if (_level->check_ufo_collision())
         {
             /* Additional frame to fully cover both models when the collision
             happens. */
-            if(!_level->render(*_graphics))
+            if (!_level->render(*_graphics))
             {
                 return false;
             }
@@ -70,16 +70,16 @@ bool Game::level_loop()
         }
 
         _level->score_points += _graphics->delta_time_s * 1000.0;
-        if(_level->score_points >= std::numeric_limits<unsigned int>::max())
+        if (_level->score_points >= std::numeric_limits<unsigned int>::max())
         {
             error::show_box("You've reached the score limit.");
             return false;
         }
-        if(!_level->render(*_graphics))
+        if (!_level->render(*_graphics))
         {
             return false;
         }
-        if(!_graphics->count_fps())
+        if (!_graphics->count_fps())
         {
             return false;
         }
@@ -91,21 +91,21 @@ bool Game::main_menu_loop()
 {
     Main_menu Current_menu(*_graphics); // Unhandled exceptions possible.
 
-    while(_state == main_menu)
+    while (_state == main_menu)
     {
-        if(!_graphics->set_up_new_frame())
+        if (!_graphics->set_up_new_frame())
         {
             return false;
         }
-        if(!Current_menu.render(*_graphics))
+        if (!Current_menu.render(*_graphics))
         {
             return false;
         }
-        if(!Current_menu.keyboard_steering(_state))
+        if (!Current_menu.keyboard_steering(_state))
         {
             return false;
         }
-        if(!_graphics->count_fps())
+        if (!_graphics->count_fps())
         {
             return false;
         }
@@ -119,21 +119,21 @@ bool Game::pause_menu_loop()
 {
     Pause_menu Current_menu(*_graphics); // Unhandled exceptions possible.
 
-    while(_state == pause_menu)
+    while (_state == pause_menu)
     {
-        if(!_graphics->set_up_new_frame())
+        if (!_graphics->set_up_new_frame())
         {
             return false;
         }
-        if(!Current_menu.render(*_graphics))
+        if (!Current_menu.render(*_graphics))
         {
             return false;
         }
-        if(!Current_menu.keyboard_steering(_state))
+        if (!Current_menu.keyboard_steering(_state))
         {
             return false;
         }
-        if(!_graphics->count_fps())
+        if (!_graphics->count_fps())
         {
             return false;
         }
@@ -145,21 +145,21 @@ bool Game::credits_menu_loop()
 {
     Credits_menu Current_menu(*_graphics); // Unhandled exceptions possible.
 
-    while(_state == credits_menu)
+    while (_state == credits_menu)
     {
-        if(!_graphics->set_up_new_frame())
+        if (!_graphics->set_up_new_frame())
         {
             return false;
         }
-        if(!Current_menu.render(*_graphics))
+        if (!Current_menu.render(*_graphics))
         {
             return false;
         }
-        if(!Current_menu.keyboard_steering(_state))
+        if (!Current_menu.keyboard_steering(_state))
         {
             return false;
         }
-        if(!_graphics->count_fps())
+        if (!_graphics->count_fps())
         {
             return false;
         }
@@ -173,33 +173,33 @@ int main()
     {
         Game Pixufo;
 
-        for(;;)
+        for (;;)
         {
             switch(Pixufo.get_state())
             {
             case level:
-                if(!Pixufo.level_loop())
+                if (!Pixufo.level_loop())
                 {
                     return -1;
                 }
                 break;
 
             case main_menu:
-                if(!Pixufo.main_menu_loop())
+                if (!Pixufo.main_menu_loop())
                 {
                     return -1;
                 }
                 break;
 
             case credits_menu:
-                if(!Pixufo.credits_menu_loop())
+                if (!Pixufo.credits_menu_loop())
                 {
                     return -1;
                 }
                 break;
 
             case pause_menu:
-                if(!Pixufo.pause_menu_loop())
+                if (!Pixufo.pause_menu_loop())
                 {
                     return -1;
                 }

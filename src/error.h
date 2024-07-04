@@ -1,5 +1,5 @@
-#ifndef ERROR_HPP
-#define ERROR_HPP
+#ifndef ERROR_H_
+#define ERROR_H_
 
 #include <iostream>
 #include <stdexcept>
@@ -24,4 +24,4 @@ namespace error
     };
 }
 
-#endif
+#endif // ERROR_H_

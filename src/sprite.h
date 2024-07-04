@@ -1,5 +1,5 @@
-#ifndef SPRITE_HPP
-#define SPRITE_HPP
+#ifndef SPRITE_H_
+#define SPRITE_H_
 
 #include <array>
 #include <cstdio>
@@ -14,9 +14,9 @@
     #include <SDL2/SDL.h>
 #endif
 
-#include "error.hpp"
-#include "graphics.hpp"
-#include "os_env.hpp"
+#include "error.h"
+#include "graphics.h"
+#include "os_env.h"
 
 #define FRAMES_AMOUNT 6
 
@@ -46,4 +46,4 @@ private:
     bool load_textures_(Graphics&);
 };
 
-#endif
+#endif // SPRITE_H_

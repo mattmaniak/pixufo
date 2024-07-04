@@ -1,5 +1,5 @@
-#ifndef STATE_HPP
-#define STATE_HPP
+#ifndef STATE_H_
+#define STATE_H_
 
 enum State
 {
@@ -9,4 +9,4 @@ enum State
     pause_menu
 };
 
-#endif
+#endif // STATE_H_
