@@ -68,10 +68,9 @@ bool Graphics::init_window_()
         error::show_box("At least the HD screen resolution is required.");
         return false;
     }
-    // This function is returns nullptr on macOS.
-    Window_ = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
-                               SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
-                               SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+    // This function is returns nullptr on macOS when BMP files are not pulled correctly (via LFS).
+    Window_ = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     if (Window_ == nullptr)
     {
