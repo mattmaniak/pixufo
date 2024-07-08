@@ -1,5 +1,5 @@
-#ifndef PIXUFO_H_
-#define PIXUFO_H_
+#ifndef MAIN_H_
+#define MAIN_H_
 
 #include "error.h"
 #include "font.h"
@@ -31,4 +31,4 @@ private:
     Level*    _level;
 };
 
-#endif // PIXUFO_H_
+#endif // MAIN_H_

@@ -1,4 +1,4 @@
-#include "pixufo.h"
+#include "main.h"
 
 // Very ugly SDL2 error fix: "undefined reference to WinMain".
 #ifdef main
