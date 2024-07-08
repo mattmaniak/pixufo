@@ -1,6 +1,6 @@
 #include "main.h"
 
-// Very ugly SDL2 error fix: "undefined reference to WinMain".
+// Very ugly SDL2 error fix for "undefined reference to WinMain".
 #ifdef main
 #undef main
 #endif
@@ -18,11 +18,19 @@ Game::Game(): _state(main_menu)
     try
     {
         _graphics = new Graphics;
+    }
+    catch (std::runtime_error)
+    {
+        throw std::runtime_error("Unable to initialize the Graphics module.");
+    }
+
+    try
+    {
         _level    = new Level(*_graphics, "background_level", 2);
     }
     catch (std::runtime_error)
     {
-        throw std::runtime_error("Unable to initialize Graphics and/or Level module.");
+        throw std::runtime_error("Unable to initialize the Level module.");
     }
 }
 
@@ -170,35 +178,35 @@ int main()
 {
     try
     {
-        Game Pixufo;
+        Game Game_instance;
 
         for (;;)
         {
-            switch(Pixufo.get_state())
+            switch(Game_instance.get_state())
             {
             case level:
-                if (!Pixufo.level_loop())
+                if (!Game_instance.level_loop())
                 {
                     return -1;
                 }
                 break;
 
             case main_menu:
-                if (!Pixufo.main_menu_loop())
+                if (!Game_instance.main_menu_loop())
                 {
                     return -1;
                 }
                 break;
 
             case credits_menu:
-                if (!Pixufo.credits_menu_loop())
+                if (!Game_instance.credits_menu_loop())
                 {
                     return -1;
                 }
                 break;
 
             case pause_menu:
-                if (!Pixufo.pause_menu_loop())
+                if (!Game_instance.pause_menu_loop())
                 {
                     return -1;
                 }
