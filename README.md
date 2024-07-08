@@ -19,7 +19,7 @@ Make the game by learning C++ and random framework. In this case - SDL2.
 ## Requirements
 
 - at least HD display resolution,
-- 64-bit OS: Windows, GNU/Linux or macOS,
+- GNU/Linux or macOS,
 - [development-only] g++ (gcc with libstdc++) with version >= 4.8.1.
 
 ## Gameplay
@@ -28,7 +28,7 @@ Make the game by learning C++ and random framework. In this case - SDL2.
 
 ## Disclaimer
 
-Works well on Linux. On Windows some fonts are blended and Nebulas (enemies) position randomization doesn't work. Really don't know why. Crashes on macOS.
+Works well on GNU/Linux. On macOS a bare binary is build instead of [Application Bundles](https://developer.apple.com/library/archive/documentation/CoreFoundation/Conceptual/CFBundles/BundleTypes/BundleTypes.html) vel `.app`. On Windows some fonts are blended and Nebulas (enemies) position randomization doesn't work.
 
 ## Building a project
 
@@ -54,39 +54,12 @@ make &&
 ./PixUfo
 ```
 
-### Windows (example for cmd.exe - 64-bit only for now)
-
-1. Install the compilation environment choosing "TDM-GCC Recommended, C/C++".
-[TDM-GCC](http://tdm-gcc.tdragon.net/)
-
-2. Clone the repository with Git and enter it's directory.
-
-3. Download SDL2 development libraries.
-[SDL2-devel-2.0.*-mingw.tar.gz](https://github.com/libsdl-org/SDL/releases)
-[SDL2_ttf-devel-2.0.*-mingw.tar.gz](https://github.com/libsdl-org/SDL_ttf/releases)
-Extract the `SDL2-devel-2.0.*-mingw.tar.gz` to `SDL2-devel-2.*.*-mingw.tar` and then to a normal directory. Copy the `x86_64-w64-mingw32` and paste it to Your's TDM-GCC-64 installation directory.
-Asterisk sign is the placeholder for minor and patch version numbers. They can be vary between.
-
-4. Compile and run.
-
-``` shell
-cd [pixufo_directory]
-mingw32-make
-PixUfo.exe
-```
-
 ### Remove object files
 
 #### GNU/Linux and macOS
 
 ```shell
 make clean
-```
-
-#### Windows
-
-```shell
-mingw32-make clean
 ```
 
 ## Development
