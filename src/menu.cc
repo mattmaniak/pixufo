@@ -88,7 +88,7 @@ Main_menu::Main_menu(Graphics& graphics): Menu(graphics)
 		buttons.push_back(new Font(graphics, "Credits", MAIN_FONT_SZ));
 		buttons.push_back(new Font(graphics, "Quit", MAIN_FONT_SZ));
 	}
-	catch(std::runtime_error)
+	catch (std::runtime_error)
 	{
 		throw std::runtime_error("");
 	}
@@ -155,7 +155,7 @@ Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics)
 		buttons.push_back(new Font(graphics, "Continue", MAIN_FONT_SZ));
 		buttons.push_back(new Font(graphics, "Break", MAIN_FONT_SZ));
 	}
-	catch(std::runtime_error)
+	catch (std::runtime_error)
 	{
 		throw std::runtime_error("");
 	}
@@ -235,7 +235,7 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics)
 		}
 		has_text = true;
 	}
-	catch(std::runtime_error)
+	catch (std::runtime_error)
 	{
 		throw std::runtime_error("");
 	}

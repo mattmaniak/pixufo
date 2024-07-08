@@ -6,7 +6,7 @@ Scene::Scene(Graphics& graphics, std::string bg_name)
     {
         Bg = new Background(graphics, bg_name);
     }
-    catch(std::runtime_error)
+    catch (std::runtime_error)
     {
         throw std::runtime_error("");
     }

@@ -20,7 +20,7 @@ Game::Game(): _state(main_menu)
         _graphics = new Graphics;
         _level    = new Level(*_graphics, "background_level", 2);
     }
-    catch(std::runtime_error)
+    catch (std::runtime_error)
     {
         throw std::runtime_error("Unable to initialize Graphics and/or Level module.");
     }
@@ -57,8 +57,7 @@ bool Game::level_loop()
 
         if (_level->check_ufo_collision())
         {
-            /* Additional frame to fully cover both models when the collision
-            happens. */
+            // Additional frame to fully cover both models when the collision happens.
             if (!_level->render(*_graphics))
             {
                 return false;
@@ -68,8 +67,8 @@ bool Game::level_loop()
 
             return true;
         }
-
         _level->score_points += _graphics->delta_time_s * 1000.0;
+
         if (_level->score_points >= std::numeric_limits<unsigned int>::max())
         {
             error::show_box("You've reached the score limit.");
@@ -206,7 +205,7 @@ int main()
             }
         }
     }
-    catch(std::runtime_error)
+    catch (std::runtime_error)
     {
         return -1;
     }

@@ -8,8 +8,7 @@ name(passed_name), current_frame_idx(0), current_frame_start_time_ms_(passed_sin
         throw std::runtime_error("");
     }
 
-    /* As there is only the first texture size check, trying to load animation
-    with various texture sizes may brake it's rendering. */
+    // As there is only the first texture size check, trying to load animation with various texture sizes may brake it's rendering.
     if (SDL_QueryTexture(textures[current_frame_idx], nullptr, nullptr, &geometry.w, &geometry.h) != SDL2_SUCCESS)
     {
         throw error::Exception_box("Can't get the size of the texture: " + name);

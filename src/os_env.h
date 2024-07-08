@@ -1,8 +1,7 @@
 #ifndef OS_ENV_H_
 #define OS_ENV_H_
 
-/* As the C++ doesn't like concatinating char* + char* (#define is like that),
-macros are replaced with global variables but at least constants. */
+// As the C++ doesn't like concatinating char* + char* (#define is like that), macros are replaced with global variables but at least constants.
 
 #ifdef __APPLE__
 const std::string SEPARATOR = "/";

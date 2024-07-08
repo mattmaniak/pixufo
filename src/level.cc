@@ -218,7 +218,7 @@ void Level::_randomize_enemy_type(Graphics& graphics)
             _nebulas.push_back(new Entity(graphics, "nebula_umbrella", 50.0, 200));
         }
     }
-    catch(std::runtime_error)
+    catch (std::runtime_error)
     {
         throw std::runtime_error("");
     }
