@@ -91,4 +91,4 @@ mingw32-make clean
 
 ## Development
 
-Coding style is [Google C++ Style Guide](). Except of indentation which is four spaces instead of two spaces and brace style which is [Allman](https://en.wikipedia.org/wiki/Indentation_style#Allman_style) instead of One True Brace Style.
+Coding style is [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html). Except of indentation which is four spaces instead of two spaces and brace style which is [Allman](https://en.wikipedia.org/wiki/Indentation_style#Allman_style) instead of One True Brace Style.
