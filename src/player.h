@@ -14,44 +14,44 @@
 #define AXES_AMOUNT 2
 
 namespace player {
-    class Movement;
+  class Movement;
 }
 
 class Player: public Entity {
 public:
-    double horizontal_speed;
-    double vertical_speed;
-    double horizontal_step;
-    double vertical_step;
+  double horizontal_speed;
+  double vertical_speed;
+  double horizontal_step;
+  double vertical_step;
 
-    std::size_t                              directions_amount;
-    std::map<std::string, player::Movement*> Movements;
+  std::size_t                              directions_amount;
+  std::map<std::string, player::Movement*> Movements;
 
-    Player(Graphics&);
-    ~Player();
+  Player(Graphics&);
+  ~Player();
 
-    bool keyboard_steering(Graphics&, State&);
+  bool keyboard_steering(Graphics&, State&);
 };
 
 enum dir {
-    left,
-    right,
-    up,
-    down
+  left,
+  right,
+  up,
+  down
 };
 
 namespace player {
-    class Movement {
-    public:
-        dir          direction;
-        const double max_time_s;
-        double       keypress_time_s;
+  class Movement {
+  public:
+    dir          direction;
+    const double max_time_s;
+    double       keypress_time_s;
 
-        Movement();
+    Movement();
 
-        void count_ratio(Graphics&, dir);
-        void move(Graphics&, Player&);
-    };
+    void count_ratio(Graphics&, dir);
+    void move(Graphics&, Player&);
+  };
 }
 
 #endif // PLAYER_H_

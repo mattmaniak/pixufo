@@ -5,9 +5,9 @@
 #include <vector>
 
 #ifdef __APPLE__
-    #include <SDL.h>
+  #include <SDL.h>
 #else
-    #include <SDL2/SDL.h>
+  #include <SDL2/SDL.h>
 #endif
 
 #include "error.h"
@@ -26,43 +26,43 @@ class Player;
 
 class Menu: public Scene {
 public:
-    std::size_t                    selected_button_idx;
-    bool                           selection_arrow_focused;
-    std::vector<Font*>             buttons;
-    std::map<std::string, Sprite*> Sprites;
-    std::vector<Font*>             Text_lines;
-    bool                           has_text;
+  std::size_t                    selected_button_idx;
+  bool                           selection_arrow_focused;
+  std::vector<Font*>             buttons;
+  std::map<std::string, Sprite*> Sprites;
+  std::vector<Font*>             Text_lines;
+  bool                           has_text;
 
-    Menu(Graphics&);
-    ~Menu();
+  Menu(Graphics&);
+  ~Menu();
 
-    bool         render(Graphics&);
-    virtual bool keyboard_steering(State&) = 0;
+  bool         render(Graphics&);
+  virtual bool keyboard_steering(State&) = 0;
 };
 
 
 class Main_menu: public Menu {
 public:
-    Main_menu(Graphics&);
-    ~Main_menu();
+  Main_menu(Graphics&);
+  ~Main_menu();
 
-    bool keyboard_steering(State&);
+  bool keyboard_steering(State&);
 };
 
 class Pause_menu: public Menu {
 public:
-    Pause_menu(Graphics&);
-    ~Pause_menu();
+  Pause_menu(Graphics&);
+  ~Pause_menu();
 
-    bool keyboard_steering(State&);
+  bool keyboard_steering(State&);
 };
 
 class Credits_menu: public Menu {
 public:
-    Credits_menu(Graphics&);
-    ~Credits_menu();
+  Credits_menu(Graphics&);
+  ~Credits_menu();
 
-    bool keyboard_steering(State&);
+  bool keyboard_steering(State&);
 };
 
 #endif // MENU_H_

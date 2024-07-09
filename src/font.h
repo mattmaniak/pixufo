@@ -5,9 +5,9 @@
 #include <string>
 
 #ifdef __APPLE__
-    #include <SDL.h>
+  #include <SDL.h>
 #else
-    #include <SDL2/SDL.h>
+  #include <SDL2/SDL.h>
 #endif
 #include <SDL_ttf.h>
 
@@ -19,22 +19,22 @@
 
 class Font {
 public:
-    const unsigned int size;
-    double             pos_x;
-    double             pos_y;
-    SDL_Rect           geometry; // Textures's position and size.
+  const unsigned int size;
+  double             pos_x;
+  double             pos_y;
+  SDL_Rect           geometry; // Textures's position and size.
 
-    Font(Graphics&, std::string, unsigned int);
-    ~Font();
+  Font(Graphics&, std::string, unsigned int);
+  ~Font();
 
-    bool render(Graphics&);
+  bool render(Graphics&);
 
 private:
-    const std::string  _name;
-    TTF_Font*          _font;
-    const std::string  _text;
-    SDL_Color          _color;
-    SDL_Texture*       _texture;
+  const std::string  _name;
+  TTF_Font*          _font;
+  const std::string  _text;
+  SDL_Color          _color;
+  SDL_Texture*       _texture;
 };
 
 #endif // FONT_H_

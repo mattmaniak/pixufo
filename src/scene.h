@@ -6,14 +6,14 @@
 
 class Scene {
 public:
-    Background*  Bg;
+  Background*  Bg;
 
-    Scene(Graphics&, std::string);
-    ~Scene();
+  Scene(Graphics&, std::string);
+  ~Scene();
 
 protected:
-    unsigned int _width;
-    unsigned int _height;
+  unsigned int _width;
+  unsigned int _height;
 };
 
 #endif // SCENE_H_

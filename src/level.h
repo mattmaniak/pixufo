@@ -18,28 +18,28 @@
 
 class Level: public Scene {
 public:
-    unsigned int score_points;
-    Player*      Ufo;
+  unsigned int score_points;
+  Player*      Ufo;
 
-    Level(Graphics&, std::string, unsigned int);
-    ~Level();
+  Level(Graphics&, std::string, unsigned int);
+  ~Level();
 
-    void reset();
-    void adjust_enemy_border(Graphics&);
-    void check_ufo_pos();
-    bool check_ufo_collision(); // Checks the basic models' rects.
-    void check_enemies_pos(Graphics&);
-    bool render(Graphics&);
+  void reset();
+  void adjust_enemy_border(Graphics&);
+  void check_ufo_pos();
+  bool check_ufo_collision(); // Checks the basic models' rects.
+  void check_enemies_pos(Graphics&);
+  bool render(Graphics&);
 
 private:
-    std::vector<Entity*> _nebulas;
-    std::size_t          _nebulas_number;
+  std::vector<Entity*> _nebulas;
+  std::size_t          _nebulas_number;
 
-    void _adjust_enemies_borders(Graphics&, Entity&);
-    void _randomize_enemies_amount();
-    void _randomize_enemy_type(Graphics&);
-    bool _check_advanced_ufo_collision(std::size_t);
-    void _randomize_enemies_pos();
+  void _adjust_enemies_borders(Graphics&, Entity&);
+  void _randomize_enemies_amount();
+  void _randomize_enemy_type(Graphics&);
+  bool _check_advanced_ufo_collision(std::size_t);
+  void _randomize_enemies_pos();
 };
 
 #endif // LEVEL_H_
