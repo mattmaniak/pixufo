@@ -11,7 +11,7 @@
 #include "state.h"
 
 class Game {
-public:
+ public:
 
   Game();
   ~Game();
@@ -24,10 +24,10 @@ public:
   bool pause_menu_loop();
 
 
-private:
+ private:
   State     _state;
   Graphics* _graphics;
   Level*    _level;
 };
 
-#endif // MAIN_H_
+#endif  // MAIN_H_

@@ -5,13 +5,13 @@
 #include "sprite.h"
 
 class Background: public Sprite {
-public:
+ public:
   Background(Graphics&, std::string);
 
-  bool tile_and_render(Graphics&); // Of course infinite.
+  bool tile_and_render(Graphics&);  // Of course infinite.
 
 private:
   void _scroll_endlessly();
 };
 
-#endif // BACKGROUND_H_
+#endif  // BACKGROUND_H_

@@ -8,4 +8,4 @@ enum State {
   pause_menu
 };
 
-#endif // STATE_H_
+#endif  // STATE_H_

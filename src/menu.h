@@ -18,14 +18,14 @@
 
 #define PADDING (20.0 * graphics.pixelart_px_sz)
 
-#define MAIN_FONT_SZ 36 // Same as the meteor.bmp height.
+#define MAIN_FONT_SZ 36  // Same as the meteor.bmp height.
 #define TEXT_FONT_SZ 24
 
 class Level;
 class Player;
 
 class Menu: public Scene {
-public:
+ public:
   std::size_t                    selected_button_idx;
   bool                           selection_arrow_focused;
   std::vector<Font*>             buttons;
@@ -42,7 +42,7 @@ public:
 
 
 class Main_menu: public Menu {
-public:
+ public:
   Main_menu(Graphics&);
   ~Main_menu();
 
@@ -50,7 +50,7 @@ public:
 };
 
 class Pause_menu: public Menu {
-public:
+ public:
   Pause_menu(Graphics&);
   ~Pause_menu();
 
@@ -58,11 +58,11 @@ public:
 };
 
 class Credits_menu: public Menu {
-public:
+ public:
   Credits_menu(Graphics&);
   ~Credits_menu();
 
   bool keyboard_steering(State&);
 };
 
-#endif // MENU_H_
+#endif  // MENU_H_

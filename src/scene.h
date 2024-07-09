@@ -11,9 +11,9 @@ public:
   Scene(Graphics&, std::string);
   ~Scene();
 
-protected:
+ protected:
   unsigned int _width;
   unsigned int _height;
 };
 
-#endif // SCENE_H_
+#endif  // SCENE_H_

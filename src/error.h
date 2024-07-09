@@ -17,9 +17,9 @@ namespace error {
   void show_box(const std::string);
 
   class Exception_box: public std::runtime_error {
-  public:
+   public:
     explicit Exception_box(const std::string&);
   };
 }
 
-#endif // ERROR_H_
+#endif  // ERROR_H_

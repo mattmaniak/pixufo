@@ -14,11 +14,11 @@
 #define AXES_AMOUNT 2
 
 namespace player {
-  class Movement;
+class Movement;
 }
 
 class Player: public Entity {
-public:
+ public:
   double horizontal_speed;
   double vertical_speed;
   double horizontal_step;
@@ -41,17 +41,17 @@ enum dir {
 };
 
 namespace player {
-  class Movement {
-  public:
-    dir          direction;
-    const double max_time_s;
-    double       keypress_time_s;
+class Movement {
+ public:
+  dir          direction;
+  const double max_time_s;
+  double       keypress_time_s;
 
-    Movement();
+  Movement();
 
-    void count_ratio(Graphics&, dir);
-    void move(Graphics&, Player&);
-  };
-}
+  void count_ratio(Graphics&, dir);
+  void move(Graphics&, Player&);
+};
+}  // namespace player
 
-#endif // PLAYER_H_
+#endif  // PLAYER_H_

@@ -18,18 +18,18 @@
 #define FONTNAME "Blox2.ttf"
 
 class Font {
-public:
+ public:
   const unsigned int size;
   double             pos_x;
   double             pos_y;
-  SDL_Rect           geometry; // Textures's position and size.
+  SDL_Rect           geometry;  // Textures's position and size.
 
   Font(Graphics&, std::string, unsigned int);
   ~Font();
 
   bool render(Graphics&);
 
-private:
+ private:
   const std::string  _name;
   TTF_Font*          _font;
   const std::string  _text;
@@ -37,4 +37,4 @@ private:
   SDL_Texture*       _texture;
 };
 
-#endif // FONT_H_
+#endif  // FONT_H_

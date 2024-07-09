@@ -27,4 +27,4 @@ const std::string SEPARATOR = "/";
 #define HITBOXES_PATH RESOURCES_PATH + SEPARATOR + "hitboxes" + SEPARATOR
 #define FONT_PATH     RESOURCES_PATH + SEPARATOR + "font" + SEPARATOR
 
-#endif // OS_ENV_H_
+#endif  // OS_ENV_H_
