@@ -1,8 +1,7 @@
 #ifndef STATE_H_
 #define STATE_H_
 
-enum State
-{
+enum State {
     level,
     main_menu,
     credits_menu,

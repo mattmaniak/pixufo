@@ -16,8 +16,7 @@
 
 #define NEBULA_HIDDEN_TIMEOUT_MS 500 // Time when the enemy is hidden.
 
-class Level: public Scene
-{
+class Level: public Scene {
 public:
     unsigned int score_points;
     Player*      Ufo;

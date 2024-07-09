@@ -4,8 +4,7 @@
 #include "background.h"
 #include "graphics.h"
 
-class Scene
-{
+class Scene {
 public:
     Background*  Bg;
 

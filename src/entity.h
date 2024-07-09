@@ -4,8 +4,7 @@
 #include <random>
 #include "sprite.h"
 
-class Entity: public Sprite // Just sprite but more physical - with hitbox.
-{
+class Entity: public Sprite { // Just sprite but more physical - with hitbox.
 public:
     int min_x;
     int max_x;

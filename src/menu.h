@@ -24,8 +24,7 @@
 class Level;
 class Player;
 
-class Menu: public Scene
-{
+class Menu: public Scene {
 public:
     std::size_t                    selected_button_idx;
     bool                           selection_arrow_focused;
@@ -42,8 +41,7 @@ public:
 };
 
 
-class Main_menu: public Menu
-{
+class Main_menu: public Menu {
 public:
     Main_menu(Graphics&);
     ~Main_menu();
@@ -51,8 +49,7 @@ public:
     bool keyboard_steering(State&);
 };
 
-class Pause_menu: public Menu
-{
+class Pause_menu: public Menu {
 public:
     Pause_menu(Graphics&);
     ~Pause_menu();
@@ -60,8 +57,7 @@ public:
     bool keyboard_steering(State&);
 };
 
-class Credits_menu: public Menu
-{
+class Credits_menu: public Menu {
 public:
     Credits_menu(Graphics&);
     ~Credits_menu();

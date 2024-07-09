@@ -13,13 +13,11 @@
 
 #define AXES_AMOUNT 2
 
-namespace player
-{
+namespace player {
     class Movement;
 }
 
-class Player: public Entity
-{
+class Player: public Entity {
 public:
     double horizontal_speed;
     double vertical_speed;
@@ -33,21 +31,17 @@ public:
     ~Player();
 
     bool keyboard_steering(Graphics&, State&);
-
 };
 
-enum dir
-{
+enum dir {
     left,
     right,
     up,
     down
 };
 
-namespace player
-{
-    class Movement
-    {
+namespace player {
+    class Movement {
     public:
         dir          direction;
         const double max_time_s;

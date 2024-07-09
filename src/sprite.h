@@ -20,8 +20,7 @@
 
 #define FRAMES_AMOUNT 6
 
-class Sprite
-{
+class Sprite {
 public:
     const std::string name;
 

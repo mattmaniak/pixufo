@@ -4,8 +4,7 @@
 #include <limits>
 #include "sprite.h"
 
-class Background: public Sprite
-{
+class Background: public Sprite {
 public:
     Background(Graphics&, std::string);
 

@@ -10,8 +10,7 @@
 #include "player.h"
 #include "state.h"
 
-class Game
-{
+class Game {
 public:
 
     Game();

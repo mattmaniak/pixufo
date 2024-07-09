@@ -17,8 +17,7 @@
 
 #define FONTNAME "Blox2.ttf"
 
-class Font
-{
+class Font {
 public:
     const unsigned int size;
     double             pos_x;

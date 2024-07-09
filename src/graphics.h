@@ -26,8 +26,7 @@
 
 #define IMAGE_EXTENSION ".bmp"
 
-class Graphics
-{
+class Graphics {
 public:
     double delta_time_s; // Time to handle and render the single frame.
 
