@@ -1,11 +1,13 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
+#include <string>
+
 #include "./background.h"
 #include "./graphics.h"
 
 class Scene {
-public:
+ public:
   Background*  Bg;
 
   Scene(Graphics&, std::string);

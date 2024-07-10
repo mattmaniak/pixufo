@@ -1,8 +1,7 @@
 #include "./sprite.h"
 
 Sprite::Sprite(Graphics& graphics, std::string passed_name, const Uint32 passed_single_frame_time_ms):
-name(passed_name), current_frame_idx(0), current_frame_start_time_ms_(passed_single_frame_time_ms)
-{
+name(passed_name), current_frame_idx(0), current_frame_start_time_ms_(passed_single_frame_time_ms) {
   if (!load_textures_(graphics)) {
     throw std::runtime_error("");
   }
@@ -21,8 +20,7 @@ name(passed_name), current_frame_idx(0), current_frame_start_time_ms_(passed_sin
 Sprite::~Sprite() {
   if (current_frame_start_time_ms_ == 0) {
     SDL_DestroyTexture(textures[current_frame_start_time_ms_]);
-  }
-  else {
+  } else {
     for (std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++) {
       SDL_DestroyTexture(textures[idx]);
     }
@@ -65,7 +63,7 @@ bool Sprite::load_textures_(Graphics& graphics) {
   SDL_Surface* Image;
   std::string  path;
 
-  if (current_frame_start_time_ms_ == 0) { // No animation.
+  if (current_frame_start_time_ms_ == 0) {  // No animation.
     path = TEXTURES_PATH + name + IMAGE_EXTENSION;
 
     Image = SDL_LoadBMP(path.c_str());
@@ -79,7 +77,7 @@ bool Sprite::load_textures_(Graphics& graphics) {
       return false;
     }
     SDL_FreeSurface(Image);
-  } else { // Dir with animations.
+  } else {  // Dir with animations.
     for (std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++) {
       path = TEXTURES_PATH + name + SEPARATOR + std::to_string(idx) + IMAGE_EXTENSION;
 

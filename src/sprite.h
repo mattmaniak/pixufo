@@ -4,9 +4,10 @@
 #include <array>
 #include <cstdio>
 #include <iostream>
-#include <string>
-#include <vector>
 #include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
 #ifdef __APPLE__
   #include <SDL.h>

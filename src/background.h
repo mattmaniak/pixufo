@@ -3,6 +3,7 @@
 
 #include <limits>
 #include <string>
+
 #include "./sprite.h"
 
 class Background: public Sprite {
@@ -11,7 +12,7 @@ class Background: public Sprite {
 
   bool tile_and_render(Graphics&);  // Of course infinite.
 
-private:
+ private:
   void _scroll_endlessly();
 };
 

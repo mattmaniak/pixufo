@@ -31,8 +31,7 @@ Graphics::Graphics(): delta_time_s(0.0), renderer(nullptr),
   }
 }
 
-Graphics::~Graphics()
-{
+Graphics::~Graphics() {
   if (renderer_initialized) {
     SDL_DestroyRenderer(renderer);
     renderer_initialized = false;
@@ -102,8 +101,7 @@ bool Graphics::set_up_new_frame() {
   return true;
 }
 
-bool Graphics::count_fps()
-{
+bool Graphics::count_fps() {
   fps_++;
 
   if (fps_ >= std::numeric_limits<Uint32>::max()) {

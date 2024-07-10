@@ -52,7 +52,7 @@ bool Menu::render(Graphics& graphics) {
     }
   }
   if (has_text) {
-    for (auto& Line: Text_lines) {
+    for (auto& Line : Text_lines) {
       if (!Line->render(graphics)) {
         return false;
       }
@@ -74,7 +74,7 @@ Main_menu::Main_menu(Graphics& graphics): Menu(graphics) {
 }
 
 Main_menu::~Main_menu() {
-  for (auto& Button: buttons) {
+  for (auto& Button : buttons) {
     delete Button;
   }
 }
@@ -83,12 +83,12 @@ bool Main_menu::keyboard_steering(State& state) {
   SDL_Event Event;
   SDL_PollEvent(&Event);
 
-  switch(Event.type) {
+  switch (Event.type) {
   case SDL_QUIT:
     return false;
 
   case SDL_KEYDOWN:
-    switch(Event.key.keysym.sym) {
+    switch (Event.key.keysym.sym) {
     case SDLK_UP:
       if (selected_button_idx > 0) {
         selected_button_idx--;
@@ -102,7 +102,7 @@ bool Main_menu::keyboard_steering(State& state) {
       break;
 
     case SDLK_RETURN:
-      switch(selected_button_idx) {
+      switch (selected_button_idx) {
       case 0:
         state = level;
         break;
@@ -129,7 +129,7 @@ Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics) {
 }
 
 Pause_menu::~Pause_menu() {
-  for (auto& Button: buttons) {
+  for (auto& Button : buttons) {
     delete Button;
   }
 }
@@ -138,11 +138,11 @@ bool Pause_menu::keyboard_steering(State& state) {
   SDL_Event Event;
   SDL_PollEvent(&Event);
 
-  switch(Event.type) {
+  switch (Event.type) {
   case SDL_QUIT:
     return false;
   }
-  switch(Event.key.keysym.sym) {
+  switch (Event.key.keysym.sym) {
   case SDLK_UP:
     if (selected_button_idx > 0) {
       selected_button_idx--;
@@ -156,7 +156,7 @@ bool Pause_menu::keyboard_steering(State& state) {
     break;
 
     case SDLK_RETURN:
-    switch(selected_button_idx) {
+    switch (selected_button_idx) {
     case 0:
       state = level;
       break;
@@ -198,10 +198,10 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
 }
 
 Credits_menu::~Credits_menu() {
-  for (auto& Button: buttons) {
+  for (auto& Button : buttons) {
     delete Button;
   }
-  for (auto& Line: Text_lines) {
+  for (auto& Line : Text_lines) {
     delete Line;
   }
   buttons.clear();
@@ -212,12 +212,12 @@ bool Credits_menu::keyboard_steering(State& state) {
   SDL_Event Event;
   SDL_PollEvent(&Event);
 
-  switch(Event.type) {
+  switch (Event.type) {
   case SDL_QUIT:
     return false;
   }
 
-  switch(Event.key.keysym.sym) {
+  switch (Event.key.keysym.sym) {
   case SDLK_UP:
   case SDLK_DOWN:
     selected_button_idx     = 0;
@@ -225,7 +225,7 @@ bool Credits_menu::keyboard_steering(State& state) {
     break;
 
   case SDLK_RETURN:
-    switch(selected_button_idx) {
+    switch (selected_button_idx) {
     case 0:
       state = main_menu;
     }

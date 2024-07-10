@@ -2,6 +2,7 @@
 #define MENU_H_
 
 #include <map>
+#include <string>
 #include <vector>
 
 #ifdef __APPLE__

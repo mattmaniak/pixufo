@@ -2,9 +2,8 @@
 
 Entity::Entity(Graphics& graphics, std::string name, const double passed_speed, const Uint32 passed_single_frame_time_ms):
 Sprite(graphics, name, passed_single_frame_time_ms), max_speed(passed_speed) {
-  if ( !load_hitbox(graphics)) {
+  if (!load_hitbox(graphics)) {
     throw std::runtime_error("");
-
   }
   step = 0.0;
   hidden_timeout_ms = 0;
@@ -36,11 +35,11 @@ bool Entity::load_hitbox(Graphics& graphics) {
     hitbox_parts[rects_amount].x = hitbox_parts[rects_amount].x * graphics.pixelart_px_sz;
     hitbox_parts[rects_amount].y = hitbox_parts[rects_amount].y * graphics.pixelart_px_sz;
 
-    if (((hitbox_parts[rects_amount].x   == 0) // Empty file scenario.
+    if (((hitbox_parts[rects_amount].x   == 0)  // Empty file scenario.
       && (hitbox_parts[rects_amount].y == 0)
       && (hitbox_parts[rects_amount].w == 0)
       && (hitbox_parts[rects_amount].h == 0))
-      || (hitbox_parts[rects_amount].x  < 0) // Wrong position or/and size.
+      || (hitbox_parts[rects_amount].x  < 0)  // Wrong position or/and size.
       || (hitbox_parts[rects_amount].y  < 0)
       || (hitbox_parts[rects_amount].w  < 1)
       || (hitbox_parts[rects_amount].h  < 1)) {
@@ -76,7 +75,6 @@ void Entity::randomize_initial_pos() {
 }
 
 bool Entity::render(Graphics& graphics) {
-
 #ifdef DEBUG
   SDL_Rect hbox_part;
 #endif

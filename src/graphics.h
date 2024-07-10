@@ -38,8 +38,8 @@ class Graphics {
   Graphics();
   ~Graphics();
 
-  bool set_up_new_frame(); // Prepare the window to rendering.
-  bool count_fps();        // End the frame and count frames.
+  bool set_up_new_frame();  // Prepare the window to rendering.
+  bool count_fps();         // End the frame and count frames.
 
  private:
   bool renderer_initialized;

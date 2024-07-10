@@ -14,7 +14,7 @@ bool Background::tile_and_render(Graphics& graphics) {
   }
   _scroll_endlessly();
 
-  for (unsigned int y = 0; y <= tiles_y; y++) { // Tiling.
+  for (unsigned int y = 0; y <= tiles_y; y++) {  // Tiling.
     for (unsigned int x = 0; x <= tiles_x; x++) {
       geometry.x = pos_x + (x * geometry.w);
       geometry.y = pos_y + (y * geometry.h);
@@ -29,15 +29,15 @@ bool Background::tile_and_render(Graphics& graphics) {
 }
 
 void Background::_scroll_endlessly() {
-  if (pos_x > 0.0) { // Background shifted right.
-    pos_x -= geometry.w; // Move the background one tile left.
-  } else if (pos_x < -geometry.w) { // Background shifted left.
-    pos_x += geometry.w; // Move the background one tile right.
+  if (pos_x > 0.0) {  // Background shifted right.
+    pos_x -= geometry.w;  // Move the background one tile left.
+  } else if (pos_x < -geometry.w) {  // Background shifted left.
+    pos_x += geometry.w;  // Move the background one tile right.
   }
 
-  if (pos_y > 0.0) { // Background shifted down.
-    pos_y -= geometry.h; // Move the background one tile up.
-  } else if (pos_y < -geometry.h) { // Background shifted up.
-    pos_y += geometry.h; // Move the background one tile down.
+  if (pos_y > 0.0) {  // Background shifted down.
+    pos_y -= geometry.h;  // Move the background one tile up.
+  } else if (pos_y < -geometry.h) {  // Background shifted up.
+    pos_y += geometry.h;  // Move the background one tile down.
   }
 }
