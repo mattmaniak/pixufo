@@ -8,7 +8,8 @@ bool Background::tile_and_render(Graphics& graphics) {
   unsigned int tiles_x = (graphics.Display.w / geometry.w) + 1;
   unsigned int tiles_y = (graphics.Display.h / geometry.h) + 1;
 
-  if ((tiles_x >= std::numeric_limits<unsigned int>::max()) || (tiles_y >= std::numeric_limits<unsigned int>::max())) {
+  if ((tiles_x >= std::numeric_limits<unsigned int>::max())
+      || (tiles_y >= std::numeric_limits<unsigned int>::max())) {
     error::show_box("Too many tiles in the background.");
     return false;
   }
@@ -20,7 +21,9 @@ bool Background::tile_and_render(Graphics& graphics) {
       geometry.y = pos_y + (y * geometry.h);
 
       if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr, &geometry) != SDL2_SUCCESS) {
-        error::show_box("Can't render the: " + name + " as the tile background.");
+        error::show_box("Can't render the: " + name
+                        + " as the tile background.");
+
         return false;
       }
     }

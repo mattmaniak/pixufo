@@ -1,10 +1,12 @@
 #include "./menu.h"
 #include "./level.h"
 
-Menu::Menu(Graphics& graphics): Scene(graphics, "background_primary_menu"), selected_button_idx(0) {
+Menu::Menu(Graphics& graphics):
+Scene(graphics, "background_primary_menu"), selected_button_idx(0) {
   try {
     Sprites.insert(std::make_pair("title", new Sprite(graphics, "title", 0)));
-    Sprites.insert(std::make_pair("selection_arrow", new Sprite(graphics, "meteor", 0)));
+    Sprites.insert(std::make_pair("selection_arrow",
+                                  new Sprite(graphics, "meteor", 0)));
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }
@@ -31,7 +33,9 @@ bool Menu::render(Graphics& graphics) {
 
   for (std::size_t idx = 0; idx < buttons.size(); idx++) {
     buttons[idx]->pos_x = PADDING;
-    buttons[idx]->pos_y = graphics.Display.h - (buttons[idx]->geometry.h * buttons.size()) + (idx * buttons[idx]->geometry.h) - PADDING;
+    buttons[idx]->pos_y =
+      graphics.Display.h - (buttons[idx]->geometry.h * buttons.size())
+      + (idx * buttons[idx]->geometry.h) - PADDING;
 
     buttons[idx]->geometry.x = buttons[idx]->pos_x;
     buttons[idx]->geometry.y = buttons[idx]->pos_y;
@@ -177,15 +181,19 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
     Text_lines.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
     Text_lines.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
     Text_lines.push_back(new Font(graphics, "graphics", TEXT_FONT_SZ));
-    Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak", TEXT_FONT_SZ));
+    Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
+                                  TEXT_FONT_SZ));
 
     // Center the lines.
     for (std::size_t idx = 0; idx < Text_lines.size(); idx++) {
-      Text_lines[idx]->pos_x = graphics.Display.w - PADDING - Text_lines[idx]->geometry.w;
+      Text_lines[idx]->pos_x =
+        graphics.Display.w - PADDING - Text_lines[idx]->geometry.w;
       Text_lines[idx]->pos_y = PADDING;
 
       if (idx > 0) {
-        Text_lines[idx]->pos_y = Text_lines[idx - 1]->pos_y + (Text_lines[idx - 1]->size * text_leading);
+        Text_lines[idx]->pos_y =
+          Text_lines[idx - 1]->pos_y
+          + (Text_lines[idx - 1]->size * text_leading);
       }
     }
     has_text = true;

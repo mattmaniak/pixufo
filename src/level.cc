@@ -1,7 +1,11 @@
 #include "./level.h"
 
-Level::Level(Graphics& graphics, std::string bg_name, unsigned int enemies_number):
-Scene(graphics, bg_name), _nebulas_number(enemies_number) {
+Level::Level(
+    Graphics& graphics,
+    std::string bg_name,
+    unsigned int enemies_number):
+Scene(graphics, bg_name),
+    _nebulas_number(enemies_number) {
   const double size_to_screen_width_ratio = 1.0;
 
   _width  = graphics.Display.w * size_to_screen_width_ratio;
@@ -20,7 +24,8 @@ Scene(graphics, bg_name), _nebulas_number(enemies_number) {
 
   _randomize_enemies_amount();
 
-  for (std::size_t idx = 0; idx < _nebulas_number; idx++) {  // Create all enemies.
+  // Create all enemies.
+  for (std::size_t idx = 0; idx < _nebulas_number; idx++) {
     try {
       _randomize_enemy_type(graphics);
     } catch (std::runtime_error) {
@@ -186,20 +191,26 @@ bool Level::_check_advanced_ufo_collision(std::size_t en_idx) {
   SDL_Rect Nebula_hbox_part;
 
   // Check the Player's hitbox part by _nebulas' hitbox part.
-  for (std::size_t pl_hb_idx = 0; pl_hb_idx < Ufo->hitbox_parts.size(); pl_hb_idx++) {
+  for (std::size_t pl_hb_idx = 0; pl_hb_idx < Ufo->hitbox_parts.size();
+      pl_hb_idx++) {
     // Position the Player's hitbox part.
     Player_hbox_part.w = Ufo->hitbox_parts[pl_hb_idx].w;
     Player_hbox_part.h = Ufo->hitbox_parts[pl_hb_idx].h;
     Player_hbox_part.x = Ufo->pos_x + (Ufo->hitbox_parts[pl_hb_idx].x);
     Player_hbox_part.y = Ufo->pos_y + (Ufo->hitbox_parts[pl_hb_idx].y);
 
-    for (std::size_t en_hb_idx = 0; en_hb_idx < _nebulas[en_idx]->hitbox_parts.size(); en_hb_idx++) {
+    for (std::size_t en_hb_idx = 0;
+         en_hb_idx < _nebulas[en_idx]->hitbox_parts.size(); en_hb_idx++) {
       // Position the Nebula's hitbox part.
       Nebula_hbox_part.w = _nebulas[en_idx]->hitbox_parts[en_hb_idx].w;
       Nebula_hbox_part.h = _nebulas[en_idx]->hitbox_parts[en_hb_idx].h;
 
-      Nebula_hbox_part.x = _nebulas[en_idx]->pos_x + (_nebulas[en_idx]->hitbox_parts[en_hb_idx].x);
-      Nebula_hbox_part.y = _nebulas[en_idx]->pos_y + (_nebulas[en_idx]->hitbox_parts[en_hb_idx].y);
+      Nebula_hbox_part.x =
+        _nebulas[en_idx]->pos_x
+        + (_nebulas[en_idx]->hitbox_parts[en_hb_idx].x);
+      Nebula_hbox_part.y =
+        _nebulas[en_idx]->pos_y
+        + (_nebulas[en_idx]->hitbox_parts[en_hb_idx].y);
 
       if (SDL_HasIntersection(&Player_hbox_part, &Nebula_hbox_part)) {
         return true;  // Collision.
@@ -211,7 +222,8 @@ bool Level::_check_advanced_ufo_collision(std::size_t en_idx) {
 
 void Level::_randomize_enemies_pos() {  // Causes infinite loop...
   for (std::size_t idx = 0; idx < _nebulas.size() - 1; idx++) {
-    while ((_nebulas[idx]->geometry.x == _nebulas[idx + 1]->geometry.x) || (_nebulas[idx]->geometry.y == _nebulas[idx + 1]->geometry.y)) {
+    while ((_nebulas[idx]->geometry.x == _nebulas[idx + 1]->geometry.x)
+           || (_nebulas[idx]->geometry.y == _nebulas[idx + 1]->geometry.y)) {
       _nebulas[idx]->randomize_initial_pos();
     }
   }

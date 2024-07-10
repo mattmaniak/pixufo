@@ -88,19 +88,23 @@ void player::Movement::count_ratio(Graphics& graphics, dir passed_direction) {
 }
 
 void player::Movement::move(Graphics& graphics, Player& Ufo) {
-  double vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0) + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
+  double vector_length =
+    std::sqrt(std::pow(Ufo.horizontal_speed, 2.0)
+    + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
 
   switch (direction) {
   case left:
   case right:
     Ufo.horizontal_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
-    Ufo.horizontal_step  = Ufo.horizontal_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
+    Ufo.horizontal_step  =
+      Ufo.horizontal_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
     break;
 
   case up:
   case down:
     Ufo.vertical_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
-    Ufo.vertical_step  = Ufo.vertical_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
+    Ufo.vertical_step  =
+      Ufo.vertical_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
   }
 
   // Prevents diagonal speed-ups.

@@ -1,7 +1,14 @@
 #include "./entity.h"
 
-Entity::Entity(Graphics& graphics, std::string name, const double passed_speed, const Uint32 passed_single_frame_time_ms):
-Sprite(graphics, name, passed_single_frame_time_ms), max_speed(passed_speed) {
+Entity::Entity(
+    Graphics& graphics,
+    std::string name,
+    const double passed_speed,
+    const Uint32 passed_single_frame_time_ms):
+Sprite(graphics,
+    name,
+    passed_single_frame_time_ms),
+    max_speed(passed_speed) {
   if (!load_hitbox(graphics)) {
     throw std::runtime_error("");
   }
@@ -29,20 +36,24 @@ bool Entity::load_hitbox(Graphics& graphics) {
           &hitbox_parts[rects_amount].w,
           &hitbox_parts[rects_amount].h);
 
-    hitbox_parts[rects_amount].w = hitbox_parts[rects_amount].w * graphics.pixelart_px_sz;
-    hitbox_parts[rects_amount].h = hitbox_parts[rects_amount].h * graphics.pixelart_px_sz;
+    hitbox_parts[rects_amount].w =
+      hitbox_parts[rects_amount].w * graphics.pixelart_px_sz;
+    hitbox_parts[rects_amount].h =
+      hitbox_parts[rects_amount].h * graphics.pixelart_px_sz;
 
-    hitbox_parts[rects_amount].x = hitbox_parts[rects_amount].x * graphics.pixelart_px_sz;
-    hitbox_parts[rects_amount].y = hitbox_parts[rects_amount].y * graphics.pixelart_px_sz;
+    hitbox_parts[rects_amount].x =
+      hitbox_parts[rects_amount].x * graphics.pixelart_px_sz;
+    hitbox_parts[rects_amount].y =
+      hitbox_parts[rects_amount].y * graphics.pixelart_px_sz;
 
-    if (((hitbox_parts[rects_amount].x   == 0)  // Empty file scenario.
-      && (hitbox_parts[rects_amount].y == 0)
-      && (hitbox_parts[rects_amount].w == 0)
-      && (hitbox_parts[rects_amount].h == 0))
-      || (hitbox_parts[rects_amount].x  < 0)  // Wrong position or/and size.
-      || (hitbox_parts[rects_amount].y  < 0)
-      || (hitbox_parts[rects_amount].w  < 1)
-      || (hitbox_parts[rects_amount].h  < 1)) {
+    if (((hitbox_parts[rects_amount].x    == 0)  // Empty file scenario.
+         && (hitbox_parts[rects_amount].y == 0)
+         && (hitbox_parts[rects_amount].w == 0)
+         && (hitbox_parts[rects_amount].h == 0))
+        || (hitbox_parts[rects_amount].x  < 0)   // Wrong position or/and size.
+        || (hitbox_parts[rects_amount].y  < 0)
+        || (hitbox_parts[rects_amount].w  < 1)
+        || (hitbox_parts[rects_amount].h  < 1)) {
       error::show_box("Wrong hitbox for the: " + name);
       return false;
     }
