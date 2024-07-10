@@ -20,7 +20,8 @@ bool Background::tile_and_render(Graphics& graphics) {
       geometry.x = pos_x + (x * geometry.w);
       geometry.y = pos_y + (y * geometry.h);
 
-      if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr, &geometry) != SDL2_SUCCESS) {
+      if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx],
+                         nullptr, &geometry) != SDL2_SUCCESS) {
         error::show_box("Can't render the: " + name
                         + " as the tile background.");
 

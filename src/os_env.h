@@ -21,13 +21,13 @@ const char SEPARATOR[] = "\\";
 
 #define RESOURCES_PATH "res"
 
-#define TEXTURES_PATH RESOURCES_PATH + std::string (SEPARATOR) + "textures" \
-        + std::string (SEPARATOR)
+#define TEXTURES_PATH RESOURCES_PATH + std::string(SEPARATOR) + "textures" \
+        + std::string(SEPARATOR)
 
-#define HITBOXES_PATH RESOURCES_PATH + std::string (SEPARATOR) + "hitboxes" \
-        + std::string (SEPARATOR)
+#define HITBOXES_PATH RESOURCES_PATH + std::string(SEPARATOR) + "hitboxes" \
+        + std::string(SEPARATOR)
 
-#define FONT_PATH RESOURCES_PATH + std::string (SEPARATOR) + "font" \
-        + std::string (SEPARATOR)
+#define FONT_PATH RESOURCES_PATH + std::string(SEPARATOR) + "font" \
+        + std::string(SEPARATOR)
 
 #endif  // OS_ENV_H_

@@ -1,16 +1,21 @@
 #include "./graphics.h"
 
-Graphics::Graphics(): delta_time_s(0.0), renderer(nullptr),
-            renderer_initialized(false),
-            window_initialized(false), Window_(nullptr),
-            frame_elapsed_time_ms_(0.0), fps_(0) {
+Graphics::Graphics():
+    delta_time_s(0.0),
+    renderer(nullptr),
+    renderer_initialized(false),
+    window_initialized(false),
+    Window_(nullptr),
+    frame_elapsed_time_ms_(0.0),
+    fps_(0) {
   const int default_driver = -1;
 
   if (!init_window_()) {
     throw std::runtime_error("");
   }
 
-  renderer = SDL_CreateRenderer(Window_, default_driver, SDL_RENDERER_ACCELERATED);
+  renderer = SDL_CreateRenderer(Window_, default_driver,
+                                SDL_RENDERER_ACCELERATED);
 
   if (renderer == nullptr) {
     throw error::Exception_box("Can't create the renderer.");
@@ -18,7 +23,8 @@ Graphics::Graphics(): delta_time_s(0.0), renderer(nullptr),
   renderer_initialized = true;
 
 #ifdef DEBUG
-  if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) != SDL2_SUCCESS) {
+  if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
+      != SDL2_SUCCESS) {
     throw error::Exception_box("Can't enable the renderer blend mode.");
   }
 #endif
@@ -56,8 +62,11 @@ bool Graphics::init_window_() {
     return false;
   }
 
-  // This function is returns nullptr on macOS when BMP files are not pulled correctly (via LFS).
-  Window_ = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz, SDL_WINDOW_FULLSCREEN_DESKTOP);
+  /* This function is returns nullptr on macOS when BMP files are not pulled
+     correctly (via LFS). */
+  Window_ = SDL_CreateWindow("PixUfo", SDL_WINDOWPOS_UNDEFINED,
+                             SDL_WINDOWPOS_UNDEFINED, unused_sz, unused_sz,
+                             SDL_WINDOW_FULLSCREEN_DESKTOP);
 
   if (Window_ == nullptr) {
     error::show_box("Can't create the window.");

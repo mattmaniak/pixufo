@@ -49,7 +49,7 @@ bool Game::level_loop() {
     _level->check_ufo_pos();
 
     if (_level->check_ufo_collision()) {
-      // Additional frame to fully cover both models when the collision happens.
+      // Additional frame to fully cover both models during a collision.
       if (!_level->render(*_graphics)) {
         return false;
       }

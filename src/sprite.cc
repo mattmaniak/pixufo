@@ -11,8 +11,10 @@ Sprite::Sprite(
     throw std::runtime_error("");
   }
 
-  // As there is only the first texture size check, trying to load animation with various texture sizes may brake it's rendering.
-  if (SDL_QueryTexture(textures[current_frame_idx], nullptr, nullptr, &geometry.w, &geometry.h) != SDL2_SUCCESS) {
+  /* As there is only the first texture size check, trying to load animation
+     with various texture sizes may brake it's rendering. */
+  if (SDL_QueryTexture(textures[current_frame_idx], nullptr, nullptr,
+                       &geometry.w, &geometry.h) != SDL2_SUCCESS) {
     throw error::Exception_box("Can't get the size of the texture: " + name);
   }
   pos_x = 0.0;
@@ -57,7 +59,8 @@ bool Sprite::render(Graphics& graphics) {
   geometry.x = pos_x;
   geometry.y = pos_y;
 
-  if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr, &geometry) != SDL2_SUCCESS) {
+  if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr,
+                     &geometry) != SDL2_SUCCESS) {
     error::show_box("Can't render the: " + name);
     return false;
   }
@@ -85,7 +88,8 @@ bool Sprite::load_textures_(Graphics& graphics) {
     SDL_FreeSurface(Image);
   } else {  // Dir with animations.
     for (std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++) {
-      path = TEXTURES_PATH + name + SEPARATOR + std::to_string(idx) + IMAGE_EXTENSION;
+      path = TEXTURES_PATH + name + SEPARATOR + std::to_string(idx)
+             + IMAGE_EXTENSION;
 
       Image = SDL_LoadBMP(path.c_str());
       if (Image == nullptr) {

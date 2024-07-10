@@ -36,15 +36,17 @@ bool Entity::load_hitbox(Graphics& graphics) {
         &hitbox_parts[rects_amount].w,
         &hitbox_parts[rects_amount].h);
 
-    hitbox_parts[rects_amount].w =
-      hitbox_parts[rects_amount].w * graphics.pixelart_px_sz;
-    hitbox_parts[rects_amount].h =
-      hitbox_parts[rects_amount].h * graphics.pixelart_px_sz;
+    hitbox_parts[rects_amount].w = hitbox_parts[rects_amount].w
+                                   * graphics.pixelart_px_sz;
 
-    hitbox_parts[rects_amount].x =
-      hitbox_parts[rects_amount].x * graphics.pixelart_px_sz;
-    hitbox_parts[rects_amount].y =
-      hitbox_parts[rects_amount].y * graphics.pixelart_px_sz;
+    hitbox_parts[rects_amount].h = hitbox_parts[rects_amount].h
+                                   * graphics.pixelart_px_sz;
+
+    hitbox_parts[rects_amount].x = hitbox_parts[rects_amount].x
+                                   * graphics.pixelart_px_sz;
+
+    hitbox_parts[rects_amount].y = hitbox_parts[rects_amount].y
+                                   * graphics.pixelart_px_sz;
 
     if (((hitbox_parts[rects_amount].x    == 0)  // Empty file scenario.
          && (hitbox_parts[rects_amount].y == 0)
@@ -97,7 +99,8 @@ bool Entity::render(Graphics& graphics) {
 
   animate(graphics);
 
-  if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr, &geometry) != SDL2_SUCCESS) {
+  if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr,
+                     &geometry) != SDL2_SUCCESS) {
     error::show_box("Can't render the: " + name);
     return false;
   }
@@ -109,7 +112,8 @@ bool Entity::render(Graphics& graphics) {
     hbox_part.x = pos_x + hitbox_parts[idx].x;
     hbox_part.y = pos_y + hitbox_parts[idx].y;
 
-    if (SDL_SetRenderDrawColor(graphics.renderer, 0, 255, 0, 100) != SDL2_SUCCESS) {
+    if (SDL_SetRenderDrawColor(graphics.renderer, 0, 255, 0, 100)
+        != SDL2_SUCCESS) {
       error::show_box("Can't set color for: " + name + " hitbox.");
       return false;
     }
