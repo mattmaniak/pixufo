@@ -1,3 +1,5 @@
+// Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
+
 #ifndef PLAYER_H_
 #define PLAYER_H_
 

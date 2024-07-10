@@ -1,3 +1,5 @@
+// Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
+
 #ifndef OS_ENV_H_
 #define OS_ENV_H_
 

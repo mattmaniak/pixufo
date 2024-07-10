@@ -1,3 +1,5 @@
+// Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
+
 #ifndef ENTITY_H_
 #define ENTITY_H_
 

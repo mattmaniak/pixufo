@@ -1,3 +1,5 @@
+// Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
+
 #ifndef MENU_H_
 #define MENU_H_
 

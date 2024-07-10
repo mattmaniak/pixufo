@@ -1,3 +1,5 @@
+// Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
+
 #include "./background.h"
 
 Background::Background(Graphics& graphics, std::string name):
