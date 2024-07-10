@@ -3,18 +3,19 @@
 
 #include <string>
 
-// As the C++ doesn't like concatinating char* + char* (#define is like that), macros are replaced with global variables but at least constants.
+/* As the C++ doesn't like concatinating char* + char* (#define is like that),
+   macros are replaced with global variables but at least constants. */
 
 #ifdef __APPLE__
-const std::string SEPARATOR = "/";
+const char SEPARATOR[] = "/";
 
 #else
 #ifdef _WIN32
-const std::string SEPARATOR = "\\";
+const char SEPARATOR[] = "\\";
 
 #else
 #ifdef __linux__
-const std::string SEPARATOR = "/";
+const char SEPARATOR[] = "/";
 
 #else
 #error Supported platforms: GNU/Linux, Windows and macOS.
@@ -25,8 +26,13 @@ const std::string SEPARATOR = "/";
 
 #define RESOURCES_PATH "res"
 
-#define TEXTURES_PATH RESOURCES_PATH + SEPARATOR + "textures" + SEPARATOR
-#define HITBOXES_PATH RESOURCES_PATH + SEPARATOR + "hitboxes" + SEPARATOR
-#define FONT_PATH     RESOURCES_PATH + SEPARATOR + "font" + SEPARATOR
+#define TEXTURES_PATH RESOURCES_PATH + std::string (SEPARATOR) + "textures" \
+        + std::string (SEPARATOR)
+
+#define HITBOXES_PATH RESOURCES_PATH + std::string (SEPARATOR) + "hitboxes" \
+        + std::string (SEPARATOR)
+
+#define FONT_PATH RESOURCES_PATH + std::string (SEPARATOR) + "font" \
+        + std::string (SEPARATOR)
 
 #endif  // OS_ENV_H_

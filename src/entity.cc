@@ -31,10 +31,10 @@ bool Entity::load_hitbox(Graphics& graphics) {
     hitbox_parts.push_back({0, 0, 0, 0});
 
     std::fscanf(hitbox_parts_file, "(%d, %d) [%d, %d]\n",
-          &hitbox_parts[rects_amount].x,
-          &hitbox_parts[rects_amount].y,
-          &hitbox_parts[rects_amount].w,
-          &hitbox_parts[rects_amount].h);
+        &hitbox_parts[rects_amount].x,
+        &hitbox_parts[rects_amount].y,
+        &hitbox_parts[rects_amount].w,
+        &hitbox_parts[rects_amount].h);
 
     hitbox_parts[rects_amount].w =
       hitbox_parts[rects_amount].w * graphics.pixelart_px_sz;
