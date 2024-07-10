@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 The great refactor
 
+### Added
+
+- Exit/Quit [distinction](https://ux.stackexchange.com/questions/50893/do-we-exit-quit-or-close-an-application) for Windows/Unix-like systems.
+
 ### Changed
 
 - Codebase to match Google C++ Guide 100%-strictly.

@@ -71,7 +71,11 @@ Main_menu::Main_menu(Graphics& graphics): Menu(graphics) {
   try {
     buttons.push_back(new Font(graphics, "Play", MAIN_FONT_SZ));
     buttons.push_back(new Font(graphics, "Credits", MAIN_FONT_SZ));
+#ifdef _WIN32
+    buttons.push_back(new Font(graphics, "Exit", MAIN_FONT_SZ));
+#else
     buttons.push_back(new Font(graphics, "Quit", MAIN_FONT_SZ));
+#endif
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }
@@ -126,7 +130,11 @@ bool Main_menu::keyboard_steering(State& state) {
 Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics) {
   try {
     buttons.push_back(new Font(graphics, "Continue", MAIN_FONT_SZ));
-    buttons.push_back(new Font(graphics, "Break", MAIN_FONT_SZ));
+#ifdef _WIN32
+    buttons.push_back(new Font(graphics, "Exit to Main Menu", MAIN_FONT_SZ));
+#else
+    buttons.push_back(new Font(graphics, "Quit to Main Menu", MAIN_FONT_SZ));
+#endif
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }

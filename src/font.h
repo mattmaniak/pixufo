@@ -12,8 +12,8 @@
 #include <SDL_ttf.h>
 
 #include "./error.h"
-#include "./os_env.h"
 #include "./graphics.h"
+#include "./os_env.h"
 
 #define FONTNAME "Blox2.ttf"
 
