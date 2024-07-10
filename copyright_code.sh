@@ -1,7 +1,10 @@
 #! /bin/sh
 
-copyright_line="Copyright 2018-2019, 2024 mattmaniak, Jakub \"QooBooS\" Mieszczak"
+license_file="LICENSE.txt"
+copyright_line=$(sed '3q;d' ${license_file}) # Get third line.
 kernel_name=$(uname -s)
+
+echo "Copyright line from ${license_file} is\n${copyright_line}." 
 
 for code_file in src/*; do
     grep -q "$copyright_line" "$code_file"
