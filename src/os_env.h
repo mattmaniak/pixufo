@@ -6,7 +6,7 @@
 /* As the C++ doesn't like concatinating char* + char* (#define is like that),
    macros are replaced with global variables but at least constants. */
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 const char SEPARATOR[] = "/";
 
 #else
@@ -14,13 +14,8 @@ const char SEPARATOR[] = "/";
 const char SEPARATOR[] = "\\";
 
 #else
-#ifdef __linux__
-const char SEPARATOR[] = "/";
-
-#else
 #error Supported platforms: GNU/Linux, Windows and macOS.
 
-#endif
 #endif
 #endif
 
