@@ -34,7 +34,7 @@ class Menu: public Scene {
   std::vector<Font*>             Text_lines;
   bool                           has_text;
 
-  Menu(Graphics&);
+  explicit Menu(Graphics&);
   ~Menu();
 
   bool         render(Graphics&);
@@ -44,7 +44,7 @@ class Menu: public Scene {
 
 class Main_menu: public Menu {
  public:
-  Main_menu(Graphics&);
+  explicit Main_menu(Graphics&);
   ~Main_menu();
 
   bool keyboard_steering(State&);
@@ -52,7 +52,7 @@ class Main_menu: public Menu {
 
 class Pause_menu: public Menu {
  public:
-  Pause_menu(Graphics&);
+  explicit Pause_menu(Graphics&);
   ~Pause_menu();
 
   bool keyboard_steering(State&);
@@ -60,7 +60,7 @@ class Pause_menu: public Menu {
 
 class Credits_menu: public Menu {
  public:
-  Credits_menu(Graphics&);
+  explicit Credits_menu(Graphics&);
   ~Credits_menu();
 
   bool keyboard_steering(State&);

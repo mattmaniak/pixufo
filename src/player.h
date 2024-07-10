@@ -28,7 +28,7 @@ class Player: public Entity {
   std::size_t                              directions_amount;
   std::map<std::string, player::Movement*> Movements;
 
-  Player(Graphics&);
+  explicit Player(Graphics&);
   ~Player();
 
   bool keyboard_steering(Graphics&, State&);

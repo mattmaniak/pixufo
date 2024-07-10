@@ -1,6 +1,8 @@
 #ifndef OS_ENV_H_
 #define OS_ENV_H_
 
+#include <string>
+
 // As the C++ doesn't like concatinating char* + char* (#define is like that), macros are replaced with global variables but at least constants.
 
 #ifdef __APPLE__
