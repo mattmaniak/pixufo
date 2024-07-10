@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "./graphics.h"
 
 Graphics::Graphics(): delta_time_s(0.0), renderer(nullptr),
             renderer_initialized(false),

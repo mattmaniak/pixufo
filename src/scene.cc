@@ -1,4 +1,4 @@
-#include "scene.h"
+#include "./scene.h"
 
 Scene::Scene(Graphics& graphics, std::string bg_name) {
   try {

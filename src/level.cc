@@ -1,4 +1,4 @@
-#include "level.h"
+#include "./level.h"
 
 Level::Level(Graphics& graphics, std::string bg_name, unsigned int enemies_number):
 Scene(graphics, bg_name), _nebulas_number(enemies_number) {

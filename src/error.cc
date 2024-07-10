@@ -1,4 +1,4 @@
-#include "error.h"
+#include "./error.h"
 
 void error::show_box(const std::string message)
 {

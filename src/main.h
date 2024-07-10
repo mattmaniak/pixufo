@@ -1,14 +1,14 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "error.h"
-#include "font.h"
-#include "graphics.h"
-#include "sprite.h"
-#include "menu.h"
-#include "level.h"
-#include "player.h"
-#include "state.h"
+#include "./error.h"
+#include "./font.h"
+#include "./graphics.h"
+#include "./sprite.h"
+#include "./menu.h"
+#include "./level.h"
+#include "./player.h"
+#include "./state.h"
 
 class Game {
  public:

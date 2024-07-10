@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "./entity.h"
 
 Entity::Entity(Graphics& graphics, std::string name, const double passed_speed, const Uint32 passed_single_frame_time_ms):
 Sprite(graphics, name, passed_single_frame_time_ms), max_speed(passed_speed) {

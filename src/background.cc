@@ -1,4 +1,4 @@
-#include "background.h"
+#include "./background.h"
 
 Background::Background(Graphics& graphics, std::string name):
 Sprite(graphics, name, 0) {}

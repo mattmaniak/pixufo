@@ -2,7 +2,7 @@
 #define ENTITY_H_
 
 #include <random>
-#include "sprite.h"
+#include "./sprite.h"
 
 class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
  public:

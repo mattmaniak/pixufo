@@ -1,8 +1,8 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-#include "background.h"
-#include "graphics.h"
+#include "./background.h"
+#include "./graphics.h"
 
 class Scene {
 public:

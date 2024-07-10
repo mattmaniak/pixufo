@@ -2,7 +2,8 @@
 #define BACKGROUND_H_
 
 #include <limits>
-#include "sprite.h"
+#include <string>
+#include "./sprite.h"
 
 class Background: public Sprite {
  public:

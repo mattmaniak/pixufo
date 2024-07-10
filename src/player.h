@@ -6,10 +6,10 @@
 #include <map>
 #include <string>
 
-#include "entity.h"
-#include "graphics.h"
-#include "menu.h"
-#include "state.h"
+#include "./entity.h"
+#include "./graphics.h"
+#include "./menu.h"
+#include "./state.h"
 
 #define AXES_AMOUNT 2
 

@@ -1,4 +1,4 @@
-#include "sprite.h"
+#include "./sprite.h"
 
 Sprite::Sprite(Graphics& graphics, std::string passed_name, const Uint32 passed_single_frame_time_ms):
 name(passed_name), current_frame_idx(0), current_frame_start_time_ms_(passed_single_frame_time_ms)

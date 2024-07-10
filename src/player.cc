@@ -1,4 +1,4 @@
-#include "player.h"
+#include "./player.h"
 
 Player::Player(Graphics& graphics): Entity(graphics, "ufo", 110.0, 0) {
   horizontal_speed  = 0.0;
