@@ -6,6 +6,10 @@ kernel_name=$(uname -s)
 
 echo "Copyright line from ${license_file} is\n${copyright_line}." 
 
+if file "$license_file" | grep "CRLF"; then
+    copyright_line=$(echo $copyright_line | tr -d "\r")
+fi
+
 for code_file in src/*; do
     grep -q "$copyright_line" "$code_file"
 
