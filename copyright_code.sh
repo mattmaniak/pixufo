@@ -11,10 +11,22 @@ if file "$license_file" | grep "CRLF"; then
 fi
 
 for code_file in src/*; do
-    grep -q "$copyright_line" "$code_file"
+    if grep -q "$copyright_line" "$code_file"; then
+        echo "Copyright line is up-to-date in ${code_file}."
+    else
+        if grep -iq "copyright" "$code_file"; then
+            echo "Updating a copyright line in ${code_file}..."
 
-    if [ $? -ne 0 ]; then
-        # https://stackoverflow.com/questions/9533679/how-to-insert-a-text-at-the-beginning-of-a-file
+            case $kernel_name in
+                "Darwin")
+                    sed -i "" "1d;2d" "$code_file"
+                ;;
+                "Linux")
+                    sed -i "1d;2d" "$code_file"
+                ;;
+            esac
+        fi
+
         case $kernel_name in
             "Darwin")
                 sed -i "" "1s/^/\/\/ $copyright_line\n\n/" "$code_file"
@@ -24,8 +36,6 @@ for code_file in src/*; do
             ;;
         esac
 
-        echo "Added a copyright line to ${code_file}."
-    else
-        echo "Copyright line is up-to-date in ${code_file}."
+        echo "Added an up-to-date copyright line to ${code_file}."
     fi
 done
