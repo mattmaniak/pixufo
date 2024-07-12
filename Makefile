@@ -1,7 +1,7 @@
 TARGET =
 
 CC = g++
-CPPFLAGS = -std=c++11 -Wall -Wextra -pedantic
+CPPFLAGS = -std=c++20 -Wall -Wextra -pedantic
 IFLAGS =
 LDFLAGS = -lSDL2 -lSDL2_ttf
 ASAN_FLAGS =
