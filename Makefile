@@ -54,7 +54,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc $(SRC_DIR)/%.h
 	$(CC) -c -o $@ $< \
 	$(IFLAGS) \
 	$(CPPFLAGS) 
-
+	@echo ' '
 
 bundle_contents = PixUfo.app/Contents
 
