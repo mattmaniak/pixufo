@@ -21,13 +21,13 @@
 #include "./graphics.h"
 #include "./os_env.h"
 
-#define FRAMES_AMOUNT 6
+#define FRAMES_NUMBER 6
 
 class Sprite {
  public:
   const std::string name;
 
-  std::array<SDL_Texture*, FRAMES_AMOUNT> textures;
+  std::array<SDL_Texture*, FRAMES_NUMBER> textures;
   std::size_t                             current_frame_idx;
 
   SDL_Rect geometry;  // Textures's position and size.

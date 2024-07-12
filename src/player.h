@@ -14,7 +14,7 @@
 #include "./menu.h"
 #include "./state.h"
 
-#define AXES_AMOUNT 2
+#define AXES_NUMBER 2
 
 namespace player {
 class Movement;
@@ -27,7 +27,7 @@ class Player: public Entity {
   double horizontal_step;
   double vertical_step;
 
-  std::size_t                              directions_amount;
+  std::size_t                              directions_number;
   std::map<std::string, player::Movement*> Movements;
 
   explicit Player(Graphics&);

@@ -7,7 +7,7 @@ Player::Player(Graphics& graphics): Entity(graphics, "ufo", 110.0, 0) {
   vertical_speed    = 0.0;
   horizontal_step   = 0.0;
   vertical_step     = 0.0;
-  directions_amount = 0;
+  directions_number = 0;
 
   Movements.insert(std::make_pair("horizontal", new player::Movement));
   Movements.insert(std::make_pair("vertical",   new player::Movement));
@@ -27,7 +27,7 @@ bool Player::keyboard_steering(Graphics& graphics, State& state) {
   keys = SDL_GetKeyboardState(nullptr);
   SDL_PollEvent(&Event);
 
-  directions_amount = 0;
+  directions_number = 0;
 
   switch (Event.type) {
     case SDL_QUIT:
@@ -50,7 +50,7 @@ bool Player::keyboard_steering(Graphics& graphics, State& state) {
   }
 
   if ((horizontal_speed != 0.0f) && (vertical_speed != 0.0f)) {
-    directions_amount = 2;
+    directions_number = 2;
   }
   Movements["horizontal"]->move(graphics, *this);
   Movements["vertical"]->move(graphics, *this);
@@ -110,7 +110,7 @@ void player::Movement::move(Graphics& graphics, Player& Ufo) {
   }
 
   // Prevents diagonal speed-ups.
-  if ((Ufo.directions_amount == 2) && (vector_length > 1.0)) {
+  if ((Ufo.directions_number == 2) && (vector_length > 1.0)) {
     Ufo.horizontal_step /= vector_length;
     Ufo.vertical_step   /= vector_length;
   }

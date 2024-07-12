@@ -30,7 +30,7 @@ Sprite::~Sprite() {
   if (current_frame_start_time_ms_ == 0) {
     SDL_DestroyTexture(textures[current_frame_start_time_ms_]);
   } else {
-    for (std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++) {
+    for (std::size_t idx = 0; idx < FRAMES_NUMBER; idx++) {
       SDL_DestroyTexture(textures[idx]);
     }
   }
@@ -49,7 +49,7 @@ void Sprite::animate(Graphics& graphics) {
       current_frame_elapsed_time_ms_ = 0;
       current_frame_idx++;
     }
-    if (current_frame_idx >= FRAMES_AMOUNT) {
+    if (current_frame_idx >= FRAMES_NUMBER) {
       current_frame_idx = 0;
     }
   }
@@ -89,7 +89,7 @@ bool Sprite::load_textures_(Graphics& graphics) {
     }
     SDL_FreeSurface(Image);
   } else {  // Dir with animations.
-    for (std::size_t idx = 0; idx < FRAMES_AMOUNT; idx++) {
+    for (std::size_t idx = 0; idx < FRAMES_NUMBER; idx++) {
       path = TEXTURES_PATH + name + SEPARATOR + std::to_string(idx)
              + IMAGE_EXTENSION;
 

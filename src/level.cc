@@ -24,7 +24,7 @@ Scene(graphics, bg_name),
   Ufo->geometry.x = Ufo->pos_x = (_width - Ufo->geometry.w)  / 2;
   Ufo->geometry.y = Ufo->pos_y = (_height - Ufo->geometry.h) / 2;
 
-  _randomize_enemies_amount();
+  _randomize_enemies_number();
 
   // Create all enemies.
   for (std::size_t idx = 0; idx < _nebulas_number; idx++) {
@@ -141,12 +141,12 @@ void Level::_adjust_enemies_borders(Graphics& graphics, Entity& Entity) {
   Entity.max_y = _height - graphics.pixelart_px_sz;
 }
 
-void Level::_randomize_enemies_amount() {
+void Level::_randomize_enemies_number() {
   std::mt19937 prng;
   prng.seed(std::random_device()());
 
   std::uniform_int_distribution<std::mt19937::result_type>
-  distributor_enemies(MIN_NEBULAS_AMOUNT, MAX_NEBULAS_AMOUNT);
+  distributor_enemies(MIN_NEBULAS_NUMBER, MAX_NEBULAS_NUMBER);
 
   _nebulas_number = distributor_enemies(prng);
 }

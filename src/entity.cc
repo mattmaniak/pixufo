@@ -20,7 +20,7 @@ Sprite(graphics,
 
 bool Entity::load_hitbox(Graphics& graphics) {
   const std::string path_to_file = HITBOXES_PATH + name;
-  std::size_t       rects_amount = 0;
+  std::size_t       rects_number = 0;
 
   FILE* hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
 
@@ -33,40 +33,40 @@ bool Entity::load_hitbox(Graphics& graphics) {
     hitbox_parts.push_back({0, 0, 0, 0});
 
     std::fscanf(hitbox_parts_file, "(%d, %d) [%d, %d]\n",
-        &hitbox_parts[rects_amount].x,
-        &hitbox_parts[rects_amount].y,
-        &hitbox_parts[rects_amount].w,
-        &hitbox_parts[rects_amount].h);
+        &hitbox_parts[rects_number].x,
+        &hitbox_parts[rects_number].y,
+        &hitbox_parts[rects_number].w,
+        &hitbox_parts[rects_number].h);
 
-    hitbox_parts[rects_amount].w = hitbox_parts[rects_amount].w
+    hitbox_parts[rects_number].w = hitbox_parts[rects_number].w
                                    * graphics.pixelart_px_sz;
 
-    hitbox_parts[rects_amount].h = hitbox_parts[rects_amount].h
+    hitbox_parts[rects_number].h = hitbox_parts[rects_number].h
                                    * graphics.pixelart_px_sz;
 
-    hitbox_parts[rects_amount].x = hitbox_parts[rects_amount].x
+    hitbox_parts[rects_number].x = hitbox_parts[rects_number].x
                                    * graphics.pixelart_px_sz;
 
-    hitbox_parts[rects_amount].y = hitbox_parts[rects_amount].y
+    hitbox_parts[rects_number].y = hitbox_parts[rects_number].y
                                    * graphics.pixelart_px_sz;
 
-    if (((hitbox_parts[rects_amount].x    == 0)  // Empty file scenario.
-         && (hitbox_parts[rects_amount].y == 0)
-         && (hitbox_parts[rects_amount].w == 0)
-         && (hitbox_parts[rects_amount].h == 0))
-        || (hitbox_parts[rects_amount].x  < 0)   // Wrong position or/and size.
-        || (hitbox_parts[rects_amount].y  < 0)
-        || (hitbox_parts[rects_amount].w  < 1)
-        || (hitbox_parts[rects_amount].h  < 1)) {
+    if (((hitbox_parts[rects_number].x    == 0)  // Empty file scenario.
+         && (hitbox_parts[rects_number].y == 0)
+         && (hitbox_parts[rects_number].w == 0)
+         && (hitbox_parts[rects_number].h == 0))
+        || (hitbox_parts[rects_number].x  < 0)   // Wrong position or/and size.
+        || (hitbox_parts[rects_number].y  < 0)
+        || (hitbox_parts[rects_number].w  < 1)
+        || (hitbox_parts[rects_number].h  < 1)) {
       error::show_box("Wrong hitbox for the: " + name);
       return false;
     }
     if (std::feof(hitbox_parts_file)) {
       break;
     }
-    rects_amount++;
+    rects_number++;
 
-    if (rects_amount > static_cast<std::size_t>(geometry.w * geometry.h)) {
+    if (rects_number > static_cast<std::size_t>(geometry.w * geometry.h)) {
       error::show_box("Too many hitbox parts for: " + name);
       std::fclose(hitbox_parts_file);
 

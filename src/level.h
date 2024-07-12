@@ -13,8 +13,8 @@
 #include "./entity.h"
 #include "./player.h"
 
-#define MIN_NEBULAS_AMOUNT 15
-#define MAX_NEBULAS_AMOUNT 20
+#define MIN_NEBULAS_NUMBER 15
+#define MAX_NEBULAS_NUMBER 20
 
 #define NEBULA_HIDDEN_TIMEOUT_MS 500  // Time when the enemy is hidden.
 
@@ -38,7 +38,7 @@ class Level: public Scene {
   std::size_t          _nebulas_number;
 
   void _adjust_enemies_borders(Graphics&, Entity&);
-  void _randomize_enemies_amount();
+  void _randomize_enemies_number();
   void _randomize_enemy_type(Graphics&);
   bool _check_advanced_ufo_collision(std::size_t);
   void _randomize_enemies_pos();
