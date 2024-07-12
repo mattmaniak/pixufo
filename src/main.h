@@ -3,32 +3,8 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "./error.h"
-#include "./font.h"
-#include "./graphics.h"
-#include "./level.h"
-#include "./menu.h"
-#include "./player.h"
-#include "./sprite.h"
-#include "./state.h"
+#include "./game.h"
 
-class Game {
- public:
-  Game();
-  ~Game();
-
-  State get_state();
-
-  bool level_loop();
-  bool main_menu_loop();
-  bool credits_menu_loop();
-  bool pause_menu_loop();
-
-
- private:
-  State     _state;
-  Graphics* _graphics;
-  Level*    _level;
-};
+int main();
 
 #endif  // MAIN_H_
