@@ -3,7 +3,6 @@
 #ifndef FONT_H_
 #define FONT_H_
 
-
 #include <string>
 
 #ifdef __APPLE__

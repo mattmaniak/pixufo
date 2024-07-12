@@ -6,10 +6,10 @@
 #include "./error.h"
 #include "./font.h"
 #include "./graphics.h"
-#include "./sprite.h"
-#include "./menu.h"
 #include "./level.h"
+#include "./menu.h"
 #include "./player.h"
+#include "./sprite.h"
 #include "./state.h"
 
 class Game {
