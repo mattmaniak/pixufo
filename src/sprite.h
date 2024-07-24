@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef SPRITE_H_
-#define SPRITE_H_
+#ifndef SRC_SPRITE_H_
+#define SRC_SPRITE_H_
 
 #include <array>
 #include <cstdio>
@@ -48,4 +48,4 @@ class Sprite {
   bool load_textures_(Graphics&);
 };
 
-#endif  // SPRITE_H_
+#endif  // SRC_SPRITE_H_

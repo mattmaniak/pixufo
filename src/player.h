@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef PLAYER_H_
-#define PLAYER_H_
+#ifndef SRC_PLAYER_H_
+#define SRC_PLAYER_H_
 
 #include <array>
 #include <cmath>
@@ -57,4 +57,4 @@ class Movement {
 };
 }  // namespace player
 
-#endif  // PLAYER_H_
+#endif  // SRC_PLAYER_H_

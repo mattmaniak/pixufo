@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef BACKGROUND_H_
-#define BACKGROUND_H_
+#ifndef SRC_BACKGROUND_H_
+#define SRC_BACKGROUND_H_
 
 #include <limits>
 #include <string>
@@ -18,4 +18,4 @@ class Background: public Sprite {
   void _scroll_endlessly();
 };
 
-#endif  // BACKGROUND_H_
+#endif  // SRC_BACKGROUND_H_

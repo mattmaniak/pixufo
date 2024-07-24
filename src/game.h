@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef GAME_H_
-#define GAME_H_
+#ifndef SRC_GAME_H_
+#define SRC_GAME_H_
 
 #include "./error.h"
 #include "./font.h"
@@ -31,4 +31,4 @@ class Game {
   Level*    _level;
 };
 
-#endif  // GAME_H_
+#endif  // SRC_GAME_H_

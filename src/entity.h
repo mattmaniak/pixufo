@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef ENTITY_H_
-#define ENTITY_H_
+#ifndef SRC_ENTITY_H_
+#define SRC_ENTITY_H_
 
 #include <random>
 #include <string>
@@ -29,4 +29,4 @@ class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
   bool render(Graphics&);
 };
 
-#endif  // ENTITY_H_
+#endif  // SRC_ENTITY_H_

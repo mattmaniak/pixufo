@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef OS_ENV_H_
-#define OS_ENV_H_
+#ifndef SRC_OS_ENV_H_
+#define SRC_OS_ENV_H_
 
 #include <string>
 
@@ -32,4 +32,4 @@ const char SEPARATOR[] = "\\";
 #define FONT_PATH RESOURCES_PATH + std::string(SEPARATOR) + "font" \
         + std::string(SEPARATOR)
 
-#endif  // OS_ENV_H_
+#endif  // SRC_OS_ENV_H_

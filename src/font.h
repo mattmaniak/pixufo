@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef FONT_H_
-#define FONT_H_
+#ifndef SRC_FONT_H_
+#define SRC_FONT_H_
 
 #include <string>
 
@@ -38,4 +38,4 @@ class Font {
   SDL_Texture*       _texture;
 };
 
-#endif  // FONT_H_
+#endif  // SRC_FONT_H_

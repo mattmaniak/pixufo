@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef SCENE_H_
-#define SCENE_H_
+#ifndef SRC_SCENE_H_
+#define SRC_SCENE_H_
 
 #include <string>
 
@@ -20,4 +20,4 @@ class Scene {
   unsigned int _height;
 };
 
-#endif  // SCENE_H_
+#endif  // SRC_SCENE_H_

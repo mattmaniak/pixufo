@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef ERROR_H_
-#define ERROR_H_
+#ifndef SRC_ERROR_H_
+#define SRC_ERROR_H_
 
 #include <iostream>
 #include <stdexcept>
@@ -24,4 +24,4 @@ class Exception_box: public std::runtime_error {
 };
 }
 
-#endif  // ERROR_H_
+#endif  // SRC_ERROR_H_

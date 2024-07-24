@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef MENU_H_
-#define MENU_H_
+#ifndef SRC_MENU_H_
+#define SRC_MENU_H_
 
 #include <map>
 #include <string>
@@ -68,4 +68,4 @@ class Credits_menu: public Menu {
   bool keyboard_steering(State&);
 };
 
-#endif  // MENU_H_
+#endif  // SRC_MENU_H_

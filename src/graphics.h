@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef GRAPHICS_H_
-#define GRAPHICS_H_
+#ifndef SRC_GRAPHICS_H_
+#define SRC_GRAPHICS_H_
 
 #include <iostream>
 #include <limits>
@@ -56,4 +56,4 @@ class Graphics {
   bool get_pixelart_px_sz_();
 };
 
-#endif  // GRAPHICS_H_
+#endif  // SRC_GRAPHICS_H_

@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef STATE_H_
-#define STATE_H_
+#ifndef SRC_STATE_H_
+#define SRC_STATE_H_
 
 enum State {
   level,
@@ -10,4 +10,4 @@ enum State {
   pause_menu
 };
 
-#endif  // STATE_H_
+#endif  // SRC_STATE_H_

@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#ifndef LEVEL_H_
-#define LEVEL_H_
+#ifndef SRC_LEVEL_H_
+#define SRC_LEVEL_H_
 
 #include <memory>
 #include <string>
@@ -44,4 +44,4 @@ class Level: public Scene {
   void _randomize_enemies_pos();
 };
 
-#endif  // LEVEL_H_
+#endif  // SRC_LEVEL_H_
