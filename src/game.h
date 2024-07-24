@@ -3,6 +3,8 @@
 #ifndef SRC_GAME_H_
 #define SRC_GAME_H_
 
+#include <limits>
+
 #include "error.h"
 #include "font.h"
 #include "graphics.h"
