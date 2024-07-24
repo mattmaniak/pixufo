@@ -17,9 +17,9 @@
   #include <SDL2/SDL.h>
 #endif
 
-#include "./error.h"
-#include "./graphics.h"
-#include "./os_env.h"
+#include "error.h"
+#include "graphics.h"
+#include "os_env.h"
 
 #define FRAMES_NUMBER 6
 

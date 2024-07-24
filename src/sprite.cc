@@ -1,6 +1,6 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./sprite.h"
+#include "sprite.h"
 
 Sprite::Sprite(
     Graphics& graphics,

@@ -1,6 +1,6 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./player.h"
+#include "player.h"
 
 Player::Player(Graphics& graphics): Entity(graphics, "ufo", 110.0, 0) {
   horizontal_speed  = 0.0;

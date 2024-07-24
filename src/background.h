@@ -6,7 +6,7 @@
 #include <limits>
 #include <string>
 
-#include "./sprite.h"
+#include "sprite.h"
 
 class Background: public Sprite {
  public:

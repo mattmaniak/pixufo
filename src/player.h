@@ -9,10 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "./entity.h"
-#include "./graphics.h"
-#include "./menu.h"
-#include "./state.h"
+#include "entity.h"
+#include "graphics.h"
+#include "menu.h"
+#include "state.h"
 
 #define AXES_NUMBER 2
 

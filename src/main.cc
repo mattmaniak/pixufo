@@ -1,6 +1,6 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./main.h"
+#include "main.h"
 
 // Very ugly SDL2 error fix for "undefined reference to WinMain".
 #ifdef main

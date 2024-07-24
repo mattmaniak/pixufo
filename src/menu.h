@@ -13,11 +13,11 @@
   #include <SDL2/SDL.h>
 #endif
 
-#include "./error.h"
-#include "./scene.h"
-#include "./graphics.h"
-#include "./font.h"
-#include "./state.h"
+#include "error.h"
+#include "scene.h"
+#include "graphics.h"
+#include "font.h"
+#include "state.h"
 
 #define PADDING (20.0 * graphics.pixelart_px_sz)
 

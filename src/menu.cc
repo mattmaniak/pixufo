@@ -1,7 +1,7 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./menu.h"
-#include "./level.h"
+#include "menu.h"
+#include "level.h"
 
 Menu::Menu(Graphics& graphics):
 Scene(graphics, "background_primary_menu"), selected_button_idx(0) {

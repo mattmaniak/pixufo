@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "./sprite.h"
+#include "sprite.h"
 
 class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
  public:

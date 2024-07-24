@@ -1,6 +1,6 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./error.h"
+#include "error.h"
 
 void error::show_box(const std::string message) {
   if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "PixUfo Error",

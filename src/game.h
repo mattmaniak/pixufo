@@ -3,14 +3,14 @@
 #ifndef SRC_GAME_H_
 #define SRC_GAME_H_
 
-#include "./error.h"
-#include "./font.h"
-#include "./graphics.h"
-#include "./level.h"
-#include "./menu.h"
-#include "./player.h"
-#include "./sprite.h"
-#include "./state.h"
+#include "error.h"
+#include "font.h"
+#include "graphics.h"
+#include "level.h"
+#include "menu.h"
+#include "player.h"
+#include "sprite.h"
+#include "state.h"
 
 class Game {
  public:

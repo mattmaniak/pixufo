@@ -1,6 +1,6 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./game.h"
+#include "game.h"
 
 Game::Game(): _state(main_menu) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS) {

@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include "./background.h"
-#include "./graphics.h"
+#include "background.h"
+#include "graphics.h"
 
 class Scene {
  public:

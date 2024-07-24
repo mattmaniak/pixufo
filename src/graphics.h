@@ -14,8 +14,8 @@
   #include <SDL2/SDL.h>
 #endif
 
-#include "./error.h"
-#include "./os_env.h"
+#include "error.h"
+#include "os_env.h"
 
 #define CURRENT_DISPLAY_IDX 0
 #define PIXELART_DISPLAY_WIDTH 640.0f

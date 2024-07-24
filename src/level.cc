@@ -1,6 +1,6 @@
 // Copyright 2018-2019, 2024 mattmaniak, Jakub "QooBooS" Mieszczak
 
-#include "./level.h"
+#include "level.h"
 
 Level::Level(
     Graphics& graphics,
