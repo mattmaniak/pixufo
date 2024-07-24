@@ -79,7 +79,7 @@ debug: $(TARGET)
 
 .PHONY: lint
 lint:
-	cpplint --repository ./ src/*
+	cpplint src/*
 
 .PHONY: clean
 ifeq ($(OS), Windows_NT)
