@@ -16,6 +16,8 @@ class Scene {
   ~Scene();
 
  protected:
+  Graphics* _Graphics;
+
   unsigned int _width;
   unsigned int _height;
 };

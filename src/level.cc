@@ -20,7 +20,7 @@ Scene(graphics, bg_name),
   }
   _adjust_enemies_borders(graphics, *Ufo);
 
-  // Set the player's default position;
+  // Set the player's default position.
   Ufo->geometry.x = Ufo->pos_x = (_width - Ufo->geometry.w)  / 2;
   Ufo->geometry.y = Ufo->pos_y = (_height - Ufo->geometry.h) / 2;
 
