@@ -65,6 +65,7 @@ bool Menu::render(Graphics& graphics) {
     }
   }
   SDL_RenderPresent(graphics.renderer);
+  Bg->move(graphics, -5.0, -5.0);
 
   return true;
 }

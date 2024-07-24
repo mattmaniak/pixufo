@@ -13,6 +13,7 @@ The great refactor
 
 - Exit/Quit [distinction](https://ux.stackexchange.com/questions/50893/do-we-exit-quit-or-close-an-application) for Windows/Unix-like systems.
 - Game Over inscription.
+- Movable background animation in menus.
 
 ### Changed
 
