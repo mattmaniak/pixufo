@@ -77,6 +77,10 @@ debug: CPPFLAGS += -DDEBUG $(GCOV_FLAGS)
 debug: LDFLAGS += $(ASAN_FLAGS)
 debug: $(TARGET)
 
+.PHONY: lint
+lint:
+	cpplint --repository ./ src/*
+
 .PHONY: clean
 ifeq ($(OS), Windows_NT)
 clean:
