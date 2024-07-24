@@ -81,5 +81,5 @@ python3 -m pip install -r python_packages.txt
 Running C++ Linter
 
 ```shell
-cpplint src/*
+make lint
 ```
