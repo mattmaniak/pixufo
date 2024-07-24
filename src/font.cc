@@ -30,7 +30,7 @@ Font::Font(
   }
   TTF_CloseFont(_font);
 
-  _texture = SDL_CreateTextureFromSurface(Graphics.renderer, Surface);
+  _texture = SDL_CreateTextureFromSurface(Graphics.Renderer, Surface);
 
   if (_texture == nullptr) {
     throw error::Exception_box("Can't create the texture from the font: "
@@ -52,7 +52,7 @@ bool Font::render(Graphics& Graphics) {
   geometry.x = pos_x;
   geometry.y = pos_y;
 
-  if (SDL_RenderCopy(Graphics.renderer, _texture, nullptr, &geometry)
+  if (SDL_RenderCopy(Graphics.Renderer, _texture, nullptr, &geometry)
       != SDL2_SUCCESS) {
     error::show_box("Can't copy the texture: " + _name + " to the renderer.");
     return false;

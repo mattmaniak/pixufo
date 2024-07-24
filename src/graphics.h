@@ -36,7 +36,7 @@ class Graphics {
   double        pixelart_px_sz;
   SDL_Rect      Display;   // Holds the screen size.
   SDL_Rect      Last_bg_geometry;
-  SDL_Renderer* renderer;  // Rendering context.
+  SDL_Renderer* Renderer;  // Rendering context.
 
   Graphics();
   ~Graphics();

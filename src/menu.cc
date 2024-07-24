@@ -64,7 +64,7 @@ bool Menu::render(Graphics& graphics) {
       }
     }
   }
-  SDL_RenderPresent(graphics.renderer);
+  SDL_RenderPresent(graphics.Renderer);
   Bg->move(graphics, -5.0, -5.0);
 
   return true;
@@ -191,7 +191,7 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
 
     Text_lines.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
     Text_lines.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
-    Text_lines.push_back(new Font(graphics, "graphics", TEXT_FONT_SZ));
+    Text_lines.push_back(new Font(graphics, "Graphics", TEXT_FONT_SZ));
     Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
                                   TEXT_FONT_SZ));
 

@@ -129,7 +129,7 @@ bool Level::render(Graphics& graphics) {
   if (!Score_font.render(graphics)) {
     return false;
   }
-  SDL_RenderPresent(graphics.renderer);
+  SDL_RenderPresent(graphics.Renderer);
 
   return true;
 }

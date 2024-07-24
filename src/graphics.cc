@@ -4,7 +4,7 @@
 
 Graphics::Graphics():
     delta_time_s(0.0),
-    renderer(nullptr),
+    Renderer(nullptr),
     renderer_initialized(false),
     window_initialized(false),
     Window_(nullptr),
@@ -16,18 +16,18 @@ Graphics::Graphics():
     throw std::runtime_error("");
   }
 
-  renderer = SDL_CreateRenderer(Window_, default_driver,
+  Renderer = SDL_CreateRenderer(Window_, default_driver,
                                 SDL_RENDERER_ACCELERATED);
 
-  if (renderer == nullptr) {
-    throw error::Exception_box("Can't create the renderer.");
+  if (Renderer == nullptr) {
+    throw error::Exception_box("Can't create the Renderer.");
   }
   renderer_initialized = true;
 
 #ifdef DEBUG
-  if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND)
+  if (SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND)
       != SDL2_SUCCESS) {
-    throw error::Exception_box("Can't enable the renderer blend mode.");
+    throw error::Exception_box("Can't enable the Renderer blend mode.");
   }
 #endif
 
@@ -41,7 +41,7 @@ Graphics::Graphics():
 
 Graphics::~Graphics() {
   if (renderer_initialized) {
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(Renderer);
     renderer_initialized = false;
   }
   if (window_initialized) {
@@ -102,8 +102,8 @@ bool Graphics::get_pixelart_px_sz_() {
 bool Graphics::set_up_new_frame() {
   frame_start_time_ms_ = SDL_GetTicks();
 
-  if (SDL_RenderClear(renderer) != SDL2_SUCCESS) {
-    error::show_box("Can't clean the renderer.");
+  if (SDL_RenderClear(Renderer) != SDL2_SUCCESS) {
+    error::show_box("Can't clean the Renderer.");
     return false;
   }
   if (!get_pixelart_px_sz_()) {

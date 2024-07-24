@@ -62,7 +62,7 @@ bool Game::level_loop() {
       if (!Game_over_font.render(*_graphics)) {
         return false;
       }
-      SDL_RenderPresent(_graphics->renderer);
+      SDL_RenderPresent(_graphics->Renderer);
 
       SDL_Delay(2000);  // Wait a moment after a player's death.
       _state = main_menu;

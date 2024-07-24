@@ -61,7 +61,7 @@ bool Sprite::render(Graphics& graphics) {
   geometry.x = pos_x;
   geometry.y = pos_y;
 
-  if (SDL_RenderCopy(graphics.renderer, textures[current_frame_idx], nullptr,
+  if (SDL_RenderCopy(graphics.Renderer, textures[current_frame_idx], nullptr,
                      &geometry) != SDL2_SUCCESS) {
     error::show_box("Can't render the: " + name);
     return false;
@@ -81,7 +81,7 @@ bool Sprite::load_textures_(Graphics& graphics) {
       return false;
     }
     textures[current_frame_idx] =
-      SDL_CreateTextureFromSurface(graphics.renderer, Image);
+      SDL_CreateTextureFromSurface(graphics.Renderer, Image);
 
     if (textures[current_frame_idx] == nullptr) {
       error::show_box("Can't create the texture from the image: " + name);
@@ -97,7 +97,7 @@ bool Sprite::load_textures_(Graphics& graphics) {
       if (Image == nullptr) {
         return false;
       }
-      textures[idx] = SDL_CreateTextureFromSurface(graphics.renderer, Image);
+      textures[idx] = SDL_CreateTextureFromSurface(graphics.Renderer, Image);
 
       if (textures[idx] == nullptr) {
         return false;
