@@ -109,7 +109,7 @@ void Level::check_enemies_pos(Graphics& graphics) {
 }
 
 bool Level::render(Graphics& graphics) {
-  Font Score_font(graphics, std::to_string(score_points), 30);
+  Font Score_font(graphics, std::to_string(score_points), TEXT_FONT_SZ);
   Score_font.pos_x = Score_font.pos_y = PADDING / 2.0;  // Left, upper corner.
 
   if (!Bg->tile_and_render(graphics)) {

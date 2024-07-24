@@ -36,7 +36,7 @@ State Game::get_state() {
 
 bool Game::level_loop() {
   // Has some artifacts in a background.
-  Font Game_over_font(*_graphics, "Game Over", 36);
+  Font Game_over_font(*_graphics, "Game Over", MAIN_FONT_SZ);
 
   while (_state == level) {
     if (!_graphics->set_up_new_frame()) {

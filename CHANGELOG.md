@@ -18,7 +18,6 @@ The great refactor
 
 - C++ Standard from C++11 to C++20.
 - Codebase to match Google C++ Guide 100%-strictly.
-- Lowered every font size.
 - Naming in codebase as some code elements were missing self-explanory names.
 - Some in-game button texts to better explain what those buttons do.
 
