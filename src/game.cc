@@ -35,6 +35,9 @@ State Game::get_state() {
 }
 
 bool Game::level_loop() {
+  // Has some artifacts in a background.
+  Font Game_over_font(*_graphics, "Game Over", 36);
+
   while (_state == level) {
     if (!_graphics->set_up_new_frame()) {
       return false;
@@ -50,6 +53,15 @@ bool Game::level_loop() {
       if (!_level->render(*_graphics)) {
         return false;
       }
+
+      Game_over_font.pos_x = (_graphics->Display.w - Game_over_font.geometry.w) / 2;
+      Game_over_font.pos_y = (_graphics->Display.h - Game_over_font.geometry.h) / 2;
+
+      if (!Game_over_font.render(*_graphics)) {
+        return false;
+      }
+      SDL_RenderPresent(_graphics->renderer);
+
       SDL_Delay(2000);  // Wait a moment after a player's death.
       _state = main_menu;
 

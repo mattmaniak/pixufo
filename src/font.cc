@@ -2,7 +2,8 @@
 
 #include "./font.h"
 
-Font::Font(Graphics& Graphics,
+Font::Font(
+    Graphics& Graphics,
     std::string passed_text,
     const unsigned int passed_size):
     size(passed_size * Graphics.pixelart_px_sz),
