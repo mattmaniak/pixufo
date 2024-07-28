@@ -115,7 +115,7 @@ bool Level::render(Graphics& graphics) {
   if (!Bg->tile_and_render(graphics)) {
     return false;
   }
-  Bg->move(graphics, -8.0, 0.0);
+  Bg->move(graphics, (Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED) - BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, (Ufo->vertical_speed * BACKGROUND_TO_PLAYER_SPEED));
 
   for (auto& Nebula : _nebulas) {
     if (!Nebula->render(graphics)) {
