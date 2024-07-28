@@ -86,6 +86,10 @@ ifeq ($(OS), Windows_NT)
 clean:
 	del $(TARGET)
 	rmdir /Q /S $(OBJ_DIR)
+
+else ifeq ($(shell uname), Darwin)
+clean:
+	$(RM) -r $(TARGET) $(TARGET).app $(OBJ_DIR)
 else
 clean:
 	$(RM) -r $(TARGET) $(OBJ_DIR)
