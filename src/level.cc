@@ -115,7 +115,15 @@ bool Level::render(Graphics& graphics) {
   if (!Bg->tile_and_render(graphics)) {
     return false;
   }
-  Bg->move(graphics, (Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED) - BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, (Ufo->vertical_speed * BACKGROUND_TO_PLAYER_SPEED));
+
+#ifdef DISABLE_MOVABLE_BACKGROUND
+  Bg->move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
+#else
+  Bg->move(graphics,
+           (-Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED)
+           - BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED,
+           (-Ufo->vertical_speed * BACKGROUND_TO_PLAYER_SPEED));
+#endif
 
   for (auto& Nebula : _nebulas) {
     if (!Nebula->render(graphics)) {

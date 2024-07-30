@@ -65,7 +65,10 @@ bool Menu::render(Graphics& graphics) {
     }
   }
   SDL_RenderPresent(graphics.Renderer);
+
+#ifndef DISABLE_MOVABLE_BACKGROUND
   Bg->move(graphics, -5.0, -5.0);
+#endif
 
   return true;
 }
