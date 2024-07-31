@@ -19,6 +19,7 @@ Sprite(graphics,
     throw std::runtime_error("");
   }
 
+  // Disable speed randomization for the Player.
   if (name == "ufo") {
     max_speed = passed_speed;
   } else {
