@@ -9,13 +9,23 @@ Entity::Entity(
     const Uint32 passed_single_frame_time_ms):
 Sprite(graphics,
     name,
-    passed_single_frame_time_ms),
-    max_speed(passed_speed) {
+    passed_single_frame_time_ms) {
+  std::random_device device;
+  std::mt19937 random_generator(device());
+  std::uniform_real_distribution<double>
+  distribution(passed_speed / 2.0, passed_speed);
+
   if (!load_hitbox(graphics)) {
     throw std::runtime_error("");
   }
-  step = 0.0;
+
+  if (name == "ufo") {
+    max_speed = passed_speed;
+  } else {
+    max_speed = distribution(random_generator);
+  }
   hidden_timeout_ms = 0;
+  step = 0.0;
 }
 
 bool Entity::load_hitbox(Graphics& graphics) {

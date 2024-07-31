@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 
+- Entities speed randomization, except for the Player.
 - Local Application Bundle removal on macOS with `make clean`.
 - Relative movement to the gameplay background as a surplus of an actual animation.
 

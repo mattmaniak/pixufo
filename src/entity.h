@@ -18,7 +18,7 @@ class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
 
   Uint32 hidden_timeout_ms;
 
-  const double          max_speed;  // Pixel position move in a one second.
+  double                max_speed;  // Pixel position move in a one second.
   double                step;       // Pixel position move in a one frame.
   std::vector<SDL_Rect> hitbox_parts;
 
