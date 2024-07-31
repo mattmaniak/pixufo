@@ -31,7 +31,7 @@ bool Player::keyboard_steering(Graphics& graphics, State& state) {
 
   switch (Event.type) {
     case SDL_QUIT:
-    return false;
+      return false;
   }
   if (keys[SDL_SCANCODE_LEFT]) {
     Movements["horizontal"]->count_ratio(graphics, left);
@@ -56,6 +56,12 @@ bool Player::keyboard_steering(Graphics& graphics, State& state) {
   Movements["vertical"]->move(graphics, *this);
 
   return true;
+}
+
+void Player::center_on_screen(unsigned int screen_width,
+                              unsigned int screen_height) {
+  geometry.x = pos_x = (screen_width - geometry.w) / 2;
+  geometry.y = pos_y = (screen_height - geometry.h) / 2;
 }
 
 player::Movement::Movement(): max_time_s(0.6), keypress_time_s(0.0) {}
@@ -90,9 +96,8 @@ void player::Movement::count_ratio(Graphics& graphics, dir passed_direction) {
 }
 
 void player::Movement::move(Graphics& graphics, Player& Ufo) {
-  double vector_length =
-    std::sqrt(std::pow(Ufo.horizontal_speed, 2.0)
-    + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
+  double vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0)
+                         + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
 
   switch (direction) {
   case left:

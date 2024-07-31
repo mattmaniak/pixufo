@@ -21,8 +21,7 @@ Scene(graphics, bg_name),
   _adjust_enemies_borders(graphics, *Ufo);
 
   // Set the player's default position.
-  Ufo->geometry.x = Ufo->pos_x = (_width - Ufo->geometry.w)  / 2;
-  Ufo->geometry.y = Ufo->pos_y = (_height - Ufo->geometry.h) / 2;
+  Ufo->center_on_screen(_width, _height);
 
   _randomize_enemies_number();
 
@@ -48,10 +47,9 @@ void Level::reset() {
   Ufo->Movements["horizontal"]->keypress_time_s = 0.0;
   Ufo->Movements["vertical"]->keypress_time_s   = 0.0;
 
-  Ufo->geometry.x = Ufo->pos_x = (_width - Ufo->geometry.w)  / 2;
-  Ufo->geometry.y = Ufo->pos_y = (_height - Ufo->geometry.h) / 2;
-
-  // _randomize_enemies_pos();
+#ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
+  Ufo->center_on_screen(_width, _height);
+#endif
 
   for (auto& Nebula : _nebulas) {
     Nebula->randomize_initial_pos();
@@ -120,8 +118,7 @@ bool Level::render(Graphics& graphics) {
   Bg->move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
 #else
   Bg->move(graphics,
-           (-Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED)
-           - BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED,
+           -Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED,
            -Ufo->vertical_speed * BACKGROUND_TO_PLAYER_SPEED);
 #endif
 

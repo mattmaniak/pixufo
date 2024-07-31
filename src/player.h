@@ -34,6 +34,7 @@ class Player: public Entity {
   ~Player();
 
   bool keyboard_steering(Graphics&, State&);
+  void center_on_screen(unsigned int, unsigned int);
 };
 
 enum dir {

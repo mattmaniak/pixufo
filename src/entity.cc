@@ -103,8 +103,14 @@ bool Entity::render(Graphics& graphics) {
   SDL_Rect hbox_part;
 #endif
 
-  geometry.x = pos_x;
-  geometry.y = pos_y;
+#ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
+  if (name != "ufo") {
+#endif
+    geometry.x = pos_x;
+    geometry.y = pos_y;
+#ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
+  }
+#endif
 
   step = max_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
 

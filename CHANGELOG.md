@@ -11,7 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Entities speed randomization, except for the Player.
 - Local Application Bundle removal on macOS with `make clean`.
-- Relative movement to the gameplay background as a surplus of an actual animation.
+
+## Changed
+
+- Absolute Player movement to relative. Now the Player's Sprite is centered on a screen while everything else moves in relation to it.
 
 ## [0.3.0] - 2024-07-24
 
