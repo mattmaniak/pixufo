@@ -85,7 +85,7 @@ lint:
 ifeq ($(OS), Windows_NT)
 clean:
 	del $(TARGET)
-	rmdir /Q /S $(OBJ_DIR)
+	rmdir /S /Q $(OBJ_DIR)
 
 else ifeq ($(shell uname), Darwin)
 clean:
