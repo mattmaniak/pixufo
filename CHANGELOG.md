@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 - Absolute Player movement to relative. Now the Player's Sprite is centered on a screen while everything else moves in relation to it.
+- Naming of some variables and members to a more standard in code.
 
 ## [0.3.0] - 2024-07-24
 
