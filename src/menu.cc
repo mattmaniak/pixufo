@@ -36,21 +36,21 @@ bool Menu::render(Graphics& graphics) {
   for (std::size_t idx = 0; idx < buttons.size(); idx++) {
     buttons[idx]->pos_x = PADDING;
     buttons[idx]->pos_y = graphics.Display.h
-                          - (buttons[idx]->geometry.h * buttons.size())
-                          + (idx * buttons[idx]->geometry.h) - PADDING;
+                          - (buttons[idx]->transform.h * buttons.size())
+                          + (idx * buttons[idx]->transform.h) - PADDING;
 
-    buttons[idx]->geometry.x = buttons[idx]->pos_x;
-    buttons[idx]->geometry.y = buttons[idx]->pos_y;
+    buttons[idx]->transform.x = buttons[idx]->pos_x;
+    buttons[idx]->transform.y = buttons[idx]->pos_y;
 
     if (!buttons[idx]->render(graphics)) {
       return false;
     }
     if (idx == selected_button_idx) {
-      Sprites["selection_arrow"]->pos_x = buttons[idx]->geometry.w + PADDING;
-      Sprites["selection_arrow"]->pos_y = buttons[idx]->geometry.y;
+      Sprites["selection_arrow"]->pos_x = buttons[idx]->transform.w + PADDING;
+      Sprites["selection_arrow"]->pos_y = buttons[idx]->transform.y;
     }
-    buttons[idx]->geometry.x = buttons[idx]->pos_x;
-    buttons[idx]->geometry.y = buttons[idx]->pos_y;
+    buttons[idx]->transform.x = buttons[idx]->pos_x;
+    buttons[idx]->transform.y = buttons[idx]->pos_y;
   }
   if (selection_arrow_focused) {
     if (!Sprites["selection_arrow"]->render(graphics)) {
@@ -201,7 +201,7 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
     // Center the lines.
     for (std::size_t idx = 0; idx < Text_lines.size(); idx++) {
       Text_lines[idx]->pos_x = graphics.Display.w - PADDING
-                               - Text_lines[idx]->geometry.w;
+                               - Text_lines[idx]->transform.w;
       Text_lines[idx]->pos_y = PADDING;
 
       if (idx > 0) {

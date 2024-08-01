@@ -23,7 +23,7 @@ class Font {
   const unsigned int size;
   double             pos_x;
   double             pos_y;
-  SDL_Rect           geometry;  // Textures's position and size.
+  SDL_Rect           transform;  // Textures's position and size.
 
   Font(Graphics&, std::string, unsigned int);
   ~Font();

@@ -38,7 +38,7 @@ Font::Font(
   }
   SDL_FreeSurface(Surface);
 
-  if (SDL_QueryTexture(_texture, nullptr, nullptr, &geometry.w, &geometry.h)
+  if (SDL_QueryTexture(_texture, nullptr, nullptr, &transform.w, &transform.h)
       != SDL2_SUCCESS) {
     throw error::Exception_box("Can't get the size of the texture: " + _name);
   }
@@ -49,10 +49,10 @@ Font::~Font() {
 }
 
 bool Font::render(Graphics& Graphics) {
-  geometry.x = pos_x;
-  geometry.y = pos_y;
+  transform.x = pos_x;
+  transform.y = pos_y;
 
-  if (SDL_RenderCopy(Graphics.Renderer, _texture, nullptr, &geometry)
+  if (SDL_RenderCopy(Graphics.Renderer, _texture, nullptr, &transform)
       != SDL2_SUCCESS) {
     error::show_box("Can't copy the texture: " + _name + " to the renderer.");
     return false;

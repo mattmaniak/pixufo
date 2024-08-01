@@ -83,7 +83,7 @@ void Level::check_ufo_pos() {
 
 bool Level::check_ufo_collision() {
   for (std::size_t en_idx = 0; en_idx < _nebulas.size(); en_idx++) {
-    if (SDL_HasIntersection(&Ufo->geometry, &_nebulas[en_idx]->geometry)) {
+    if (SDL_HasIntersection(&Ufo->transform, &_nebulas[en_idx]->transform)) {
       if (_check_advanced_ufo_collision(en_idx)) {
         return true;
       }
@@ -146,8 +146,8 @@ bool Level::render(Graphics& graphics) {
 }
 
 void Level::_adjust_enemies_borders(Graphics& graphics, Entity& Entity) {
-  Entity.min_x = graphics.pixelart_px_sz - Entity.geometry.w;
-  Entity.min_y = graphics.pixelart_px_sz - Entity.geometry.h;
+  Entity.min_x = graphics.pixelart_px_sz - Entity.transform.w;
+  Entity.min_y = graphics.pixelart_px_sz - Entity.transform.h;
   Entity.max_x = _width  - graphics.pixelart_px_sz;
   Entity.max_y = _height - graphics.pixelart_px_sz;
 }
@@ -235,8 +235,8 @@ bool Level::_check_advanced_ufo_collision(std::size_t en_idx) {
 
 void Level::_randomize_enemies_pos() {  // Causes infinite loop...
   for (std::size_t idx = 0; idx < _nebulas.size() - 1; idx++) {
-    while ((_nebulas[idx]->geometry.x == _nebulas[idx + 1]->geometry.x)
-           || (_nebulas[idx]->geometry.y == _nebulas[idx + 1]->geometry.y)) {
+    while ((_nebulas[idx]->transform.x == _nebulas[idx + 1]->transform.x)
+           || (_nebulas[idx]->transform.y == _nebulas[idx + 1]->transform.y)) {
       _nebulas[idx]->randomize_initial_pos();
     }
   }

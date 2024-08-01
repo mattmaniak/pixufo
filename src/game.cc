@@ -55,9 +55,9 @@ bool Game::level_loop() {
       }
 
       Game_over_font.pos_x = (_graphics->Display.w
-                              - Game_over_font.geometry.w) / 2;
+                              - Game_over_font.transform.w) / 2;
       Game_over_font.pos_y = (_graphics->Display.h
-                              - Game_over_font.geometry.h) / 2;
+                              - Game_over_font.transform.h) / 2;
 
       if (!Game_over_font.render(*_graphics)) {
         return false;

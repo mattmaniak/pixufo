@@ -16,14 +16,14 @@ Sprite::Sprite(
   /* As there is only the first texture size check, trying to load animation
      with various texture sizes may brake it's rendering. */
   if (SDL_QueryTexture(textures[current_frame_idx], nullptr, nullptr,
-                       &geometry.w, &geometry.h) != SDL2_SUCCESS) {
+                       &transform.w, &transform.h) != SDL2_SUCCESS) {
     throw error::Exception_box("Can't get the size of the texture: " + name);
   }
   pos_x = 0.0;
   pos_y = 0.0;
 
-  geometry.w *= graphics.pixelart_px_sz;
-  geometry.h *= graphics.pixelart_px_sz;
+  transform.w *= graphics.pixelart_px_sz;
+  transform.h *= graphics.pixelart_px_sz;
 }
 
 Sprite::~Sprite() {
@@ -58,11 +58,11 @@ void Sprite::animate(Graphics& graphics) {
 bool Sprite::render(Graphics& graphics) {
   animate(graphics);
 
-  geometry.x = pos_x;
-  geometry.y = pos_y;
+  transform.x = pos_x;
+  transform.y = pos_y;
 
   if (SDL_RenderCopy(graphics.Renderer, textures[current_frame_idx], nullptr,
-                     &geometry) != SDL2_SUCCESS) {
+                     &transform) != SDL2_SUCCESS) {
     error::show_box("Can't render the: " + name);
     return false;
   }

@@ -75,7 +75,7 @@ bool Entity::load_hitbox(Graphics& graphics) {
     }
     rects_number++;
 
-    if (rects_number > static_cast<std::size_t>(geometry.w * geometry.h)) {
+    if (rects_number > static_cast<std::size_t>(transform.w * transform.h)) {
       error::show_box("Too many hitbox parts for: " + name);
       std::fclose(hitbox_parts_file);
 
@@ -106,8 +106,8 @@ bool Entity::render(Graphics& graphics) {
 #ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
   if (name != "ufo") {
 #endif
-    geometry.x = pos_x;
-    geometry.y = pos_y;
+    transform.x = pos_x;
+    transform.y = pos_y;
 #ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
   }
 #endif
@@ -117,7 +117,7 @@ bool Entity::render(Graphics& graphics) {
   animate(graphics);
 
   if (SDL_RenderCopy(graphics.Renderer, textures[current_frame_idx], nullptr,
-                     &geometry) != SDL2_SUCCESS) {
+                     &transform) != SDL2_SUCCESS) {
     error::show_box("Can't render the: " + name);
     return false;
   }

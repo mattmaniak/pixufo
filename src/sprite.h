@@ -30,8 +30,8 @@ class Sprite {
   std::array<SDL_Texture*, FRAMES_NUMBER> textures;
   std::size_t                             current_frame_idx;
 
-  SDL_Rect geometry;  // Textures's position and size.
-  double   pos_x;     // Theoretical (virtual) positions.
+  SDL_Rect transform;  // Textures's position and size.
+  double   pos_x;      // Theoretical (virtual) positions.
   double   pos_y;
 
   Sprite(Graphics&, std::string, Uint32);

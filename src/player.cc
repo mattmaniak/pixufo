@@ -60,8 +60,8 @@ bool Player::keyboard_steering(Graphics& graphics, State& state) {
 
 void Player::center_on_screen(unsigned int screen_width,
                               unsigned int screen_height) {
-  geometry.x = pos_x = (screen_width - geometry.w) / 2;
-  geometry.y = pos_y = (screen_height - geometry.h) / 2;
+  transform.x = pos_x = (screen_width  - transform.w) / 2;
+  transform.y = pos_y = (screen_height - transform.h) / 2;
 }
 
 player::Movement::Movement(): max_time_s(0.6), keypress_time_s(0.0) {}
