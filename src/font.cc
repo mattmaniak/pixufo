@@ -7,7 +7,7 @@ Font::Font(
     std::string passed_text,
     const unsigned int passed_size):
     size(passed_size * Graphics.pixelart_px_sz),
-    _name(FONTNAME),
+    _name(FONT_NAME),
     _text(passed_text) {
   const std::string path = FONT_PATH + SEPARATOR + _name;
   SDL_Surface*      Surface;
