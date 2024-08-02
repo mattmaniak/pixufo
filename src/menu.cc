@@ -119,11 +119,11 @@ bool Main_menu::SteerUsingKeyboard(State& state) {
     case SDLK_RETURN:
       switch (selected_button_idx) {
       case 0:
-        state = level;
+        state = kLevel;
         break;
 
       case 1:
-        state = credits_menu;
+        state = kCreditsMenu;
         break;
 
       case 2:
@@ -177,11 +177,11 @@ bool Pause_menu::SteerUsingKeyboard(State& state) {
     case SDLK_RETURN:
     switch (selected_button_idx) {
     case 0:
-      state = level;
+      state = kLevel;
       break;
 
     case 1:
-      state = main_menu;
+      state = kMainMenu;
     }
   }
   return true;
@@ -250,7 +250,7 @@ bool Credits_menu::SteerUsingKeyboard(State& state) {
   case SDLK_RETURN:
     switch (selected_button_idx) {
     case 0:
-      state = main_menu;
+      state = kMainMenu;
     }
   }
   return true;

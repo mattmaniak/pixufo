@@ -34,19 +34,19 @@ bool Player::SteerUsingKeyboard(Graphics& graphics, State& state) {
       return false;
   }
   if (keys[SDL_SCANCODE_LEFT]) {
-    Movements["horizontal"]->count_ratio(graphics, left);
+    Movements["horizontal"]->CountInertiaRatio(graphics, kLeft);
   }
   if (keys[SDL_SCANCODE_RIGHT]) {
-    Movements["horizontal"]->count_ratio(graphics, right);
+    Movements["horizontal"]->CountInertiaRatio(graphics, kRight);
   }
   if (keys[SDL_SCANCODE_UP]) {
-    Movements["vertical"]->count_ratio(graphics, up);
+    Movements["vertical"]->CountInertiaRatio(graphics, kUp);
   }
   if (keys[SDL_SCANCODE_DOWN]) {
-    Movements["vertical"]->count_ratio(graphics, down);
+    Movements["vertical"]->CountInertiaRatio(graphics, kDown);
   }
   if (keys[SDL_SCANCODE_ESCAPE]) {
-    state = pause_menu;
+    state = kPauseMenu;
   }
 
   if ((horizontal_speed != 0.0f) && (vertical_speed != 0.0f)) {
@@ -59,36 +59,37 @@ bool Player::SteerUsingKeyboard(Graphics& graphics, State& state) {
 }
 
 void Player::CenterOnDisplay(unsigned int screen_width,
-                              unsigned int screen_height) {
+                             unsigned int screen_height) {
   transform.x = pos_x = (screen_width  - transform.w) / 2;
   transform.y = pos_y = (screen_height - transform.h) / 2;
 }
 
 player::Movement::Movement(): max_time_s(0.6), keypress_time_s(0.0) {}
 
-void player::Movement::count_ratio(Graphics& graphics, dir passed_direction) {
+void player::Movement::CountInertiaRatio(Graphics& graphics,
+                                         MovementDirection passed_direction) {
   direction = passed_direction;
 
   switch (direction) {
-  case left:
+  case kLeft:
     if ((keypress_time_s - graphics.delta_time_s) >= -max_time_s) {
       keypress_time_s -= graphics.delta_time_s;
     }
     break;
 
-  case right:
+  case kRight:
     if ((keypress_time_s + graphics.delta_time_s) <= max_time_s) {
       keypress_time_s += graphics.delta_time_s;
     }
     break;
 
-  case up:
+  case kUp:
     if ((keypress_time_s - graphics.delta_time_s) >= -max_time_s) {
       keypress_time_s -= graphics.delta_time_s;
     }
     break;
 
-  case down:
+  case kDown:
     if ((keypress_time_s + graphics.delta_time_s) <= max_time_s) {
       keypress_time_s += graphics.delta_time_s;
     }
@@ -100,15 +101,15 @@ void player::Movement::Move(Graphics& graphics, Player& Ufo) {
                          + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
 
   switch (direction) {
-  case left:
-  case right:
+  case kLeft:
+  case kRight:
     Ufo.horizontal_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
     Ufo.horizontal_step  = Ufo.horizontal_speed * graphics.delta_time_s
                            * graphics.pixelart_px_sz;
     break;
 
-  case up:
-  case down:
+  case kUp:
+  case kDown:
     Ufo.vertical_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
     Ufo.vertical_step  = Ufo.vertical_speed * graphics.delta_time_s
                          * graphics.pixelart_px_sz;
@@ -120,13 +121,13 @@ void player::Movement::Move(Graphics& graphics, Player& Ufo) {
     Ufo.vertical_step   /= vector_length;
   }
   switch (direction) {
-  case left:
-  case right:
+  case kLeft:
+  case kRight:
     Ufo.pos_x += Ufo.horizontal_step;
     break;
 
-  case up:
-  case down:
+  case kUp:
+  case kDown:
     Ufo.pos_y += Ufo.vertical_step;
   }
 }

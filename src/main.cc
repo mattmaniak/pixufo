@@ -13,25 +13,25 @@ int main() {
 
     for (;;) {
       switch (Game_instance.get_state()) {
-      case level:
-        if (!Game_instance.RunLevelLoop()) {
-          return -1;
-        }
-        break;
-
-      case main_menu:
-        if (!Game_instance.RunMainMenuLoop()) {
-          return -1;
-        }
-        break;
-
-      case credits_menu:
+      case kCreditsMenu:
         if (!Game_instance.RunCreditsMenuLoop()) {
           return -1;
         }
         break;
 
-      case pause_menu:
+      case kLevel:
+        if (!Game_instance.RunLevelLoop()) {
+          return -1;
+        }
+        break;
+
+      case kMainMenu:
+        if (!Game_instance.RunMainMenuLoop()) {
+          return -1;
+        }
+        break;
+
+      case kPauseMenu:
         if (!Game_instance.RunPauseMenuLoop()) {
           return -1;
         }

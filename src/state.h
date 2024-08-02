@@ -4,10 +4,10 @@
 #define SRC_STATE_H_
 
 enum State {
-  level,
-  main_menu,
-  credits_menu,
-  pause_menu
+  kCreditsMenu,
+  kLevel,
+  kMainMenu,
+  kPauseMenu
 };
 
 #endif  // SRC_STATE_H_

@@ -37,23 +37,23 @@ class Player: public Entity {
   void CenterOnDisplay(unsigned int, unsigned int);
 };
 
-enum dir {
-  left,
-  right,
-  up,
-  down
+enum MovementDirection {
+  kLeft,
+  kRight,
+  kUp,
+  kDown
 };
 
 namespace player {
 class Movement {
  public:
-  dir          direction;
-  const double max_time_s;
-  double       keypress_time_s;
+  MovementDirection direction;
+  const double      max_time_s;
+  double            keypress_time_s;
 
   Movement();
 
-  void count_ratio(Graphics&, dir);
+  void CountInertiaRatio(Graphics&, MovementDirection);
   void Move(Graphics&, Player&);
 };
 }  // namespace player

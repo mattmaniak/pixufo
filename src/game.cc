@@ -2,7 +2,7 @@
 
 #include "game.h"
 
-Game::Game(): _state(main_menu) {
+Game::Game(): _state(kMainMenu) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS) {
     throw error::Exception_box("Can't initialize the SDL2.");
   }
@@ -37,7 +37,7 @@ State Game::get_state() {
 bool Game::RunCreditsMenuLoop() {
   Credits_menu Current_menu(*_graphics);  // Unhandled exceptions possible.
 
-  while (_state == credits_menu) {
+  while (_state == kCreditsMenu) {
     if (!_graphics->SetUpNewFrame()) {
       return false;
     }
@@ -58,7 +58,7 @@ bool Game::RunLevelLoop() {
   // Has some artifacts in a background.
   Font Game_over_font(*_graphics, "Game Over", MAIN_FONT_SZ);
 
-  while (_state == level) {
+  while (_state == kLevel) {
     if (!_graphics->SetUpNewFrame()) {
       return false;
     }
@@ -85,7 +85,7 @@ bool Game::RunLevelLoop() {
       SDL_RenderPresent(_graphics->Renderer);
 
       SDL_Delay(2000);  // Wait a moment after a player's death.
-      _state = main_menu;
+      _state = kMainMenu;
 
       return true;
     }
@@ -108,7 +108,7 @@ bool Game::RunLevelLoop() {
 bool Game::RunMainMenuLoop() {
   Main_menu Current_menu(*_graphics);  // Unhandled exceptions possible.
 
-  while (_state == main_menu) {
+  while (_state == kMainMenu) {
     if (!_graphics->SetUpNewFrame()) {
       return false;
     }
@@ -130,7 +130,7 @@ bool Game::RunMainMenuLoop() {
 bool Game::RunPauseMenuLoop() {
   Pause_menu Current_menu(*_graphics);  // Unhandled exceptions possible.
 
-  while (_state == pause_menu) {
+  while (_state == kPauseMenu) {
     if (!_graphics->SetUpNewFrame()) {
       return false;
     }
