@@ -5,6 +5,7 @@
 Graphics::Graphics():
     delta_time_s(0.0),
     Renderer(nullptr),
+    fps(0),
     renderer_initialized(false),
     window_initialized(false),
     Window_(nullptr),
@@ -123,11 +124,13 @@ bool Graphics::count_fps() {
   frame_elapsed_time_ms_ += delta_time_s * 1000.0;
 
   if (frame_elapsed_time_ms_ >= 1000.0) {
-#ifdef DEBUG
-    std::cout << "FPS: " << fps_ << std::endl;
-#endif
+    fps = fps_;
     frame_elapsed_time_ms_ = 0.0;
     fps_                   = 0;
+
+#ifdef DEBUG
+    std::cout << fps << " FPS" << std::endl;
+#endif
   }
   return true;
 }

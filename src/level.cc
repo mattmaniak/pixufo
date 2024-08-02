@@ -107,7 +107,16 @@ void Level::check_enemies_pos(Graphics& graphics) {
 }
 
 bool Level::render(Graphics& graphics) {
+#ifdef DEBUG
+  Font Fps_font(graphics, std::to_string(graphics.fps) + " FPS", TEXT_FONT_SZ);
+#endif
   Font Score_font(graphics, std::to_string(score_points), TEXT_FONT_SZ);
+
+#ifdef DEBUG
+  Fps_font.pos_x = graphics.Display.w - Fps_font.transform.w - (PADDING / 2.0);
+  Fps_font.pos_y = PADDING / 2.0;
+#endif
+
   Score_font.pos_x = Score_font.pos_y = PADDING / 2.0;  // Left, upper corner.
 
   if (!Bg->tile_and_render(graphics)) {
@@ -137,6 +146,11 @@ bool Level::render(Graphics& graphics) {
   if (!Ufo->render(graphics)) {
     return false;
   }
+#ifdef DEBUG
+  if (!Fps_font.render(graphics)) {
+    return false;
+  }
+#endif
   if (!Score_font.render(graphics)) {
     return false;
   }

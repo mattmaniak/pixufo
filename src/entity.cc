@@ -100,9 +100,9 @@ void Entity::randomize_initial_pos() {
 }
 
 bool Entity::render(Graphics& graphics) {
-#ifdef DEBUG
-  SDL_Rect hbox_part;
-#endif
+// #ifdef DEBUG
+//   SDL_Rect hbox_part;
+// #endif
 
 #ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
   if (name != "ufo") {
@@ -123,24 +123,24 @@ bool Entity::render(Graphics& graphics) {
     return false;
   }
 
-#ifdef DEBUG
-  for (std::size_t idx = 0; idx < hitbox_parts.size(); idx++) {
-    hbox_part.w = hitbox_parts[idx].w;
-    hbox_part.h = hitbox_parts[idx].h;
-    hbox_part.x = pos_x + hitbox_parts[idx].x;
-    hbox_part.y = pos_y + hitbox_parts[idx].y;
+// #ifdef DEBUG
+//   for (std::size_t idx = 0; idx < hitbox_parts.size(); idx++) {
+//     hbox_part.w = hitbox_parts[idx].w;
+//     hbox_part.h = hitbox_parts[idx].h;
+//     hbox_part.x = pos_x + hitbox_parts[idx].x;
+//     hbox_part.y = pos_y + hitbox_parts[idx].y;
 
-    if (SDL_SetRenderDrawColor(graphics.Renderer, 0, 255, 0, 100)
-        != SDL2_SUCCESS) {
-      error::show_box("Can't set color for: " + name + " hitbox.");
-      return false;
-    }
-    if (SDL_RenderFillRect(graphics.Renderer, &hbox_part) != SDL2_SUCCESS) {
-      error::show_box("Can't render the hitbox part for: " + name);
-      return false;
-    }
-  }
-#endif
+//     if (SDL_SetRenderDrawColor(graphics.Renderer, 0, 255, 0, 100)
+//         != SDL2_SUCCESS) {
+//       error::show_box("Can't set color for: " + name + " hitbox.");
+//       return false;
+//     }
+//     if (SDL_RenderFillRect(graphics.Renderer, &hbox_part) != SDL2_SUCCESS) {
+//       error::show_box("Can't render the hitbox part for: " + name);
+//       return false;
+//     }
+//   }
+// #endif
 
   return true;
 }

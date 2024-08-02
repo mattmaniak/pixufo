@@ -37,6 +37,7 @@ class Graphics {
   SDL_Rect      Display;   // Holds the screen size.
   SDL_Rect      Last_bg_transform;
   SDL_Renderer* Renderer;  // Rendering context.
+  Uint32        fps;
 
   Graphics();
   ~Graphics();
