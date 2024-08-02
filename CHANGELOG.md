@@ -16,8 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 - Absolute Player movement to relative. Now the Player's Sprite is centered on a screen while everything else moves in relation to it.
-- Disabled hitboxes debugging.
+- Capitalization and naming rules to fit [Google C++ Guide](https://google.github.io/styleguide/cppguide.html) requirements.
 - Naming of some variables and members to a more standard in code.
+
+## Removed
+
+- Hitboxes debugging (disabled only).
 
 ## [0.3.0] - 2024-07-24
 
@@ -32,7 +36,7 @@ The great refactor
 ### Changed
 
 - C++ Standard from C++11 to C++20.
-- Codebase to match Google C++ Guide 100%-strictly.
+- Codebase to match [Google C++ Guide](https://google.github.io/styleguide/cppguide.html) more strictly.
 - Naming in codebase as some code elements were missing self-explanory names.
 - Some in-game button texts to better explain what those buttons do.
 
