@@ -7,7 +7,8 @@ Entity::Entity(
     std::string name,
     const double passed_speed,
     const Uint32 passed_single_frame_time_ms):
-Sprite(graphics,
+Sprite(
+    graphics,
     name,
     passed_single_frame_time_ms) {
   std::random_device device;

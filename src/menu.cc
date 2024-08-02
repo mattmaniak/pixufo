@@ -4,7 +4,8 @@
 #include "level.h"
 
 Menu::Menu(Graphics& graphics):
-Scene(graphics, "background_primary_menu"), selected_button_idx(0) {
+Scene(graphics, "background_primary_menu"),
+    selected_button_idx(0) {
   try {
     Sprites.insert(std::make_pair("title", new Sprite(graphics, "title", 0)));
     Sprites.insert(std::make_pair("selection_arrow",
