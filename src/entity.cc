@@ -16,7 +16,7 @@ Sprite(
   std::uniform_real_distribution<double>
   distribution(passed_speed / 2.0, passed_speed);
 
-  if (!load_hitbox(graphics)) {
+  if (!LoadHitbox(graphics)) {
     throw std::runtime_error("");
   }
 
@@ -30,14 +30,14 @@ Sprite(
   step = 0.0;
 }
 
-bool Entity::load_hitbox(Graphics& graphics) {
+bool Entity::LoadHitbox(Graphics& graphics) {
   const std::string path_to_file = HITBOXES_PATH + name;
   std::size_t       rects_number = 0;
 
   FILE* hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
 
   if (hitbox_parts_file == nullptr) {
-    error::show_box("Can't load the hitbox file for: " + name);
+    error::ShowBox("Can't load the hitbox file for: " + name);
     return false;
   }
 
@@ -68,7 +68,7 @@ bool Entity::load_hitbox(Graphics& graphics) {
         || (hitbox_parts[rects_number].y  < 0)
         || (hitbox_parts[rects_number].w  < 1)
         || (hitbox_parts[rects_number].h  < 1)) {
-      error::show_box("Wrong hitbox for the: " + name);
+      error::ShowBox("Wrong hitbox for the: " + name);
       return false;
     }
     if (std::feof(hitbox_parts_file)) {
@@ -77,7 +77,7 @@ bool Entity::load_hitbox(Graphics& graphics) {
     rects_number++;
 
     if (rects_number > static_cast<std::size_t>(transform.w * transform.h)) {
-      error::show_box("Too many hitbox parts for: " + name);
+      error::ShowBox("Too many hitbox parts for: " + name);
       std::fclose(hitbox_parts_file);
 
       return false;
@@ -88,7 +88,7 @@ bool Entity::load_hitbox(Graphics& graphics) {
   return true;
 }
 
-void Entity::randomize_initial_pos() {
+void Entity::RandomizeInitialPos() {
   std::mt19937 prng;
   prng.seed(std::random_device()());
 
@@ -99,7 +99,7 @@ void Entity::randomize_initial_pos() {
   pos_y = distributor_y(prng);
 }
 
-bool Entity::render(Graphics& graphics) {
+bool Entity::Render(Graphics& graphics) {
 // #ifdef DEBUG
 //   SDL_Rect hbox_part;
 // #endif
@@ -115,11 +115,11 @@ bool Entity::render(Graphics& graphics) {
 
   step = max_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
 
-  animate(graphics);
+  Animate(graphics);
 
   if (SDL_RenderCopy(graphics.Renderer, textures[current_frame_idx], nullptr,
                      &transform) != SDL2_SUCCESS) {
-    error::show_box("Can't render the: " + name);
+    error::ShowBox("Can't render the: " + name);
     return false;
   }
 
@@ -132,11 +132,11 @@ bool Entity::render(Graphics& graphics) {
 
 //     if (SDL_SetRenderDrawColor(graphics.Renderer, 0, 255, 0, 100)
 //         != SDL2_SUCCESS) {
-//       error::show_box("Can't set color for: " + name + " hitbox.");
+//       error::ShowBox("Can't set color for: " + name + " hitbox.");
 //       return false;
 //     }
 //     if (SDL_RenderFillRect(graphics.Renderer, &hbox_part) != SDL2_SUCCESS) {
-//       error::show_box("Can't render the hitbox part for: " + name);
+//       error::ShowBox("Can't render the hitbox part for: " + name);
 //       return false;
 //     }
 //   }

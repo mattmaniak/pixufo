@@ -28,22 +28,22 @@ class Level: public Scene {
   Level(Graphics&, std::string, unsigned int);
   ~Level();
 
-  void reset();
-  void adjust_enemy_border(Graphics&);
-  void check_ufo_pos();
-  bool check_ufo_collision();  // Checks the basic models' rects.
-  void check_enemies_pos(Graphics&);
-  bool render(Graphics&);
+  void Reset();
+  void AdjustEnemyBorder(Graphics&);
+  void CheckPlayerPos();
+  bool CheckPlayerCollision();  // Checks the basic models' rects.
+  void CheckEnemiesPosition(Graphics&);
+  bool Render(Graphics&);
 
  private:
   std::vector<Entity*> _nebulas;
   std::size_t          _nebulas_number;
 
-  void _adjust_enemies_borders(Graphics&, Entity&);
-  void _randomize_enemies_number();
-  void _randomize_enemy_type(Graphics&);
-  bool _check_advanced_ufo_collision(std::size_t);
-  void _randomize_enemies_pos();
+  void AdjustEnemiesBorders(Graphics&, Entity&);
+  void RandimizeEnemiesNumber();
+  void RandimizeEnemyType(Graphics&);
+  bool CheckPlayerAdvancedCollision(std::size_t);
+  void RandomizeEnemiesPosition();
 };
 
 #endif  // SRC_LEVEL_H_

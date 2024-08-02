@@ -20,7 +20,7 @@ Player::~Player() {
   Movements.clear();
 }
 
-bool Player::keyboard_steering(Graphics& graphics, State& state) {
+bool Player::SteerUsingKeyboard(Graphics& graphics, State& state) {
   SDL_Event    Event;
   const Uint8* keys;
 
@@ -52,13 +52,13 @@ bool Player::keyboard_steering(Graphics& graphics, State& state) {
   if ((horizontal_speed != 0.0f) && (vertical_speed != 0.0f)) {
     directions_number = 2;
   }
-  Movements["horizontal"]->move(graphics, *this);
-  Movements["vertical"]->move(graphics, *this);
+  Movements["horizontal"]->Move(graphics, *this);
+  Movements["vertical"]->Move(graphics, *this);
 
   return true;
 }
 
-void Player::center_on_screen(unsigned int screen_width,
+void Player::CenterOnDisplay(unsigned int screen_width,
                               unsigned int screen_height) {
   transform.x = pos_x = (screen_width  - transform.w) / 2;
   transform.y = pos_y = (screen_height - transform.h) / 2;
@@ -95,7 +95,7 @@ void player::Movement::count_ratio(Graphics& graphics, dir passed_direction) {
   }
 }
 
-void player::Movement::move(Graphics& graphics, Player& Ufo) {
+void player::Movement::Move(Graphics& graphics, Player& Ufo) {
   double vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0)
                          + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
 

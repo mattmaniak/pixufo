@@ -12,10 +12,10 @@ class Background: public Sprite {
  public:
   Background(Graphics&, std::string);
 
-  bool tile_and_render(Graphics&);  // Of course infinite.
+  bool TileAndRender(Graphics&);  // Of course infinite.
 
  private:
-  void _scroll_endlessly();
+  void ScrollEndlessly();
 };
 
 #endif  // SRC_BACKGROUND_H_

@@ -24,13 +24,13 @@ Menu::~Menu() {
   Sprites.clear();
 }
 
-bool Menu::render(Graphics& graphics) {
-  if (!Bg->tile_and_render(graphics)) {
+bool Menu::Render(Graphics& graphics) {
+  if (!Bg->TileAndRender(graphics)) {
     return false;
   }
   Sprites["title"]->pos_x = Sprites["title"]->pos_y = PADDING;
 
-  if (!Sprites["title"]->render(graphics)) {
+  if (!Sprites["title"]->Render(graphics)) {
     return false;
   }
 
@@ -43,7 +43,7 @@ bool Menu::render(Graphics& graphics) {
     buttons[idx]->transform.x = buttons[idx]->pos_x;
     buttons[idx]->transform.y = buttons[idx]->pos_y;
 
-    if (!buttons[idx]->render(graphics)) {
+    if (!buttons[idx]->Render(graphics)) {
       return false;
     }
     if (idx == selected_button_idx) {
@@ -54,13 +54,13 @@ bool Menu::render(Graphics& graphics) {
     buttons[idx]->transform.y = buttons[idx]->pos_y;
   }
   if (selection_arrow_focused) {
-    if (!Sprites["selection_arrow"]->render(graphics)) {
+    if (!Sprites["selection_arrow"]->Render(graphics)) {
       return false;
     }
   }
   if (has_text) {
     for (auto& Line : Text_lines) {
-      if (!Line->render(graphics)) {
+      if (!Line->Render(graphics)) {
         return false;
       }
     }
@@ -68,7 +68,7 @@ bool Menu::render(Graphics& graphics) {
   SDL_RenderPresent(graphics.Renderer);
 
 #ifndef DISABLE_MOVABLE_BACKGROUND
-  Bg->move(graphics, -5.0, -5.0);
+  Bg->Move(graphics, -5.0, -5.0);
 #endif
 
   return true;
@@ -94,7 +94,7 @@ Main_menu::~Main_menu() {
   }
 }
 
-bool Main_menu::keyboard_steering(State& state) {
+bool Main_menu::SteerUsingKeyboard(State& state) {
   SDL_Event Event;
   SDL_PollEvent(&Event);
 
@@ -153,7 +153,7 @@ Pause_menu::~Pause_menu() {
   }
 }
 
-bool Pause_menu::keyboard_steering(State& state) {
+bool Pause_menu::SteerUsingKeyboard(State& state) {
   SDL_Event Event;
   SDL_PollEvent(&Event);
 
@@ -231,7 +231,7 @@ Credits_menu::~Credits_menu() {
   Text_lines.clear();
 }
 
-bool Credits_menu::keyboard_steering(State& state) {
+bool Credits_menu::SteerUsingKeyboard(State& state) {
   SDL_Event Event;
   SDL_PollEvent(&Event);
 

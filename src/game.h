@@ -21,10 +21,10 @@ class Game {
 
   State get_state();
 
-  bool level_loop();
-  bool main_menu_loop();
-  bool credits_menu_loop();
-  bool pause_menu_loop();
+  bool RunCreditsMenuLoop();
+  bool RunLevelLoop();
+  bool RunMainMenuLoop();
+  bool RunPauseMenuLoop();
 
 
  private:

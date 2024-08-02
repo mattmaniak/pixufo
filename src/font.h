@@ -28,7 +28,7 @@ class Font {
   Font(Graphics&, std::string, unsigned int);
   ~Font();
 
-  bool render(Graphics&);
+  bool Render(Graphics&);
 
  private:
   const std::string  _name;

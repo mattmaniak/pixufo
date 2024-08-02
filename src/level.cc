@@ -18,21 +18,21 @@ Scene(graphics, bg_name),
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }
-  _adjust_enemies_borders(graphics, *Ufo);
+  AdjustEnemiesBorders(graphics, *Ufo);
 
   // Set the player's default position.
-  Ufo->center_on_screen(_width, _height);
+  Ufo->CenterOnDisplay(_width, _height);
 
-  _randomize_enemies_number();
+  RandimizeEnemiesNumber();
 
   // Create all enemies.
   for (std::size_t idx = 0; idx < _nebulas_number; idx++) {
     try {
-      _randomize_enemy_type(graphics);
+      RandimizeEnemyType(graphics);
     } catch (std::runtime_error) {
       throw std::runtime_error("");
     }
-    _adjust_enemies_borders(graphics, *_nebulas[idx]);
+    AdjustEnemiesBorders(graphics, *_nebulas[idx]);
   }
 }
 
@@ -43,31 +43,31 @@ Level::~Level() {
   delete Ufo;
 }
 
-void Level::reset() {
+void Level::Reset() {
   Ufo->Movements["horizontal"]->keypress_time_s = 0.0;
   Ufo->Movements["vertical"]->keypress_time_s   = 0.0;
 
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
-  Ufo->center_on_screen(_width, _height);
+  Ufo->CenterOnDisplay(_width, _height);
 #endif
 
   for (auto& Nebula : _nebulas) {
-    Nebula->randomize_initial_pos();
+    Nebula->RandomizeInitialPos();
   }
   score_points = 0;
 }
 
-void Level::adjust_enemy_border(Graphics& graphics) {
+void Level::AdjustEnemyBorder(Graphics& graphics) {
   _width  = graphics.Display.w;
   _height = graphics.Display.h;
 
   for (auto& Nebula : _nebulas) {
-    _adjust_enemies_borders(graphics, *Nebula);
+    AdjustEnemiesBorders(graphics, *Nebula);
   }
-  _adjust_enemies_borders(graphics, *Ufo);
+  AdjustEnemiesBorders(graphics, *Ufo);
 }
 
-void Level::check_ufo_pos() {
+void Level::CheckPlayerPos() {
   // If the model is out of the level, it will be moved to the mirrored place.
 
   if (Ufo->pos_x < Ufo->min_x) {
@@ -81,10 +81,10 @@ void Level::check_ufo_pos() {
   }
 }
 
-bool Level::check_ufo_collision() {
+bool Level::CheckPlayerCollision() {
   for (std::size_t en_idx = 0; en_idx < _nebulas.size(); en_idx++) {
     if (SDL_HasIntersection(&Ufo->transform, &_nebulas[en_idx]->transform)) {
-      if (_check_advanced_ufo_collision(en_idx)) {
+      if (CheckPlayerAdvancedCollision(en_idx)) {
         return true;
       }
     }
@@ -92,7 +92,7 @@ bool Level::check_ufo_collision() {
   return false;
 }
 
-void Level::check_enemies_pos(Graphics& graphics) {
+void Level::CheckEnemiesPosition(Graphics& graphics) {
   for (auto& Nebula : _nebulas) {
     if ((Nebula->pos_x < Nebula->min_x) || (Nebula->pos_x > Nebula->max_x)) {
       Nebula->hidden_timeout_ms += graphics.delta_time_s * 1000.0;
@@ -100,13 +100,13 @@ void Level::check_enemies_pos(Graphics& graphics) {
     if (Nebula->hidden_timeout_ms > NEBULA_HIDDEN_TIMEOUT_MS) {
       Nebula->hidden_timeout_ms = 0;
 
-      Nebula->randomize_initial_pos();
+      Nebula->RandomizeInitialPos();
       Nebula->pos_x = graphics.Display.w - graphics.pixelart_px_sz;
     }
   }
 }
 
-bool Level::render(Graphics& graphics) {
+bool Level::Render(Graphics& graphics) {
 #ifdef DEBUG
   Font Fps_font(graphics, std::to_string(graphics.fps) + " FPS", TEXT_FONT_SZ);
 #endif
@@ -119,39 +119,39 @@ bool Level::render(Graphics& graphics) {
 
   Score_font.pos_x = Score_font.pos_y = PADDING / 2.0;  // Left, upper corner.
 
-  if (!Bg->tile_and_render(graphics)) {
+  if (!Bg->TileAndRender(graphics)) {
     return false;
   }
 
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
-  Bg->move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
+  Bg->Move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
 #else
-  Bg->move(graphics,
+  Bg->Move(graphics,
            -Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED,
            -Ufo->vertical_speed * BACKGROUND_TO_PLAYER_SPEED);
 #endif
 
   for (auto& Nebula : _nebulas) {
-    if (!Nebula->render(graphics)) {
+    if (!Nebula->Render(graphics)) {
       return false;
     }
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
-    Nebula->move(graphics, -Nebula->max_speed, 0.0);  // Moving to the left.
+    Nebula->Move(graphics, -Nebula->max_speed, 0.0);  // Moving to the left.
 #else
-    Nebula->move(graphics,
+    Nebula->Move(graphics,
                  -Ufo->horizontal_speed - Nebula->max_speed,
                  -Ufo->vertical_speed);
 #endif
   }
-  if (!Ufo->render(graphics)) {
+  if (!Ufo->Render(graphics)) {
     return false;
   }
 #ifdef DEBUG
-  if (!Fps_font.render(graphics)) {
+  if (!Fps_font.Render(graphics)) {
     return false;
   }
 #endif
-  if (!Score_font.render(graphics)) {
+  if (!Score_font.Render(graphics)) {
     return false;
   }
   SDL_RenderPresent(graphics.Renderer);
@@ -159,14 +159,14 @@ bool Level::render(Graphics& graphics) {
   return true;
 }
 
-void Level::_adjust_enemies_borders(Graphics& graphics, Entity& Entity) {
+void Level::AdjustEnemiesBorders(Graphics& graphics, Entity& Entity) {
   Entity.min_x = graphics.pixelart_px_sz - Entity.transform.w;
   Entity.min_y = graphics.pixelart_px_sz - Entity.transform.h;
   Entity.max_x = _width  - graphics.pixelart_px_sz;
   Entity.max_y = _height - graphics.pixelart_px_sz;
 }
 
-void Level::_randomize_enemies_number() {
+void Level::RandimizeEnemiesNumber() {
   std::mt19937 prng;
   prng.seed(std::random_device()());
 
@@ -176,7 +176,7 @@ void Level::_randomize_enemies_number() {
   _nebulas_number = distributor_enemies(prng);
 }
 
-void Level::_randomize_enemy_type(Graphics& graphics) {
+void Level::RandimizeEnemyType(Graphics& graphics) {
   const int enemies_type_pool = 10;
 
   std::mt19937 prng;
@@ -213,7 +213,7 @@ void Level::_randomize_enemy_type(Graphics& graphics) {
   }
 }
 
-bool Level::_check_advanced_ufo_collision(std::size_t en_idx) {
+bool Level::CheckPlayerAdvancedCollision(std::size_t en_idx) {
   SDL_Rect Player_hbox_part;
   SDL_Rect Nebula_hbox_part;
 
@@ -247,11 +247,11 @@ bool Level::_check_advanced_ufo_collision(std::size_t en_idx) {
   return false;
 }
 
-void Level::_randomize_enemies_pos() {  // Causes infinite loop...
+void Level::RandomizeEnemiesPosition() {  // Causes infinite loop...
   for (std::size_t idx = 0; idx < _nebulas.size() - 1; idx++) {
     while ((_nebulas[idx]->transform.x == _nebulas[idx + 1]->transform.x)
            || (_nebulas[idx]->transform.y == _nebulas[idx + 1]->transform.y)) {
-      _nebulas[idx]->randomize_initial_pos();
+      _nebulas[idx]->RandomizeInitialPos();
     }
   }
 }

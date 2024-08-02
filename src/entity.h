@@ -18,15 +18,15 @@ class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
 
   Uint32 hidden_timeout_ms;
 
-  double                max_speed;  // Pixel position move in a one second.
-  double                step;       // Pixel position move in a one frame.
+  double                max_speed;  // Pixel position Move in a one second.
+  double                step;       // Pixel position Move in a one frame.
   std::vector<SDL_Rect> hitbox_parts;
 
   Entity(Graphics&, std::string, double, Uint32);
 
-  bool load_hitbox(Graphics&);
-  void randomize_initial_pos();
-  bool render(Graphics&);
+  bool LoadHitbox(Graphics&);
+  void RandomizeInitialPos();
+  bool Render(Graphics&);
 };
 
 #endif  // SRC_ENTITY_H_

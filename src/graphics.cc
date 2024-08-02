@@ -13,7 +13,7 @@ Graphics::Graphics():
     fps_(0) {
   const int default_driver = -1;
 
-  if (!init_window_()) {
+  if (!InitWindow()) {
     throw std::runtime_error("");
   }
 
@@ -35,7 +35,7 @@ Graphics::Graphics():
   if (SDL_SetRelativeMouseMode(SDL_TRUE) != SDL2_SUCCESS) {
     throw error::Exception_box("Can't hide the mouse pointer.");
   }
-  if (!get_pixelart_px_sz_()) {
+  if (!GetPixelArtPixelSize()) {
     throw std::runtime_error("");
   }
 }
@@ -51,17 +51,17 @@ Graphics::~Graphics() {
   }
 }
 
-bool Graphics::init_window_() {
+bool Graphics::InitWindow() {
   const int         unused_sz = 0;
   SDL_Surface*      Icon      = nullptr;
   const std::string icon_name = "icon.bmp";
 
   if (SDL_GetDisplayBounds(CURRENT_DISPLAY_IDX, &Display) != SDL2_SUCCESS) {
-    error::show_box("Can't get the screen size at the initialization.");
+    error::ShowBox("Can't get the screen size at the initialization.");
     return false;
   }
   if ((Display.w < MIN_DISPLAY_WIDTH) || (Display.h < MIN_DISPLAY_HEIGHT)) {
-    error::show_box("At least the HD screen resolution is required.");
+    error::ShowBox("At least the HD screen resolution is required.");
     return false;
   }
 
@@ -72,7 +72,7 @@ bool Graphics::init_window_() {
                              SDL_WINDOW_FULLSCREEN_DESKTOP);
 
   if (Window_ == nullptr) {
-    error::show_box("Can't create the window.");
+    error::ShowBox("Can't create the window.");
     return false;
   }
   window_initialized = true;
@@ -88,11 +88,11 @@ bool Graphics::init_window_() {
   return true;
 }
 
-bool Graphics::get_pixelart_px_sz_() {
+bool Graphics::GetPixelArtPixelSize() {
   SDL_GetWindowSize(Window_, &Display.w, &Display.h);
 
   if ((Display.w > MAX_DISPLAY_WIDTH) || (Display.h > MAX_DISPLAY_HEIGHT)) {
-    error::show_box("Given display size is too big.");
+    error::ShowBox("Given display size is too big.");
     return false;
   }
   pixelart_px_sz = Display.w / PIXELART_DISPLAY_WIDTH;
@@ -100,24 +100,24 @@ bool Graphics::get_pixelart_px_sz_() {
   return true;
 }
 
-bool Graphics::set_up_new_frame() {
+bool Graphics::SetUpNewFrame() {
   frame_start_time_ms_ = SDL_GetTicks();
 
   if (SDL_RenderClear(Renderer) != SDL2_SUCCESS) {
-    error::show_box("Can't clean the Renderer.");
+    error::ShowBox("Can't clean the Renderer.");
     return false;
   }
-  if (!get_pixelart_px_sz_()) {
+  if (!GetPixelArtPixelSize()) {
     return false;
   }
   return true;
 }
 
-bool Graphics::count_fps() {
+bool Graphics::CountFps() {
   fps_++;
 
   if (fps_ >= std::numeric_limits<Uint32>::max()) {
-    error::show_box("Too many frames per second.");
+    error::ShowBox("Too many frames per second.");
     return false;
   }
   delta_time_s = (SDL_GetTicks() - frame_start_time_ms_) / 1000.0;

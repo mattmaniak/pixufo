@@ -2,7 +2,7 @@
 
 #include "error.h"
 
-void error::show_box(const std::string message) {
+void error::ShowBox(const std::string message) {
   if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "PixUfo Error",
                                message.c_str(), nullptr) != SDL2_SUCCESS) {
     // Poor...

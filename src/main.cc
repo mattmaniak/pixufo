@@ -14,25 +14,25 @@ int main() {
     for (;;) {
       switch (Game_instance.get_state()) {
       case level:
-        if (!Game_instance.level_loop()) {
+        if (!Game_instance.RunLevelLoop()) {
           return -1;
         }
         break;
 
       case main_menu:
-        if (!Game_instance.main_menu_loop()) {
+        if (!Game_instance.RunMainMenuLoop()) {
           return -1;
         }
         break;
 
       case credits_menu:
-        if (!Game_instance.credits_menu_loop()) {
+        if (!Game_instance.RunCreditsMenuLoop()) {
           return -1;
         }
         break;
 
       case pause_menu:
-        if (!Game_instance.pause_menu_loop()) {
+        if (!Game_instance.RunPauseMenuLoop()) {
           return -1;
         }
       }

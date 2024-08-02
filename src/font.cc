@@ -48,13 +48,13 @@ Font::~Font() {
   SDL_DestroyTexture(_texture);
 }
 
-bool Font::render(Graphics& Graphics) {
+bool Font::Render(Graphics& Graphics) {
   transform.x = pos_x;
   transform.y = pos_y;
 
   if (SDL_RenderCopy(Graphics.Renderer, _texture, nullptr, &transform)
       != SDL2_SUCCESS) {
-    error::show_box("Can't copy the texture: " + _name + " to the renderer.");
+    error::ShowBox("Can't copy the texture: " + _name + " to the renderer.");
     return false;
   }
   return true;

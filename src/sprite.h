@@ -37,15 +37,15 @@ class Sprite {
   Sprite(Graphics&, std::string, Uint32);
   virtual ~Sprite();
 
-  void         move(Graphics&, double, double);
-  void         animate(Graphics&);
-  virtual bool render(Graphics&);
+  void         Move(Graphics&, double, double);
+  void         Animate(Graphics&);
+  virtual bool Render(Graphics&);
 
  private:
   const Uint32 current_frame_start_time_ms_;
   Uint32       current_frame_elapsed_time_ms_;
 
-  bool load_textures_(Graphics&);
+  bool LoadTextures(Graphics&);
 };
 
 #endif  // SRC_SPRITE_H_

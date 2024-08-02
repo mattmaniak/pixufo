@@ -33,8 +33,8 @@ class Player: public Entity {
   explicit Player(Graphics&);
   ~Player();
 
-  bool keyboard_steering(Graphics&, State&);
-  void center_on_screen(unsigned int, unsigned int);
+  bool SteerUsingKeyboard(Graphics&, State&);
+  void CenterOnDisplay(unsigned int, unsigned int);
 };
 
 enum dir {
@@ -54,7 +54,7 @@ class Movement {
   Movement();
 
   void count_ratio(Graphics&, dir);
-  void move(Graphics&, Player&);
+  void Move(Graphics&, Player&);
 };
 }  // namespace player
 

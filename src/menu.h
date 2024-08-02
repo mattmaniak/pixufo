@@ -40,8 +40,8 @@ class Menu: public Scene {
   explicit Menu(Graphics&);
   ~Menu();
 
-  bool         render(Graphics&);
-  virtual bool keyboard_steering(State&) = 0;
+  bool         Render(Graphics&);
+  virtual bool SteerUsingKeyboard(State&) = 0;
 };
 
 
@@ -50,7 +50,7 @@ class Main_menu: public Menu {
   explicit Main_menu(Graphics&);
   ~Main_menu();
 
-  bool keyboard_steering(State&);
+  bool SteerUsingKeyboard(State&);
 };
 
 class Pause_menu: public Menu {
@@ -58,7 +58,7 @@ class Pause_menu: public Menu {
   explicit Pause_menu(Graphics&);
   ~Pause_menu();
 
-  bool keyboard_steering(State&);
+  bool SteerUsingKeyboard(State&);
 };
 
 class Credits_menu: public Menu {
@@ -66,7 +66,7 @@ class Credits_menu: public Menu {
   explicit Credits_menu(Graphics&);
   ~Credits_menu();
 
-  bool keyboard_steering(State&);
+  bool SteerUsingKeyboard(State&);
 };
 
 #endif  // SRC_MENU_H_

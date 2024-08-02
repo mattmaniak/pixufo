@@ -42,8 +42,8 @@ class Graphics {
   Graphics();
   ~Graphics();
 
-  bool set_up_new_frame();  // Prepare the window to rendering.
-  bool count_fps();         // End the frame and count frames.
+  bool SetUpNewFrame();  // Prepare the window to rendering.
+  bool CountFps();       // End the frame and count frames.
 
  private:
   bool renderer_initialized;
@@ -54,8 +54,8 @@ class Graphics {
   Uint32      frame_elapsed_time_ms_;  // As above but at the end of it.
   Uint32      fps_;
 
-  bool init_window_();
-  bool get_pixelart_px_sz_();
+  bool InitWindow();
+  bool GetPixelArtPixelSize();
 };
 
 #endif  // SRC_GRAPHICS_H_
