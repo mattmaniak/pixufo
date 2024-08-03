@@ -26,7 +26,6 @@ class Player: public Entity {
   ~Player();
 
   bool SteerUsingKeyboard(Graphics&, State&);
-  void CenterOnDisplay(unsigned int, unsigned int);
 
   double                                   horizontal_speed_;
   double                                   horizontal_step_;

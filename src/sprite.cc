@@ -35,6 +35,11 @@ Sprite::~Sprite() {
     }
   }
 }
+void Sprite::CenterOnDisplay(unsigned int screen_width,
+                             unsigned int screen_height) {
+  transform_.x = pos_x_ = (screen_width  - transform_.w) / 2;
+  transform_.y = pos_y_ = (screen_height - transform_.h) / 2;
+}
 
 void Sprite::Move(Graphics& graphics, double offset_x, double offset_y) {
   pos_x_ += offset_x * graphics.delta_time_s_ * graphics.pixelart_px_size_;

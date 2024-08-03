@@ -58,12 +58,6 @@ bool Player::SteerUsingKeyboard(Graphics& graphics, State& state) {
   return true;
 }
 
-void Player::CenterOnDisplay(unsigned int screen_width,
-                             unsigned int screen_height) {
-  transform_.x = pos_x_ = (screen_width  - transform_.w) / 2;
-  transform_.y = pos_y_ = (screen_height - transform_.h) / 2;
-}
-
 player::Movement::Movement(): max_time_s_(0.6), keypress_time_s_(0.0) {}
 
 void player::Movement::CountInertiaRatio(Graphics& graphics,

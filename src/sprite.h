@@ -28,6 +28,7 @@ class Sprite {
   Sprite(Graphics&, std::string, Uint32);
   virtual ~Sprite();
 
+  void         CenterOnDisplay(unsigned int, unsigned int);
   void         Move(Graphics&, double, double);
   void         Animate(Graphics&);
   virtual bool Render(Graphics&);

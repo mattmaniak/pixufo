@@ -28,7 +28,7 @@ bool Menu::Render(Graphics& graphics) {
   if (!bg_->TileAndRender(graphics)) {
     return false;
   }
-  sprites_["title"]->pos_x_ = sprites_["title"]->pos_y_ = PADDING;
+  sprites_["title"]->CenterOnDisplay(graphics.display_.w, graphics.display_.h);
 
   if (!sprites_["title"]->Render(graphics)) {
     return false;
