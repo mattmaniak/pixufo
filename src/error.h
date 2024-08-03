@@ -22,6 +22,6 @@ class Exception_box: public std::runtime_error {
  public:
   explicit Exception_box(const std::string&);
 };
-}
+}  // namespace error
 
 #endif  // SRC_ERROR_H_

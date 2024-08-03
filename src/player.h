@@ -18,7 +18,7 @@
 
 namespace player {
 class Movement;
-}
+}  // namespace player
 
 class Player: public Entity {
  public:
