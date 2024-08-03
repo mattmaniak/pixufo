@@ -27,12 +27,12 @@ class Sprite {
  public:
   const std::string name;
 
-  std::array<SDL_Texture*, FRAMES_NUMBER> textures;
-  std::size_t                             current_frame_idx;
+  std::array<SDL_Texture*, FRAMES_NUMBER> textures_;
+  std::size_t                             current_frame_idx_;
 
-  SDL_Rect transform;  // Textures's position and size.
-  double   pos_x;      // Theoretical (virtual) positions.
-  double   pos_y;
+  SDL_Rect transform_;  // Textures's position and size.
+  double   pos_x_;      // Theoretical (virtual) positions.
+  double   pos_y_;
 
   Sprite(Graphics&, std::string, Uint32);
   virtual ~Sprite();

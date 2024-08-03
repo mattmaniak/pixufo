@@ -5,8 +5,8 @@
 Player::Player(Graphics& graphics): Entity(graphics, "ufo", 110.0, 0) {
   horizontal_speed  = 0.0;
   vertical_speed    = 0.0;
-  horizontal_step   = 0.0;
-  vertical_step     = 0.0;
+  horizontal_step_  = 0.0;
+  vertical_step_    = 0.0;
   directions_number = 0;
 
   Movements.insert(std::make_pair("horizontal", new player::Movement));
@@ -21,15 +21,15 @@ Player::~Player() {
 }
 
 bool Player::SteerUsingKeyboard(Graphics& graphics, State& state) {
-  SDL_Event    Event;
+  SDL_Event    input_event;
   const Uint8* keys;
 
   keys = SDL_GetKeyboardState(nullptr);
-  SDL_PollEvent(&Event);
+  SDL_PollEvent(&input_event);
 
   directions_number = 0;
 
-  switch (Event.type) {
+  switch (input_event.type) {
     case SDL_QUIT:
       return false;
   }
@@ -60,74 +60,77 @@ bool Player::SteerUsingKeyboard(Graphics& graphics, State& state) {
 
 void Player::CenterOnDisplay(unsigned int screen_width,
                              unsigned int screen_height) {
-  transform.x = pos_x = (screen_width  - transform.w) / 2;
-  transform.y = pos_y = (screen_height - transform.h) / 2;
+  transform_.x = pos_x_ = (screen_width  - transform_.w) / 2;
+  transform_.y = pos_y_ = (screen_height - transform_.h) / 2;
 }
 
-player::Movement::Movement(): max_time_s(0.6), keypress_time_s(0.0) {}
+player::Movement::Movement(): max_time_s_(0.6), keypress_time_s_(0.0) {}
 
 void player::Movement::CountInertiaRatio(Graphics& graphics,
                                          MovementDirection passed_direction) {
-  direction = passed_direction;
+  direction_ = passed_direction;
 
-  switch (direction) {
+  switch (direction_) {
   case kLeft:
-    if ((keypress_time_s - graphics.delta_time_s) >= -max_time_s) {
-      keypress_time_s -= graphics.delta_time_s;
+    if ((keypress_time_s_ - graphics.delta_time_s) >= -max_time_s_) {
+      keypress_time_s_ -= graphics.delta_time_s;
     }
     break;
 
   case kRight:
-    if ((keypress_time_s + graphics.delta_time_s) <= max_time_s) {
-      keypress_time_s += graphics.delta_time_s;
+    if ((keypress_time_s_ + graphics.delta_time_s) <= max_time_s_) {
+      keypress_time_s_ += graphics.delta_time_s;
     }
     break;
 
   case kUp:
-    if ((keypress_time_s - graphics.delta_time_s) >= -max_time_s) {
-      keypress_time_s -= graphics.delta_time_s;
+    if ((keypress_time_s_ - graphics.delta_time_s) >= -max_time_s_) {
+      keypress_time_s_ -= graphics.delta_time_s;
     }
     break;
 
   case kDown:
-    if ((keypress_time_s + graphics.delta_time_s) <= max_time_s) {
-      keypress_time_s += graphics.delta_time_s;
+    if ((keypress_time_s_ + graphics.delta_time_s) <= max_time_s_) {
+      keypress_time_s_ += graphics.delta_time_s;
     }
   }
 }
 
-void player::Movement::Move(Graphics& graphics, Player& Ufo) {
-  double vector_length = std::sqrt(std::pow(Ufo.horizontal_speed, 2.0)
-                         + std::pow(Ufo.vertical_speed, 2.0)) / Ufo.max_speed;
+void player::Movement::Move(Graphics& graphics, Player& player_) {
+  double vector_length = std::sqrt(std::pow(player_.horizontal_speed, 2.0)
+                         + std::pow(player_.vertical_speed, 2.0))
+                         / player_.max_speed_;
 
-  switch (direction) {
+  switch (direction_) {
   case kLeft:
   case kRight:
-    Ufo.horizontal_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
-    Ufo.horizontal_step  = Ufo.horizontal_speed * graphics.delta_time_s
-                           * graphics.pixelart_px_sz;
+    player_.horizontal_speed = player_.max_speed_
+                               * (keypress_time_s_ / max_time_s_);
+    player_.horizontal_step_ = player_.horizontal_speed * graphics.delta_time_s
+                               * graphics.pixelart_px_size_;
     break;
 
   case kUp:
   case kDown:
-    Ufo.vertical_speed = Ufo.max_speed * (keypress_time_s / max_time_s);
-    Ufo.vertical_step  = Ufo.vertical_speed * graphics.delta_time_s
-                         * graphics.pixelart_px_sz;
+    player_.vertical_speed = player_.max_speed_
+                             * (keypress_time_s_ / max_time_s_);
+    player_.vertical_step_ = player_.vertical_speed * graphics.delta_time_s
+                             * graphics.pixelart_px_size_;
   }
 
   // Prevents diagonal speed-ups.
-  if ((Ufo.directions_number == 2) && (vector_length > 1.0)) {
-    Ufo.horizontal_step /= vector_length;
-    Ufo.vertical_step   /= vector_length;
+  if ((player_.directions_number == 2) && (vector_length > 1.0)) {
+    player_.horizontal_step_ /= vector_length;
+    player_.vertical_step_   /= vector_length;
   }
-  switch (direction) {
+  switch (direction_) {
   case kLeft:
   case kRight:
-    Ufo.pos_x += Ufo.horizontal_step;
+    player_.pos_x_ += player_.horizontal_step_;
     break;
 
   case kUp:
   case kDown:
-    Ufo.pos_y += Ufo.vertical_step;
+    player_.pos_y_ += player_.vertical_step_;
   }
 }

@@ -22,12 +22,12 @@ Sprite(
 
   // Disable speed randomization for the Player.
   if (name == "ufo") {
-    max_speed = passed_speed;
+    max_speed_ = passed_speed;
   } else {
-    max_speed = distribution(random_generator);
+    max_speed_ = distribution(random_generator);
   }
-  hidden_timeout_ms = 0;
-  step = 0.0;
+  hidden_timeout_ms_ = 0;
+  step_ = 0.0;
 }
 
 bool Entity::LoadHitbox(Graphics& graphics) {
@@ -42,32 +42,32 @@ bool Entity::LoadHitbox(Graphics& graphics) {
   }
 
   for (;;) {
-    hitbox_parts.push_back({0, 0, 0, 0});
+    hitbox_parts_.push_back({0, 0, 0, 0});
 
     std::fscanf(hitbox_parts_file, "(%d, %d) [%d, %d]\n",
-                &hitbox_parts[rects_number].x, &hitbox_parts[rects_number].y,
-                &hitbox_parts[rects_number].w, &hitbox_parts[rects_number].h);
+                &hitbox_parts_[rects_number].x, &hitbox_parts_[rects_number].y,
+                &hitbox_parts_[rects_number].w, &hitbox_parts_[rects_number].h);
 
-    hitbox_parts[rects_number].w = hitbox_parts[rects_number].w
-                                   * graphics.pixelart_px_sz;
+    hitbox_parts_[rects_number].w = hitbox_parts_[rects_number].w
+                                    * graphics.pixelart_px_size_;
 
-    hitbox_parts[rects_number].h = hitbox_parts[rects_number].h
-                                   * graphics.pixelart_px_sz;
+    hitbox_parts_[rects_number].h = hitbox_parts_[rects_number].h
+                                    * graphics.pixelart_px_size_;
 
-    hitbox_parts[rects_number].x = hitbox_parts[rects_number].x
-                                   * graphics.pixelart_px_sz;
+    hitbox_parts_[rects_number].x = hitbox_parts_[rects_number].x
+                                    * graphics.pixelart_px_size_;
 
-    hitbox_parts[rects_number].y = hitbox_parts[rects_number].y
-                                   * graphics.pixelart_px_sz;
+    hitbox_parts_[rects_number].y = hitbox_parts_[rects_number].y
+                                    * graphics.pixelart_px_size_;
 
-    if (((hitbox_parts[rects_number].x    == 0)  // Empty file scenario.
-         && (hitbox_parts[rects_number].y == 0)
-         && (hitbox_parts[rects_number].w == 0)
-         && (hitbox_parts[rects_number].h == 0))
-        || (hitbox_parts[rects_number].x  < 0)   // Wrong position or/and size.
-        || (hitbox_parts[rects_number].y  < 0)
-        || (hitbox_parts[rects_number].w  < 1)
-        || (hitbox_parts[rects_number].h  < 1)) {
+    if (((hitbox_parts_[rects_number].x    == 0)  // Empty file scenario.
+         && (hitbox_parts_[rects_number].y == 0)
+         && (hitbox_parts_[rects_number].w == 0)
+         && (hitbox_parts_[rects_number].h == 0))
+        || (hitbox_parts_[rects_number].x  <  0)  // Wrong pos and/or size.
+        || (hitbox_parts_[rects_number].y  <  0)
+        || (hitbox_parts_[rects_number].w  <  1)
+        || (hitbox_parts_[rects_number].h  <  1)) {
       error::ShowBox("Wrong hitbox for the: " + name);
       return false;
     }
@@ -76,7 +76,7 @@ bool Entity::LoadHitbox(Graphics& graphics) {
     }
     rects_number++;
 
-    if (rects_number > static_cast<std::size_t>(transform.w * transform.h)) {
+    if (rects_number > static_cast<std::size_t>(transform_.w * transform_.h)) {
       error::ShowBox("Too many hitbox parts for: " + name);
       std::fclose(hitbox_parts_file);
 
@@ -92,11 +92,11 @@ void Entity::RandomizeInitialPos() {
   std::mt19937 prng;
   prng.seed(std::random_device()());
 
-  std::uniform_int_distribution<> distributor_x(max_x, 2 * max_x);
-  std::uniform_int_distribution<> distributor_y(min_y, max_y);
+  std::uniform_int_distribution<> distributor_x(max_x_, 2 * max_x_);
+  std::uniform_int_distribution<> distributor_y(min_y_, max_y_);
 
-  pos_x = distributor_x(prng);
-  pos_y = distributor_y(prng);
+  pos_x_ = distributor_x(prng);
+  pos_y_ = distributor_y(prng);
 }
 
 bool Entity::Render(Graphics& graphics) {
@@ -107,35 +107,34 @@ bool Entity::Render(Graphics& graphics) {
 #ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
   if (name != "ufo") {
 #endif
-    transform.x = pos_x;
-    transform.y = pos_y;
+    transform_.x = pos_x_;
+    transform_.y = pos_y_;
 #ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
   }
 #endif
 
-  step = max_speed * graphics.delta_time_s * graphics.pixelart_px_sz;
-
+  step_ = max_speed_ * graphics.delta_time_s * graphics.pixelart_px_size_;
   Animate(graphics);
 
-  if (SDL_RenderCopy(graphics.Renderer, textures[current_frame_idx], nullptr,
-                     &transform) != SDL2_SUCCESS) {
+  if (SDL_RenderCopy(graphics.Renderer_, textures_[current_frame_idx_], nullptr,
+                     &transform_) != SDL2_SUCCESS) {
     error::ShowBox("Can't render the: " + name);
     return false;
   }
 
 // #ifdef DEBUG
-//   for (std::size_t idx = 0; idx < hitbox_parts.size(); idx++) {
-//     hbox_part.w = hitbox_parts[idx].w;
-//     hbox_part.h = hitbox_parts[idx].h;
-//     hbox_part.x = pos_x + hitbox_parts[idx].x;
-//     hbox_part.y = pos_y + hitbox_parts[idx].y;
+//   for (std::size_t idx = 0; idx < hitbox_parts_.size(); idx++) {
+//     hbox_part.w = hitbox_parts_[idx].w;
+//     hbox_part.h = hitbox_parts_[idx].h;
+//     hbox_part.x = pos_x_ + hitbox_parts_[idx].x;
+//     hbox_part.y = pos_y_ + hitbox_parts_[idx].y;
 
-//     if (SDL_SetRenderDrawColor(graphics.Renderer, 0, 255, 0, 100)
+//     if (SDL_SetRenderDrawColor(graphics.Renderer_, 0, 255, 0, 100)
 //         != SDL2_SUCCESS) {
 //       error::ShowBox("Can't set color for: " + name + " hitbox.");
 //       return false;
 //     }
-//     if (SDL_RenderFillRect(graphics.Renderer, &hbox_part) != SDL2_SUCCESS) {
+//     if (SDL_RenderFillRect(graphics.Renderer_, &hbox_part) != SDL2_SUCCESS) {
 //       error::ShowBox("Can't render the hitbox part for: " + name);
 //       return false;
 //     }

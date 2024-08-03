@@ -9,30 +9,30 @@
 
 int main() {
   try {
-    Game Game_instance;
+    Game game_instance;
 
     for (;;) {
-      switch (Game_instance.get_state()) {
+      switch (game_instance.get_state_()) {
       case kCreditsMenu:
-        if (!Game_instance.RunCreditsMenuLoop()) {
+        if (!game_instance.RunCreditsMenuLoop()) {
           return -1;
         }
         break;
 
       case kLevel:
-        if (!Game_instance.RunLevelLoop()) {
+        if (!game_instance.RunLevelLoop()) {
           return -1;
         }
         break;
 
       case kMainMenu:
-        if (!Game_instance.RunMainMenuLoop()) {
+        if (!game_instance.RunMainMenuLoop()) {
           return -1;
         }
         break;
 
       case kPauseMenu:
-        if (!Game_instance.RunPauseMenuLoop()) {
+        if (!game_instance.RunPauseMenuLoop()) {
           return -1;
         }
       }

@@ -2,7 +2,7 @@
 
 #include "game.h"
 
-Game::Game(): _state(kMainMenu) {
+Game::Game(): state_(kMainMenu) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != SDL2_SUCCESS) {
     throw error::Exception_box("Can't initialize the SDL2.");
   }
@@ -10,44 +10,44 @@ Game::Game(): _state(kMainMenu) {
     throw error::Exception_box("Can't initialize the SDL2 ttf module.");
   }
   try {
-    _graphics = new Graphics;
+    graphics_ = new Graphics;
   } catch (std::runtime_error) {
     throw std::runtime_error("Unable to initialize the Graphics module.");
   }
 
   try {
-    _level    = new Level(*_graphics, "background_level", 2);
+    level_ = new Level(*graphics_, "background_level", 2);
   } catch (std::runtime_error) {
     throw std::runtime_error("Unable to initialize the Level module.");
   }
 }
 
 Game::~Game() {
-  delete _graphics;
-  delete _level;
+  delete graphics_;
+  delete level_;
 
   TTF_Quit();
   SDL_Quit();  // 38 memleaks there.
 }
 
-State Game::get_state() {
-  return _state;
+State Game::get_state_() {
+  return state_;
 }
 
 bool Game::RunCreditsMenuLoop() {
-  Credits_menu Current_menu(*_graphics);  // Unhandled exceptions possible.
+  Credits_menu current_menu(*graphics_);  // Unhandled exceptions possible.
 
-  while (_state == kCreditsMenu) {
-    if (!_graphics->SetUpNewFrame()) {
+  while (state_ == kCreditsMenu) {
+    if (!graphics_->SetUpNewFrame()) {
       return false;
     }
-    if (!Current_menu.Render(*_graphics)) {
+    if (!current_menu.Render(*graphics_)) {
       return false;
     }
-    if (!Current_menu.SteerUsingKeyboard(_state)) {
+    if (!current_menu.SteerUsingKeyboard(state_)) {
       return false;
     }
-    if (!_graphics->CountFps()) {
+    if (!graphics_->CountFps()) {
       return false;
     }
   }
@@ -56,49 +56,49 @@ bool Game::RunCreditsMenuLoop() {
 
 bool Game::RunLevelLoop() {
   // Has some artifacts in a background.
-  Font Game_over_font(*_graphics, "Game Over", MAIN_FONT_SZ);
+  const time_t kGameOverDurationMs = 2000;
+  Font game_over_font(*graphics_, "Game Over", MAIN_FONT_SZ);
 
-  while (_state == kLevel) {
-    if (!_graphics->SetUpNewFrame()) {
+  while (state_ == kLevel) {
+    if (!graphics_->SetUpNewFrame()) {
       return false;
     }
-    if (!_level->Ufo->SteerUsingKeyboard(*_graphics, _state)) {
+    if (!level_->player_->SteerUsingKeyboard(*graphics_, state_)) {
       return false;
     }
-    _level->CheckEnemiesPosition(*_graphics);
-    _level->CheckPlayerPos();
+    level_->CheckEnemiesPosition(*graphics_);
+    level_->CheckPlayerPos();
 
-    if (_level->CheckPlayerCollision()) {
+    if (level_->CheckPlayerCollision()) {
       // Additional frame to fully cover both models during a collision.
-      if (!_level->Render(*_graphics)) {
+      if (!level_->Render(*graphics_)) {
         return false;
       }
+      game_over_font.pos_x_ = (graphics_->Display_.w
+                               - game_over_font.transform_.w) / 2;
+      game_over_font.pos_y_ = (graphics_->Display_.h
+                               - game_over_font.transform_.h) / 2;
 
-      Game_over_font.pos_x = (_graphics->Display.w
-                              - Game_over_font.transform.w) / 2;
-      Game_over_font.pos_y = (_graphics->Display.h
-                              - Game_over_font.transform.h) / 2;
-
-      if (!Game_over_font.Render(*_graphics)) {
+      if (!game_over_font.Render(*graphics_)) {
         return false;
       }
-      SDL_RenderPresent(_graphics->Renderer);
+      SDL_RenderPresent(graphics_->Renderer_);
 
-      SDL_Delay(2000);  // Wait a moment after a player's death.
-      _state = kMainMenu;
+      SDL_Delay(kGameOverDurationMs);  // Wait a moment after a player's death.
+      state_ = kMainMenu;
 
       return true;
     }
-    _level->score_points += _graphics->delta_time_s * 1000.0;
+    level_->score_points_ += graphics_->delta_time_s * 1000.0;
 
-    if (_level->score_points >= std::numeric_limits<unsigned int>::max()) {
+    if (level_->score_points_ >= std::numeric_limits<unsigned int>::max()) {
       error::ShowBox("You've reached the score limit.");
       return false;
     }
-    if (!_level->Render(*_graphics)) {
+    if (!level_->Render(*graphics_)) {
       return false;
     }
-    if (!_graphics->CountFps()) {
+    if (!graphics_->CountFps()) {
       return false;
     }
   }
@@ -106,41 +106,41 @@ bool Game::RunLevelLoop() {
 }
 
 bool Game::RunMainMenuLoop() {
-  Main_menu Current_menu(*_graphics);  // Unhandled exceptions possible.
+  Main_menu current_menu(*graphics_);  // Unhandled exceptions possible.
 
-  while (_state == kMainMenu) {
-    if (!_graphics->SetUpNewFrame()) {
+  while (state_ == kMainMenu) {
+    if (!graphics_->SetUpNewFrame()) {
       return false;
     }
-    if (!Current_menu.Render(*_graphics)) {
+    if (!current_menu.Render(*graphics_)) {
       return false;
     }
-    if (!Current_menu.SteerUsingKeyboard(_state)) {
+    if (!current_menu.SteerUsingKeyboard(state_)) {
       return false;
     }
-    if (!_graphics->CountFps()) {
+    if (!graphics_->CountFps()) {
       return false;
     }
   }
-  _level->Reset();
+  level_->Reset();
 
   return true;
 }
 
 bool Game::RunPauseMenuLoop() {
-  Pause_menu Current_menu(*_graphics);  // Unhandled exceptions possible.
+  Pause_menu current_menu(*graphics_);  // Unhandled exceptions possible.
 
-  while (_state == kPauseMenu) {
-    if (!_graphics->SetUpNewFrame()) {
+  while (state_ == kPauseMenu) {
+    if (!graphics_->SetUpNewFrame()) {
       return false;
     }
-    if (!Current_menu.Render(*_graphics)) {
+    if (!current_menu.Render(*graphics_)) {
       return false;
     }
-    if (!Current_menu.SteerUsingKeyboard(_state)) {
+    if (!current_menu.SteerUsingKeyboard(state_)) {
       return false;
     }
-    if (!_graphics->CountFps()) {
+    if (!graphics_->CountFps()) {
       return false;
     }
   }

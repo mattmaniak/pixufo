@@ -7,83 +7,84 @@ Level::Level(
     std::string bg_name,
     unsigned int enemies_number):
 Scene(graphics, bg_name),
-    _nebulas_number(enemies_number) {
-  const double size_to_screen_width_ratio = 1.0;
+    enemies_number_(enemies_number) {
+  const double kSizeToDisplayWidthRatio = 1.0;
 
-  _width  = graphics.Display.w * size_to_screen_width_ratio;
-  _height = graphics.Display.h * size_to_screen_width_ratio;
+  width_  = graphics.Display_.w * kSizeToDisplayWidthRatio;
+  height_ = graphics.Display_.h * kSizeToDisplayWidthRatio;
 
   try {
-    Ufo = new Player(graphics);
+    player_ = new Player(graphics);
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }
-  AdjustEnemiesBorders(graphics, *Ufo);
+  AdjustEntityBorders(graphics, *player_);
 
   // Set the player's default position.
-  Ufo->CenterOnDisplay(_width, _height);
+  player_->CenterOnDisplay(width_, height_);
 
   RandimizeEnemiesNumber();
 
   // Create all enemies.
-  for (std::size_t idx = 0; idx < _nebulas_number; idx++) {
+  for (std::size_t idx = 0; idx < enemies_number_; idx++) {
     try {
       RandimizeEnemyType(graphics);
     } catch (std::runtime_error) {
       throw std::runtime_error("");
     }
-    AdjustEnemiesBorders(graphics, *_nebulas[idx]);
+    AdjustEntityBorders(graphics, *enemies_[idx]);
   }
 }
 
 Level::~Level() {
-  for (auto& Nebula : _nebulas) {
-    delete Nebula;
+  for (auto& enemy : enemies_) {
+    delete enemy;
   }
-  delete Ufo;
+  delete player_;
 }
 
 void Level::Reset() {
-  Ufo->Movements["horizontal"]->keypress_time_s = 0.0;
-  Ufo->Movements["vertical"]->keypress_time_s   = 0.0;
+  player_->Movements["horizontal"]->keypress_time_s_ = 0.0;
+  player_->Movements["vertical"]->keypress_time_s_   = 0.0;
 
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
-  Ufo->CenterOnDisplay(_width, _height);
+  player_->CenterOnDisplay(width_, height_);
 #endif
 
-  for (auto& Nebula : _nebulas) {
-    Nebula->RandomizeInitialPos();
+  for (auto& enemy : enemies_) {
+    enemy->RandomizeInitialPos();
   }
-  score_points = 0;
+  score_points_ = 0;
 }
 
-void Level::AdjustEnemyBorder(Graphics& graphics) {
-  _width  = graphics.Display.w;
-  _height = graphics.Display.h;
+void Level::AdjustAllEntitiesBorders(Graphics& graphics) {
+  width_  = graphics.Display_.w;
+  height_ = graphics.Display_.h;
 
-  for (auto& Nebula : _nebulas) {
-    AdjustEnemiesBorders(graphics, *Nebula);
+  for (auto& enemy : enemies_) {
+    AdjustEntityBorders(graphics, *enemy);
   }
-  AdjustEnemiesBorders(graphics, *Ufo);
+  AdjustEntityBorders(graphics, *player_);
 }
 
 void Level::CheckPlayerPos() {
   // If the model is out of the level, it will be moved to the mirrored place.
 
-  if (Ufo->pos_x < Ufo->min_x) {
-    Ufo->pos_x = Ufo->max_x;
-  } else if (Ufo->pos_x > Ufo->max_x) {
-    Ufo->pos_x = Ufo->min_x;
-  } else if (Ufo->pos_y < Ufo->min_y) {
-    Ufo->pos_y = Ufo->max_y;
-  } else if (Ufo->pos_y > Ufo->max_y) {
-    Ufo->pos_y = Ufo->min_y;
+  if (player_->pos_x_ < player_->min_x_) {
+    player_->pos_x_ = player_->max_x_;
+  } else if (player_->pos_x_ > player_->max_x_) {
+    player_->pos_x_ = player_->min_x_;
+  } else if (player_->pos_y_ < player_->min_y_) {
+    player_->pos_y_ = player_->max_y_;
+  } else if (player_->pos_y_ > player_->max_y_) {
+    player_->pos_y_ = player_->min_y_;
   }
 }
 
 bool Level::CheckPlayerCollision() {
-  for (std::size_t en_idx = 0; en_idx < _nebulas.size(); en_idx++) {
-    if (SDL_HasIntersection(&Ufo->transform, &_nebulas[en_idx]->transform)) {
+  for (std::size_t en_idx = 0; en_idx < enemies_.size(); en_idx++) {
+    if (SDL_HasIntersection(&player_->transform_,
+                            &enemies_[en_idx]->transform_)) {
       if (CheckPlayerAdvancedCollision(en_idx)) {
         return true;
       }
@@ -93,77 +94,78 @@ bool Level::CheckPlayerCollision() {
 }
 
 void Level::CheckEnemiesPosition(Graphics& graphics) {
-  for (auto& Nebula : _nebulas) {
-    if ((Nebula->pos_x < Nebula->min_x) || (Nebula->pos_x > Nebula->max_x)) {
-      Nebula->hidden_timeout_ms += graphics.delta_time_s * 1000.0;
+  for (auto& enemy : enemies_) {
+    if ((enemy->pos_x_ < enemy->min_x_) || (enemy->pos_x_ > enemy->max_x_)) {
+      enemy->hidden_timeout_ms_ += graphics.delta_time_s * 1000.0;
     }
-    if (Nebula->hidden_timeout_ms > NEBULA_HIDDEN_TIMEOUT_MS) {
-      Nebula->hidden_timeout_ms = 0;
+    if (enemy->hidden_timeout_ms_ > NEBULA_HIDDEN_TIMEOUT_MS) {
+      enemy->hidden_timeout_ms_ = 0;
 
-      Nebula->RandomizeInitialPos();
-      Nebula->pos_x = graphics.Display.w - graphics.pixelart_px_sz;
+      enemy->RandomizeInitialPos();
+      enemy->pos_x_ = graphics.Display_.w - graphics.pixelart_px_size_;
     }
   }
 }
 
 bool Level::Render(Graphics& graphics) {
 #ifdef DEBUG
-  Font Fps_font(graphics, std::to_string(graphics.fps) + " FPS", TEXT_FONT_SZ);
+  Font Fpsfont_(graphics, std::to_string(graphics.fps_) + " FPS", TEXT_FONT_SZ);
 #endif
-  Font Score_font(graphics, std::to_string(score_points), TEXT_FONT_SZ);
+  Font Scorefont_(graphics, std::to_string(score_points_), TEXT_FONT_SZ);
 
 #ifdef DEBUG
-  Fps_font.pos_x = graphics.Display.w - Fps_font.transform.w - (PADDING / 2.0);
-  Fps_font.pos_y = PADDING / 2.0;
+  Fpsfont_.pos_x_ = graphics.Display_.w - Fpsfont_.transform_.w
+                    - (PADDING / 2.0);
+  Fpsfont_.pos_y_ = PADDING / 2.0;
 #endif
 
-  Score_font.pos_x = Score_font.pos_y = PADDING / 2.0;  // Left, upper corner.
+  Scorefont_.pos_x_ = Scorefont_.pos_y_ = PADDING / 2.0;  // Left, upper corner.
 
-  if (!Bg->TileAndRender(graphics)) {
+  if (!bg_->TileAndRender(graphics)) {
     return false;
   }
 
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
-  Bg->Move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
+  bg_->Move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
 #else
-  Bg->Move(graphics,
-           -Ufo->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED,
-           -Ufo->vertical_speed * BACKGROUND_TO_PLAYER_SPEED);
+  bg_->Move(graphics,
+            -player_->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED,
+            -player_->vertical_speed * BACKGROUND_TO_PLAYER_SPEED);
 #endif
 
-  for (auto& Nebula : _nebulas) {
-    if (!Nebula->Render(graphics)) {
+  for (auto& enemy : enemies_) {
+    if (!enemy->Render(graphics)) {
       return false;
     }
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
-    Nebula->Move(graphics, -Nebula->max_speed, 0.0);  // Moving to the left.
+    enemy->Move(graphics, -enemy->max_speed_, 0.0);  // Moving to the left.
 #else
-    Nebula->Move(graphics,
-                 -Ufo->horizontal_speed - Nebula->max_speed,
-                 -Ufo->vertical_speed);
+    enemy->Move(graphics,
+                 -player_->horizontal_speed - enemy->max_speed_,
+                 -player_->vertical_speed);
 #endif
   }
-  if (!Ufo->Render(graphics)) {
+  if (!player_->Render(graphics)) {
     return false;
   }
 #ifdef DEBUG
-  if (!Fps_font.Render(graphics)) {
+  if (!Fpsfont_.Render(graphics)) {
     return false;
   }
 #endif
-  if (!Score_font.Render(graphics)) {
+  if (!Scorefont_.Render(graphics)) {
     return false;
   }
-  SDL_RenderPresent(graphics.Renderer);
+  SDL_RenderPresent(graphics.Renderer_);
 
   return true;
 }
 
-void Level::AdjustEnemiesBorders(Graphics& graphics, Entity& Entity) {
-  Entity.min_x = graphics.pixelart_px_sz - Entity.transform.w;
-  Entity.min_y = graphics.pixelart_px_sz - Entity.transform.h;
-  Entity.max_x = _width  - graphics.pixelart_px_sz;
-  Entity.max_y = _height - graphics.pixelart_px_sz;
+void Level::AdjustEntityBorders(Graphics& graphics, Entity& Entity) {
+  Entity.min_x_ = graphics.pixelart_px_size_ - Entity.transform_.w;
+  Entity.min_y_ = graphics.pixelart_px_size_ - Entity.transform_.h;
+  Entity.max_x_ = width_  - graphics.pixelart_px_size_;
+  Entity.max_y_ = height_ - graphics.pixelart_px_size_;
 }
 
 void Level::RandimizeEnemiesNumber() {
@@ -173,7 +175,7 @@ void Level::RandimizeEnemiesNumber() {
   std::uniform_int_distribution<std::mt19937::result_type>
   distributor_enemies(MIN_NEBULAS_NUMBER, MAX_NEBULAS_NUMBER);
 
-  _nebulas_number = distributor_enemies(prng);
+  enemies_number_ = distributor_enemies(prng);
 }
 
 void Level::RandimizeEnemyType(Graphics& graphics) {
@@ -191,22 +193,22 @@ void Level::RandimizeEnemyType(Graphics& graphics) {
     case 1:
     case 2:
     case 3:
-      _nebulas.push_back(new Entity(graphics, "nebula_wasp", 160.0, 80));
+      enemies_.push_back(new Entity(graphics, "nebula_wasp", 160.0, 80));
       break;
 
     case 4:
     case 5:
     case 6:
-      _nebulas.push_back(new Entity(graphics, "nebula_medium", 120.0, 100));
+      enemies_.push_back(new Entity(graphics, "nebula_medium", 120.0, 100));
       break;
 
     case 7:
     case 8:
-      _nebulas.push_back(new Entity(graphics, "nebula_big", 90.0, 160));
+      enemies_.push_back(new Entity(graphics, "nebula_big", 90.0, 160));
       break;
 
     case 9:
-      _nebulas.push_back(new Entity(graphics, "nebula_umbrella", 50.0, 200));
+      enemies_.push_back(new Entity(graphics, "nebula_umbrella", 50.0, 200));
     }
   } catch (std::runtime_error) {
     throw std::runtime_error("");
@@ -214,32 +216,34 @@ void Level::RandimizeEnemyType(Graphics& graphics) {
 }
 
 bool Level::CheckPlayerAdvancedCollision(std::size_t en_idx) {
-  SDL_Rect Player_hbox_part;
-  SDL_Rect Nebula_hbox_part;
+  SDL_Rect player_hitbox_part;
+  SDL_Rect enemy_hitbox_part;
 
-  // Check the Player's hitbox part by _nebulas' hitbox part.
-  for (std::size_t pl_hb_idx = 0; pl_hb_idx < Ufo->hitbox_parts.size();
+  // Check the Player's hitbox part by enemies_' hitbox part.
+  for (std::size_t pl_hb_idx = 0; pl_hb_idx < player_->hitbox_parts_.size();
       pl_hb_idx++) {
     // Position the Player's hitbox part.
-    Player_hbox_part.w = Ufo->hitbox_parts[pl_hb_idx].w;
-    Player_hbox_part.h = Ufo->hitbox_parts[pl_hb_idx].h;
-    Player_hbox_part.x = Ufo->pos_x + (Ufo->hitbox_parts[pl_hb_idx].x);
-    Player_hbox_part.y = Ufo->pos_y + (Ufo->hitbox_parts[pl_hb_idx].y);
+    player_hitbox_part.w = player_->hitbox_parts_[pl_hb_idx].w;
+    player_hitbox_part.h = player_->hitbox_parts_[pl_hb_idx].h;
+    player_hitbox_part.x = player_->pos_x_
+                           + (player_->hitbox_parts_[pl_hb_idx].x);
+    player_hitbox_part.y = player_->pos_y_
+                           + (player_->hitbox_parts_[pl_hb_idx].y);
 
     for (std::size_t en_hb_idx = 0;
-         en_hb_idx < _nebulas[en_idx]->hitbox_parts.size(); en_hb_idx++) {
-      // Position the Nebula's hitbox part.
-      Nebula_hbox_part.w = _nebulas[en_idx]->hitbox_parts[en_hb_idx].w;
-      Nebula_hbox_part.h = _nebulas[en_idx]->hitbox_parts[en_hb_idx].h;
+         en_hb_idx < enemies_[en_idx]->hitbox_parts_.size(); en_hb_idx++) {
+      // Position the enemy's hitbox part.
+      enemy_hitbox_part.w = enemies_[en_idx]->hitbox_parts_[en_hb_idx].w;
+      enemy_hitbox_part.h = enemies_[en_idx]->hitbox_parts_[en_hb_idx].h;
 
-      Nebula_hbox_part.x =
-        _nebulas[en_idx]->pos_x
-        + (_nebulas[en_idx]->hitbox_parts[en_hb_idx].x);
-      Nebula_hbox_part.y =
-        _nebulas[en_idx]->pos_y
-        + (_nebulas[en_idx]->hitbox_parts[en_hb_idx].y);
+      enemy_hitbox_part.x =
+        enemies_[en_idx]->pos_x_
+        + (enemies_[en_idx]->hitbox_parts_[en_hb_idx].x);
+      enemy_hitbox_part.y =
+        enemies_[en_idx]->pos_y_
+        + (enemies_[en_idx]->hitbox_parts_[en_hb_idx].y);
 
-      if (SDL_HasIntersection(&Player_hbox_part, &Nebula_hbox_part)) {
+      if (SDL_HasIntersection(&player_hitbox_part, &enemy_hitbox_part)) {
         return true;  // Collision.
       }
     }
@@ -248,10 +252,11 @@ bool Level::CheckPlayerAdvancedCollision(std::size_t en_idx) {
 }
 
 void Level::RandomizeEnemiesPosition() {  // Causes infinite loop...
-  for (std::size_t idx = 0; idx < _nebulas.size() - 1; idx++) {
-    while ((_nebulas[idx]->transform.x == _nebulas[idx + 1]->transform.x)
-           || (_nebulas[idx]->transform.y == _nebulas[idx + 1]->transform.y)) {
-      _nebulas[idx]->RandomizeInitialPos();
+  for (std::size_t idx = 0; idx < enemies_.size() - 1; idx++) {
+    while ((enemies_[idx]->transform_.x == enemies_[idx + 1]->transform_.x)
+           || (enemies_[idx]->transform_.y
+               == enemies_[idx + 1]->transform_.y)) {
+      enemies_[idx]->RandomizeInitialPos();
     }
   }
 }

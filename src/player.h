@@ -24,8 +24,8 @@ class Player: public Entity {
  public:
   double horizontal_speed;
   double vertical_speed;
-  double horizontal_step;
-  double vertical_step;
+  double horizontal_step_;
+  double vertical_step_;
 
   std::size_t                              directions_number;
   std::map<std::string, player::Movement*> Movements;
@@ -47,9 +47,9 @@ enum MovementDirection {
 namespace player {
 class Movement {
  public:
-  MovementDirection direction;
-  const double      max_time_s;
-  double            keypress_time_s;
+  MovementDirection direction_;
+  const double      max_time_s_;
+  double            keypress_time_s_;
 
   Movement();
 

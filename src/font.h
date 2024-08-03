@@ -21,9 +21,9 @@
 class Font {
  public:
   const unsigned int size;
-  double             pos_x;
-  double             pos_y;
-  SDL_Rect           transform;  // Textures's position and size.
+  double             pos_x_;
+  double             pos_y_;
+  SDL_Rect           transform_;  // Textures's position and size.
 
   Font(Graphics&, std::string, unsigned int);
   ~Font();
@@ -31,11 +31,11 @@ class Font {
   bool Render(Graphics&);
 
  private:
-  const std::string  _name;
-  TTF_Font*          _font;
-  const std::string  _text;
-  SDL_Color          _color;
-  SDL_Texture*       _texture;
+  const std::string  name_;
+  TTF_Font*          font_;
+  const std::string  text_;
+  SDL_Color          color_;
+  SDL_Texture*       texture_;
 };
 
 #endif  // SRC_FONT_H_

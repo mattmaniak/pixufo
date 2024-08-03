@@ -33,11 +33,11 @@ class Graphics {
   double delta_time_s;  // Time to handle and render the single frame.
 
   // Describes how big is the pixelart's pixel. Depends on the screen width;
-  double        pixelart_px_sz;
-  SDL_Rect      Display;   // Holds the screen size.
-  SDL_Rect      Last_bg_transform;
-  SDL_Renderer* Renderer;  // Rendering context.
-  Uint32        fps;
+  double        pixelart_px_size_;
+  SDL_Rect      Display_;   // Holds the screen size.
+  SDL_Rect      Last_bg_transform_;
+  SDL_Renderer* Renderer_;  // Rendering context.
+  Uint32        fps_;
 
   Graphics();
   ~Graphics();
@@ -46,16 +46,16 @@ class Graphics {
   bool CountFps();       // End the frame and count frames.
 
  private:
-  bool renderer_initialized;
-  bool window_initialized;
+  bool renderer_initialized_;
+  bool window_initialized_;
 
   SDL_Window* Window_;
   Uint32      frame_start_time_ms_;    // Set at the beginning of the frame.
   Uint32      frame_elapsed_time_ms_;  // As above but at the end of it.
-  Uint32      fps_;
+  Uint32      fps_counter_;
 
   bool InitWindow();
-  bool GetPixelArtPixelSize();
+  bool GetPixelartPxSize();
 };
 
 #endif  // SRC_GRAPHICS_H_

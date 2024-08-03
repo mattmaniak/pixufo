@@ -5,70 +5,71 @@
 
 Menu::Menu(Graphics& graphics):
 Scene(graphics, "background_primary_menu"),
-    selected_button_idx(0) {
+    selected_button_idx_(0) {
   try {
-    Sprites.insert(std::make_pair("title", new Sprite(graphics, "title", 0)));
-    Sprites.insert(std::make_pair("selection_arrow",
-                                  new Sprite(graphics, "meteor", 0)));
+    sprites_.insert(std::make_pair("title", new Sprite(graphics, "title", 0)));
+    sprites_.insert(std::make_pair("selection_arrow",
+                                   new Sprite(graphics, "meteor", 0)));
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }
-  has_text                = false;
-  selection_arrow_focused = true;
+  contains_text_           = false;
+  selection_arrow_focused_ = true;
 }
 
 Menu::~Menu() {
-  delete Sprites["title"];
-  delete Sprites["selection_arrow"];
+  delete sprites_["title"];
+  delete sprites_["selection_arrow"];
 
-  Sprites.clear();
+  sprites_.clear();
 }
 
 bool Menu::Render(Graphics& graphics) {
-  if (!Bg->TileAndRender(graphics)) {
+  if (!bg_->TileAndRender(graphics)) {
     return false;
   }
-  Sprites["title"]->pos_x = Sprites["title"]->pos_y = PADDING;
+  sprites_["title"]->pos_x_ = sprites_["title"]->pos_y_ = PADDING;
 
-  if (!Sprites["title"]->Render(graphics)) {
+  if (!sprites_["title"]->Render(graphics)) {
     return false;
   }
 
-  for (std::size_t idx = 0; idx < buttons.size(); idx++) {
-    buttons[idx]->pos_x = PADDING;
-    buttons[idx]->pos_y = graphics.Display.h
-                          - (buttons[idx]->transform.h * buttons.size())
-                          + (idx * buttons[idx]->transform.h) - PADDING;
+  for (std::size_t idx = 0; idx < buttons_.size(); idx++) {
+    buttons_[idx]->pos_x_ = PADDING;
+    buttons_[idx]->pos_y_ = graphics.Display_.h
+                            - (buttons_[idx]->transform_.h * buttons_.size())
+                            + (idx * buttons_[idx]->transform_.h) - PADDING;
 
-    buttons[idx]->transform.x = buttons[idx]->pos_x;
-    buttons[idx]->transform.y = buttons[idx]->pos_y;
+    buttons_[idx]->transform_.x = buttons_[idx]->pos_x_;
+    buttons_[idx]->transform_.y = buttons_[idx]->pos_y_;
 
-    if (!buttons[idx]->Render(graphics)) {
+    if (!buttons_[idx]->Render(graphics)) {
       return false;
     }
-    if (idx == selected_button_idx) {
-      Sprites["selection_arrow"]->pos_x = buttons[idx]->transform.w + PADDING;
-      Sprites["selection_arrow"]->pos_y = buttons[idx]->transform.y;
+    if (idx == selected_button_idx_) {
+      sprites_["selection_arrow"]->pos_x_ = buttons_[idx]->transform_.w
+                                            + PADDING;
+      sprites_["selection_arrow"]->pos_y_ = buttons_[idx]->transform_.y;
     }
-    buttons[idx]->transform.x = buttons[idx]->pos_x;
-    buttons[idx]->transform.y = buttons[idx]->pos_y;
+    buttons_[idx]->transform_.x = buttons_[idx]->pos_x_;
+    buttons_[idx]->transform_.y = buttons_[idx]->pos_y_;
   }
-  if (selection_arrow_focused) {
-    if (!Sprites["selection_arrow"]->Render(graphics)) {
+  if (selection_arrow_focused_) {
+    if (!sprites_["selection_arrow"]->Render(graphics)) {
       return false;
     }
   }
-  if (has_text) {
-    for (auto& Line : Text_lines) {
+  if (contains_text_) {
+    for (auto& Line : text_lines_) {
       if (!Line->Render(graphics)) {
         return false;
       }
     }
   }
-  SDL_RenderPresent(graphics.Renderer);
+  SDL_RenderPresent(graphics.Renderer_);
 
 #ifndef DISABLE_MOVABLE_BACKGROUND
-  Bg->Move(graphics, -5.0, -5.0);
+  bg_->Move(graphics, -5.0, -5.0);
 #endif
 
   return true;
@@ -76,12 +77,12 @@ bool Menu::Render(Graphics& graphics) {
 
 Main_menu::Main_menu(Graphics& graphics): Menu(graphics) {
   try {
-    buttons.push_back(new Font(graphics, "Play", MAIN_FONT_SZ));
-    buttons.push_back(new Font(graphics, "Credits", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Play", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Credits", MAIN_FONT_SZ));
 #ifdef _WIN32
-    buttons.push_back(new Font(graphics, "Exit", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Exit", MAIN_FONT_SZ));
 #else
-    buttons.push_back(new Font(graphics, "Quit", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Quit", MAIN_FONT_SZ));
 #endif
   } catch (std::runtime_error) {
     throw std::runtime_error("");
@@ -89,35 +90,35 @@ Main_menu::Main_menu(Graphics& graphics): Menu(graphics) {
 }
 
 Main_menu::~Main_menu() {
-  for (auto& Button : buttons) {
+  for (auto& Button : buttons_) {
     delete Button;
   }
 }
 
 bool Main_menu::SteerUsingKeyboard(State& state) {
-  SDL_Event Event;
-  SDL_PollEvent(&Event);
+  SDL_Event input_event;
+  SDL_PollEvent(&input_event);
 
-  switch (Event.type) {
+  switch (input_event.type) {
   case SDL_QUIT:
     return false;
 
   case SDL_KEYDOWN:
-    switch (Event.key.keysym.sym) {
+    switch (input_event.key.keysym.sym) {
     case SDLK_UP:
-      if (selected_button_idx > 0) {
-        selected_button_idx--;
+      if (selected_button_idx_ > 0) {
+        selected_button_idx_--;
       }
       break;
 
     case SDLK_DOWN:
-      if (selected_button_idx < (buttons.size() - 1)) {
-        selected_button_idx++;
+      if (selected_button_idx_ < (buttons_.size() - 1)) {
+        selected_button_idx_++;
       }
       break;
 
     case SDLK_RETURN:
-      switch (selected_button_idx) {
+      switch (selected_button_idx_) {
       case 0:
         state = kLevel;
         break;
@@ -136,11 +137,11 @@ bool Main_menu::SteerUsingKeyboard(State& state) {
 
 Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics) {
   try {
-    buttons.push_back(new Font(graphics, "Continue", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Continue", MAIN_FONT_SZ));
 #ifdef _WIN32
-    buttons.push_back(new Font(graphics, "Exit to Main Menu", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Exit to Main Menu", MAIN_FONT_SZ));
 #else
-    buttons.push_back(new Font(graphics, "Quit to Main Menu", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Quit to Main Menu", MAIN_FONT_SZ));
 #endif
   } catch (std::runtime_error) {
     throw std::runtime_error("");
@@ -148,34 +149,34 @@ Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics) {
 }
 
 Pause_menu::~Pause_menu() {
-  for (auto& Button : buttons) {
+  for (auto& Button : buttons_) {
     delete Button;
   }
 }
 
 bool Pause_menu::SteerUsingKeyboard(State& state) {
-  SDL_Event Event;
-  SDL_PollEvent(&Event);
+  SDL_Event input_event;
+  SDL_PollEvent(&input_event);
 
-  switch (Event.type) {
+  switch (input_event.type) {
   case SDL_QUIT:
     return false;
   }
-  switch (Event.key.keysym.sym) {
+  switch (input_event.key.keysym.sym) {
   case SDLK_UP:
-    if (selected_button_idx > 0) {
-      selected_button_idx--;
+    if (selected_button_idx_ > 0) {
+      selected_button_idx_--;
     }
     break;
 
   case SDLK_DOWN:
-    if (selected_button_idx < (buttons.size() - 1)) {
-      selected_button_idx++;
+    if (selected_button_idx_ < (buttons_.size() - 1)) {
+      selected_button_idx_++;
     }
     break;
 
     case SDLK_RETURN:
-    switch (selected_button_idx) {
+    switch (selected_button_idx_) {
     case 0:
       state = kLevel;
       break;
@@ -191,64 +192,64 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
   const double text_leading = 1.5;
 
   try {
-    buttons.push_back(new Font(graphics, "Return", MAIN_FONT_SZ));
+    buttons_.push_back(new Font(graphics, "Return", MAIN_FONT_SZ));
 
-    Text_lines.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
-    Text_lines.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
-    Text_lines.push_back(new Font(graphics, "Graphics", TEXT_FONT_SZ));
-    Text_lines.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
-                                  TEXT_FONT_SZ));
+    text_lines_.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
+    text_lines_.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
+    text_lines_.push_back(new Font(graphics, "Graphics", TEXT_FONT_SZ));
+    text_lines_.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
+                                   TEXT_FONT_SZ));
 
     // Center the lines.
-    for (std::size_t idx = 0; idx < Text_lines.size(); idx++) {
-      Text_lines[idx]->pos_x = graphics.Display.w - PADDING
-                               - Text_lines[idx]->transform.w;
-      Text_lines[idx]->pos_y = PADDING;
+    for (std::size_t idx = 0; idx < text_lines_.size(); idx++) {
+      text_lines_[idx]->pos_x_ = graphics.Display_.w - PADDING
+                                 - text_lines_[idx]->transform_.w;
+      text_lines_[idx]->pos_y_ = PADDING;
 
       if (idx > 0) {
-        Text_lines[idx]->pos_y =
-          Text_lines[idx - 1]->pos_y
-          + (Text_lines[idx - 1]->size * text_leading);
+        text_lines_[idx]->pos_y_ =
+          text_lines_[idx - 1]->pos_y_
+          + (text_lines_[idx - 1]->size * text_leading);
       }
     }
-    has_text = true;
+    contains_text_ = true;
   }
   catch (std::runtime_error) {
     throw std::runtime_error("");
   }
-  selected_button_idx     = 1;
-  selection_arrow_focused = false;
+  selected_button_idx_     = 1;
+  selection_arrow_focused_ = false;
 }
 
 Credits_menu::~Credits_menu() {
-  for (auto& Button : buttons) {
+  for (auto& Button : buttons_) {
     delete Button;
   }
-  for (auto& Line : Text_lines) {
+  for (auto& Line : text_lines_) {
     delete Line;
   }
-  buttons.clear();
-  Text_lines.clear();
+  buttons_.clear();
+  text_lines_.clear();
 }
 
 bool Credits_menu::SteerUsingKeyboard(State& state) {
-  SDL_Event Event;
-  SDL_PollEvent(&Event);
+  SDL_Event input_event;
+  SDL_PollEvent(&input_event);
 
-  switch (Event.type) {
+  switch (input_event.type) {
   case SDL_QUIT:
     return false;
   }
 
-  switch (Event.key.keysym.sym) {
+  switch (input_event.key.keysym.sym) {
   case SDLK_UP:
   case SDLK_DOWN:
-    selected_button_idx     = 0;
-    selection_arrow_focused = true;
+    selected_button_idx_     = 0;
+    selection_arrow_focused_ = true;
     break;
 
   case SDLK_RETURN:
-    switch (selected_button_idx) {
+    switch (selected_button_idx_) {
     case 0:
       state = kMainMenu;
     }

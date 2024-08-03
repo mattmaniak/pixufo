@@ -22,24 +22,24 @@
 
 class Level: public Scene {
  public:
-  unsigned int score_points;
-  Player*      Ufo;
+  unsigned int score_points_;
+  Player*      player_;
 
   Level(Graphics&, std::string, unsigned int);
   ~Level();
 
   void Reset();
-  void AdjustEnemyBorder(Graphics&);
+  void AdjustAllEntitiesBorders(Graphics&);
   void CheckPlayerPos();
   bool CheckPlayerCollision();  // Checks the basic models' rects.
   void CheckEnemiesPosition(Graphics&);
   bool Render(Graphics&);
 
  private:
-  std::vector<Entity*> _nebulas;
-  std::size_t          _nebulas_number;
+  std::vector<Entity*> enemies_;
+  std::size_t          enemies_number_;
 
-  void AdjustEnemiesBorders(Graphics&, Entity&);
+  void AdjustEntityBorders(Graphics&, Entity&);
   void RandimizeEnemiesNumber();
   void RandimizeEnemyType(Graphics&);
   bool CheckPlayerAdvancedCollision(std::size_t);

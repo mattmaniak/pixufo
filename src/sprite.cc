@@ -7,7 +7,7 @@ Sprite::Sprite(
     std::string passed_name,
     const Uint32 passed_single_frame_time_ms):
     name(passed_name),
-    current_frame_idx(0),
+    current_frame_idx_(0),
     current_frame_start_time_ms_(passed_single_frame_time_ms) {
   if (!LoadTextures(graphics)) {
     throw std::runtime_error("");
@@ -15,30 +15,30 @@ Sprite::Sprite(
 
   /* As there is only the first texture size check, trying to load animation
      with various texture sizes may brake it's rendering. */
-  if (SDL_QueryTexture(textures[current_frame_idx], nullptr, nullptr,
-                       &transform.w, &transform.h) != SDL2_SUCCESS) {
+  if (SDL_QueryTexture(textures_[current_frame_idx_], nullptr, nullptr,
+                       &transform_.w, &transform_.h) != SDL2_SUCCESS) {
     throw error::Exception_box("Can't get the size of the texture: " + name);
   }
-  pos_x = 0.0;
-  pos_y = 0.0;
+  pos_x_ = 0.0;
+  pos_y_ = 0.0;
 
-  transform.w *= graphics.pixelart_px_sz;
-  transform.h *= graphics.pixelart_px_sz;
+  transform_.w *= graphics.pixelart_px_size_;
+  transform_.h *= graphics.pixelart_px_size_;
 }
 
 Sprite::~Sprite() {
   if (current_frame_start_time_ms_ == 0) {
-    SDL_DestroyTexture(textures[current_frame_start_time_ms_]);
+    SDL_DestroyTexture(textures_[current_frame_start_time_ms_]);
   } else {
     for (std::size_t idx = 0; idx < FRAMES_NUMBER; idx++) {
-      SDL_DestroyTexture(textures[idx]);
+      SDL_DestroyTexture(textures_[idx]);
     }
   }
 }
 
 void Sprite::Move(Graphics& graphics, double offset_x, double offset_y) {
-  pos_x += offset_x * graphics.delta_time_s * graphics.pixelart_px_sz;
-  pos_y += offset_y * graphics.delta_time_s * graphics.pixelart_px_sz;
+  pos_x_ += offset_x * graphics.delta_time_s * graphics.pixelart_px_size_;
+  pos_y_ += offset_y * graphics.delta_time_s * graphics.pixelart_px_size_;
 }
 
 void Sprite::Animate(Graphics& graphics) {
@@ -47,10 +47,10 @@ void Sprite::Animate(Graphics& graphics) {
 
     if (current_frame_elapsed_time_ms_ >= current_frame_start_time_ms_) {
       current_frame_elapsed_time_ms_ = 0;
-      current_frame_idx++;
+      current_frame_idx_++;
     }
-    if (current_frame_idx >= FRAMES_NUMBER) {
-      current_frame_idx = 0;
+    if (current_frame_idx_ >= FRAMES_NUMBER) {
+      current_frame_idx_ = 0;
     }
   }
 }
@@ -58,11 +58,11 @@ void Sprite::Animate(Graphics& graphics) {
 bool Sprite::Render(Graphics& graphics) {
   Animate(graphics);
 
-  transform.x = pos_x;
-  transform.y = pos_y;
+  transform_.x = pos_x_;
+  transform_.y = pos_y_;
 
-  if (SDL_RenderCopy(graphics.Renderer, textures[current_frame_idx], nullptr,
-                     &transform) != SDL2_SUCCESS) {
+  if (SDL_RenderCopy(graphics.Renderer_, textures_[current_frame_idx_], nullptr,
+                     &transform_) != SDL2_SUCCESS) {
     error::ShowBox("Can't render the: " + name);
     return false;
   }
@@ -80,10 +80,10 @@ bool Sprite::LoadTextures(Graphics& graphics) {
     if (Image == nullptr) {
       return false;
     }
-    textures[current_frame_idx] =
-      SDL_CreateTextureFromSurface(graphics.Renderer, Image);
+    textures_[current_frame_idx_] =
+      SDL_CreateTextureFromSurface(graphics.Renderer_, Image);
 
-    if (textures[current_frame_idx] == nullptr) {
+    if (textures_[current_frame_idx_] == nullptr) {
       error::ShowBox("Can't create the texture from the image: " + name);
       return false;
     }
@@ -97,9 +97,9 @@ bool Sprite::LoadTextures(Graphics& graphics) {
       if (Image == nullptr) {
         return false;
       }
-      textures[idx] = SDL_CreateTextureFromSurface(graphics.Renderer, Image);
+      textures_[idx] = SDL_CreateTextureFromSurface(graphics.Renderer_, Image);
 
-      if (textures[idx] == nullptr) {
+      if (textures_[idx] == nullptr) {
         return false;
       }
       SDL_FreeSurface(Image);

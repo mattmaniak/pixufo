@@ -11,16 +11,16 @@
 
 class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
  public:
-  int min_x;
-  int max_x;
-  int min_y;
-  int max_y;
+  int min_x_;
+  int max_x_;
+  int min_y_;
+  int max_y_;
 
-  Uint32 hidden_timeout_ms;
+  Uint32 hidden_timeout_ms_;
 
-  double                max_speed;  // Pixel position Move in a one second.
-  double                step;       // Pixel position Move in a one frame.
-  std::vector<SDL_Rect> hitbox_parts;
+  double                max_speed_;  // Pixel position Move in a one second.
+  double                step_;       // Pixel position Move in a one frame.
+  std::vector<SDL_Rect> hitbox_parts_;
 
   Entity(Graphics&, std::string, double, Uint32);
 

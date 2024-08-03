@@ -2,20 +2,20 @@
 
 #include "scene.h"
 
-Scene::Scene(Graphics& graphics, std::string bg_name): _Graphics(&graphics) {
+Scene::Scene(Graphics& graphics, std::string bg_name): graphics_(&graphics) {
   try {
-    Bg = new Background(*_Graphics, bg_name);
+    bg_ = new Background(*graphics_, bg_name);
 
-    Bg->pos_x = _Graphics->Last_bg_transform.x;
-    Bg->pos_y = _Graphics->Last_bg_transform.y;
+    bg_->pos_x_ = graphics_->Last_bg_transform_.x;
+    bg_->pos_y_ = graphics_->Last_bg_transform_.y;
   } catch (std::runtime_error) {
     throw std::runtime_error("");
   }
 }
 
 Scene::~Scene() {
-  _Graphics->Last_bg_transform.x = Bg->transform.x;
-  _Graphics->Last_bg_transform.y = Bg->transform.y;
+  graphics_->Last_bg_transform_.x = bg_->transform_.x;
+  graphics_->Last_bg_transform_.y = bg_->transform_.y;
 
-  delete Bg;
+  delete bg_;
 }
