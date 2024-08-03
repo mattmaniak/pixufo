@@ -10,16 +10,15 @@
 
 class Scene {
  public:
-  Background* bg_;
-
   Scene(Graphics&, std::string);
   ~Scene();
 
- protected:
-  Graphics* graphics_;
+  Background* bg_;
 
-  unsigned int width_;
+ protected:
+  Graphics*    graphics_;
   unsigned int height_;
+  unsigned int width_;
 };
 
 #endif  // SRC_SCENE_H_

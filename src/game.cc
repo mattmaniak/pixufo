@@ -74,22 +74,22 @@ bool Game::RunLevelLoop() {
       if (!level_->Render(*graphics_)) {
         return false;
       }
-      game_over_font.pos_x_ = (graphics_->Display_.w
+      game_over_font.pos_x_ = (graphics_->display_.w
                                - game_over_font.transform_.w) / 2;
-      game_over_font.pos_y_ = (graphics_->Display_.h
+      game_over_font.pos_y_ = (graphics_->display_.h
                                - game_over_font.transform_.h) / 2;
 
       if (!game_over_font.Render(*graphics_)) {
         return false;
       }
-      SDL_RenderPresent(graphics_->Renderer_);
+      SDL_RenderPresent(graphics_->renderer_);
 
       SDL_Delay(kGameOverDurationMs);  // Wait a moment after a player's death.
       state_ = kMainMenu;
 
       return true;
     }
-    level_->score_points_ += graphics_->delta_time_s * 1000.0;
+    level_->score_points_ += graphics_->delta_time_s_ * 1000.0;
 
     if (level_->score_points_ >= std::numeric_limits<unsigned int>::max()) {
       error::ShowBox("You've reached the score limit.");

@@ -22,19 +22,18 @@ class Movement;
 
 class Player: public Entity {
  public:
-  double horizontal_speed;
-  double vertical_speed;
-  double horizontal_step_;
-  double vertical_step_;
-
-  std::size_t                              directions_number;
-  std::map<std::string, player::Movement*> Movements;
-
   explicit Player(Graphics&);
   ~Player();
 
   bool SteerUsingKeyboard(Graphics&, State&);
   void CenterOnDisplay(unsigned int, unsigned int);
+
+  double                                   horizontal_speed_;
+  double                                   horizontal_step_;
+  double                                   vertical_speed_;
+  double                                   vertical_step_;
+  std::map<std::string, player::Movement*> Movements;
+  std::size_t                              directions_number;
 };
 
 enum MovementDirection {

@@ -22,28 +22,28 @@
 
 class Level: public Scene {
  public:
-  unsigned int score_points_;
-  Player*      player_;
-
   Level(Graphics&, std::string, unsigned int);
   ~Level();
 
+  bool CheckPlayerCollision();  // Checks the basic models' rects.
+  bool Render(Graphics&);
   void Reset();
   void AdjustAllEntitiesBorders(Graphics&);
   void CheckPlayerPos();
-  bool CheckPlayerCollision();  // Checks the basic models' rects.
   void CheckEnemiesPosition(Graphics&);
-  bool Render(Graphics&);
+
+  Player*      player_;
+  unsigned int score_points_;
 
  private:
-  std::vector<Entity*> enemies_;
-  std::size_t          enemies_number_;
-
-  void AdjustEntityBorders(Graphics&, Entity&);
-  void RandimizeEnemiesNumber();
-  void RandimizeEnemyType(Graphics&);
   bool CheckPlayerAdvancedCollision(std::size_t);
+  void AdjustEntityBorders(Graphics&, Entity&);
+  void RandomizeEnemiesNumber();
   void RandomizeEnemiesPosition();
+  void RandomizeEnemyType(Graphics&);
+
+  std::size_t          enemies_number_;
+  std::vector<Entity*> enemies_;
 };
 
 #endif  // SRC_LEVEL_H_

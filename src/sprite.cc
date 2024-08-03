@@ -37,13 +37,13 @@ Sprite::~Sprite() {
 }
 
 void Sprite::Move(Graphics& graphics, double offset_x, double offset_y) {
-  pos_x_ += offset_x * graphics.delta_time_s * graphics.pixelart_px_size_;
-  pos_y_ += offset_y * graphics.delta_time_s * graphics.pixelart_px_size_;
+  pos_x_ += offset_x * graphics.delta_time_s_ * graphics.pixelart_px_size_;
+  pos_y_ += offset_y * graphics.delta_time_s_ * graphics.pixelart_px_size_;
 }
 
 void Sprite::Animate(Graphics& graphics) {
   if (current_frame_start_time_ms_ > 0) {
-    current_frame_elapsed_time_ms_ += graphics.delta_time_s * 1000.0;
+    current_frame_elapsed_time_ms_ += graphics.delta_time_s_ * 1000.0;
 
     if (current_frame_elapsed_time_ms_ >= current_frame_start_time_ms_) {
       current_frame_elapsed_time_ms_ = 0;
@@ -61,7 +61,7 @@ bool Sprite::Render(Graphics& graphics) {
   transform_.x = pos_x_;
   transform_.y = pos_y_;
 
-  if (SDL_RenderCopy(graphics.Renderer_, textures_[current_frame_idx_], nullptr,
+  if (SDL_RenderCopy(graphics.renderer_, textures_[current_frame_idx_], nullptr,
                      &transform_) != SDL2_SUCCESS) {
     error::ShowBox("Can't render the: " + name);
     return false;
@@ -81,7 +81,7 @@ bool Sprite::LoadTextures(Graphics& graphics) {
       return false;
     }
     textures_[current_frame_idx_] =
-      SDL_CreateTextureFromSurface(graphics.Renderer_, Image);
+      SDL_CreateTextureFromSurface(graphics.renderer_, Image);
 
     if (textures_[current_frame_idx_] == nullptr) {
       error::ShowBox("Can't create the texture from the image: " + name);
@@ -97,7 +97,7 @@ bool Sprite::LoadTextures(Graphics& graphics) {
       if (Image == nullptr) {
         return false;
       }
-      textures_[idx] = SDL_CreateTextureFromSurface(graphics.Renderer_, Image);
+      textures_[idx] = SDL_CreateTextureFromSurface(graphics.renderer_, Image);
 
       if (textures_[idx] == nullptr) {
         return false;

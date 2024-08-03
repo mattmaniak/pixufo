@@ -7,8 +7,8 @@ Sprite(graphics, name, 0) {}
 
 bool Background::TileAndRender(Graphics& graphics) {
   // + 1 - extra one for scrolling.
-  unsigned int tiles_x = (graphics.Display_.w / transform_.w) + 1;
-  unsigned int tiles_y = (graphics.Display_.h / transform_.h) + 1;
+  unsigned int tiles_x = (graphics.display_.w / transform_.w) + 1;
+  unsigned int tiles_y = (graphics.display_.h / transform_.h) + 1;
 
   if ((tiles_x >= std::numeric_limits<unsigned int>::max())
       || (tiles_y >= std::numeric_limits<unsigned int>::max())) {
@@ -22,7 +22,7 @@ bool Background::TileAndRender(Graphics& graphics) {
       transform_.x = pos_x_ + (x * transform_.w);
       transform_.y = pos_y_ + (y * transform_.h);
 
-      if (SDL_RenderCopy(graphics.Renderer_, textures_[current_frame_idx_],
+      if (SDL_RenderCopy(graphics.renderer_, textures_[current_frame_idx_],
                          nullptr, &transform_) != SDL2_SUCCESS) {
         error::ShowBox("Can't render the: " + name
                         + " as the tile background.");

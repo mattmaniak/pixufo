@@ -10,8 +10,8 @@ Scene(graphics, bg_name),
     enemies_number_(enemies_number) {
   const double kSizeToDisplayWidthRatio = 1.0;
 
-  width_  = graphics.Display_.w * kSizeToDisplayWidthRatio;
-  height_ = graphics.Display_.h * kSizeToDisplayWidthRatio;
+  width_  = graphics.display_.w * kSizeToDisplayWidthRatio;
+  height_ = graphics.display_.h * kSizeToDisplayWidthRatio;
 
   try {
     player_ = new Player(graphics);
@@ -23,12 +23,12 @@ Scene(graphics, bg_name),
   // Set the player's default position.
   player_->CenterOnDisplay(width_, height_);
 
-  RandimizeEnemiesNumber();
+  RandomizeEnemiesNumber();
 
   // Create all enemies.
   for (std::size_t idx = 0; idx < enemies_number_; idx++) {
     try {
-      RandimizeEnemyType(graphics);
+      RandomizeEnemyType(graphics);
     } catch (std::runtime_error) {
       throw std::runtime_error("");
     }
@@ -58,8 +58,8 @@ void Level::Reset() {
 }
 
 void Level::AdjustAllEntitiesBorders(Graphics& graphics) {
-  width_  = graphics.Display_.w;
-  height_ = graphics.Display_.h;
+  width_  = graphics.display_.w;
+  height_ = graphics.display_.h;
 
   for (auto& enemy : enemies_) {
     AdjustEntityBorders(graphics, *enemy);
@@ -96,13 +96,13 @@ bool Level::CheckPlayerCollision() {
 void Level::CheckEnemiesPosition(Graphics& graphics) {
   for (auto& enemy : enemies_) {
     if ((enemy->pos_x_ < enemy->min_x_) || (enemy->pos_x_ > enemy->max_x_)) {
-      enemy->hidden_timeout_ms_ += graphics.delta_time_s * 1000.0;
+      enemy->hidden_timeout_ms_ += graphics.delta_time_s_ * 1000.0;
     }
     if (enemy->hidden_timeout_ms_ > NEBULA_HIDDEN_TIMEOUT_MS) {
       enemy->hidden_timeout_ms_ = 0;
 
       enemy->RandomizeInitialPos();
-      enemy->pos_x_ = graphics.Display_.w - graphics.pixelart_px_size_;
+      enemy->pos_x_ = graphics.display_.w - graphics.pixelart_px_size_;
     }
   }
 }
@@ -114,7 +114,7 @@ bool Level::Render(Graphics& graphics) {
   Font Scorefont_(graphics, std::to_string(score_points_), TEXT_FONT_SZ);
 
 #ifdef DEBUG
-  Fpsfont_.pos_x_ = graphics.Display_.w - Fpsfont_.transform_.w
+  Fpsfont_.pos_x_ = graphics.display_.w - Fpsfont_.transform_.w
                     - (PADDING / 2.0);
   Fpsfont_.pos_y_ = PADDING / 2.0;
 #endif
@@ -129,8 +129,8 @@ bool Level::Render(Graphics& graphics) {
   bg_->Move(graphics, BACKGROUND_ABSOLUTE_HORIZONTAL_SPEED, 0.0);
 #else
   bg_->Move(graphics,
-            -player_->horizontal_speed * BACKGROUND_TO_PLAYER_SPEED,
-            -player_->vertical_speed * BACKGROUND_TO_PLAYER_SPEED);
+            -player_->horizontal_speed_ * BACKGROUND_TO_PLAYER_SPEED,
+            -player_->vertical_speed_ * BACKGROUND_TO_PLAYER_SPEED);
 #endif
 
   for (auto& enemy : enemies_) {
@@ -141,8 +141,8 @@ bool Level::Render(Graphics& graphics) {
     enemy->Move(graphics, -enemy->max_speed_, 0.0);  // Moving to the left.
 #else
     enemy->Move(graphics,
-                 -player_->horizontal_speed - enemy->max_speed_,
-                 -player_->vertical_speed);
+                 -player_->horizontal_speed_ - enemy->max_speed_,
+                 -player_->vertical_speed_);
 #endif
   }
   if (!player_->Render(graphics)) {
@@ -156,7 +156,7 @@ bool Level::Render(Graphics& graphics) {
   if (!Scorefont_.Render(graphics)) {
     return false;
   }
-  SDL_RenderPresent(graphics.Renderer_);
+  SDL_RenderPresent(graphics.renderer_);
 
   return true;
 }
@@ -168,7 +168,7 @@ void Level::AdjustEntityBorders(Graphics& graphics, Entity& Entity) {
   Entity.max_y_ = height_ - graphics.pixelart_px_size_;
 }
 
-void Level::RandimizeEnemiesNumber() {
+void Level::RandomizeEnemiesNumber() {
   std::mt19937 prng;
   prng.seed(std::random_device()());
 
@@ -178,14 +178,14 @@ void Level::RandimizeEnemiesNumber() {
   enemies_number_ = distributor_enemies(prng);
 }
 
-void Level::RandimizeEnemyType(Graphics& graphics) {
-  const int enemies_type_pool = 10;
+void Level::RandomizeEnemyType(Graphics& graphics) {
+  const int kEnemiesTypesPool = 10;
 
   std::mt19937 prng;
   prng.seed(std::random_device()());
 
   std::uniform_int_distribution<>
-  distributor_enemy_type(0, enemies_type_pool - 1);
+  distributor_enemy_type(0, kEnemiesTypesPool - 1);
 
   try {
     switch (distributor_enemy_type(prng)) {

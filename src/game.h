@@ -19,17 +19,17 @@ class Game {
   Game();
   ~Game();
 
-  State get_state_();
-
   bool RunCreditsMenuLoop();
   bool RunLevelLoop();
   bool RunMainMenuLoop();
   bool RunPauseMenuLoop();
 
+  State get_state_();
+
  private:
-  State     state_;
   Graphics* graphics_;
   Level*    level_;
+  State     state_;
 };
 
 #endif  // SRC_GAME_H_

@@ -36,7 +36,7 @@ bool Menu::Render(Graphics& graphics) {
 
   for (std::size_t idx = 0; idx < buttons_.size(); idx++) {
     buttons_[idx]->pos_x_ = PADDING;
-    buttons_[idx]->pos_y_ = graphics.Display_.h
+    buttons_[idx]->pos_y_ = graphics.display_.h
                             - (buttons_[idx]->transform_.h * buttons_.size())
                             + (idx * buttons_[idx]->transform_.h) - PADDING;
 
@@ -66,7 +66,7 @@ bool Menu::Render(Graphics& graphics) {
       }
     }
   }
-  SDL_RenderPresent(graphics.Renderer_);
+  SDL_RenderPresent(graphics.renderer_);
 
 #ifndef DISABLE_MOVABLE_BACKGROUND
   bg_->Move(graphics, -5.0, -5.0);
@@ -189,7 +189,7 @@ bool Pause_menu::SteerUsingKeyboard(State& state) {
 }
 
 Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
-  const double text_leading = 1.5;
+  const double kTextLeading = 1.5;
 
   try {
     buttons_.push_back(new Font(graphics, "Return", MAIN_FONT_SZ));
@@ -202,14 +202,14 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
 
     // Center the lines.
     for (std::size_t idx = 0; idx < text_lines_.size(); idx++) {
-      text_lines_[idx]->pos_x_ = graphics.Display_.w - PADDING
+      text_lines_[idx]->pos_x_ = graphics.display_.w - PADDING
                                  - text_lines_[idx]->transform_.w;
       text_lines_[idx]->pos_y_ = PADDING;
 
       if (idx > 0) {
         text_lines_[idx]->pos_y_ =
           text_lines_[idx - 1]->pos_y_
-          + (text_lines_[idx - 1]->size * text_leading);
+          + (text_lines_[idx - 1]->size * kTextLeading);
       }
     }
     contains_text_ = true;

@@ -25,15 +25,6 @@
 
 class Sprite {
  public:
-  const std::string name;
-
-  std::array<SDL_Texture*, FRAMES_NUMBER> textures_;
-  std::size_t                             current_frame_idx_;
-
-  SDL_Rect transform_;  // Textures's position and size.
-  double   pos_x_;      // Theoretical (virtual) positions.
-  double   pos_y_;
-
   Sprite(Graphics&, std::string, Uint32);
   virtual ~Sprite();
 
@@ -41,11 +32,21 @@ class Sprite {
   void         Animate(Graphics&);
   virtual bool Render(Graphics&);
 
+  // Textures's position and size.
+  SDL_Rect                                transform_;
+  const std::string                       name;
+
+  // Theoretical (virtual) positions.
+  double                                  pos_x_;
+  double                                  pos_y_;
+  std::array<SDL_Texture*, FRAMES_NUMBER> textures_;
+  std::size_t                             current_frame_idx_;
+
  private:
+  bool LoadTextures(Graphics&);
+
   const Uint32 current_frame_start_time_ms_;
   Uint32       current_frame_elapsed_time_ms_;
-
-  bool LoadTextures(Graphics&);
 };
 
 #endif  // SRC_SPRITE_H_

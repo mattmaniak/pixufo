@@ -30,18 +30,18 @@ class Player;
 
 class Menu: public Scene {
  public:
-  std::size_t                    selected_button_idx_;
-  bool                           selection_arrow_focused_;
-  std::vector<Font*>             buttons_;
-  std::map<std::string, Sprite*> sprites_;
-  std::vector<Font*>             text_lines_;
-  bool                           contains_text_;
-
   explicit Menu(Graphics&);
   ~Menu();
 
   bool         Render(Graphics&);
   virtual bool SteerUsingKeyboard(State&) = 0;
+
+  bool                           contains_text_;
+  bool                           selection_arrow_focused_;
+  std::map<std::string, Sprite*> sprites_;
+  std::size_t                    selected_button_idx_;
+  std::vector<Font*>             buttons_;
+  std::vector<Font*>             text_lines_;
 };
 
 

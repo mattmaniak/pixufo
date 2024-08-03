@@ -20,22 +20,22 @@
 
 class Font {
  public:
-  const unsigned int size;
-  double             pos_x_;
-  double             pos_y_;
-  SDL_Rect           transform_;  // Textures's position and size.
-
   Font(Graphics&, std::string, unsigned int);
   ~Font();
 
   bool Render(Graphics&);
 
+  SDL_Rect           transform_;  // Textures's position and size.
+  const unsigned int size;
+  double             pos_x_;
+  double             pos_y_;
+
  private:
-  const std::string  name_;
   TTF_Font*          font_;
-  const std::string  text_;
   SDL_Color          color_;
   SDL_Texture*       texture_;
+  const std::string  name_;
+  const std::string  text_;
 };
 
 #endif  // SRC_FONT_H_

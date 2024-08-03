@@ -113,10 +113,10 @@ bool Entity::Render(Graphics& graphics) {
   }
 #endif
 
-  step_ = max_speed_ * graphics.delta_time_s * graphics.pixelart_px_size_;
+  step_ = max_speed_ * graphics.delta_time_s_ * graphics.pixelart_px_size_;
   Animate(graphics);
 
-  if (SDL_RenderCopy(graphics.Renderer_, textures_[current_frame_idx_], nullptr,
+  if (SDL_RenderCopy(graphics.renderer_, textures_[current_frame_idx_], nullptr,
                      &transform_) != SDL2_SUCCESS) {
     error::ShowBox("Can't render the: " + name);
     return false;
@@ -129,12 +129,12 @@ bool Entity::Render(Graphics& graphics) {
 //     hbox_part.x = pos_x_ + hitbox_parts_[idx].x;
 //     hbox_part.y = pos_y_ + hitbox_parts_[idx].y;
 
-//     if (SDL_SetRenderDrawColor(graphics.Renderer_, 0, 255, 0, 100)
+//     if (SDL_SetRenderDrawColor(graphics.renderer_, 0, 255, 0, 100)
 //         != SDL2_SUCCESS) {
 //       error::ShowBox("Can't set color for: " + name + " hitbox.");
 //       return false;
 //     }
-//     if (SDL_RenderFillRect(graphics.Renderer_, &hbox_part) != SDL2_SUCCESS) {
+//     if (SDL_RenderFillRect(graphics.renderer_, &hbox_part) != SDL2_SUCCESS) {
 //       error::ShowBox("Can't render the hitbox part for: " + name);
 //       return false;
 //     }
