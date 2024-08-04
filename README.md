@@ -12,15 +12,16 @@ Author's weightlessness steering - realistic movement and space-like steering cr
 
 Make the game by learning C++ and random framework. In this case - SDL2.
 
-## Warning
-
-**As it's the past educational project, may contain low quality code.**
-
 ## Requirements
 
+### Running
+
 - at least HD display resolution,
-- GNU/Linux or macOS,
-- [development-only] g++ (gcc with libstdc++) with version >= 4.8.1.
+- GNU/Linux or macOS.
+
+### Development
+
+- `g++` (`gcc` with `libstdc++`) with version of `8` or above.
 
 ## Gameplay
 
