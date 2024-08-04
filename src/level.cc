@@ -8,10 +8,8 @@ Level::Level(
     unsigned int enemies_number):
 Scene(graphics, bg_name),
     enemies_number_(enemies_number) {
-  const double kSizeToDisplayWidthRatio = 1.0;
-
-  width_  = graphics.display_.w * kSizeToDisplayWidthRatio;
-  height_ = graphics.display_.h * kSizeToDisplayWidthRatio;
+  width_  = graphics.display_.w;
+  height_ = graphics.display_.h;
 
   try {
     player_ = new Player(graphics);
