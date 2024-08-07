@@ -22,7 +22,10 @@ const char SEPARATOR[] = "\\";
 #endif
 
 #if defined(__APPLE__) && defined(MACOS_BUNDLE)
-#define RESOURCES_PATH "../Resources/res"
+/* An absolute working directory path is required for Bundle to read files from
+   various locations in the Bundle itself.
+   https://wiki.libsdl.org/SDL2/README/macos#working-directory */
+#define RESOURCES_PATH SDL_GetBasePath() + std::string(SEPARATOR) + "res"
 #else
 #define RESOURCES_PATH "res"
 #endif

@@ -37,7 +37,8 @@ bool Entity::LoadHitbox(Graphics& graphics) {
   FILE* hitbox_parts_file = std::fopen(path_to_file.c_str(), "r");
 
   if (hitbox_parts_file == nullptr) {
-    error::ShowBox("Can't load the hitbox file for: " + name);
+    error::ShowBox("Can't load the hitbox file " + path_to_file + " for: "
+                   + name);
     return false;
   }
 

@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 
+- Building a standalone macOS Application Bundle (`.app` "executable" folders) via `make bundle`.
 - Entities speed randomization, except for the Player.
 - Local Application Bundle removal on macOS with `make clean`.
 - On-screen FPS meter for debug type of builds.
+- Path printing for hitbox error loading.
 
 ## Changed
 
