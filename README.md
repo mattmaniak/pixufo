@@ -71,7 +71,7 @@ Coding style is [Google C++ Style Guide](https://google.github.io/styleguide/cpp
 
 #### Validating Coding Style
 
-Python 3 is required.
+Python 3 is required to do it via [cpplint](https://pypi.org/project/cpplint/).
 
 ```shell
 python3 -m venv .venv &&
