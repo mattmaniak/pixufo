@@ -51,8 +51,6 @@ bool Menu::Render(Graphics& graphics) {
                                             + PADDING;
       sprites_["selection_arrow"]->pos_y_ = buttons_[idx]->transform_.y;
     }
-    buttons_[idx]->transform_.x = buttons_[idx]->pos_x_;
-    buttons_[idx]->transform_.y = buttons_[idx]->pos_y_;
   }
   if (selection_arrow_focused_) {
     if (!sprites_["selection_arrow"]->Render(graphics)) {
