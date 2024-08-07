@@ -1,0 +1,13 @@
+name: Lint
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install cpplint
+      - run: make lint
