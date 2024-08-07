@@ -18,8 +18,8 @@ Scene(graphics, "background_primary_menu"),
 }
 
 Menu::~Menu() {
-  delete sprites_["title"];
   delete sprites_["selection_arrow"];
+  delete sprites_["title"];
 
   sprites_.clear();
 }

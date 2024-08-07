@@ -21,7 +21,11 @@ const char SEPARATOR[] = "\\";
 #endif
 #endif
 
+#if defined(__APPLE__) && defined(MACOS_BUNDLE)
+#define RESOURCES_PATH "../Resources/res"
+#else
 #define RESOURCES_PATH "res"
+#endif
 
 #define TEXTURES_PATH RESOURCES_PATH + std::string(SEPARATOR) + "textures" \
         + std::string(SEPARATOR)

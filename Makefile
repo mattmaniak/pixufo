@@ -64,12 +64,16 @@ $(TARGET): $(OBJS)
 	$(CPPFLAGS) \
 	$(LDFLAGS)
 
+.PHONY: bundle
+bundle: CPPFLAGS += -DMACOS_BUNDLE
 bundle: $(TARGET)
 	mkdir -p $(bundle_contents)/MacOS
 	mkdir -p $(bundle_contents)/Resources
 	cp Info.plist $(bundle_contents)/Info.plist
 	echo "APPL????" > $(bundle_contents)/PkgInfo
 	cp $(TARGET) $(bundle_contents)/MacOS/
+	cp -r "res" $(bundle_contents)/Resources/
+	cp icon.bmp $(bundle_contents)/Resources/
 	# $(INSTALL_PROGRAM) $< $(bundle_contents)/MacOS/
 
 .PHONY: debug
