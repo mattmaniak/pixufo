@@ -11,7 +11,7 @@ Scene(graphics, "background_primary_menu"),
     sprites_.insert(std::make_pair("selection_arrow",
                                    new Sprite(graphics, "meteor", 0)));
   } catch (std::runtime_error) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to add sprites to a menu.");
   }
   contains_text_           = false;
   selection_arrow_focused_ = true;
@@ -83,7 +83,7 @@ Main_menu::Main_menu(Graphics& graphics): Menu(graphics) {
     buttons_.push_back(new Font(graphics, "Quit", MAIN_FONT_SZ));
 #endif
   } catch (std::runtime_error) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to add buttons with fonts to main menu.");
   }
 }
 
@@ -142,7 +142,7 @@ Pause_menu::Pause_menu(Graphics& graphics): Menu(graphics) {
     buttons_.push_back(new Font(graphics, "Quit to Main Menu", MAIN_FONT_SZ));
 #endif
   } catch (std::runtime_error) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to add buttons with fonts to pause menu.");
   }
 }
 
@@ -213,7 +213,7 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
     contains_text_ = true;
   }
   catch (std::runtime_error) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to add buttons with fonts to credits menu.");
   }
   selected_button_idx_     = 1;
   selection_arrow_focused_ = false;

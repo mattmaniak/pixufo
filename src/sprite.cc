@@ -10,7 +10,7 @@ Sprite::Sprite(
     current_frame_idx_(0),
     current_frame_start_time_ms_(passed_single_frame_time_ms) {
   if (!LoadTextures(graphics)) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to load textures for " + name);
   }
 
   /* As there is only the first texture size check, trying to load animation

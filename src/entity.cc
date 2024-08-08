@@ -17,7 +17,7 @@ Sprite(
   distribution(passed_speed / 2.0, passed_speed);
 
   if (!LoadHitbox(graphics)) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to load hitbox for " + name);
   }
 
   // Disable speed randomization for the Player.

@@ -14,14 +14,14 @@ Graphics::Graphics():
   const int kDefaultDriverIdx = -1;
 
   if (!InitWindow()) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to initialize a window.");
   }
 
   renderer_ = SDL_CreateRenderer(window_, kDefaultDriverIdx,
                                  SDL_RENDERER_ACCELERATED);
 
   if (renderer_ == nullptr) {
-    throw error::Exception_box("Can't create the Renderer.");
+    throw error::Exception_box("Can't create a renderer.");
   }
   renderer_initialized_ = true;
 
@@ -36,7 +36,7 @@ Graphics::Graphics():
     throw error::Exception_box("Can't hide the mouse pointer.");
   }
   if (!GetPixelartPxSize()) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to get a Pixelart pixel size.");
   }
 }
 
@@ -126,7 +126,7 @@ bool Graphics::CountFps() {
 
   if (frame_elapsed_time_ms_ >= 1000.0) {
     fps_ = fps_counter_;
-    frame_elapsed_time_ms_ = 0.0;
+    frame_elapsed_time_ms_ = 0;
     fps_counter_           = 0;
 
 #ifdef DEBUG

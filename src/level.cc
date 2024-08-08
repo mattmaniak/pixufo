@@ -14,7 +14,7 @@ Scene(graphics, bg_name),
   try {
     player_ = new Player(graphics);
   } catch (std::runtime_error) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to create a player instance.");
   }
   AdjustEntityBorders(graphics, *player_);
 
@@ -28,7 +28,7 @@ Scene(graphics, bg_name),
     try {
       RandomizeEnemyType(graphics);
     } catch (std::runtime_error) {
-      throw std::runtime_error("");
+      throw std::runtime_error("Unable to randomize enemy type.");
     }
     AdjustEntityBorders(graphics, *enemies_[idx]);
   }
@@ -209,7 +209,7 @@ void Level::RandomizeEnemyType(Graphics& graphics) {
       enemies_.push_back(new Entity(graphics, "nebula_umbrella", 50.0, 200));
     }
   } catch (std::runtime_error) {
-    throw std::runtime_error("");
+    throw std::runtime_error("Unable to add random enemies to enemies list.");
   }
 }
 
