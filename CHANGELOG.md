@@ -19,9 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 - Absolute Player movement to relative. Now the Player's Sprite is centered on a screen while everything else moves in relation to it.
+- Blox 2 pixelart-like font to a more readible [RC Rocket](https://www.fontspace.com/rc-rocket-font-f85241).
 - Capitalization and naming rules to fit [Google C++ Guide](https://google.github.io/styleguide/cppguide.html) requirements.
-- Centered the Menu logo.
 - Compiler version requirement to `gcc` version `8` or above.
+- Logo centering in menus.
 - Naming of some variables and members to a more standard in code.
 
 ## Removed
