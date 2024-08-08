@@ -195,7 +195,7 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
     text_lines_.push_back(new Font(graphics, "Programming", TEXT_FONT_SZ));
     text_lines_.push_back(new Font(graphics, "mattmaniak", TEXT_FONT_SZ));
     text_lines_.push_back(new Font(graphics, "Graphics", TEXT_FONT_SZ));
-    text_lines_.push_back(new Font(graphics, "Jakub QooBooS Mieszczak",
+    text_lines_.push_back(new Font(graphics, "Jakub \"QooBooS\" Mieszczak",
                                    TEXT_FONT_SZ));
 
     // Center the lines.

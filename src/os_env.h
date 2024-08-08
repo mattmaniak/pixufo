@@ -36,7 +36,7 @@ const char SEPARATOR[] = "\\";
 #define HITBOXES_PATH RESOURCES_PATH + std::string(SEPARATOR) + "hitboxes" \
         + std::string(SEPARATOR)
 
-#define FONT_PATH RESOURCES_PATH + std::string(SEPARATOR) + "font" \
+#define FONT_PATH RESOURCES_PATH + std::string(SEPARATOR) + "fonts" \
         + std::string(SEPARATOR)
 
 #endif  // SRC_OS_ENV_H_

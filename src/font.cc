@@ -7,7 +7,7 @@ Font::Font(
     std::string passed_text,
     const unsigned int passed_size):
     size(passed_size * Graphics.pixelart_px_size_),
-    name_(FONT_NAME),
+    name_("rc-rocket-font" + std::string(SEPARATOR) + FONT_NAME),
     text_(passed_text) {
   const std::string path = FONT_PATH + SEPARATOR + name_;
   SDL_Surface*      surface;

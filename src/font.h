@@ -16,7 +16,7 @@
 #include "graphics.h"
 #include "os_env.h"
 
-#define FONT_NAME "Blox2.ttf"
+#define FONT_NAME "RcRocketRegular-0WVW9.otf"
 
 class Font {
  public:
