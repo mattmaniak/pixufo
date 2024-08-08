@@ -213,7 +213,8 @@ Credits_menu::Credits_menu(Graphics& graphics): Menu(graphics) {
     contains_text_ = true;
   }
   catch (std::runtime_error) {
-    throw std::runtime_error("Unable to add buttons with fonts to credits menu.");
+    throw std::runtime_error(
+      "Unable to add buttons with fonts to credits menu.");
   }
   selected_button_idx_     = 1;
   selection_arrow_focused_ = false;

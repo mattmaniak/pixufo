@@ -5,7 +5,6 @@
 Scene::Scene(Graphics& graphics, std::string bg_name): graphics_(&graphics) {
   try {
     bg_ = new Background(*graphics_, bg_name);
-
   } catch (std::runtime_error) {
     throw std::runtime_error("Unable to create a background of " + bg_name);
   }
