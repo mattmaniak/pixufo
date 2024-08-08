@@ -77,7 +77,8 @@ bool Graphics::InitWindow() {
   }
   window_initialized_ = true;
 
-  icon = SDL_LoadBMP(kIconName.c_str());
+  icon = SDL_LoadBMP((RESOURCES_PATH + std::string(SEPARATOR)
+                      + kIconName).c_str());
 
   if (icon == nullptr) {
     return false;

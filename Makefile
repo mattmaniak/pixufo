@@ -73,7 +73,6 @@ bundle: $(TARGET)
 	echo "APPL????" > $(bundle_contents)/PkgInfo
 	cp $(TARGET) $(bundle_contents)/MacOS/
 	cp -r "res" $(bundle_contents)/Resources/
-	cp icon.bmp $(bundle_contents)/Resources/
 	# $(INSTALL_PROGRAM) $< $(bundle_contents)/MacOS/
 
 .PHONY: debug
