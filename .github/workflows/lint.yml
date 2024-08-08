@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: pip install cpplint
-      - run: make lint
+      - run: cpplint src/*
