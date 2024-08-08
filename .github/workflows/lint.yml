@@ -10,4 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: pip install cpplint
+      - run: pwd
+      - run: ls
       - run: make lint -f Makefile
