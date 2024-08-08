@@ -61,7 +61,7 @@ bool Graphics::InitWindow() {
     return false;
   }
   if ((display_.w < MIN_DISPLAY_WIDTH) || (display_.h < MIN_DISPLAY_HEIGHT)) {
-    error::ShowBox("At least the HD screen resolution is required.");
+    error::ShowBox("At least the 1280x720 display resolution is required.");
     return false;
   }
 

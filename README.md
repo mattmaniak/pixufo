@@ -16,7 +16,7 @@ Make the game by learning C++ and random framework. In this case - SDL2.
 
 ### Running
 
-- at least HD display resolution,
+- at least 1280x720 display resolution,
 - GNU/Linux or macOS.
 
 ### Development
