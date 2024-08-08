@@ -11,6 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip install cpplint
-      - run: pwd
-      - run: ls
-      - run: make lint -f Makefile
+      - run: make lint
