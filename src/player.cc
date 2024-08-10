@@ -5,9 +5,9 @@
 Player::Player(Graphics& graphics): Entity(graphics, "ufo", 110.0, 0) {
   horizontal_speed_  = 0.0;
   vertical_speed_    = 0.0;
-  horizontal_step_  = 0.0;
-  vertical_step_    = 0.0;
-  directions_number = 0;
+  horizontal_step_   = 0.0;
+  vertical_step_     = 0.0;
+  directions_number  = 0;
 
   Movements.insert(std::make_pair("horizontal", new player::Movement));
   Movements.insert(std::make_pair("vertical",   new player::Movement));
@@ -100,16 +100,16 @@ void player::Movement::Move(Graphics& graphics, Player& player_) {
   case kRight:
     player_.horizontal_speed_ = player_.max_speed_
                                 * (keypress_time_s_ / max_time_s_);
-    player_.horizontal_step_ = player_.horizontal_speed_
-                               * graphics.delta_time_s_
-                               * graphics.pixelart_px_size_;
+    player_.horizontal_step_  = player_.horizontal_speed_
+                                * graphics.delta_time_s_
+                                * graphics.pixelart_px_size_;
     break;
 
   case kUp:
   case kDown:
     player_.vertical_speed_ = player_.max_speed_
                               * (keypress_time_s_ / max_time_s_);
-    player_.vertical_step_ = player_.vertical_speed_ * graphics.delta_time_s_
+    player_.vertical_step_  = player_.vertical_speed_ * graphics.delta_time_s_
                               * graphics.pixelart_px_size_;
   }
 
