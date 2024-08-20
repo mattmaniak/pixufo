@@ -7,11 +7,12 @@
 #include <string>
 #include <vector>
 
+#include "entity.h"
 #include "error.h"
 #include "graphics.h"
-#include "scene.h"
-#include "entity.h"
 #include "player.h"
+#include "scene.h"
+#include "utils.h"
 
 #define MIN_NEBULAS_NUMBER 15
 #define MAX_NEBULAS_NUMBER 20

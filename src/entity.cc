@@ -11,11 +11,6 @@ Sprite(
     graphics,
     name,
     passed_single_frame_time_ms) {
-  std::random_device device;
-  std::mt19937 random_generator(device());
-  std::uniform_real_distribution<double>
-  distribution(passed_speed / 2.0, passed_speed);
-
   if (!LoadHitbox(graphics)) {
     throw std::runtime_error("Unable to load hitbox for " + name);
   }
@@ -24,7 +19,8 @@ Sprite(
   if (name == "ufo") {
     max_speed_ = passed_speed;
   } else {
-    max_speed_ = distribution(random_generator);
+    max_speed_ = utils::generate_pseudorandom_number<double>(
+      passed_speed / 2.0, passed_speed);
   }
   hidden_timeout_ms_ = 0;
   step_ = 0.0;
@@ -90,20 +86,14 @@ bool Entity::LoadHitbox(Graphics& graphics) {
 }
 
 void Entity::RandomizeInitialPos() {
-  std::mt19937 prng;
-  prng.seed(std::random_device()());
-
-  std::uniform_int_distribution<> distributor_x(max_x_, 2 * max_x_);
-  std::uniform_int_distribution<> distributor_y(min_y_, max_y_);
-
-  pos_x_ = distributor_x(prng);
-  pos_y_ = distributor_y(prng);
+  pos_x_ = utils::generate_pseudorandom_number<double>(max_x_, 2 * max_x_);
+  pos_y_ = utils::generate_pseudorandom_number<double>(min_y_, max_y_);
 }
 
 bool Entity::Render(Graphics& graphics) {
-// #ifdef DEBUG
-//   SDL_Rect hbox_part;
-// #endif
+#ifdef DEBUG
+  SDL_Rect hbox_part;
+#endif
 
 #ifndef DISABLE_RELATIVE_PLAYER_MOVEMENT
   if (name != "ufo") {
@@ -123,24 +113,24 @@ bool Entity::Render(Graphics& graphics) {
     return false;
   }
 
-// #ifdef DEBUG
-//   for (std::size_t idx = 0; idx < hitbox_parts_.size(); idx++) {
-//     hbox_part.w = hitbox_parts_[idx].w;
-//     hbox_part.h = hitbox_parts_[idx].h;
-//     hbox_part.x = pos_x_ + hitbox_parts_[idx].x;
-//     hbox_part.y = pos_y_ + hitbox_parts_[idx].y;
+#ifdef DEBUG
+  for (std::size_t idx = 0; idx < hitbox_parts_.size(); idx++) {
+    hbox_part.w = hitbox_parts_[idx].w;
+    hbox_part.h = hitbox_parts_[idx].h;
+    hbox_part.x = pos_x_ + hitbox_parts_[idx].x;
+    hbox_part.y = pos_y_ + hitbox_parts_[idx].y;
 
-//     if (SDL_SetRenderDrawColor(graphics.renderer_, 0, 255, 0, 100)
-//         != SDL2_SUCCESS) {
-//       error::ShowBox("Can't set color for: " + name + " hitbox.");
-//       return false;
-//     }
-//     if (SDL_RenderFillRect(graphics.renderer_, &hbox_part) != SDL2_SUCCESS) {
-//       error::ShowBox("Can't render the hitbox part for: " + name);
-//       return false;
-//     }
-//   }
-// #endif
+    if (SDL_SetRenderDrawColor(graphics.renderer_, 0, 255, 0, 100)
+        != SDL2_SUCCESS) {
+      error::ShowBox("Can't set color for: " + name + " hitbox.");
+      return false;
+    }
+    if (SDL_RenderFillRect(graphics.renderer_, &hbox_part) != SDL2_SUCCESS) {
+      error::ShowBox("Can't render the hitbox part for: " + name);
+      return false;
+    }
+  }
+#endif
 
   return true;
 }

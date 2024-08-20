@@ -167,26 +167,17 @@ void Level::AdjustEntityBorders(Graphics& graphics, Entity& Entity) {
 }
 
 void Level::RandomizeEnemiesNumber() {
-  std::mt19937 prng;
-  prng.seed(std::random_device()());
-
-  std::uniform_int_distribution<std::mt19937::result_type>
-  distributor_enemies(MIN_NEBULAS_NUMBER, MAX_NEBULAS_NUMBER);
-
-  enemies_number_ = distributor_enemies(prng);
+  enemies_number_ = utils::generate_pseudorandom_number<int>(
+    MIN_NEBULAS_NUMBER, MAX_NEBULAS_NUMBER);
 }
 
 void Level::RandomizeEnemyType(Graphics& graphics) {
   const int kEnemiesTypesPool = 10;
-
-  std::mt19937 prng;
-  prng.seed(std::random_device()());
-
-  std::uniform_int_distribution<>
-  distributor_enemy_type(0, kEnemiesTypesPool - 1);
+  int enemy_type_idx = utils::generate_pseudorandom_number<int>(
+    0, kEnemiesTypesPool - 1);
 
   try {
-    switch (distributor_enemy_type(prng)) {
+    switch (enemy_type_idx) {
     case 0:
     case 1:
     case 2:

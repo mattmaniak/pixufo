@@ -3,13 +3,14 @@
 #ifndef SRC_ENTITY_H_
 #define SRC_ENTITY_H_
 
-#include <random>
 #include <string>
 #include <vector>
 
 #include "sprite.h"
+#include "utils.h"
 
-class Entity: public Sprite {  // Just sprite but more physical - with hitbox.
+// Just sprite but more physical - with hitbox.
+class Entity: public Sprite {
  public:
   Entity(Graphics&, std::string, double, Uint32);
 
