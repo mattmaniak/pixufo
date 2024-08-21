@@ -74,10 +74,17 @@ bool Game::RunLevelLoop() {
       if (!level_->Render(*graphics_)) {
         return false;
       }
+#ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
+      int game_over_font_vertical_offset = 0;
+#else
+      int game_over_font_vertical_offset = level_->player_->transform_.h * 2;
+
+#endif
       game_over_font.pos_x_ = (graphics_->display_.w
                                - game_over_font.transform_.w) / 2;
-      game_over_font.pos_y_ = (graphics_->display_.h
-                               - game_over_font.transform_.h) / 2;
+      game_over_font.pos_y_ = ((graphics_->display_.h
+                                - game_over_font.transform_.h) / 2)
+                              - game_over_font_vertical_offset;
 
       if (!game_over_font.Render(*graphics_)) {
         return false;
