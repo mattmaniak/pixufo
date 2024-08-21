@@ -214,10 +214,18 @@ bool Level::CheckPlayerAdvancedCollision(std::size_t en_idx) {
     // Position the Player's hitbox part.
     player_hitbox_part.w = player_->hitbox_parts_[pl_hb_idx].w;
     player_hitbox_part.h = player_->hitbox_parts_[pl_hb_idx].h;
+
+#ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
     player_hitbox_part.x = player_->pos_x_
                            + (player_->hitbox_parts_[pl_hb_idx].x);
     player_hitbox_part.y = player_->pos_y_
                            + (player_->hitbox_parts_[pl_hb_idx].y);
+#else
+    player_hitbox_part.x = player_->transform_.x
+                           + (player_->hitbox_parts_[pl_hb_idx].x);
+    player_hitbox_part.y = player_->transform_.y
+                           + (player_->hitbox_parts_[pl_hb_idx].y);
+#endif
 
     for (std::size_t en_hb_idx = 0;
          en_hb_idx < enemies_[en_idx]->hitbox_parts_.size(); en_hb_idx++) {

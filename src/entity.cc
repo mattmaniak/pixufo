@@ -86,7 +86,7 @@ bool Entity::LoadHitbox(Graphics& graphics) {
 }
 
 void Entity::RandomizeInitialPos() {
-  pos_x_ = utils::generate_pseudorandom_number<double>(max_x_, 2 * max_x_);
+  pos_x_ = utils::generate_pseudorandom_number<double>(max_x_, max_x_ * 2);
   pos_y_ = utils::generate_pseudorandom_number<double>(min_y_, max_y_);
 }
 

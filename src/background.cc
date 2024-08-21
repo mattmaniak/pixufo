@@ -25,7 +25,7 @@ bool Background::TileAndRender(Graphics& graphics) {
       if (SDL_RenderCopy(graphics.renderer_, textures_[current_frame_idx_],
                          nullptr, &transform_) != SDL2_SUCCESS) {
         error::ShowBox("Can't render the: " + name
-                        + " as the tile background.");
+                       + " as the tile background.");
 
         return false;
       }
