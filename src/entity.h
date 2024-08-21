@@ -19,8 +19,8 @@ class Entity: public Sprite {
   void RandomizeInitialPos();
 
   Uint32                hidden_timeout_ms_;
-  double                max_speed_;  // Pixel position Move in a one second.
-  double                step_;       // Pixel position Move in a one frame.
+  double                max_speed_;  // Pixel position move in a one second.
+  double                step_;       // Pixel position move in a one frame.
   int                   max_x_;
   int                   max_y_;
   int                   min_x_;
