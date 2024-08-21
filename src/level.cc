@@ -107,17 +107,19 @@ void Level::CheckEnemiesPosition(Graphics& graphics) {
 
 bool Level::Render(Graphics& graphics) {
 #ifdef DEBUG
-  Font Fpsfont_(graphics, std::to_string(graphics.fps_) + " FPS", TEXT_FONT_SZ);
+  Font fps_font_(graphics, std::to_string(graphics.fps_) + " FPS",
+                 TEXT_FONT_SZ);
 #endif
-  Font Scorefont_(graphics, std::to_string(score_points_), TEXT_FONT_SZ);
+  Font score_font_(graphics, std::to_string(score_points_), TEXT_FONT_SZ);
 
 #ifdef DEBUG
-  Fpsfont_.pos_x_ = graphics.display_.w - Fpsfont_.transform_.w
-                    - (PADDING / 2.0);
-  Fpsfont_.pos_y_ = PADDING / 2.0;
+  fps_font_.pos_x_ = graphics.display_.w - fps_font_.transform_.w
+                     - (PADDING / 2.0);
+  fps_font_.pos_y_ = PADDING / 2.0;
 #endif
 
-  Scorefont_.pos_x_ = Scorefont_.pos_y_ = PADDING / 2.0;  // Left, upper corner.
+  // Left, upper corner.
+  score_font_.pos_x_ = score_font_.pos_y_ = PADDING / 2.0;
 
   if (!bg_->TileAndRender(graphics)) {
     return false;
@@ -139,19 +141,19 @@ bool Level::Render(Graphics& graphics) {
     enemy->Move(graphics, -enemy->max_speed_, 0.0);  // Moving to the left.
 #else
     enemy->Move(graphics,
-                 -player_->horizontal_speed_ - enemy->max_speed_,
-                 -player_->vertical_speed_);
+                -player_->horizontal_speed_ - enemy->max_speed_,
+                -player_->vertical_speed_);
 #endif
   }
   if (!player_->Render(graphics)) {
     return false;
   }
 #ifdef DEBUG
-  if (!Fpsfont_.Render(graphics)) {
+  if (!fps_font_.Render(graphics)) {
     return false;
   }
 #endif
-  if (!Scorefont_.Render(graphics)) {
+  if (!score_font_.Render(graphics)) {
     return false;
   }
   SDL_RenderPresent(graphics.renderer_);
@@ -160,10 +162,10 @@ bool Level::Render(Graphics& graphics) {
 }
 
 void Level::AdjustEntityBorders(Graphics& graphics, Entity& Entity) {
+  Entity.max_x_ = width_                     - graphics.pixelart_px_size_;
+  Entity.max_y_ = height_                    - graphics.pixelart_px_size_;
   Entity.min_x_ = graphics.pixelart_px_size_ - Entity.transform_.w;
   Entity.min_y_ = graphics.pixelart_px_size_ - Entity.transform_.h;
-  Entity.max_x_ = width_  - graphics.pixelart_px_size_;
-  Entity.max_y_ = height_ - graphics.pixelart_px_size_;
 }
 
 void Level::RandomizeEnemiesNumber() {
@@ -205,12 +207,12 @@ void Level::RandomizeEnemyType(Graphics& graphics) {
 }
 
 bool Level::CheckPlayerAdvancedCollision(std::size_t en_idx) {
-  SDL_Rect player_hitbox_part;
   SDL_Rect enemy_hitbox_part;
+  SDL_Rect player_hitbox_part;
 
   // Check the Player's hitbox part by enemies_' hitbox part.
   for (std::size_t pl_hb_idx = 0; pl_hb_idx < player_->hitbox_parts_.size();
-      pl_hb_idx++) {
+       pl_hb_idx++) {
     // Position the Player's hitbox part.
     player_hitbox_part.w = player_->hitbox_parts_[pl_hb_idx].w;
     player_hitbox_part.h = player_->hitbox_parts_[pl_hb_idx].h;
@@ -233,11 +235,9 @@ bool Level::CheckPlayerAdvancedCollision(std::size_t en_idx) {
       enemy_hitbox_part.w = enemies_[en_idx]->hitbox_parts_[en_hb_idx].w;
       enemy_hitbox_part.h = enemies_[en_idx]->hitbox_parts_[en_hb_idx].h;
 
-      enemy_hitbox_part.x =
-        enemies_[en_idx]->pos_x_
+      enemy_hitbox_part.x = enemies_[en_idx]->pos_x_
         + (enemies_[en_idx]->hitbox_parts_[en_hb_idx].x);
-      enemy_hitbox_part.y =
-        enemies_[en_idx]->pos_y_
+      enemy_hitbox_part.y = enemies_[en_idx]->pos_y_
         + (enemies_[en_idx]->hitbox_parts_[en_hb_idx].y);
 
       if (SDL_HasIntersection(&player_hitbox_part, &enemy_hitbox_part)) {
