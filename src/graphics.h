@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <limits>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 #ifdef __APPLE__
   #include <SDL.h>

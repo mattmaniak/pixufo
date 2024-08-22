@@ -10,6 +10,7 @@
 #else
   #include <SDL2/SDL.h>
 #endif
+
 #include <SDL_ttf.h>
 
 #include "error.h"
