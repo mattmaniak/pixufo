@@ -22,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Blox 2 pixelart-like font to a more readible [RC Rocket](https://www.fontspace.com/rc-rocket-font-f85241).
 - Capitalization and naming rules to fit [Google C++ Guide](https://google.github.io/styleguide/cppguide.html) requirements.
 - Compiler version requirement to `gcc` version `8` or above.
-- Logo centering in menus.
 - Naming of some variables and members to a more standard in code.
+- Title logo and "Game Over" text centering.
 
 ## Removed
 

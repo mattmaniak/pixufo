@@ -28,9 +28,10 @@ class Sprite {
   Sprite(Graphics&, std::string, Uint32);
   virtual ~Sprite();
 
+  void         Animate(Graphics&);
   void         CenterOnDisplay(unsigned int, unsigned int);
   void         Move(Graphics&, double, double);
-  void         Animate(Graphics&);
+  void         Shift(Graphics&, double, double);
   virtual bool Render(Graphics&);
 
   // Textures's position and size.

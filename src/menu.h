@@ -15,14 +15,14 @@
 #endif
 
 #include "error.h"
-#include "scene.h"
-#include "graphics.h"
 #include "font.h"
+#include "graphics.h"
+#include "scene.h"
 #include "state.h"
 
 #define PADDING (20.0 * graphics.pixelart_px_size_)
 
-#define MAIN_FONT_SZ 36  // Same as the meteor.bmp height.
+#define MAIN_FONT_SZ 50
 #define TEXT_FONT_SZ 24
 
 class Level;

@@ -77,7 +77,7 @@ bool Game::RunLevelLoop() {
 #ifdef DISABLE_RELATIVE_PLAYER_MOVEMENT
       int game_over_font_vertical_offset = 0;
 #else
-      int game_over_font_vertical_offset = level_->player_->transform_.h * 2;
+      int game_over_font_vertical_offset = level_->player_->transform_.h * 3;
 
 #endif
       game_over_font.pos_x_ = (graphics_->display_.w

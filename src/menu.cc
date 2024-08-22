@@ -15,6 +15,9 @@ Scene(graphics, "background_primary_menu"),
   }
   contains_text_           = false;
   selection_arrow_focused_ = true;
+
+  sprites_["title"]->CenterOnDisplay(graphics.display_.w, graphics.display_.h);
+  sprites_["title"]->Shift(graphics, 0.0, -sprites_["title"]->transform_.h);
 }
 
 Menu::~Menu() {
@@ -28,8 +31,6 @@ bool Menu::Render(Graphics& graphics) {
   if (!bg_->TileAndRender(graphics)) {
     return false;
   }
-  sprites_["title"]->CenterOnDisplay(graphics.display_.w, graphics.display_.h);
-
   if (!sprites_["title"]->Render(graphics)) {
     return false;
   }

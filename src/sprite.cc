@@ -35,16 +35,6 @@ Sprite::~Sprite() {
     }
   }
 }
-void Sprite::CenterOnDisplay(unsigned int screen_width,
-                             unsigned int screen_height) {
-  transform_.x = pos_x_ = (screen_width  - transform_.w) / 2;
-  transform_.y = pos_y_ = (screen_height - transform_.h) / 2;
-}
-
-void Sprite::Move(Graphics& graphics, double offset_x, double offset_y) {
-  pos_x_ += offset_x * graphics.delta_time_s_ * graphics.pixelart_px_size_;
-  pos_y_ += offset_y * graphics.delta_time_s_ * graphics.pixelart_px_size_;
-}
 
 void Sprite::Animate(Graphics& graphics) {
   if (current_frame_start_time_ms_ > 0) {
@@ -58,6 +48,22 @@ void Sprite::Animate(Graphics& graphics) {
       current_frame_idx_ = 0;
     }
   }
+}
+
+void Sprite::CenterOnDisplay(unsigned int screen_width,
+                             unsigned int screen_height) {
+  transform_.x = pos_x_ = (screen_width  - transform_.w) / 2;
+  transform_.y = pos_y_ = (screen_height - transform_.h) / 2;
+}
+
+void Sprite::Move(Graphics& graphics, double offset_x, double offset_y) {
+  pos_x_ += offset_x * graphics.delta_time_s_ * graphics.pixelart_px_size_;
+  pos_y_ += offset_y * graphics.delta_time_s_ * graphics.pixelart_px_size_;
+}
+
+void Sprite::Shift(Graphics& graphics, double offset_x, double offset_y) {
+  pos_x_ += offset_x * graphics.pixelart_px_size_;
+  pos_y_ += offset_y * graphics.pixelart_px_size_;
 }
 
 bool Sprite::Render(Graphics& graphics) {
